@@ -1,5 +1,5 @@
 // Shared top bar for every page: brand, Home / Explorer, About menu (info dialogs), repo link.
-// Use: <link rel="stylesheet" href="…/css/design.css"> + <script src="…/js/topbar.js" defer></script>, and <body data-page="home|explorer">.
+// Use: <link rel="stylesheet" href="…/css/design.css"> + <script src="…/js/topbar.js" defer></script>, and <body data-page="home|story|explorer">.
 (() => {
   const root = new URL('..', document.currentScript.src);          // the site/ folder, wherever this page lives
   const u = p => new URL(p, root).href;
@@ -39,9 +39,10 @@
   const bar = document.createElement('header');
   bar.className = 'ue-bar';
   bar.innerHTML = `
-    <a class="ue-brand" href="${u('landing.html')}"><img src="${u('favicon.svg')}" alt=""><span>Unseen Earth</span></a>
+    <a class="ue-brand" href="${u('home.html')}"><img src="${u('favicon.svg')}" alt=""><span>Unseen Earth</span></a>
     <nav class="ue-nav">
-      <a href="${u('landing.html')}" class="${page === 'home' ? 'on' : ''}">Home</a>
+      <a href="${u('home.html')}" class="${page === 'home' ? 'on' : ''}">Home</a>
+      <a href="${u('landing.html')}" class="${page === 'story' ? 'on' : ''}">Story</a>
       <a href="${u('viewer/index.html')}" class="${page === 'explorer' ? 'on' : ''}">Explorer</a>
       <div class="ue-menu"><button type="button" aria-haspopup="true" aria-expanded="false">About</button>
         <div class="ue-drop" role="menu">

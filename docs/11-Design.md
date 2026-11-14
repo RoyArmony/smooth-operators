@@ -40,10 +40,10 @@ Map layer colours (NISAR water, cloud-hidden, etc.) stay as each layer's legend 
 
 ## Layout
 
-- **Top bar** on every page (`site/js/topbar.js`, height `--bar-h` = 56 px, 52 on phones): brand · Home · Explorer · About ▾ · NISAR chip · GitHub.
-  Pages pad their top by `--bar-h`. Mark the page with `<body data-page="home|explorer">`.
+- **Top bar** on every page (`site/js/topbar.js`, height `--bar-h` = 56 px, 52 on phones): brand · Home · Story · Explorer · About ▾ · NISAR chip · GitHub.
+  Pages pad their top by `--bar-h`. Mark the page with `<body data-page="home|story|explorer">`.
 - **About** opens a dialog over the page (the user stays in place).
-- **Home** = the film (`site/landing.html`). **Explorer** = the map (`site/viewer/index.html`): map left, 380 px sidebar right.
+- Visitor path: **Home** = welcome page (`site/home.html`) → **Story** = the film (`site/landing.html`) → **Explorer** = the map (`site/viewer/index.html`): map left, 380 px sidebar right.
 - Explorer sidebar: list of events → click one → only that event's card + "← All events".
 - Phones (< 760 px): Explorer stacks map over sidebar.
 

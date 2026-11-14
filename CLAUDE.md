@@ -84,11 +84,11 @@ Current files and folders:
 - `LICENSE`: MIT (our code). NASA data keeps its own terms and credit (see `ACKNOWLEDGMENTS.md`).
 - `ACKNOWLEDGMENTS.md`: third-party data, imagery, software and papers we use, with their licences and credit lines.
 - `pipeline/`: Python package `unseen`, offline: NISAR flood analysis → bundles in `events/`. See `pipeline/README.md`.
-- `site/`: static site pages. **Home** = `site/landing.html`, the flood film (Leaflet in `site/vendor/`).
+- `site/`: static site pages. Path: **Home** = `site/home.html` (welcome) → **Story** = `site/landing.html`, the flood film (Leaflet in `site/vendor/`) →
   **Explorer** = `site/viewer/` map viewer (ported from the prep repo; 5 flood sites in `site/viewer/sites/`). The film's Skip button and its end open it.
   Every page loads `site/css/design.css` (tokens) and `site/js/topbar.js` (shared top bar). Design rules: `docs/11-Design.md`.
 - `events/`: site bundles written by `pipeline/` (contract: docs/08 §3).
-- `index.html`: the site's entry page (served by Vercel).
+- `index.html`: the site's entry page (served by Vercel); forwards to `site/home.html`.
 - `.vercelignore`: allowlist of what goes to the site (see Deployment).
 
 ## Git workflow
