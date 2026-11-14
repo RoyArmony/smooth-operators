@@ -47,7 +47,6 @@ async function openSite(id) {
   const f1 = cal ? cal.loo.map(x => x.f1) : (D.validation || []).map(x => x.f1);
   $('spT').textContent = D.title;
   $('spI').innerHTML = `${D.kind || ''}<br>${N} NISAR passes · ${fmt(D.frames[0].date)} → ${fmt(D.frames[N - 1].date)}`
-    + (f1.length ? ` · F1 vs optical ${Math.min(...f1).toFixed(2)}–${Math.max(...f1).toFixed(2)}` : '')
     + (D.event_date ? ` · event ${fmt(D.event_date)}` : '');
   const R = D.report || {};
   $('spH').innerHTML = (R.headline || []).map(h => `<div class="hk${h.strong ? ' strong' : ''}" title="${(h.note || '').replace(/"/g, '&quot;')}">`
@@ -62,7 +61,7 @@ async function openSite(id) {
   }
   $('spO').innerHTML = (S.P ? '<label><input type="checkbox" value="motion">Ground motion (cm)</label><label><input type="checkbox" value="fringes">Fringes</label>' : '')
     + S.layers.map((l, i) => `<label><input type="checkbox" value="L${i}">${l.label}</label>`).join('')
-    + '<label><input type="checkbox" value="pass">Change on this pass</label>';
+    + '<label><input type="checkbox" value="pass">Seen only by NISAR (this pass)</label>';
   $('spO').querySelectorAll('input').forEach(x => x.onchange = render);
   setOn([S.P ? 'motion' : S.layers.length ? 'L0' : 'pass']);
   if (S.P && D.event_date) { const k = D.frames.findIndex(f => f.date >= D.event_date); if (k >= 0) S.t = k; }
