@@ -109,7 +109,7 @@ Same passes, same truth (OPERA DSWx-HLS, clear days), same quality check. Mean F
 
 | Method | Track 145 (v3 fitted here) | **Track 138 (held out)** | Dry-season false water (km², Jun–Jul) | Precision / recall style |
 |---|---|---|---|---|
-| Old detector (§2) | 0.21 | 0.01 | 70–1,738 | breaks on one bad pass |
+| Old detector (§2) | 0.21 | 0.01 | 2–1,738 | breaks on one bad pass; misses most water on track 138 |
 | Paper method (Martinis) | 0.62 | 0.61 | 525–2,280 | over-detects |
 | v4 handbook, θ_ow −17 dB | 0.57 (0.61 in its mask) | 0.57 (0.61 in its mask) | 231–400 | high precision, low recall |
 | v4 handbook, θ_ow −16 dB | 0.60 (0.64) | 0.60 (0.64) | 465–800 | |
