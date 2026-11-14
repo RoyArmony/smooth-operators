@@ -17,7 +17,7 @@
   #txt { position: fixed; left: 6vw; top: 50%; transform: translateY(-50%); max-width: 34vw; pointer-events: none; }
   #txt .k { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--o); margin-bottom: 14px; min-height: 1em; }
   #txt h1 { font-size: clamp(20px, 2.1vw, 32px); line-height: 1.3; margin: 0; font-weight: 600; }
-  #txt h1 b { color: #ff9a2e; font-weight: 700; } #txt h1 b.bl { color: #4aa3ff; } #txt h1 b.rd { color: #ff6060; } #txt h1 b.wh { color: #fff; }
+  #txt h1 b { color: #ff9a2e; font-weight: 700; } #txt h1 b.bl { color: #4aa3ff; } #txt h1 b.rc { color: #ff6060; } #txt h1 b.wh { color: #fff; }
   #txt h1 b.gy { color: #d6d6e0; background: repeating-linear-gradient(45deg,rgba(200,200,210,.28) 0 2px,transparent 2px 6px); padding: 0 4px; border-radius: 3px; }
   .ch { opacity: 0; animation: chIn .35s ease forwards; } @keyframes chIn { to { opacity: 1; } }
   #txt .big { font-size: clamp(56px, 8vw, 120px); font-weight: 800; line-height: 1; color: #fff; }
@@ -195,8 +195,6 @@ const scenes = [
               say('Camera · 19 Oct', H('Cameras don\'t fill the gap. Two days later, Landsat and Sentinel-2 saw clouds, and under the trees only green.'), '', 'Optical · NASA HLS (Landsat + Sentinel-2)'); }],
   [7.5, () => { show(['gfm', 'excl', 'add']); legend(['gfm', 'excl', 'add']);
               say('NISAR sees through', H('On 17 October, inside <b class="gy">that blank</b>, NISAR measured <b>561 km²</b> of water, 362 km² of it under the trees. That is one lake, on one day.'), '', 'NISAR L-band'); }],
-  [8, () => { show(['excl', 'add']); legend(['excl', 'add']); vis(box, 0); map.flyTo([12.85, 104.25], 10.2, { duration: 3 }); later(() => vis(box, 1), 3100);
-              say('Why NISAR sees it', H('NISAR\'s radar waves are 24 cm long. They pass through the leaves and bounce back from the water below. Sentinel-1\'s 5.6 cm waves stop at the canopy.'), '', 'NISAR L-band'); }],
   [8, () => { show([]); vis(box, 0); legend([]); $('tag').classList.remove('in'); world(); many(dots, 1, 60);
       say('', H('We ran the same check on 16 flood sites we chose: 5 from recent flood alerts and 11 large seasonal wetlands, using NISAR\'s first months of data (June to October 2026). Each dot shows what NISAR added on that site\'s wettest pass.')); }],
   [7, () => { many(thumbs, 1, 250); legend(['gfm', 'excl', 'add']);
@@ -205,7 +203,7 @@ const scenes = [
       map.flyToBounds(PB, { duration: 3, paddingTopLeft: [innerWidth * .32, 20], paddingBottomRight: [20, 20] });
       say('Validation', H('To check our water maps, we compared them with Canada\'s RCM radar over the Peace–Athabasca Delta.')); }],
   [5, () => { ca(['nw']); legend(['nw']); say('NISAR · 10 Oct 2026', H('This is <b class="bl">the water NISAR found</b> on 10 October.'), '', 'NISAR L-band'); }],
-  [5.5, () => { ca(['rw']); legend(['rw']); say('RCM · 13 Oct 2026', H('And this is <b class="rd">the water Canada\'s RCM found</b> three days later.'), '', 'RADARSAT Constellation Mission (CSA)'); }],
+  [5.5, () => { ca(['rw']); legend(['rw']); say('RCM · 13 Oct 2026', H('And this is <b class="rc">the water Canada\'s RCM found</b> three days later.'), '', 'RADARSAT Constellation Mission (CSA)'); }],
   [6.5, () => { ca(['ag']); legend(['both', 'on', 'or']); say('Validation', H('They agree: RCM confirms <b class="wh">79%</b> of <b class="bl">the water NISAR found</b>, across four pairs of images.'), '', 'NISAR + RCM (CSA)'); }],
   [8, () => { ca([]); TL.forEach(o => map.removeLayer(o)); TL = []; legend([]); many(dots, 1); world();
       say('16 floods', H('Across these 16 sites, taking each site\'s wettest NISAR pass, NISAR found <b>1,182 km²</b> of water in the official maps\' blanks: <b>43% more</b> than the 2,719 km² they showed. A sample, not a global total.')); }],
