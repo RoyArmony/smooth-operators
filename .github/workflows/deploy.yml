@@ -1,0 +1,31 @@
+# Deploys the site to Vercel on every push to main, as the Vercel project owner (Hobby plan:
+# Vercel's own Git deploys only accept the owner's commits on a private repo).
+# Needs repo secrets: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID.
+name: Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: vercel-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Without git metadata Vercel doesn't check the commit author, so anyone's push deploys.
+      - name: Drop git metadata
+        run: rm -rf .git
+
+      # .vercelignore still decides which files are uploaded.
+      - name: Deploy (production)
+        run: npx --yes vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"

@@ -76,6 +76,7 @@ All 14 links from the [Resources tab](https://www.spaceappschallenge.org/2026/ch
 ## Tools and services
 
 - **Vercel (Hobby, free)** — serverless static hosting of the site, deploys from `main` — https://vercel.com (Noa, 14.11.26)
+- **GitHub Actions + Vercel CLI** — deploy the site to Vercel on every push to `main` (workflow uses `actions/checkout`, repo secrets hold the Vercel token) — https://docs.github.com/actions · https://vercel.com/docs/cli (Roy, 14.11.26)
 - **GoDaddy** — custom domain for presenting the site (DNS pointed at Vercel) — https://www.godaddy.com (Noa, 14.11.26)
 - **asf_search** (Python, ASF) — NISAR / ALOS / Sentinel-1 search — https://docs.asf.alaska.edu/asf_search/basics/ (Roy, 31.10.26)
 - **NASA Worldview** — view NISAR layers in the browser — https://worldview.earthdata.nasa.gov/ (Roy, 31.10.26)

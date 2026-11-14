@@ -54,6 +54,8 @@ Our maps and numbers are derived products, not official NASA products, and not e
 | Pillow | MIT-CMU |
 | matplotlib | PSF-based |
 | requests | Apache-2.0 |
+| Vercel CLI (deploy only, not bundled) | Apache-2.0 |
+| actions/checkout (GitHub Actions, deploy only) | MIT |
 
 ## Research we built on
 
