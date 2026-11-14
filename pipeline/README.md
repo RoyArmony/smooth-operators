@@ -23,6 +23,7 @@ permanent water removed; area = pixels × 80 m × 80 m.
 | `nisar.py`, `gcov.py`, `remote.py`, `auth.py` | ASF search, NISAR GCOV windowed reads over HTTP, Earthdata login |
 | `detect.py`, `flood_nasa.py` | water detector; NISAR handbook §6.4 classifier (second opinion) |
 | `gfm.py`, `optical.py`, `rcm.py` | Copernicus GFM, OPERA DSWx-HLS, Canada's RCM on our grid |
+| `history.py` | flood history of one place: RADARSAT-1 (1996–2013) + NISAR on one grid, flood per image, vs GFM → Explorer case `site/viewer/sites/<id>/` (`python -m unseen.history`) |
 | `landcover.py`, `population.py` | ESA WorldCover, WorldPop on our grid (context) |
 
 Caches go to `data/` (git-ignored).

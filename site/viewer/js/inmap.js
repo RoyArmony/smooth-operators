@@ -46,7 +46,10 @@ async function openSite(id) {
   const N = D.frames.length, cal = D.calibration && D.calibration.used ? D.calibration : null;
   const f1 = cal ? cal.loo.map(x => x.f1) : (D.validation || []).map(x => x.f1);
   $('spT').textContent = D.title;
-  $('spI').innerHTML = `${D.kind || ''}<br>${N} NISAR passes · ${fmt(D.frames[0].date)} → ${fmt(D.frames[N - 1].date)}`
+  const nR = D.frames.filter(f => f.sensor === 'RADARSAT-1').length, fy = { day: 'numeric', month: 'short', year: 'numeric' };
+  $('spI').innerHTML = D.history
+    ? `${D.kind || ''}<br>${nR} RADARSAT-1 (CSA) + ${N - nR} NISAR images · ${fmt(D.frames[0].date, fy)} → ${fmt(D.frames[N - 1].date, fy)}`
+    : `${D.kind || ''}<br>${N} NISAR passes · ${fmt(D.frames[0].date)} → ${fmt(D.frames[N - 1].date)}`
     + (D.event_date ? ` · event ${fmt(D.event_date)}` : '');
   const R = D.report || {};
   $('spH').innerHTML = (R.headline || []).map(h => `<div class="hk${h.strong ? ' strong' : ''}" title="${(h.note || '').replace(/"/g, '&quot;')}">`
@@ -61,7 +64,7 @@ async function openSite(id) {
   }
   $('spO').innerHTML = (S.P ? '<label><input type="checkbox" value="motion">Ground motion (cm)</label><label><input type="checkbox" value="fringes">Fringes</label>' : '')
     + S.layers.map((l, i) => `<label><input type="checkbox" value="L${i}">${l.label}</label>`).join('')
-    + '<label><input type="checkbox" value="pass">Seen only by NISAR (this pass)</label>';
+    + `<label><input type="checkbox" value="pass">${R.pass_label || 'Seen only by NISAR (this pass)'}</label>`;
   $('spO').querySelectorAll('input').forEach(x => x.onchange = render);
   setOn([S.P ? 'motion' : S.layers.length ? 'L0' : 'pass']);
   if (S.P && D.event_date) { const k = D.frames.findIndex(f => f.date >= D.event_date); if (k >= 0) S.t = k; }
@@ -83,13 +86,14 @@ async function openSite(id) {
   $('spMt').innerHTML = (R.notes || []).map(n => `• ${n}`).join('<br>')
     + (R.insar ? `<br>• InSAR pairs: pre ${R.insar.pre.join(' → ')}, across event ${R.insar.co.join(' → ')} (track ${R.insar.track} ${R.insar.direction}).` : '');
   $('spR').max = N - 1; $('spR').value = S.t;
-  $('spF').href = `site.html?id=${encodeURIComponent(id)}`;
+  $('spF').href = `site.html?id=${encodeURIComponent(id)}`; $('spF').style.display = D.history ? 'none' : '';
   panel.hidden = false;
   map.flyToBounds(B, { paddingTopLeft: [panel.offsetWidth + 70, 30], paddingBottomRight: [30, 30], duration: 1.2 });
   render();
   window.dispatchEvent(new CustomEvent('unseen:site', { detail: id }));   // sidebar shows only this event (globe.js)
 }
 
+const R_ = D => D.report || {};
 function setOn(keys) { $('spO').querySelectorAll('input').forEach(x => x.checked = keys.includes(x.value)); }
 function closeSite(keepHash) {
   if (timer) togglePlay();
@@ -102,14 +106,17 @@ function closeSite(keepHash) {
 function render() {
   if (!S) return;
   const { D, A, t } = S, f = D.frames[t], s = D.summary[t];
-  $('spD').textContent = `${fmt(f.date, { day: 'numeric', month: 'short', year: 'numeric' })} · ${t + 1}/${D.frames.length}`;
+  $('spD').textContent = `${fmt(f.date, { day: 'numeric', month: 'short', year: 'numeric' })}${f.sensor ? ' · ' + f.sensor : ''} · ${t + 1}/${D.frames.length}`;
   let note = '';
   if (S.b === 'photo') {
     const p = S.photos.length ? S.photos.reduce((a, b) => Math.abs(dn(b[0]) - dn(f.date)) < Math.abs(dn(a[0]) - dn(f.date)) ? b : a) : null;
-    if (p) { S.base.setUrl(A(p[1])); const g = Math.round(dn(p[0]) - dn(f.date));
+    if (p && Math.abs(dn(p[0]) - dn(f.date)) > 60) { S.base.setUrl(A(f.nisar)); note = `No optical photo near ${f.date.slice(0, 4)}: showing the radar.`; }
+    else if (p) { S.base.setUrl(A(p[1])); const g = Math.round(dn(p[0]) - dn(f.date));
              note = `Photo ${fmt(p[0])}${g ? ` (${g > 0 ? '+' : ''}${g} d from this pass)` : ' (same day)'}. Clouds look white: that's what NISAR sees through.`; }
     else note = 'No optical photo for this area.';
-  } else if (S.b === 'nisar') { S.base.setUrl(A(f.nisar)); note = 'Radar colours: R = HH, G = HV, B = HH/HV. Dark = smooth water.'; }
+  } else if (S.b === 'nisar') { S.base.setUrl(A(f.nisar)); note = f.sensor === 'RADARSAT-1'
+      ? `RADARSAT-1 (CSA), C-band HH, beam ${f.beam}. Dark = smooth water.`
+      : 'Radar colours: R = HH, G = HV, B = HH/HV. Dark = smooth water.'; }
   S.base.setOpacity(S.b === 'none' ? 0 : $('spA').value / 100);
   const on = new Set([...$('spO').querySelectorAll('input:checked')].map(x => x.value));
   S.over.setUrl(A(f.hidden)); S.over.setOpacity(on.has('pass') ? 1 : 0);
@@ -127,8 +134,12 @@ function render() {
       .map(lg => lg.map(([c, t]) => `<div><span style="background:${c}${c.startsWith('linear') ? ';width:60px' : ''}"></span>${t}</div>`).join('')).join('')
     + (S.layers || []).filter((l, i) => on.has(`L${i}`)).map(l => l.legend.map(([c, t]) => `<div><span style="background:${c}${c.startsWith('linear') ? ';width:60px' : ''}"></span>${t}</div>`).join(''))
     .filter(h => !seen.has(h) && seen.add(h)).join('')
-    + (on.has('pass') ? '<div><span style="background:var(--blue)"></span>water, seen by both</div><div><span style="background:var(--orange)"></span>water, only radar (clouds)</div>'
+    + (on.has('pass') && D.history ? (f.gfm ? R_(D).pass_legend : [['#2882ff', f.sensor === 'NISAR' ? 'flood (no GFM that week)' : 'flood (no official map before 2015)']])
+        .map(([c, t]) => `<div><span style="background:${c}"></span>${t}</div>`).join('')
+      + (f.gfm ? `<div class="sub">GFM ${s.gfm_date}: ${s.gfm_km2} km² · NISAR ${s.new_water} km²</div>` : '')
+    : on.has('pass') ? '<div><span style="background:var(--blue)"></span>water, seen by both</div><div><span style="background:var(--orange)"></span>water, only radar (clouds)</div>'
       + '<div><span style="background:var(--green)"></span>water under trees</div><div><span style="background:var(--purple)"></span>surface change</div>' : '');
+  if (D.history) note = `Flood ${Math.round(s.new_water).toLocaleString()} km² (beyond rivers). ` + note;
   $('spN').textContent = note;
   chart();
 }
@@ -161,11 +172,23 @@ function chart() {
   v.forEach((x, i) => {
     const y = (H - 12) * x / mx, yh = (H - 12) * Math.min(h[i], x) / mx;
     g.globalAlpha = i === t ? 1 : 0.55;
-    g.fillStyle = '#2b8cbe'; g.fillRect(i * bw + 1, H - 12 - y, bw - 2, y - yh);
+    g.fillStyle = D.frames[i].sensor === 'RADARSAT-1' ? '#8fb3d9' : '#2b8cbe'; g.fillRect(i * bw + 1, H - 12 - y, bw - 2, y - yh);
     g.fillStyle = '#ff7828'; g.fillRect(i * bw + 1, H - 12 - yh, bw - 2, yh);
   });
   g.globalAlpha = 1; g.strokeStyle = '#fff'; g.strokeRect(t * bw + 0.5, 0.5, bw - 1, H - 12);
-  g.fillStyle = '#8b95a3'; g.font = '10px system-ui'; g.fillText(fmt(D.frames[0].date), 2, H - 1);
+  g.fillStyle = '#8b95a3'; g.font = '10px system-ui';
+  if (D.history) {                                      // one label per year, a tick where the year changes
+    let lx = -99;
+    D.frames.forEach((fr, i) => { const y = fr.date.slice(0, 4);
+      if (i && y === D.frames[i - 1].date.slice(0, 4)) return;
+      if (i) { g.fillRect(i * bw - 0.5, 0, 1, H - 12); }
+      const txt = y === '2026' ? '2026 NISAR' : "'" + y.slice(2);
+      if (i * bw + 2 - lx < 4 && y !== '2026') return;
+      if (y === '2026' && i * bw + 2 < lx + 4) g.clearRect(lx - 30, H - 11, 30, 11);
+      g.fillText(txt, i * bw + 2, H - 1); lx = i * bw + 2 + g.measureText(txt).width; });
+    return;
+  }
+  g.fillText(fmt(D.frames[0].date), 2, H - 1);
   const last = fmt(D.frames[n - 1].date); g.fillText(last, W - g.measureText(last).width - 2, H - 1);
   if (D.event_date) {                                  // event marker on the pass axis
     const d0 = dn(D.frames[0].date), d1 = dn(D.frames[n - 1].date), x = bw / 2 + (W - bw) * (dn(D.event_date) - d0) / Math.max(1, d1 - d0);

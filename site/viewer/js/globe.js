@@ -88,7 +88,7 @@ function drawMap(wa) {
   (window.UNSEEN_SITES || []).forEach(s => {
     const [w, so, e, n] = s.bbox;
     L.rectangle([[so, w], [n, e]], { color: '#ff7828', weight: 2, fillOpacity: .08 })
-      .bindPopup(`<b>${s.title}</b><br>${fmtDate(s.first)} → ${fmtDate(s.last)} · ${s.n_dates} passes<br><a href="#site=${encodeURIComponent(s.id)}">open analysis</a>`).addTo(siteLayer);
+      .bindPopup(`<b>${s.title}</b><br>${fmtDate(s.first)} → ${fmtDate(s.last)} · ${s.history ? `${s.n_rs1} RADARSAT-1 + ${s.n_nisar} NISAR images` : `${s.n_dates} passes`}<br><a href="#site=${encodeURIComponent(s.id)}">open analysis</a>`).addTo(siteLayer);
   });
   const sites = new Set((window.UNSEEN_SITES || []).map(s => s.id));
   wa.filter(a => !(a.site && sites.has(a.site))).forEach(a => {
@@ -230,10 +230,10 @@ function showFocus(id) {
     + (!s ? '<div class="sub">Loading…</div>' : `<div class="fcard">
       <div class="eyebrow">${ICON[t] || ''} ${s.kind || EVT[t] || 'Event'}</div>
       <h2>${s.title}</h2>
-      <div class="sub">${s.n_dates} NISAR passes · ${fmtDate(s.first)} → ${fmtDate(s.last)}</div>
+      <div class="sub">${s.history ? `${s.n_rs1} RADARSAT-1 (CSA) + ${s.n_nisar} NISAR images` : `${s.n_dates} NISAR passes`} · ${fmtDate(s.first)} → ${fmtDate(s.last)}</div>
       ${h ? `<div class="hero"><b>${num(h[1])} <small>${h[2]}</small></b><span>${h[0]}</span></div>` : ''}
       <div class="stats">
-        ${s.max_hidden_by_clouds != null ? `<div><b>${Math.round(s.max_hidden_by_clouds * 100)}%</b><span>most hidden by cloud (one pass)</span></div>` : ''}
+        ${s.max_hidden_by_clouds != null && !s.history ? `<div><b>${Math.round(s.max_hidden_by_clouds * 100)}%</b><span>most hidden by cloud (one pass)</span></div>` : ''}
         ${st.track ? `<div><b>${st.track} / ${st.frame}</b><span>NISAR track / frame, ${st.direction || ''}</span></div>` : ''}
       </div></div>
       <div class="fhint">Step through the passes and switch Map / Photo / Radar in the panel on the map.</div>`);

@@ -55,4 +55,5 @@ P0 = must, P1 = should, P2 = nice. Times are Israel time. Sync points: **Sat 20:
 Each owner runs the shared method (Noa) through `bundle.py` (Shai) and checks it in the site (Roy).
 - [ ] [Roy] **Peace–Athabasca Delta, Canada** (CSA): ~~P0 Sat 20:00 RADARSAT-1 coverage check~~ ✅ done: 619 scenes 1996–2013, 359 cover ≥ 90% of the box ([docs/10](docs/10-Results.md), `scripts/rs1_coverage.py`) · P0 Sun 01:00 NISAR + RCM same week + agreement layer, 79% / IoU · P1 RADARSAT-1 then layer · P1 verify CSA credit lines in `ACKNOWLEDGMENTS.md`
 - [ ] [Noa] **Inner Niger Delta, Mali** (or Mekong, Vietnam): P0 Sun 09:00 GFM flood, "cannot see", NISAR adds, photo; passes Jul–Oct · `science.md`
+- [x] [Noa] **Mekong delta, Vietnam** (story 2): flood history case in the Explorer, RADARSAT-1 1998–2007 + NISAR 2026, flood per image vs GFM (`python -m unseen.history`)
 - [ ] [Shai] **Tonle Sap, Cambodia**: P0 Sun 01:00 GFM flood, "cannot see", NISAR adds, DSWx-S1, photo; passes Jun–Oct · `science.md`

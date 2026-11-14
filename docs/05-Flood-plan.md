@@ -93,3 +93,9 @@ Sync points: 20:30 contract freeze, 01:00 first real bundle live on vercel.app, 
 3. Commit curated bundles in `events/` (< 20 MB) so the serverless site has its data ([08](08-Plan-data.md)).
 4. GoDaddy domain owner and the new folders `site/`, `events/`, `pipeline/`, `scripts/` ([06 §3b](06-Plan-architecture.md)).
 5. Story 2: Inner Niger (bigger gain) or Mekong (farms, people).
+
+**Noa, 14.11.26 20:45:59 says:** decision 5: story 2 = **Mekong delta**, with a flood history. It is the one place with both
+RADARSAT-1 over the years (17 images, 1998–2007, a full 2006 season) and a NISAR 2026 stack (11 passes). Checked 32 places:
+Canadian sites have hundreds of RADARSAT-1 images, but their floods are in spring, when NISAR has no 2026 data; most of our
+other sites have 0–2 RADARSAT-1 images. New Explorer case "Mekong delta, 1998–2026": flood marked on every image, and on
+NISAR dates split into NISAR + GFM / only NISAR / only GFM. Numbers: [10](10-Results.md#mekong-delta-vietnam-flood-history-19982026).

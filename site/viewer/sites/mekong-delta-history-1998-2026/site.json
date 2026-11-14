@@ -1,0 +1,821 @@
+{
+ "id": "mekong-delta-history-1998-2026",
+ "title": "Mekong delta, 1998–2026",
+ "bbox": [
+  105.0,
+  10.4,
+  105.6,
+  11.0
+ ],
+ "event_date": null,
+ "kind": "flood history (RADARSAT-1 + NISAR)",
+ "hazard": "FL",
+ "history": true,
+ "pixel_m": 80.0,
+ "size": [
+  821,
+  831
+ ],
+ "corners": [
+  [
+   105.00036615403685,
+   11.000547764582493
+  ],
+  [
+   105.5996662361089,
+   10.399453324960852
+  ]
+ ],
+ "frames": [
+  {
+   "date": "1998-01-10",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_1998-01-10.jpg",
+   "hidden": "flood_1998-01-10.png",
+   "beam": "S7",
+   "orbit": "descending",
+   "scene": "RS1_11410_ST7_F423_19980110_223949_HH_GRF.tif"
+  },
+  {
+   "date": "1998-07-29",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_1998-07-29.jpg",
+   "hidden": "flood_1998-07-29.png",
+   "beam": "SCWA",
+   "orbit": "descending",
+   "scene": "RS1_14262_SWA_F027_19980729_111716_HH_GRF.tif"
+  },
+  {
+   "date": "2001-08-30",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2001-08-30.jpg",
+   "hidden": "flood_2001-08-30.png",
+   "beam": "SCNB",
+   "orbit": "ascending",
+   "scene": "RS1_M0260985_SCNB_20010830_111621_HH_SCN.tif"
+  },
+  {
+   "date": "2001-11-07",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2001-11-07.jpg",
+   "hidden": "flood_2001-11-07.png",
+   "beam": "SCNA",
+   "orbit": "descending",
+   "scene": "RS1_31369_SNA_F027_20011107_110349_HH_GRF.tif"
+  },
+  {
+   "date": "2005-09-02",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2005-09-02.jpg",
+   "hidden": "flood_2005-09-02.png",
+   "beam": "SCNB",
+   "orbit": "ascending",
+   "scene": "RS1_P0425108_SCNB_20050902_111446_HH_SCN.tif"
+  },
+  {
+   "date": "2005-10-27",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2005-10-27.jpg",
+   "hidden": "flood_2005-10-27.png",
+   "beam": "SCNB",
+   "orbit": "ascending",
+   "scene": "RS1_P0430805_SCNB_20051027_110903_HH_SCN.tif"
+  },
+  {
+   "date": "2005-11-13",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2005-11-13.jpg",
+   "hidden": "flood_2005-11-13.png",
+   "beam": "SCNB",
+   "orbit": "ascending",
+   "scene": "RS1_P0433312_SCNB_20051113_111306_HH_SCN.tif"
+  },
+  {
+   "date": "2006-03-13",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2006-03-13.jpg",
+   "hidden": "flood_2006-03-13.png",
+   "beam": "SCNB",
+   "orbit": "ascending",
+   "scene": "RS1_P0448573_SCNB_20060313_111256_HH_SCN.tif"
+  },
+  {
+   "date": "2006-04-30",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2006-04-30.jpg",
+   "hidden": "flood_2006-04-30.png",
+   "beam": "SCNB",
+   "orbit": "ascending",
+   "scene": "RS1_P0451867_SCNB_20060430_111256_HH_SCN.tif"
+  },
+  {
+   "date": "2006-06-17",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2006-06-17.jpg",
+   "hidden": "flood_2006-06-17.png",
+   "beam": "SCNB",
+   "orbit": "ascending",
+   "scene": "RS1_P0456974_SCNB_20060617_111255_HH_SCN.tif"
+  },
+  {
+   "date": "2006-07-11",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2006-07-11.jpg",
+   "hidden": "flood_2006-07-11.png",
+   "beam": "SCNB",
+   "orbit": "ascending",
+   "scene": "RS1_P0459907_SCNB_20060711_111248_HH_SCN.tif"
+  },
+  {
+   "date": "2006-08-28",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2006-08-28.jpg",
+   "hidden": "flood_2006-08-28.png",
+   "beam": "SCNB",
+   "orbit": "ascending",
+   "scene": "RS1_P0467456_SCNB_20060828_111249_HH_SCN.tif"
+  },
+  {
+   "date": "2006-09-21",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2006-09-21.jpg",
+   "hidden": "flood_2006-09-21.png",
+   "beam": "SCNB",
+   "orbit": "ascending",
+   "scene": "RS1_P0470720_SCNB_20060921_111248_HH_SCN.tif"
+  },
+  {
+   "date": "2006-10-22",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2006-10-22.jpg",
+   "hidden": "flood_2006-10-22.png",
+   "beam": "SCNB",
+   "orbit": "ascending",
+   "scene": "RS1_P0475489_SCNB_20061022_110839_HH_SCN.tif"
+  },
+  {
+   "date": "2006-11-08",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2006-11-08.jpg",
+   "hidden": "flood_2006-11-08.png",
+   "beam": "SCNB",
+   "orbit": "ascending",
+   "scene": "RS1_P0477277_SCNB_20061108_111245_HH_SCN.tif"
+  },
+  {
+   "date": "2006-12-02",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2006-12-02.jpg",
+   "hidden": "flood_2006-12-02.png",
+   "beam": "SCNB",
+   "orbit": "ascending",
+   "scene": "RS1_P0483329_SCNB_20061202_111246_HH_SCN.tif"
+  },
+  {
+   "date": "2007-05-04",
+   "sensor": "RADARSAT-1",
+   "nisar": "radar_2007-05-04.jpg",
+   "hidden": "flood_2007-05-04.png",
+   "beam": "SCNB",
+   "orbit": "descending",
+   "scene": "RS1_P2508548_SCNB_20070504_224116_HH_SCN.tif"
+  },
+  {
+   "date": "2026-06-19",
+   "sensor": "NISAR",
+   "nisar": "nisar_2026-06-19.jpg",
+   "hidden": "flood_2026-06-19.png",
+   "gfm": true
+  },
+  {
+   "date": "2026-07-01",
+   "sensor": "NISAR",
+   "nisar": "nisar_2026-07-01.jpg",
+   "hidden": "flood_2026-07-01.png",
+   "gfm": true
+  },
+  {
+   "date": "2026-07-13",
+   "sensor": "NISAR",
+   "nisar": "nisar_2026-07-13.jpg",
+   "hidden": "flood_2026-07-13.png",
+   "gfm": true
+  },
+  {
+   "date": "2026-07-25",
+   "sensor": "NISAR",
+   "nisar": "nisar_2026-07-25.jpg",
+   "hidden": "flood_2026-07-25.png",
+   "gfm": true
+  },
+  {
+   "date": "2026-08-18",
+   "sensor": "NISAR",
+   "nisar": "nisar_2026-08-18.jpg",
+   "hidden": "flood_2026-08-18.png",
+   "gfm": true
+  },
+  {
+   "date": "2026-08-30",
+   "sensor": "NISAR",
+   "nisar": "nisar_2026-08-30.jpg",
+   "hidden": "flood_2026-08-30.png",
+   "gfm": true
+  },
+  {
+   "date": "2026-09-11",
+   "sensor": "NISAR",
+   "nisar": "nisar_2026-09-11.jpg",
+   "hidden": "flood_2026-09-11.png",
+   "gfm": true
+  },
+  {
+   "date": "2026-09-23",
+   "sensor": "NISAR",
+   "nisar": "nisar_2026-09-23.jpg",
+   "hidden": "flood_2026-09-23.png",
+   "gfm": true
+  },
+  {
+   "date": "2026-10-05",
+   "sensor": "NISAR",
+   "nisar": "nisar_2026-10-05.jpg",
+   "hidden": "flood_2026-10-05.png",
+   "gfm": true
+  },
+  {
+   "date": "2026-10-17",
+   "sensor": "NISAR",
+   "nisar": "nisar_2026-10-17.jpg",
+   "hidden": "flood_2026-10-17.png",
+   "gfm": true
+  },
+  {
+   "date": "2026-10-29",
+   "sensor": "NISAR",
+   "nisar": "nisar_2026-10-29.jpg",
+   "hidden": "flood_2026-10-29.png",
+   "gfm": true
+  }
+ ],
+ "summary": [
+  {
+   "date": "1998-01-10",
+   "new_water": 232.2,
+   "hidden_new": 0,
+   "valid": 0.998
+  },
+  {
+   "date": "1998-07-29",
+   "new_water": 126.6,
+   "hidden_new": 0,
+   "valid": 0.942
+  },
+  {
+   "date": "2001-08-30",
+   "new_water": 2830.5,
+   "hidden_new": 0,
+   "valid": 0.999
+  },
+  {
+   "date": "2001-11-07",
+   "new_water": 2421.7,
+   "hidden_new": 0,
+   "valid": 0.945
+  },
+  {
+   "date": "2005-09-02",
+   "new_water": 2491.2,
+   "hidden_new": 0,
+   "valid": 0.999
+  },
+  {
+   "date": "2005-10-27",
+   "new_water": 2592.4,
+   "hidden_new": 0,
+   "valid": 0.998
+  },
+  {
+   "date": "2005-11-13",
+   "new_water": 2253.0,
+   "hidden_new": 0,
+   "valid": 0.999
+  },
+  {
+   "date": "2006-03-13",
+   "new_water": 115.3,
+   "hidden_new": 0,
+   "valid": 1.0
+  },
+  {
+   "date": "2006-04-30",
+   "new_water": 343.2,
+   "hidden_new": 0,
+   "valid": 1.0
+  },
+  {
+   "date": "2006-06-17",
+   "new_water": 110.4,
+   "hidden_new": 0,
+   "valid": 1.0
+  },
+  {
+   "date": "2006-07-11",
+   "new_water": 126.4,
+   "hidden_new": 0,
+   "valid": 1.0
+  },
+  {
+   "date": "2006-08-28",
+   "new_water": 2435.4,
+   "hidden_new": 0,
+   "valid": 0.999
+  },
+  {
+   "date": "2006-09-21",
+   "new_water": 2523.4,
+   "hidden_new": 0,
+   "valid": 1.0
+  },
+  {
+   "date": "2006-10-22",
+   "new_water": 2680.4,
+   "hidden_new": 0,
+   "valid": 0.999
+  },
+  {
+   "date": "2006-11-08",
+   "new_water": 2432.4,
+   "hidden_new": 0,
+   "valid": 0.999
+  },
+  {
+   "date": "2006-12-02",
+   "new_water": 1733.4,
+   "hidden_new": 0,
+   "valid": 0.999
+  },
+  {
+   "date": "2007-05-04",
+   "new_water": 182.2,
+   "hidden_new": 0,
+   "valid": 1.0
+  },
+  {
+   "date": "2026-06-19",
+   "new_water": 351.7,
+   "hidden_new": 323.1,
+   "valid": 1.0,
+   "gfm_date": "2026-06-18",
+   "gfm_km2": 48.6,
+   "both_km2": 28.6,
+   "nisar_only_km2": 323.1,
+   "gfm_only_km2": 20.1,
+   "nisar_only_in_gfm_blank_km2": 38.6
+  },
+  {
+   "date": "2026-07-01",
+   "new_water": 209.4,
+   "hidden_new": 148.8,
+   "valid": 1.0,
+   "gfm_date": "2026-07-01",
+   "gfm_km2": 30.6,
+   "both_km2": 14.9,
+   "nisar_only_km2": 148.8,
+   "gfm_only_km2": 15.7,
+   "nisar_only_in_gfm_blank_km2": 17.1
+  },
+  {
+   "date": "2026-07-13",
+   "new_water": 218.2,
+   "hidden_new": 166.4,
+   "valid": 1.0,
+   "gfm_date": "2026-07-13",
+   "gfm_km2": 5.3,
+   "both_km2": 1.4,
+   "nisar_only_km2": 166.4,
+   "gfm_only_km2": 3.9,
+   "nisar_only_in_gfm_blank_km2": 13.8
+  },
+  {
+   "date": "2026-07-25",
+   "new_water": 238.1,
+   "hidden_new": 171.7,
+   "valid": 1.0,
+   "gfm_date": "2026-07-25",
+   "gfm_km2": 7.2,
+   "both_km2": 3.2,
+   "nisar_only_km2": 171.7,
+   "gfm_only_km2": 4.1,
+   "nisar_only_in_gfm_blank_km2": 17.0
+  },
+  {
+   "date": "2026-08-18",
+   "new_water": 1176.6,
+   "hidden_new": 660.4,
+   "valid": 1.0,
+   "gfm_date": "2026-08-18",
+   "gfm_km2": 598.0,
+   "both_km2": 516.2,
+   "nisar_only_km2": 660.4,
+   "gfm_only_km2": 81.8,
+   "nisar_only_in_gfm_blank_km2": 86.0
+  },
+  {
+   "date": "2026-08-30",
+   "new_water": 1511.0,
+   "hidden_new": 602.1,
+   "valid": 1.0,
+   "gfm_date": "2026-08-30",
+   "gfm_km2": 1080.7,
+   "both_km2": 908.9,
+   "nisar_only_km2": 602.1,
+   "gfm_only_km2": 171.8,
+   "nisar_only_in_gfm_blank_km2": 128.7
+  },
+  {
+   "date": "2026-09-11",
+   "new_water": 1813.1,
+   "hidden_new": 1360.0,
+   "valid": 1.0,
+   "gfm_date": "2026-09-11",
+   "gfm_km2": 584.9,
+   "both_km2": 453.2,
+   "nisar_only_km2": 1360.0,
+   "gfm_only_km2": 131.7,
+   "nisar_only_in_gfm_blank_km2": 167.4
+  },
+  {
+   "date": "2026-09-23",
+   "new_water": 1854.3,
+   "hidden_new": 1304.5,
+   "valid": 1.0,
+   "gfm_date": "2026-09-23",
+   "gfm_km2": 706.0,
+   "both_km2": 549.8,
+   "nisar_only_km2": 1304.5,
+   "gfm_only_km2": 156.2,
+   "nisar_only_in_gfm_blank_km2": 169.6
+  },
+  {
+   "date": "2026-10-05",
+   "new_water": 1682.6,
+   "hidden_new": 1358.0,
+   "valid": 1.0,
+   "gfm_date": "2026-10-05",
+   "gfm_km2": 428.8,
+   "both_km2": 324.6,
+   "nisar_only_km2": 1358.0,
+   "gfm_only_km2": 104.2,
+   "nisar_only_in_gfm_blank_km2": 161.4
+  },
+  {
+   "date": "2026-10-17",
+   "new_water": 1581.2,
+   "hidden_new": 1320.7,
+   "valid": 1.0,
+   "gfm_date": "2026-10-17",
+   "gfm_km2": 344.8,
+   "both_km2": 260.5,
+   "nisar_only_km2": 1320.7,
+   "gfm_only_km2": 84.4,
+   "nisar_only_in_gfm_blank_km2": 142.0
+  },
+  {
+   "date": "2026-10-29",
+   "new_water": 1434.2,
+   "hidden_new": 1211.6,
+   "valid": 1.0,
+   "gfm_date": "2026-10-29",
+   "gfm_km2": 291.3,
+   "both_km2": 222.6,
+   "nisar_only_km2": 1211.6,
+   "gfm_only_km2": 68.7,
+   "nisar_only_in_gfm_blank_km2": 120.3
+  }
+ ],
+ "assets": {
+  "nisar_2026-06-19.jpg": "sites/mekong-delta-vietnam-83-7/nisar_2026-06-19.jpg",
+  "nisar_2026-07-01.jpg": "sites/mekong-delta-vietnam-83-7/nisar_2026-07-01.jpg",
+  "nisar_2026-07-13.jpg": "sites/mekong-delta-vietnam-83-7/nisar_2026-07-13.jpg",
+  "nisar_2026-07-25.jpg": "sites/mekong-delta-vietnam-83-7/nisar_2026-07-25.jpg",
+  "nisar_2026-08-18.jpg": "sites/mekong-delta-vietnam-83-7/nisar_2026-08-18.jpg",
+  "nisar_2026-08-30.jpg": "sites/mekong-delta-vietnam-83-7/nisar_2026-08-30.jpg",
+  "nisar_2026-09-11.jpg": "sites/mekong-delta-vietnam-83-7/nisar_2026-09-11.jpg",
+  "nisar_2026-09-23.jpg": "sites/mekong-delta-vietnam-83-7/nisar_2026-09-23.jpg",
+  "nisar_2026-10-05.jpg": "sites/mekong-delta-vietnam-83-7/nisar_2026-10-05.jpg",
+  "nisar_2026-10-17.jpg": "sites/mekong-delta-vietnam-83-7/nisar_2026-10-17.jpg",
+  "nisar_2026-10-29.jpg": "sites/mekong-delta-vietnam-83-7/nisar_2026-10-29.jpg"
+ },
+ "photos": {
+  "2026-06-15": "photo_2026-06-15.jpg",
+  "2026-06-18": "photo_2026-06-18.jpg",
+  "2026-07-01": "photo_2026-07-01.jpg",
+  "2026-07-16": "photo_2026-07-16.jpg",
+  "2026-07-25": "photo_2026-07-25.jpg",
+  "2026-08-18": "photo_2026-08-18.jpg",
+  "2026-08-22": "photo_2026-08-22.jpg",
+  "2026-09-01": "photo_2026-09-01.jpg",
+  "2026-09-03": "photo_2026-09-03.jpg",
+  "2026-09-16": "photo_2026-09-16.jpg",
+  "2026-09-18": "photo_2026-09-18.jpg",
+  "2026-09-21": "photo_2026-09-21.jpg",
+  "2026-10-01": "photo_2026-10-01.jpg",
+  "2026-10-05": "photo_2026-10-05.jpg",
+  "2026-10-16": "photo_2026-10-16.jpg",
+  "2026-10-21": "photo_2026-10-21.jpg",
+  "2026-10-26": "photo_2026-10-26.jpg",
+  "2026-10-29": "photo_2026-10-29.jpg"
+ },
+ "stack": {
+  "track": 83,
+  "frame": 7,
+  "direction": "ascending",
+  "mode": "4005",
+  "n_dates": 11,
+  "n_dual": 11,
+  "scenes": [
+   "NISAR_L2_PR_GCOV_023_083_A_007_4005_DHDH_A_20260619T223603_20260619T223638_P05023_N_F_J_001",
+   "NISAR_L2_PR_GCOV_024_083_A_007_4005_DHDH_A_20260701T223603_20260701T223637_P05023_N_F_J_001",
+   "NISAR_L2_PR_GCOV_025_083_A_007_4005_DHDH_A_20260713T223602_20260713T223637_P05023_N_F_J_001",
+   "NISAR_L2_PR_GCOV_026_083_A_007_4005_DHDH_A_20260725T223601_20260725T223636_P05023_N_F_J_001",
+   "NISAR_L2_PR_GCOV_028_083_A_007_4005_DHDH_A_20260818T223600_20260818T223635_P05023_N_F_J_001",
+   "NISAR_L2_PR_GCOV_029_083_A_007_4005_DHDH_A_20260830T223600_20260830T223634_P05023_N_F_J_001",
+   "NISAR_L2_PR_GCOV_030_083_A_007_4005_DHDH_A_20260911T223600_20260911T223634_P05023_N_F_J_001",
+   "NISAR_L2_PR_GCOV_031_083_A_007_4005_DHDH_A_20260923T223600_20260923T223634_P05023_N_F_J_001",
+   "NISAR_L2_PR_GCOV_032_083_A_007_4005_DHDH_A_20261005T223600_20261005T223634_P05023_N_F_J_001",
+   "NISAR_L2_PR_GCOV_033_083_A_007_4005_DHDH_A_20261017T223600_20261017T223634_P05023_N_F_J_001",
+   "NISAR_L2_PR_GCOV_034_083_A_007_4005_DHDH_A_20261029T223600_20261029T223635_P05036_N_F_J_001"
+  ],
+  "maturity": [
+   "PROVISIONAL",
+   "PROVISIONAL",
+   "PROVISIONAL",
+   "PROVISIONAL",
+   "PROVISIONAL",
+   "PROVISIONAL",
+   "PROVISIONAL",
+   "PROVISIONAL",
+   "PROVISIONAL",
+   "PROVISIONAL",
+   "VALIDATED"
+  ]
+ },
+ "created": "2026-11-14T18:46Z",
+ "report": {
+  "hazard": "flood",
+  "headline": [
+   {
+    "key": "peak_1998",
+    "label": "Most flood seen, 1998",
+    "value": 232,
+    "unit": "km²",
+    "note": "1998-01-10 · RADARSAT-1 · dry-season images only",
+    "strong": false
+   },
+   {
+    "key": "peak_2001",
+    "label": "Most flood seen, 2001",
+    "value": 2830,
+    "unit": "km²",
+    "note": "2001-08-30 · RADARSAT-1",
+    "strong": true
+   },
+   {
+    "key": "peak_2005",
+    "label": "Most flood seen, 2005",
+    "value": 2592,
+    "unit": "km²",
+    "note": "2005-10-27 · RADARSAT-1",
+    "strong": false
+   },
+   {
+    "key": "peak_2006",
+    "label": "Most flood seen, 2006",
+    "value": 2680,
+    "unit": "km²",
+    "note": "2006-10-22 · RADARSAT-1",
+    "strong": false
+   },
+   {
+    "key": "peak_2007",
+    "label": "Most flood seen, 2007",
+    "value": 182,
+    "unit": "km²",
+    "note": "2007-05-04 · RADARSAT-1 · dry-season images only",
+    "strong": false
+   },
+   {
+    "key": "peak_2026",
+    "label": "Most flood seen, 2026",
+    "value": 1854,
+    "unit": "km²",
+    "note": "2026-09-23 · NISAR",
+    "strong": true
+   },
+   {
+    "key": "vs_gfm",
+    "label": "NISAR vs GFM (official map), NISAR peak",
+    "value": "1854 / 706",
+    "unit": "km²",
+    "note": "2026-09-23 vs GFM 2026-09-23 · both 550, only NISAR 1304, only GFM 156"
+   }
+  ],
+  "layers": [],
+  "pass_label": "Flood on this image",
+  "pass_legend": [
+   [
+    "#2882ff",
+    "flood: NISAR and GFM"
+   ],
+   [
+    "#ff9628",
+    "only NISAR (GFM missed it)"
+   ],
+   [
+    "#e63cc8",
+    "only GFM"
+   ]
+  ],
+  "notes": [
+   "Flood = water beyond permanent water (dark on ≥ 90 % of NISAR passes): rivers and canals excluded.",
+   "RADARSAT-1 (CSA, C-band HH, 1998–2007): one threshold per image from tiles with both river and land (split-based Otsu), after warping onto the NISAR grid and aligning by edges.",
+   "NISAR (L-band HH+HV, 2026): our detector, thresholds HH -13.0 / HV -18.0 dB calibrated on clear optical days.",
+   "GFM = Copernicus Global Flood Monitoring (Sentinel-1), nearest day ± 3 d. Only from 2015, so not on RADARSAT-1 dates.",
+   "C-band misses some water under rice and trees that L-band sees: older years are a lower bound.",
+   "Rice paddies are flooded on purpose in season: not all water here is disaster."
+  ]
+ },
+ "rs1_log": [
+  {
+   "date": "1998-01-10",
+   "beam": "S7",
+   "threshold_db": 31.4,
+   "tiles": 24,
+   "shift_px": [
+    1,
+    1
+   ]
+  },
+  {
+   "date": "1998-07-29",
+   "beam": "SCWA",
+   "threshold_db": 37.1,
+   "tiles": 24,
+   "shift_px": [
+    -34,
+    -15
+   ]
+  },
+  {
+   "date": "2001-08-30",
+   "beam": "SCNB",
+   "threshold_db": 33.2,
+   "tiles": 24,
+   "shift_px": [
+    0,
+    1
+   ]
+  },
+  {
+   "date": "2001-11-07",
+   "beam": "SCNA",
+   "threshold_db": 34.8,
+   "tiles": 22,
+   "shift_px": [
+    42,
+    -4
+   ]
+  },
+  {
+   "date": "2005-09-02",
+   "beam": "SCNB",
+   "threshold_db": 35.2,
+   "tiles": 24,
+   "shift_px": [
+    -1,
+    0
+   ]
+  },
+  {
+   "date": "2005-10-27",
+   "beam": "SCNB",
+   "threshold_db": 34.7,
+   "tiles": 24,
+   "shift_px": [
+    -1,
+    1
+   ]
+  },
+  {
+   "date": "2005-11-13",
+   "beam": "SCNB",
+   "threshold_db": 35.0,
+   "tiles": 24,
+   "shift_px": [
+    -1,
+    0
+   ]
+  },
+  {
+   "date": "2006-03-13",
+   "beam": "SCNB",
+   "threshold_db": 35.4,
+   "tiles": 24,
+   "shift_px": [
+    0,
+    0
+   ]
+  },
+  {
+   "date": "2006-04-30",
+   "beam": "SCNB",
+   "threshold_db": 34.6,
+   "tiles": 24,
+   "shift_px": [
+    0,
+    0
+   ]
+  },
+  {
+   "date": "2006-06-17",
+   "beam": "SCNB",
+   "threshold_db": 37.0,
+   "tiles": 24,
+   "shift_px": [
+    0,
+    0
+   ]
+  },
+  {
+   "date": "2006-07-11",
+   "beam": "SCNB",
+   "threshold_db": 36.4,
+   "tiles": 24,
+   "shift_px": [
+    0,
+    0
+   ]
+  },
+  {
+   "date": "2006-08-28",
+   "beam": "SCNB",
+   "threshold_db": 35.4,
+   "tiles": 24,
+   "shift_px": [
+    -1,
+    0
+   ]
+  },
+  {
+   "date": "2006-09-21",
+   "beam": "SCNB",
+   "threshold_db": 35.6,
+   "tiles": 24,
+   "shift_px": [
+    0,
+    0
+   ]
+  },
+  {
+   "date": "2006-10-22",
+   "beam": "SCNB",
+   "threshold_db": 33.7,
+   "tiles": 24,
+   "shift_px": [
+    -1,
+    0
+   ]
+  },
+  {
+   "date": "2006-11-08",
+   "beam": "SCNB",
+   "threshold_db": 34.6,
+   "tiles": 24,
+   "shift_px": [
+    -1,
+    0
+   ]
+  },
+  {
+   "date": "2006-12-02",
+   "beam": "SCNB",
+   "threshold_db": 34.7,
+   "tiles": 24,
+   "shift_px": [
+    -1,
+    0
+   ]
+  },
+  {
+   "date": "2007-05-04",
+   "beam": "SCNB",
+   "threshold_db": 34.1,
+   "tiles": 24,
+   "shift_px": [
+    0,
+    0
+   ]
+  }
+ ]
+}
