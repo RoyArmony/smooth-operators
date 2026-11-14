@@ -17,7 +17,7 @@ P0 = must, P1 = should, P2 = nice. Times are Israel time. Sync points: **Sat 20:
 
 ### Roy — site and integration
 - [x] [Roy] P0 Sat 20:00 — `.vercelignore`: add `!site/` and `!events/`; check a preview deploy (live: `events/` served, `docs/` and `tasks.md` 404)
-- [ ] [Roy] P0 — Domain DNS, set at **Porkbun** (its nameservers), not GoDaddy (Roy does it by hand): add the domain in Vercel → Settings → Domains; in GoDaddy set A `@` → `76.76.21.21`, CNAME `www` → `cname.vercel-dns.com` (or the values Vercel shows); remove the parked record
+- [x] [Roy] P0 — Domain DNS, set at **Porkbun** (its nameservers), not GoDaddy (Roy does it by hand): add the domain in Vercel → Settings → Domains; in GoDaddy set A `@` → `76.76.21.21`, CNAME `www` → `cname.vercel-dns.com` (or the values Vercel shows); remove the parked record
 - [x] [Roy] P0 Sat 20:30 — `events/schema.json` + `scripts/check_bundle.py` (schema, files exist, PNG ≤ 2048 px, total < 20 MB); matches Shai's `bundle.py`
 - [x] [Roy] P0 Sat 20:30 — mock bundles (placeholder layers for 2 stories) so the site can be built before real data (`scripts/make_mock_bundles.py`; `"mock": true`, delete when real bundles land)
 - [ ] [Roy] P0 Sat 23:00 — app skeleton: one page, Leaflet map, world view with dots from `index.json`, hash routing `#e=<id>&t=<date>`
@@ -26,7 +26,7 @@ P0 = must, P1 = should, P2 = nice. Times are Israel time. Sync points: **Sat 20:
 - [ ] [Roy] P0 Sun 10:00 — science drawer: tabs (Method, Data, Validation, Limits, Sources) rendering `methods.md` + `science.md`
 - [ ] [Roy] P1 Sun 11:00 — time play over NISAR passes (preload next pass; numbers update; gaps shown)
 - [ ] [Roy] P1 Sun 11:00 — then/now swipe (RADARSAT-1 vs NISAR)
-- [ ] [Roy] P1 Sun 12:00 — custom domain works over HTTPS; vercel.app kept as backup link
+- [x] [Roy] P1 Sun 12:00 — custom domain works over HTTPS; vercel.app kept as backup link
 - [ ] [Roy] P1 Sun 14:00 — polish: phone layout, hatch on grey "cannot see", photo date shown, loading states
 - [ ] [Roy] P1 Sun 16:00 — 30 s screen recording of the demo (backup for the video part)
 - [ ] [Roy] Sun 21:00 — submission: Final Project Link; check it went through
