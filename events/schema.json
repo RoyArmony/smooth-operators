@@ -58,7 +58,8 @@
         "properties": {
           "group": {"type": "string", "enum": ["base", "radar", "official", "result", "validation", "context"]},
           "sensor": {"type": "string"},
-          "legend": {"type": "string"},
+          "legend": {"type": ["string", "null"]},
+          "label": {"type": "string"},
           "files": {
             "type": "object",
             "propertyNames": {"$ref": "#/$defs/date"},

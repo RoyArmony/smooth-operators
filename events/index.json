@@ -15,23 +15,26 @@
       ],
       "kind": "story",
       "mock": true,
-      "numbers": [
-        {
-          "label": "RCM agrees",
-          "value": 0,
-          "unit": "%"
-        },
-        {
-          "label": "NISAR water",
-          "value": 0,
-          "unit": "km²"
-        },
-        {
-          "label": "since 1998",
-          "value": 0,
-          "unit": "km²"
-        }
-      ]
+      "headline": {
+        "sentence": "MOCK: Canada's RCM radar checks NISAR's water, the same week.",
+        "numbers": [
+          {
+            "label": "RCM agrees",
+            "value": 0,
+            "unit": "%"
+          },
+          {
+            "label": "NISAR water",
+            "value": 0,
+            "unit": "km²"
+          },
+          {
+            "label": "since 1998",
+            "value": 0,
+            "unit": "km²"
+          }
+        ]
+      }
     },
     {
       "id": "tonle-sap-2026",
@@ -46,23 +49,26 @@
       ],
       "kind": "story",
       "mock": true,
-      "numbers": [
-        {
-          "label": "Official map",
-          "value": 0,
-          "unit": "km²"
-        },
-        {
-          "label": "NISAR adds",
-          "value": 0,
-          "unit": "km²"
-        },
-        {
-          "label": "More water",
-          "value": 0,
-          "unit": "%"
-        }
-      ]
+      "headline": {
+        "sentence": "MOCK: NISAR sees flood water under the forest that the official map leaves blank.",
+        "numbers": [
+          {
+            "label": "Official map",
+            "value": 0,
+            "unit": "km²"
+          },
+          {
+            "label": "NISAR adds",
+            "value": 0,
+            "unit": "km²"
+          },
+          {
+            "label": "More water",
+            "value": 0,
+            "unit": "%"
+          }
+        ]
+      }
     }
   ]
 }

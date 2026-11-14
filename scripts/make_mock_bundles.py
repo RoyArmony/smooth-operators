@@ -98,7 +98,8 @@ def main():
         (out / "science.md").write_text(f"# {s['title']}\n\nMOCK bundle. Real science text comes with the real bundle.\n",
                                         encoding="utf-8")
         index["events"].append({"id": s["id"], "title": s["title"], "place": s["place"], "date": s["dates"][-1],
-                                "bbox": s["bbox"], "kind": "story", "mock": True, "numbers": numbers})
+                                "bbox": s["bbox"], "kind": "story", "mock": True,
+                                "headline": {"sentence": s["sentence"], "numbers": numbers}})
     (ROOT / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"wrote {len(STORIES)} mock bundles to {ROOT}")
 

@@ -16,7 +16,7 @@ from pathlib import Path
 
 MAX_PX = 2048
 MAX_TOTAL_MB = 20
-INDEX_REQUIRED = ["id", "title", "date", "bbox", "kind", "numbers"]
+INDEX_REQUIRED = ["id", "title", "date", "bbox", "kind", "headline"]
 
 
 # ---------- minimal JSON Schema subset (used when `jsonschema` is not installed) ----------
@@ -24,6 +24,10 @@ TYPES = {"object": dict, "array": list, "string": str, "boolean": bool}
 
 
 def _is_type(value, t):
+    if isinstance(t, list):
+        return any(_is_type(value, x) for x in t)
+    if t == "null":
+        return value is None
     if t == "number":
         return isinstance(value, (int, float)) and not isinstance(value, bool)
     if t == "integer":
