@@ -87,7 +87,8 @@ Current files and folders:
 ## Git workflow
 
 - Everyone pushes straight to `main`. No PRs.
-- Once per clone, make sure `git config pull.rebase true` is set. Check and set it at the start if it isn't.
+- Once per clone, make sure `git config pull.rebase true` and `git config rebase.autoStash true` are set
+  (the second lets `git pull` run while you have uncommitted work). Check and set them at the start if they aren't.
 - **Pull all the time.** All three of us push to `main` constantly. Run `git pull`:
   - when you start working (the first thing in every session, and before every new task);
   - right before every commit and every push;
