@@ -30,13 +30,12 @@
         <li>Map: Leaflet · Font: Inter</li>
       </ul>
       <p>Full list and licences: <a href="${REPO}/blob/main/ACKNOWLEDGMENTS.md" target="_blank" rel="noopener">ACKNOWLEDGMENTS.md ↗</a></p>` },
-    sats: { k: 'Satellites in Use', t: 'Three radars, three jobs', wide: true, b: `
+    sats: { k: 'Satellites in Use', t: 'The three radars', wide: true, b: `
       <p>Radar sees through cloud, day and night. The wavelength decides what else it sees.</p>
       <div class="ue-tw"><table class="ue-t">
-        <thead><tr><th></th><th class="hl">NISAR</th><th>RCM</th><th>RADARSAT-1</th></tr></thead>
+        <thead><tr><th></th><th class="hl">NISAR <span class="ag">(NASA)</span></th><th>RCM <span class="ag">(CSA)</span></th><th>RADARSAT-1 <span class="ag">(CSA)</span></th></tr></thead>
         <tbody>
-          <tr><th>Our job</th><td class="hl"><b>Finds the water</b></td><td><b>Checks it</b>, same week</td><td><b>The long record</b></td></tr>
-          <tr><th>Agency</th><td class="hl">NASA + ISRO</td><td>CSA (Canada)</td><td>CSA (Canada)</td></tr>
+          <tr><th>Agency</th><td class="hl">National Aeronautics and Space Administration (US) + Indian Space Research Organisation</td><td>Canadian Space Agency</td><td>Canadian Space Agency</td></tr>
           <tr><th>Years</th><td class="hl">2025 →</td><td>2019 →</td><td>1995–2013</td></tr>
           <tr><th>Satellites</th><td class="hl">1</td><td>3 (constellation)</td><td>1</td></tr>
           <tr><th>Band</th><td class="hl"><b>L-band</b>, ~24 cm</td><td>C-band, ~5.6 cm</td><td>C-band, ~5.6 cm</td></tr>
