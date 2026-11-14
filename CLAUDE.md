@@ -86,7 +86,6 @@ Current files and folders:
 - `events/`: site bundles written by `pipeline/` (contract: docs/08 §3).
 - `index.html`: the site's entry page (served by Vercel).
 - `.vercelignore`: allowlist of what goes to the site (see Deployment).
-- `.github/workflows/deploy.yml`: deploys the site to Vercel on every push to `main` (see Deployment).
 
 ## Git workflow
 
@@ -158,8 +157,7 @@ The repo is public and judges will read it. Everything committed stays in the hi
 ## Deployment (Vercel)
 
 - The site deploys from `main` on every push. Vercel serves the repo root as a static site; `index.html` at the root is the entry page.
-- **Deploys run from GitHub Actions** (`.github/workflows/deploy.yml`), not Vercel's Git integration: Vercel Hobby blocks
-  other authors' commits on a private repo, so the workflow deploys with Roy's token. Check a deploy in the repo's **Actions** tab.
+- The repo must stay **public**: Vercel Hobby only deploys other authors' commits (Shai, Noa) from a public repo.
 - **`.vercelignore` is an allowlist:** it ignores everything, then un-ignores only what the site needs.
   When you add a file or folder the site must serve, add a `!path` line there in the same commit.
 - **Every site change must be visible on the live site.** A new page, layer, feature or asset is only done when:
