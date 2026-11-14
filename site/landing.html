@@ -18,7 +18,7 @@
   body.dim .leaflet-tile-pane { filter: brightness(.62) saturate(.85); }
   #veil { position: fixed; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(5,7,11,.7) 0%, rgba(5,7,11,.25) 36%, rgba(5,7,11,0) 60%); }
   #txt { position: fixed; left: 6vw; top: 50%; transform: translateY(-50%); max-width: 34vw; pointer-events: none; }
-  #txt .k { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--o); margin-bottom: 14px; min-height: 1em; }
+  #txt .k { font-size: 19px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--o); margin-bottom: 14px; min-height: 1em; }
   #txt h1 { font-size: clamp(20px, 2.1vw, 32px); line-height: 1.3; margin: 0; font-weight: 600; }
   #txt h1 b { color: #ff9a2e; font-weight: 700; } #txt h1 b.bl { color: #4aa3ff; } #txt h1 b.rc { color: #ff6060; } #txt h1 b.wh { color: #fff; }
   #txt h1 b.gy { color: #e6e2ff; padding: 0 4px; position: relative; isolation: isolate; }
@@ -85,9 +85,9 @@
   @media (max-width: 760px) { #txt { max-width: 80vw; top: 18%; transform: none; } #veil { background: linear-gradient(180deg, rgba(5,7,11,.9), rgba(5,7,11,0) 55%); } }
 </style>
 </head>
-<body class="dim" data-page="story">
+<body class="dim vid" data-page="story">
 <div id="map"></div>
-<video id="vid" muted loop playsinline preload="auto"></video><div id="wm">Video: Tonlé Sap, Cambodia · Pierre André Leclercq, CC BY-SA 4.0 (Wikimedia Commons)</div>
+<video id="vid" muted loop playsinline autoplay preload="auto" poster="story/tonle-poster.jpg" src="story/tonle.mp4" class="ok"></video><div id="wm">Video: Tonlé Sap, Cambodia · Pierre André Leclercq, CC BY-SA 4.0 (Wikimedia Commons)</div>
 <div id="veil"></div>
 <div id="tag" class="fade"></div>
 <div id="txt"><div class="k fade" id="k"></div><div id="h" class="fade"></div><p id="s" class="fade"></p></div>
@@ -199,8 +199,7 @@ const T_ = { // tour sentences
   'Irrawaddy delta': 'In Myanmar\'s Irrawaddy delta (17 Jul), NISAR found <b>76 km²</b> of water where the official map was blank, on its wettest NISAR pass.',
   'Congo basin': 'In the Congo basin (19 Oct), NISAR found <b>75 km²</b> of water where the official map was blank, on its wettest NISAR pass.' };
 const V = $('vid');                            // opening video: real footage of Tonle Sap (CC BY-SA 4.0; credit on screen); shrinks onto the map
-V.oncanplay = () => V.classList.add('ok'); V.onerror = () => V.classList.remove('ok');
-V.src = 'story/tonle.mp4';
+V.onerror = () => V.classList.remove('ok');
 const TS = [13.12, 103.65];                       // where the clip was filmed: Prek Toal, NW shore
 const LD = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); LD.id = 'lead'; document.body.appendChild(LD);
 function lead(on) {                              // dashed line from the card to where the clip was filmed
@@ -213,9 +212,9 @@ function lead(on) {                              // dashed line from the card to
 }
 function vidCard(on) {                          // full screen <-> a framed card pinned on Tonle Sap
   if (!on) { V.classList.remove('card', 'pin'); Object.assign(V.style, { left: '0px', top: '0px', width: '100%', height: '100%' }); lead(false); return; }
-  const p = map.latLngToContainerPoint(TS), w = 280, h = 158;
+  const p = map.latLngToContainerPoint(TS), w = 400, h = 225;
   if (!V.classList.contains('card')) setTimeout(() => V.classList.contains('card') && V.classList.add('pin'), 1900);
-  V.classList.add('card'); Object.assign(V.style, { left: (p.x + 70) + 'px', top: (p.y + 50) + 'px', width: w + 'px', height: h + 'px' });
+  V.classList.add('card'); Object.assign(V.style, { left: (p.x + 60) + 'px', top: (p.y + 150) + 'px', width: w + 'px', height: h + 'px' });
   if (V.classList.contains('pin')) lead(true); else setTimeout(() => V.classList.contains('card') && lead(true), 1850);
 }
 map.on('move moveend resize', () => V.classList.contains('card') && vidCard(true));   // keep the card on the lake
@@ -225,13 +224,13 @@ const scenes = [
               say('Tonle Sap, Cambodia', H('Every rainy season, this lake grows about six times bigger and floods the forest around it.')); }],
   [6.5, () => { vid(true); vidCard(true);
               say('', H('1.8 billion people live where floods like this can reach them.'), '', 'World Bank · Rentschler et al., Nature Comms 2022'); }],
-  [7.5, () => { vid(false); document.body.classList.remove('dim'); show([]); later(() => { flash(box); show(['gfm']); legend(['gfm']); }, 900);
-              say('Copernicus flood map · 17 Oct 2026', H('Satellites watch them. On 17 October, Europe\'s Copernicus flood map showed <b class="bl">554 km²</b> of flooding around the lake.'), '', 'Copernicus EMS · GFM (Sentinel-1 radar)'); }],
+  [7, () => { vid(false); document.body.classList.remove('dim'); show([]); later(() => { flash(box); show(['photo']); }, 900); legend([]);
+              say('Optical satellites · 19 Oct 2026', H('Optical satellites can\'t see it. Clouds and the forest canopy hide the water.'), '', 'Optical · NASA HLS (Landsat + Sentinel-2)'); }],
+  [7.5, () => { show(['gfm']); legend(['gfm']);
+              say('Official flood map · 17 Oct 2026', H('Official flood maps use radar, which sees through clouds. On 17 October, the map showed <b class="bl">554 km²</b> of flooding around the lake.'), '', 'Copernicus EMS · GFM (Sentinel-1 radar)'); }],
   [7, () => { show(['gfm', 'excl']); legend(['gfm', 'excl']); say('', H('But a quarter of the area is marked <b class="gy">"cannot see"</b>. Under the trees, this radar can\'t see the water.'), '', 'GFM exclusion mask'); }],
-  [7, () => { show(['photo']); legend([]);
-              say('Camera · 19 Oct', H('Cameras don\'t fill the gap. Two days later, Landsat and Sentinel-2 saw clouds, and under the trees only green.'), '', 'Optical · NASA HLS (Landsat + Sentinel-2)'); }],
   [7.5, () => { show(['gfm', 'excl', 'add']); legend(['gfm', 'excl', 'add']);
-              say('NISAR sees through', H('On 17 October, inside <b class="gy">that blank</b>, NISAR measured <b>561 km²</b> of water, 362 km² of it under the trees. That is one lake, on one day.'), '', 'NISAR L-band'); }],
+              say('NISAR to the rescue', H('On 17 October, inside <b class="gy">that blank</b>, NISAR measured <b>561 km²</b> of water, 362 km² of it under the trees. That is one lake, on one day.'), '', 'NISAR L-band'); }],
   [8, () => { show([]); vis(box, 0); legend([]); $('tag').classList.remove('in'); world(); many(dots, 1, 60);
       say('', H('We ran the same check on 16 flood sites we chose: 5 from recent flood alerts and 11 large seasonal wetlands, using NISAR\'s first months of data (June to October 2026). Each dot shows what NISAR added on that site\'s wettest pass.')); }],
   [7, () => { many(thumbs, 1, 250); legend(['gfm', 'excl', 'add']);
