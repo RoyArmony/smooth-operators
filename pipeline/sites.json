@@ -21,7 +21,7 @@
     -4.0,
     15.2
    ],
-   "kind": "site"
+   "kind": "story"
   },
   {
    "id": "mekong-delta-vietnam",
@@ -32,7 +32,7 @@
     105.6,
     11.0
    ],
-   "kind": "site"
+   "kind": "story"
   },
   {
    "id": "irrawaddy-delta-myanmar",
@@ -54,7 +54,7 @@
     17.9,
     0.8
    ],
-   "kind": "site"
+   "kind": "story"
   },
   {
    "id": "sylhet-haor-bangladesh",
@@ -174,6 +174,50 @@
     7.0,
     30.9,
     7.6
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "likouala-flood-congo-2026",
+   "title": "Likouala floods, Rep. of Congo (Oct 2026)",
+   "bbox": [
+    17.6,
+    1.3,
+    18.2,
+    1.9
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "niger-river-niamey-2026",
+   "title": "Niger river floods, Niamey (Sep 2026)",
+   "bbox": [
+    1.8,
+    13.2,
+    2.4,
+    13.8
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "parana-corrientes-2026",
+   "title": "Paraná floods, Corrientes, Argentina (Oct 2026)",
+   "bbox": [
+    -58.9,
+    -27.7,
+    -58.3,
+    -27.1
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "la-mojana-colombia-2026",
+   "title": "La Mojana floods, Colombia (Oct 2026)",
+   "bbox": [
+    -75.0,
+    8.4,
+    -74.4,
+    9.0
    ],
    "kind": "site"
   }

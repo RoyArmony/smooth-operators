@@ -11,8 +11,8 @@ import argparse, json
 from . import bundle, flood, landcover
 
 
-def site(eid, title, bbox, kind="site", passes="all", place=None, use_optical=True):
-    stack, dates, grid, st = flood.load(bbox, eid)
+def site(eid, title, bbox, kind="site", passes="all", place=None, use_optical=True, refresh=False):
+    stack, dates, grid, st = flood.load(bbox, eid, refresh=refresh)
     L, cal = flood.water(stack, dates, grid, bbox, use_optical=use_optical)
     try:
         lc = landcover.on_grid(grid, bbox, key=eid)
@@ -29,10 +29,10 @@ def site(eid, title, bbox, kind="site", passes="all", place=None, use_optical=Tr
         ent = dict(date=d, gfm_date=r["gfm_date"], stats=r["km2"], layers=[])
         if keep:
             for lid, m, sensor, lab, dflt in (
-                    ("gfm_flood", r["gfm_flood"], "Sentinel-1 (Copernicus GFM)", "Flood on the official map", True),
+                    ("gfm_flood", r["gfm_flood"], "Sentinel-1 (Copernicus GFM)", "Official flood map (GFM)", True),
                     ("gfm_excluded", r["gfm_excluded"], "Sentinel-1 (Copernicus GFM)", "Official map: \"cannot see\"", True),
-                    ("nisar_water", r["wet"] if kind == "story" else None, "NISAR L-band", "Water seen by NISAR", False),
-                    ("nisar_adds", r["adds"], "NISAR L-band", "Only NISAR: water in the blank", True)):
+                    ("nisar_water", r["wet"] if kind == "story" else None, "NISAR L-band", "NISAR water", False),
+                    ("nisar_adds", r["adds"], "NISAR L-band", "NISAR addition: water in the blank", True)):
                 if m is None:          # world-tour sites: only the three layers the map needs (size budget)
                     continue
                 bundle.add_mask_layer(ev, lid, d, m, grid, sensor, lab, dflt)
@@ -113,7 +113,7 @@ def main(argv=None):
     s.add_argument("--kind", default="site", choices=["story", "site", "live"])
     s.add_argument("--passes", default="all", choices=["all", "best"])
     s.add_argument("--place"); s.add_argument("--no-optical", action="store_true")
-    b = sub.add_parser("build"); b.add_argument("--only")
+    b = sub.add_parser("build"); b.add_argument("--only"); b.add_argument("--refresh", action="store_true", help="search for new NISAR passes")
     sub.add_parser("world")
     sub.add_parser("index")
     a = ap.parse_args(argv)
@@ -130,7 +130,7 @@ def main(argv=None):
             if a.only and s["id"] != a.only:
                 continue
             try:
-                ev = site(s["id"], s["title"], s["bbox"], s["kind"], "all" if s["kind"] == "story" else "best")
+                ev = site(s["id"], s["title"], s["bbox"], s["kind"], "all" if s["kind"] == "story" else "best", refresh=a.refresh)
                 print(s["id"], ev["headline"]["numbers"][:2], flush=True)
             except Exception as e:  # noqa: BLE001
                 print(s["id"], "FAILED", repr(e)[:200], flush=True)

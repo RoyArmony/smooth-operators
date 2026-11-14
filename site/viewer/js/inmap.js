@@ -62,13 +62,19 @@ async function openSite(id) {
     const pb = S.P.corners, PB = L.latLngBounds([[pb[1][1], pb[0][0]], [pb[0][1], pb[1][0]]]), o = { pane: 'analysis', interactive: false, opacity: 0 };
     S.mo = L.imageOverlay(A(S.P.list[0].motion), PB, o).addTo(map); S.fr = L.imageOverlay(A(S.P.list[0].fringes), PB, o).addTo(map);
   }
-  $('spO').innerHTML = (S.P ? '<label><input type="checkbox" value="motion">Ground motion (cm)</label><label><input type="checkbox" value="fringes">Fringes</label>' : '')
-    + S.layers.map((l, i) => `<label><input type="checkbox" value="L${i}">${l.label}</label>`).join('')
-    + `<label><input type="checkbox" value="pass">${R.pass_label || 'Seen only by NISAR (this pass)'}</label>`;
+  S.ev = []; try {
+    const eid = id.replace(/-\d+-\d+$/, ''), E = await (await fetch(`../../events/${eid}/event.json`, { cache: 'no-cache' })).json();
+    const ORDER = ['gfm_flood', 'gfm_excluded', 'nisar_water', 'nisar_adds'];
+    S.ev = Object.entries(E.layers || {}).sort((a, b) => (ORDER.indexOf(a[0]) + 1 || 99) - (ORDER.indexOf(b[0]) + 1 || 99))
+      .map(([k, l]) => ({ k, l, base: `../../events/${eid}/`, ov: L.imageOverlay('data:,', L.latLngBounds(l.bounds), { pane: 'analysis', interactive: false, opacity: 0 }).addTo(map) }));
+  } catch (e) { S.ev = []; }
+  $('spO').innerHTML = S.ev.map(x => `<label><input type="checkbox" value="E_${x.k}">${x.l.label || x.k}</label>`).join('') + (S.P ? '<label><input type="checkbox" value="motion">Ground motion (cm)</label><label><input type="checkbox" value="fringes">Fringes</label>' : '')
+    + (S.ev.length ? '' : S.layers.map((l, i) => `<label><input type="checkbox" value="L${i}">${l.label}</label>`).join('')
+    + `<label><input type="checkbox" value="pass">${R.pass_label || 'Seen only by NISAR (this pass)'}</label>`);
   $('spO').querySelectorAll('input').forEach(x => x.onchange = render);
-  setOn([S.P ? 'motion' : S.layers.length ? 'L0' : 'pass']);
+  setOn(S.ev.length ? S.ev.filter(x => x.l.default).map(x => 'E_' + x.k) : [S.P ? 'motion' : S.layers.length ? 'L0' : 'pass']);
   if (S.P && D.event_date) { const k = D.frames.findIndex(f => f.date >= D.event_date); if (k >= 0) S.t = k; }
-  if (S.P) { S.b = 'none'; } else if (!(R.volcano && R.volcano.vent)) S.b = 'nisar';
+  if (S.P || S.ev.length) { S.b = 'none'; } else if (!(R.volcano && R.volcano.vent)) S.b = 'nisar';
   $('spB').querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.b === S.b));
   $('spC').style.display = R.hazard === 'flood' || !R.hazard || R.hazard === 'volcano' ? '' : 'none';
   // volcano: vent + reference ring on the map, before / during interferograms side by side
@@ -97,7 +103,7 @@ const R_ = D => D.report || {};
 function setOn(keys) { $('spO').querySelectorAll('input').forEach(x => x.checked = keys.includes(x.value)); }
 function closeSite(keepHash) {
   if (timer) togglePlay();
-  if (S) { ['base', 'over', 'box', 'mo', 'fr'].forEach(k => S[k] && map.removeLayer(S[k])); (S.layers || []).forEach(l => map.removeLayer(l.ov)); (S.extra || []).forEach(x => map.removeLayer(x)); }
+  if (S) { ['base', 'over', 'box', 'mo', 'fr'].forEach(k => S[k] && map.removeLayer(S[k])); (S.layers || []).forEach(l => map.removeLayer(l.ov)); (S.ev || []).forEach(x => map.removeLayer(x.ov)); (S.extra || []).forEach(x => map.removeLayer(x)); }
   const was = !!S; S = null; panel.hidden = true;
   if (was && keepHash !== 'swap') window.dispatchEvent(new CustomEvent('unseen:site', { detail: null }));
   if (!keepHash && location.hash.startsWith('#site=')) history.replaceState(null, '', location.pathname + location.search);
@@ -121,6 +127,14 @@ function render() {
   const on = new Set([...$('spO').querySelectorAll('input:checked')].map(x => x.value));
   S.over.setUrl(A(f.hidden)); S.over.setOpacity(on.has('pass') ? 1 : 0);
   (S.layers || []).forEach((l, i) => l.ov.setOpacity(on.has(`L${i}`) ? 1 : 0));
+  const evNote = [];
+  (S.ev || []).forEach(x => {                                    // the bundle's file nearest this pass (within 6 days)
+    const ds = Object.keys(x.l.files || {}); let best = null;
+    ds.forEach(d => { if (Math.abs(dn(d) - dn(f.date)) <= 6 && (!best || Math.abs(dn(d) - dn(f.date)) < Math.abs(dn(best) - dn(f.date)))) best = d; });
+    if (best) x.ov.setUrl(x.base + x.l.files[best]);
+    x.ov.setOpacity(best && on.has('E_' + x.k) ? 1 : 0);
+    if (on.has('E_' + x.k) && !best) evNote.push(x.l.label || x.k);
+  });
   let pr = null;
   if (S.P) {                                                       // the 12-day pair for this date (contains it, else nearest)
     const Ls = S.P.list, x = dn(f.date);
@@ -129,7 +143,9 @@ function render() {
     S.mo.setOpacity(on.has('motion') ? 1 : 0); S.fr.setOpacity(on.has('fringes') ? 1 : 0);
   }
   const seen = new Set();                                         // one legend per distinct scale
-  $('spL').innerHTML = (pr && (on.has('motion') || on.has('fringes')) ? `<div class="pair${pr.event ? ' ev' : ''}">Pair ${fmt(pr.ref)} → ${fmt(pr.sec)}${pr.event ? ' · spans the event' : ''}</div>` : '')
+  const HATCH = 'repeating-linear-gradient(45deg,#c8c8d2 0 2px,#3c3c46 2px 6px)';
+  $('spL').innerHTML = (S.ev || []).filter(x => on.has('E_' + x.k)).map(x => `<div><span style="background:${x.l.legend === 'hatch' ? HATCH : x.l.legend || '#888'}"></span>${x.l.label || x.k}</div>`).join('')
+    + (evNote.length ? `<div class="sub">Not on this date: ${evNote.join(', ')}</div>` : '') + (pr && (on.has('motion') || on.has('fringes')) ? `<div class="pair${pr.event ? ' ev' : ''}">Pair ${fmt(pr.ref)} → ${fmt(pr.sec)}${pr.event ? ' · spans the event' : ''}</div>` : '')
     + [...(on.has('motion') && S.P ? [S.P.motion_legend] : []), ...(on.has('fringes') && S.P ? [S.P.fringe_legend] : [])]
       .map(lg => lg.map(([c, t]) => `<div><span style="background:${c}${c.startsWith('linear') ? ';width:60px' : ''}"></span>${t}</div>`).join('')).join('')
     + (S.layers || []).filter((l, i) => on.has(`L${i}`)).map(l => l.legend.map(([c, t]) => `<div><span style="background:${c}${c.startsWith('linear') ? ';width:60px' : ''}"></span>${t}</div>`).join(''))
