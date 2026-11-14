@@ -17,7 +17,7 @@ P0 = must, P1 = should, P2 = nice. Times are Israel time. Sync points: **Sat 20:
 
 ### Roy — site and integration
 - [x] [Roy] P0 Sat 20:00 — `.vercelignore`: add `!site/` and `!events/`; check a preview deploy (live: `events/` served, `docs/` and `tasks.md` 404)
-- [ ] [Roy] P0 Sat 20:00 — GoDaddy DNS: A `@` → Vercel IP, CNAME `www` → Vercel; remove parked record
+- [ ] [Roy] P0 — GoDaddy DNS (Roy does it by hand, later): add the domain in Vercel → Settings → Domains; in GoDaddy set A `@` → `76.76.21.21`, CNAME `www` → `cname.vercel-dns.com` (or the values Vercel shows); remove the parked record
 - [x] [Roy] P0 Sat 20:30 — `events/schema.json` + `scripts/check_bundle.py` (schema, files exist, PNG ≤ 2048 px, total < 20 MB); matches Shai's `bundle.py`
 - [x] [Roy] P0 Sat 20:30 — mock bundles (placeholder layers for 2 stories) so the site can be built before real data (`scripts/make_mock_bundles.py`; `"mock": true`, delete when real bundles land)
 - [ ] [Roy] P0 Sat 23:00 — app skeleton: one page, Leaflet map, world view with dots from `index.json`, hash routing `#e=<id>&t=<date>`
@@ -53,6 +53,6 @@ P0 = must, P1 = should, P2 = nice. Times are Israel time. Sync points: **Sat 20:
 
 ### One flood story each (owner makes the bundle + `science.md` for it)
 Each owner runs the shared method (Noa) through `bundle.py` (Shai) and checks it in the site (Roy).
-- [ ] [Roy] **Peace–Athabasca Delta, Canada** (CSA): ~~P0 Sat 20:00 RADARSAT-1 coverage check~~ ✅ done: 619 scenes 1996–2013, 359 cover ≥ 90% of the box, all months May–Dec, most in 2010–12 (`scripts/rs1_coverage.py`) · P0 Sun 01:00 NISAR + RCM same week + agreement layer, 79% / IoU · P1 RADARSAT-1 then layer · P1 verify CSA credit lines in `ACKNOWLEDGMENTS.md`
+- [ ] [Roy] **Peace–Athabasca Delta, Canada** (CSA): ~~P0 Sat 20:00 RADARSAT-1 coverage check~~ ✅ done: 619 scenes 1996–2013, 359 cover ≥ 90% of the box ([docs/10](docs/10-Results.md), `scripts/rs1_coverage.py`) · P0 Sun 01:00 NISAR + RCM same week + agreement layer, 79% / IoU · P1 RADARSAT-1 then layer · P1 verify CSA credit lines in `ACKNOWLEDGMENTS.md`
 - [ ] [Noa] **Inner Niger Delta, Mali** (or Mekong, Vietnam): P0 Sun 09:00 GFM flood, "cannot see", NISAR adds, photo; passes Jul–Oct · `science.md`
 - [ ] [Shai] **Tonle Sap, Cambodia**: P0 Sun 01:00 GFM flood, "cannot see", NISAR adds, DSWx-S1, photo; passes Jun–Oct · `science.md`

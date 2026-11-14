@@ -92,6 +92,6 @@ Rules:
 - **Licences differ per source.** RCM / RADARSAT-1 credit lines are still to verify against the CSA licence; GFM, WorldPop, WorldCover each have their own. All must be in `ACKNOWLEDGMENTS.md` before the site is public.
 - **Mixed dates.** "Same week" pairs are ±2–3 days apart; floods move. Each layer shows its own date.
 - **Earthdata login needed** for NISAR and DSWx downloads; only people with `.netrc` can re-run the pipeline. The site needs no login.
-- **RADARSAT-1 coverage is uneven** and its geolocation needs fixing. Coverage over Peace–Athabasca not yet confirmed.
+- **RADARSAT-1 coverage is uneven** and its geolocation needs fixing. Peace–Athabasca is well covered: 619 scenes 1996–2013 ([10](10-Results.md)).
 - **GFM gaps:** some GFM items lack the exclusion mask (6 sites failed one pass); 3 sites had no overlap with NISAR.
 - **Schema freeze is a bottleneck.** Changing it after tonight breaks other people's work; add optional fields only.
