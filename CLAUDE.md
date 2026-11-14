@@ -74,6 +74,8 @@ Current files and folders:
 - `data/` (when needed): local data files only. Git ignores it, so it is never committed.
 - `LICENSE`: MIT (our code). NASA data keeps its own terms and credit (see `ACKNOWLEDGMENTS.md`).
 - `ACKNOWLEDGMENTS.md`: third-party data, imagery, software and papers we use, with their licences and credit lines.
+- `index.html`: the site's entry page (served by Vercel).
+- `.vercelignore`: allowlist of what goes to the site (see Deployment).
 
 ## Git workflow
 
@@ -87,8 +89,12 @@ Current files and folders:
 ## Commit messages
 
 - Start every commit title with the user's name in brackets: `[Roy]`, `[Shai]` or `[Noa]`.
+  The name comes from `git config user.name` of the clone, never from who is mentioned in the change.
 - Example: `[Shai] Add GUNW download script`
 - Keep the title short and say what changed.
+- Commits Claude helped with end with the `Co-Authored-By: Claude ...` trailer (it is our AI disclosure).
+- The commit author email is public. Use your GitHub noreply address (`ID+user@users.noreply.github.com`)
+  in `git config user.email`, not a personal email.
 
 ## Free-text team files
 
@@ -116,9 +122,26 @@ Current files and folders:
 - Commit the **scripts** that download or produce data, not the data itself.
 - If a file looks large (over ~10 MB), don't commit it. Ask first.
 
-## Secrets
+## Public repo: keep private things out
 
-- Never commit secrets: passwords, tokens, API keys, NASA Earthdata logins.
-- Each person keeps their own secrets in a local `.env` file, which git ignores.
-- If a needed variable is missing, add its name (with no value) to `.env.example`. Ask the user to put the real value in their own `.env`.
-- Before committing, check that no secret is in the staged files.
+The repo is public and judges will read it. Everything committed stays in the history forever, even if deleted later.
+
+- **Secrets:** never commit passwords, tokens, API keys, NASA Earthdata logins.
+  - Each person keeps their own secrets in a local `.env` file, which git ignores.
+  - If a needed variable is missing, add its name (with no value) to `.env.example`. Ask the user to put the real value in their own `.env`.
+- **Personal details:** no personal emails, phone numbers, home addresses, ID numbers or private links. Names in the README are fine.
+  Public organizer contacts (e.g. the Haifa organizers' email) are fine.
+- **Dev and hosting details:** don't write our development URLs or Vercel project/team names or IDs anywhere in the repo
+  (code, docs, README, comments). The `.vercel/` folder stays git-ignored.
+  The final public URL (our GoDaddy domain) goes in the README only when we submit.
+- **Local tool files:** `.claude/settings.local.json`, `CLAUDE.local.md`, editor folders stay git-ignored.
+- **Before every commit:** look at `git diff --staged` for any of the above. If something private was already pushed,
+  stop and tell the user (rotate the secret; don't rewrite history on your own).
+
+## Deployment (Vercel)
+
+- The site deploys from `main` on every push. Vercel serves the repo root as a static site; `index.html` at the root is the entry page.
+- **`.vercelignore` is an allowlist:** it ignores everything, then un-ignores only what the site needs.
+  When you add a file or folder the site must serve, add a `!path` line there in the same commit.
+- Never let `docs/`, `data/`, scripts, `.env*` or other non-site files into the deployment.
+- If we add a build step later (e.g. a framework in its own folder), update `.vercelignore` and this section together.

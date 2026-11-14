@@ -10,6 +10,12 @@ data/
 .env
 .env.*
 !.env.example
+.netrc
+*.pem
+*.key
+*.p12
+credentials*.json
+secrets/
 
 # Python
 __pycache__/

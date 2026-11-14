@@ -1,0 +1,4 @@
+# Allowlist: ignore everything, then un-ignore only what the site serves.
+# Adding a file or folder the site needs? Add a "!path" line below in the same commit.
+/*
+!index.html
