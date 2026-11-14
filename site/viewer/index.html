@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unseen Earth — what NISAR sees that optical satellites miss</title>
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="js/config.js"></script>
+</head>
+<body>
+<div id="app">
+  <div id="leftcol">
+    <div id="map"></div>
+    <div id="tbar"><button id="tplay" title="Play through time">▶</button><div id="trange" title="Drag the two handles to set the time range"><canvas id="thist"></canvas><div id="ttrack"></div><div id="tfill"></div><input id="tlo" type="range" min="0" value="0" aria-label="Start date"><input id="thi" type="range" min="0" value="0" aria-label="End date"></div><span id="tlabel" class="sub"></span><button id="tall">All time</button></div>
+  </div>
+  <aside>
+    <h1>Unseen Earth</h1>
+    <div class="sub"><a href="../landing.html">▶ Watch the intro film</a></div>
+    <div class="sub">What NISAR radar sees when optical satellites can't.
+      <span id="mode" class="badge">checking server…</span></div>
+
+    <input id="q" type="search" placeholder="Search: place, type, month… (e.g. flod nepal, aug)" autocomplete="off">
+    <div id="chips">
+      <button data-f="all" class="on">All</button><button data-f="analyzed">Analysed</button><button data-f="edge">NISAR edge</button>
+      <button data-f="FL" title="Floods">💧</button><button data-f="VO" title="Volcanoes">🌋</button><button data-f="EQ" title="Earthquakes">〰</button><button data-f="WF" title="Wildfires">🔥</button><button data-f="TC" title="Cyclones">🌀</button>
+      <span class="sep"></span><button data-s="new" class="on">Newest</button><button data-s="score">Top score</button>
+      <span id="fcount" class="sub"></span>
+    </div>
+    <div id="batch" hidden><button id="bgo"></button><span id="bask" hidden> <button id="byes" class="primary">Yes, queue</button> <button id="bno">Cancel</button></span><button id="bclr" hidden>Clear selection</button></div>
+    <div id="feed"></div>
+    <details class="more2"><summary>How to read this</summary><div class="sub">Disasters from GDACS (UN/EU). Ring = alert level, solid = NISAR imaged it before and after, white ring = Charter activated, analysed areas show their hazard icon.
+      <b>Radar needed</b>: how blind optical satellites were (cloud cover). <b>NISAR edge</b>: NISAR vs Sentinel-1 (timing + L-band physics).</div></details>
+    <div id="analyze" style="display:none">
+      <div class="panel">
+        <h3>1 · Pick an area</h3>
+        <div class="row">
+          <button id="draw" class="primary">▭ Draw area</button>
+          <input id="goto" type="text" placeholder="Go to: lat, lon (e.g. 12.8, 104.1)" style="flex:1">
+        </div>
+        <div id="sel" class="sub">Up to 1.5° × 1.5° (≈ 165 km).</div>
+      </div>
+      <div class="panel">
+        <h3>2 · Check NISAR</h3>
+        <button id="check" disabled>Check</button>
+        <div id="cov" class="sub" style="margin-top:6px"></div>
+      </div>
+      <div class="panel">
+        <h3>3 · Analyze</h3>
+        <input id="name" type="text" placeholder="Name this area (e.g. Tonle Sap flood 2026)">
+        <div class="row"><button id="go" class="primary" disabled>Analyze (≈ 3–6 min)</button></div>
+        <div id="job" class="sub"></div>
+        <div class="bar"><div id="prog"></div></div>
+      </div>
+    </div>
+    <div id="static" class="panel sub" style="display:none">
+      Gallery mode: flood sites analysed offline by our pipeline.
+    </div>
+    <div class="sub" style="margin-top:12px">Data: NISAR L2 GCOV (NASA/ISRO, ASF DAAC) · OPERA DSWx-HLS (NASA). Basemap: Esri World Imagery.</div>
+  </aside>
+</div>
+<script src="js/globe.js"></script>
+<script src="js/inmap.js"></script>
+</body>
+</html>

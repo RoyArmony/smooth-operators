@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unseen Earth</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <h1 id="title">Unseen Earth</h1>
+  <a href="index.html" style="font-size:13px">← back to globe</a>
+  <p id="info" class="sub"></p>
+  <p id="event" class="sub"></p>
+</header>
+<div id="controls">
+  <div class="row">
+    <button id="play">▶ Play</button>
+    <span class="sub">A:</span> <select id="selL"><option value="nisar" selected>NISAR radar</option><option value="photo">Optical: raw photo, nearest day</option><option value="photoBest">Optical: raw photo, clearest day ±5 d</option><option value="optical">Optical: water map (classified)</option></select>
+    <span class="sub">B:</span> <select id="selR"><option value="nisar">NISAR radar</option><option value="photo" selected>Optical: raw photo, nearest day</option><option value="photoBest">Optical: raw photo, clearest day ±5 d</option><option value="optical">Optical: water map (classified)</option></select>
+    <span class="sub">compare:</span> <select id="cmp"><option value="toggle" selected>Toggle</option><option value="flicker">Flicker</option><option value="swipe">Swipe</option></select> <button id="flip" title="Keyboard: T">⇄ Flip</button>
+    <button id="ovl" class="on">Detections</button>
+    <span class="sub">opacity</span> <input id="op" type="range" min="0" max="100" value="70" style="width:110px">
+    <button id="reset">Reset</button> <span class="sub keys">T flip · ←/→ pass · space play · click = pixel history</span>
+  </div>
+  <div id="tlText"><span id="tlRange"></span><span id="tlNow"></span></div>
+  <canvas id="timeline"></canvas>
+</div>
+<main>
+  <div id="mapwrap">
+    <div id="stage"><img id="left"><canvas id="cvL"></canvas><img id="right"><canvas id="cvR"></canvas><img id="overL"><img id="overR"><div id="marker"></div></div>
+    <div id="swipe"></div>
+    <div class="tag" id="tagL"></div><div class="tag" id="tagR"></div>
+  </div>
+  <div>
+    <div class="panel">
+      <h3>This pass</h3>
+      <div class="kpis">
+        <div><div class="big" id="kWater">–</div><div class="sub">km² water beyond permanent</div></div>
+        <div><div class="big" id="kHidden" style="color:var(--orange)">–</div><div class="sub">hidden by clouds</div></div>
+        <div><div class="big" id="kClear">–</div><div class="sub">clear optical view</div></div>
+        <div><div class="big" id="kVeg" style="color:var(--purple)">–</div><div class="sub">km² surface change</div></div>
+      </div>
+      <p id="story"></p>
+    </div>
+    <div class="panel">
+      <h3>Season</h3>
+      <canvas id="chart" class="chart" height="190"></canvas>
+      <div class="legend" style="margin-top:6px">
+        <div><span style="background:#ddd"></span>water (NISAR)</div>
+        <div><span style="background:var(--blue)"></span>seen by both</div>
+        <div><span style="background:var(--orange)"></span>only NISAR (clouds)</div>
+        <div><span style="background:var(--green)"></span>water under trees?</div>
+        <div><span style="background:var(--purple)"></span>surface change (burn, clearing…)</div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Pixel history</h3>
+      <div id="pix" class="sub">Click a pixel on the map.</div>
+      <canvas id="pchart" class="chart" height="150"></canvas>
+    </div>
+  </div>
+</main>
+<script src="js/site.js"></script>
+</body>
+</html>

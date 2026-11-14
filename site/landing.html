@@ -65,9 +65,11 @@
   #vid.card { border: 2px solid #fff; border-radius: 8px; box-shadow: 0 6px 30px rgba(0,0,0,.6); }
   body.vid #vid.ok.card { opacity: 1; }
   body.vid #vid.ok { opacity: .85; }
-  #wm { position: fixed; right: 14px; bottom: 34px; z-index: 3; font: 600 11px Inter, system-ui, sans-serif; color: #fff; background: rgba(0,0,0,.55); padding: 3px 8px; border-radius: 4px; opacity: 0; transition: opacity 1s; }
+  #wm { position: fixed; right: 14px; bottom: 62px; z-index: 3; font: 600 11px Inter, system-ui, sans-serif; color: #fff; background: rgba(0,0,0,.55); padding: 3px 8px; border-radius: 4px; opacity: 0; transition: opacity 1s; }
   body.vid #vid.ok ~ #wm { opacity: .9; }
   #map { z-index: 0; } #veil { z-index: 2; } #txt, #tag, #lg, #ctl, #bar, #end { z-index: 3; }
+  #skip { position: fixed; right: 3vw; bottom: 20px; z-index: 4; font: 600 13px Inter, system-ui, sans-serif; color: #fff; text-decoration: none; background: rgba(0,0,0,.5); border: 1px solid rgba(255,255,255,.3); padding: 7px 12px; border-radius: 6px; }
+  #skip:hover { background: rgba(255,154,46,.85); color: #111; }
   #end { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle, rgba(5,7,11,.6), rgba(5,7,11,.95)); pointer-events: none; opacity: 0; transition: opacity 1s; }
   #end.in { opacity: 1; pointer-events: auto; }
   #end h2 { font-size: clamp(40px, 6vw, 84px); margin: 0; }
@@ -88,6 +90,7 @@
 <div id="lg" class="fade"></div>
 <div id="ctl"><button id="pv" title="Previous (←)">‹</button><button id="pp" title="Pause / play (space)">❚❚</button><button id="nx" title="Next (→)">›</button><span id="sd"></span></div>
 <div id="bar"></div>
+<a id="skip" href="viewer/index.html">Skip intro →</a>
 <style>
   #lg { flex-direction: column; align-items: flex-start; gap: 6px; background: rgba(0,0,0,.45); padding: 10px 12px; border-radius: 8px; }
   #lg div { display: flex; align-items: center; gap: 8px; } #lg i { width: 16px; height: 12px; border-radius: 3px; display: inline-block; }
@@ -229,7 +232,7 @@ const scenes = [
   [8, () => { ca([]); TL.forEach(o => map.removeLayer(o)); TL = []; legend([]); many(dots, 1); world();
       say('16 floods', H('Across these 16 sites, taking each site\'s wettest NISAR pass, NISAR found <b>1,182 km²</b> of water in the official maps\' blanks: <b>43% more</b> than the 2,719 km² they showed. A sample, not a global total.')); }],
   [6, () => { legend([]); $('tag').classList.remove('in'); say('Unseen Earth', H('Unseen Earth fills the blanks in the flood map, with open NISAR data every 12 days.')); }],
-  [0, () => { say(''); document.body.classList.add('out');  setTimeout(() => location.href = '../index.html#e=tonle-sap-flood-pulse-2026', 1200); }],
+  [0, () => { say(''); document.body.classList.add('out');  setTimeout(() => location.href = 'viewer/index.html#site=tonle-sap-flood-pulse-2026-83-8', 1200); }],
 ];
 let i = -1, tm = null, paused = false, t0 = 0, left = 0;
 function next() { clearTimeout(tm); sg++; i++; if (i >= scenes.length) return; const [d, f] = scenes[i]; try { map.invalidateSize(); f(); } catch (e) { console.warn('scene', i, e); } if (d) { left = d * 1000; run(); }

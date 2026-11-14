@@ -84,6 +84,7 @@ Current files and folders:
 - `ACKNOWLEDGMENTS.md`: third-party data, imagery, software and papers we use, with their licences and credit lines.
 - `pipeline/`: Python package `unseen`, offline: NISAR flood analysis → bundles in `events/`. See `pipeline/README.md`.
 - `site/`: static site pages; `site/landing.html` = the flood film (Leaflet in `site/vendor/`).
+  `site/viewer/` = map viewer (ported from the prep repo; 5 flood sites in `site/viewer/sites/`). The film's Skip button and its end open it.
 - `events/`: site bundles written by `pipeline/` (contract: docs/08 §3).
 - `index.html`: the site's entry page (served by Vercel).
 - `.vercelignore`: allowlist of what goes to the site (see Deployment).
