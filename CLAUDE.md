@@ -82,6 +82,8 @@ Current files and folders:
 - `LICENSE`: MIT (our code). NASA data keeps its own terms and credit (see `ACKNOWLEDGMENTS.md`).
 - `ACKNOWLEDGMENTS.md`: third-party data, imagery, software and papers we use, with their licences and credit lines.
 - `pipeline/`: Python package `unseen`, offline: NISAR flood analysis → bundles in `events/`. See `pipeline/README.md`.
+- `site/`: static site pages; `site/landing.html` = the flood film (Leaflet in `site/vendor/`).
+- `events/`: site bundles written by `pipeline/` (contract: docs/08 §3).
 - `index.html`: the site's entry page (served by Vercel).
 - `.vercelignore`: allowlist of what goes to the site (see Deployment).
 

@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Unseen Earth: filling the blanks in flood maps</title>
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<script src="vendor/leaflet/leaflet.js"></script>
+<style>
+  :root { --o: #ff9a2e; --t: #f2f4f7; --d: #9aa4b2; }
+  html, body { margin: 0; height: 100%; background: #05070b; color: var(--t); font-family: Inter, "Segoe UI", system-ui, sans-serif; overflow: hidden; }
+  #map { position: fixed; inset: 0; background: #0c1f2e; }
+  .leaflet-image-layer { transition: opacity .9s ease; }
+  .leaflet-tile-pane { transition: filter 1.2s ease; }
+  body.dim .leaflet-tile-pane { filter: brightness(.62) saturate(.85); }
+  #veil { position: fixed; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(5,7,11,.7) 0%, rgba(5,7,11,.25) 36%, rgba(5,7,11,0) 60%); }
+  #txt { position: fixed; left: 6vw; top: 50%; transform: translateY(-50%); max-width: 34vw; pointer-events: none; }
+  #txt .k { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--o); margin-bottom: 14px; min-height: 1em; }
+  #txt h1 { font-size: clamp(20px, 2.1vw, 32px); line-height: 1.3; margin: 0; font-weight: 600; }
+  #txt h1 b { color: #ff9a2e; font-weight: 700; } #txt h1 b.bl { color: #4aa3ff; } #txt h1 b.rd { color: #ff6060; } #txt h1 b.wh { color: #fff; }
+  #txt h1 b.gy { color: #d6d6e0; background: repeating-linear-gradient(45deg,rgba(200,200,210,.28) 0 2px,transparent 2px 6px); padding: 0 4px; border-radius: 3px; }
+  .ch { opacity: 0; animation: chIn .35s ease forwards; } @keyframes chIn { to { opacity: 1; } }
+  #txt .big { font-size: clamp(56px, 8vw, 120px); font-weight: 800; line-height: 1; color: #fff; }
+  #txt .big small { font-size: .35em; font-weight: 600; color: var(--d); }
+  #txt p { font-size: clamp(14px, 1.2vw, 18px); color: var(--d); margin: 14px 0 0; }
+  .fade { opacity: 0; transition: opacity .3s ease; }
+  .fade.in { opacity: 1; }
+  #lg { position: fixed; right: 3vw; bottom: 64px; font-size: 13px; color: var(--d); display: flex; gap: 14px; align-items: center; }
+  #lg span { display: inline-block; width: 90px; height: 10px; border-radius: 5px; background: linear-gradient(90deg, #2020ff, #fff, #ff2020); vertical-align: middle; margin: 0 6px; }
+  #tag { position: fixed; right: 3vw; top: 22px; font-size: 13px; color: var(--d); background: rgba(0,0,0,.45); padding: 6px 10px; border-radius: 6px; }
+  .lab { color: #fff; font: 700 15px/1 Inter, system-ui, sans-serif; text-shadow: 0 1px 4px #000; white-space: nowrap; }
+  .pulse { width: 14px; height: 14px; border-radius: 50%; background: #ff3b30; box-shadow: 0 0 0 0 rgba(255,59,48,.7); animation: p 1.6s infinite; }
+  @keyframes p { to { box-shadow: 0 0 0 28px rgba(255,59,48,0); } }
+  .q { display: flex; align-items: center; gap: 6px; color: #fff; font: 600 12px/1 Inter, system-ui, sans-serif; text-shadow: 0 1px 3px #000; white-space: nowrap; }
+  .q i { width: 10px; height: 10px; border-radius: 50%; background: #ff9a2e; box-shadow: 0 0 0 4px rgba(255,154,46,.25); }
+  .leaflet-marker-icon { transition: opacity .6s ease; }
+  path.rup { transition: stroke-opacity 1s ease; }
+  body.out #map, body.out #txt, body.out #veil { opacity: 0; transition: opacity 1.1s ease; }
+  .rd { width: 12px; height: 12px; border-radius: 50%; background: #ff3b30; box-shadow: 0 0 0 5px rgba(255,59,48,.25); }
+  .th { width: 120px; background: rgba(10,12,16,.85); border: 1px solid rgba(255,255,255,.25); border-radius: 8px; padding: 4px; }
+  .th img { width: 120px; height: 115px; object-fit: cover; border-radius: 5px; display: block; } .th span { display: block; color: #ddd; font: 600 11px Inter, system-ui; text-align: center; margin-top: 3px; }
+  .rdl b { color: #ff9a2e; }
+  .rdl { position: absolute; top: -6px; left: 18px; line-height: 1.25 !important; }
+  .rdl.l { left: auto; right: 18px; text-align: right; } .rdl.rb { top: 10px; } .rdl.t { top: -58px; left: -10px; }
+  body.wv #txt { left: 31vw; right: auto; top: auto; bottom: 70px; transform: none; max-width: 52vw; background: rgba(5,7,11,.72); padding: 12px 18px; border-radius: 10px; }
+  body.wv #txt h1 { font-size: clamp(16px, 1.45vw, 22px); }
+  body.wv #lg { top: 70px; bottom: auto; }
+  .rdl { background: rgba(5,7,11,.6); padding: 3px 6px; border-radius: 5px; }
+  body.wv #veil { opacity: 0; } #veil { transition: opacity 1s; }
+  .rdl { color: #fff; font: 600 12px/1 Inter, system-ui, sans-serif; text-shadow: 0 1px 3px #000; white-space: nowrap; margin: -4px 0 0 14px; }
+  .leaflet-marker-icon { transition: opacity .6s ease; }
+  @keyframes pop { from { opacity: 0; transform: scale(.85); } }
+  #sd { display: flex; gap: 5px; align-items: center; margin-left: 6px; } #sd i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; }
+  #sd i.on { background: var(--o); } #sd i.done { background: rgba(255,154,46,.5); }
+  #bar { position: fixed; left: 0; bottom: 0; height: 3px; background: var(--o); width: 0; }
+  #ctl { position: fixed; left: 6vw; bottom: 20px; display: flex; gap: 10px; }
+  #ctl button, #end a { background: rgba(255,255,255,.08); color: var(--t); border: 1px solid rgba(255,255,255,.15); border-radius: 18px; padding: 7px 14px; font: 600 13px Inter, system-ui, sans-serif; cursor: pointer; text-decoration: none; }
+  #vid { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 2s; pointer-events: none; z-index: 400; }
+  body.vid #vid.ok { opacity: .55; }
+  #wm { position: fixed; right: 14px; bottom: 34px; z-index: 401; font: 600 11px Inter, system-ui, sans-serif; color: #fff; background: rgba(0,0,0,.55); padding: 3px 8px; border-radius: 4px; opacity: 0; transition: opacity 1s; }
+  body.vid #vid.ok ~ #wm { opacity: .9; }
+  #end { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle, rgba(5,7,11,.6), rgba(5,7,11,.95)); pointer-events: none; opacity: 0; transition: opacity 1s; }
+  #end.in { opacity: 1; pointer-events: auto; }
+  #end h2 { font-size: clamp(40px, 6vw, 84px); margin: 0; }
+  #end p { color: var(--d); margin: 10px 0 26px; font-size: 18px; }
+  #end a.go { background: var(--o); color: #111; border: 0; font-size: 16px; padding: 11px 22px; }
+  #end small { margin-top: 26px; color: #6b7480; font-size: 12px; max-width: 640px; }
+  .leaflet-control-attribution { background: rgba(0,0,0,.4) !important; color: #889 !important; font-size: 10px; }
+  .leaflet-control-attribution a { color: #aab !important; }
+  @media (max-width: 760px) { #txt { max-width: 80vw; top: 18%; transform: none; } #veil { background: linear-gradient(180deg, rgba(5,7,11,.9), rgba(5,7,11,0) 55%); } }
+</style>
+</head>
+<body class="dim">
+<div id="map"></div>
+<video id="vid" muted loop playsinline preload="auto"></video><div id="wm">AI-generated video</div>
+<div id="veil"></div>
+<div id="tag" class="fade"></div>
+<div id="txt"><div class="k fade" id="k"></div><div id="h" class="fade"></div><p id="s" class="fade"></p></div>
+<div id="lg" class="fade"></div>
+<div id="ctl"><button id="pv" title="Previous (←)">‹</button><button id="pp" title="Pause / play (space)">❚❚</button><button id="nx" title="Next (→)">›</button><span id="sd"></span></div>
+<div id="bar"></div>
+<style>
+  #lg { flex-direction: column; align-items: flex-start; gap: 6px; background: rgba(0,0,0,.45); padding: 10px 12px; border-radius: 8px; }
+  #lg div { display: flex; align-items: center; gap: 8px; } #lg i { width: 16px; height: 12px; border-radius: 3px; display: inline-block; }
+  .big.o { color: #ff9a2e; } .big.b { color: #4aa3ff; }
+  .gq { color: #fff; font: 600 12px/1.25 Inter, system-ui, sans-serif; text-shadow: 0 1px 3px #000; white-space: nowrap; transform: translate(-6px, -6px); }
+  .gq i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #ff9a2e; margin-right: 5px; box-shadow: 0 0 0 4px rgba(255,154,46,.25); }
+  .gq .card { display: none; margin-top: 6px; background: rgba(10,12,16,.85); border: 1px solid rgba(255,255,255,.2); border-radius: 8px; padding: 8px 10px; }
+  .gq.on .card { display: block; } .gq .card b { color: #ff9a2e; font-size: 20px; display: block; } .gq .card small { color: #9aa4b2; }
+</style>
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+const map = L.map('map', { zoomControl: false, zoomSnap: 0.1, scrollWheelZoom: false, dragging: false, doubleClickZoom: false, keyboard: false,
+                           boxZoom: false, touchZoom: false }).setView([12, 104], 4);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+  { maxZoom: 13, noWrap: true, bounds: [[-85, -180], [85, 180]], attribution: 'Esri, Maxar, Earthstar Geographics · Copernicus EMS GFM' }).addTo(map);
+map.attributionControl.setPrefix('');
+['flyTo', 'flyToBounds', 'fitBounds', 'setView'].forEach(fn => { const o = map[fn].bind(map); map[fn] = (...a) => { try { return o(...a); } catch (e) { return map; } }; });   // never let a camera move break a scene
+const A = 'story/tonlesap/', B = L.latLngBounds([[12.3005, 103.5949], [13.2994, 104.7009]]);
+const img = f => L.imageOverlay(A + f, B, { opacity: 0, interactive: false }).addTo(map);
+const P = { photo: img('photo_2026-10-19.jpg'), excl: img('gfm_excluded.png'), gfm: img('gfm_flood.png'), add: img('nisar_added.png') };
+const box = L.rectangle(B, { color: '#ffffff', weight: 2.5, dashArray: '6 5', fill: false, opacity: 0, interactive: false }).addTo(map);
+let fast = false, mgen = 0;
+const many = (os, v, step = 0) => { const g = mgen; os.forEach((o, k) => (fast || !step) ? vis(o, v) : setTimeout(() => g === mgen && vis(o, v), k * step)); };
+const vis = (o, v) => o.setOpacity ? o.setOpacity(v) : o.setStyle({ opacity: v });
+let sg = 0;                                   // scene generation: drops timers from a scene we left
+const later = (fn, ms) => { if (fast) return fn(); const g = sg; setTimeout(() => g === sg && fn(), ms); };
+function flash(o) {                            // blink a newly shown layer so it is clear what the text means
+  if (fast) return vis(o, 1); const g = sg; [0.15, 1, 0.15, 1, 0.15, 1].forEach((v, k) => setTimeout(() => g === sg && vis(o, v), 230 * (k + 1)));
+}
+let on_ = [];
+const show = on => { for (const k in P) { const was = on_.includes(k), now = on.includes(k); vis(P[k], now ? 1 : 0); if (now && !was) flash(P[k]); } on_ = on.slice(); };
+const LG = { gfm: ['#2882ff', 'Flood seen by Sentinel-1 (GFM)'], excl: ['repeating-linear-gradient(45deg,#c8c8d2 0 2px,#3c3c46 2px 6px)', 'GFM: "cannot see here"'],
+             add: ['#ff9a2e', 'Only NISAR: water in the blank'] };
+const legend = ks => { $('lg').innerHTML = ks.map(k => `<div><i style="background:${LG[k][0]}"></i>${LG[k][1]}</div>`).join(''); $('lg').classList.toggle('in', ks.length > 0); };
+let sayGen = 0;
+function typeset(el, html, start) {          // each character fades in, one after another
+  el.innerHTML = html || ''; let n = start;
+  const walk = node => [...node.childNodes].forEach(c => {
+    if (c.nodeType === 3) {
+      const f = document.createDocumentFragment();
+      for (const ch of c.textContent) { const sp = document.createElement('span'); sp.className = 'ch'; sp.textContent = ch;
+        sp.style.animationDelay = (n++ * 18) + 'ms'; f.appendChild(sp); }
+      c.replaceWith(f);
+    } else walk(c);
+  });
+  walk(el); return n;
+}
+function say(k, h, s, tag) {
+  const g = ++sayGen;
+  [$('k'), $('h'), $('s')].forEach(e => e.classList.remove('in'));
+  setTimeout(() => { if (g !== sayGen) return;
+    $('k').textContent = k || ''; let n = typeset($('h'), h, 0); typeset($('s'), s, n + 10);
+    [$('k'), $('h'), $('s')].forEach(e => e.classList.add('in')); }, 300);
+  $('tag').classList.toggle('in', !!tag); if (tag) $('tag').textContent = tag;
+}
+const H = t => `<h1>${t}</h1>`, BIG = (n, u, c = '') => `<div class="big ${c}">${n}<small> ${u}</small></div>`;
+const fit = () => map.flyToBounds(B, { duration: 3, paddingTopLeft: [innerWidth * .38, 20], paddingBottomRight: [20, 20] });
+
+const QS = [ // name, lat, lon, NISAR km² in GFM's blank (wettest pass), % vs GFM flood (null if GFM < 5 km²)
+  ['Tonle Sap', 12.8, 104.15, 561, 101], ['Inner Niger Delta', 14.9, -4.3, 253, 493], ['Mekong delta', 10.7, 105.3, 170, 24], ['Irrawaddy delta', 16.6, 95.3, 76, 8],
+  ['Congo basin', 0.5, 17.6, 75, null], ['Sylhet', 24.7, 91.4, 13, 4], ['Amazon várzea', -3.0, -64.9, 11, null], ['Assam', 26.6, 92.5, 10, 95], ['Thailand', 13.65, 101.0, 7, 30],
+  ['Hubei', 30.8, 111.0, 5, null], ['Nepal', 27.3, 85.4, 1, 16], ['Tamil Nadu', 11.3, 78.6, 0, null], ['Atchafalaya', 30.25, -91.4, 0, null]];
+const NOCMP = [['Okavango', -19.3, 22.9], ['Pantanal', -18.5, -57.1], ['Sudd', 7.3, 30.6]];   // no GFM–NISAR overlap
+const SIDE = { 'Tonle Sap': 't', 'Mekong delta': 'rb', 'Irrawaddy delta': 'l', 'Inner Niger Delta': 'r', 'Congo basin': 'r' };
+const mk = (la, lo, html) => L.marker([la, lo], { icon: L.divIcon({ className: '', html, iconSize: [12, 12], iconAnchor: [6, 6] }), opacity: 0, interactive: false }).addTo(map);
+const plain = QS.concat(NOCMP).map(([n, la, lo]) => mk(la, lo, '<div class="rd"></div>'));
+const dots = QS.map(([n, la, lo, km, pc]) => mk(la, lo, `<div class="rd"></div>` + (SIDE[n] ? `<div class="rdl ${SIDE[n]}">${n}<br><b>+${km} km²</b>${pc != null ? ` · +${pc}%` : ''}</div>` : '')))
+  .concat(NOCMP.map(([n, la, lo]) => mk(la, lo, '<div class="rd" style="background:#888;box-shadow:none"></div>')));
+const THUMBS = [ // site key, name, dot, card position (ocean)
+  ['tonle-sap', 'Tonle Sap', [12.8, 104.15], [-8, 112]], ['inner-niger-delta-mali', 'Inner Niger Delta', [14.9, -4.3], [24, -38]],
+  ['mekong-delta-vietnam', 'Mekong delta', [10.7, 105.3], [22, 140]], ['congo-cuvette-centrale', 'Congo basin', [0.5, 17.6], [-14, -12]]];
+const thumbs = THUMBS.flatMap(([k, n, dot, at]) => [
+  L.polyline([dot, at], { color: '#fff', weight: 1, opacity: 0, dashArray: '3 4', interactive: false }).addTo(map),
+  L.marker(at, { icon: L.divIcon({ className: '', html: `<div class="th"><img src="story/world/thumbs/${k}.jpg"><span>${n}</span></div>`, iconSize: [130, 145], iconAnchor: [65, 72] }), opacity: 0, interactive: false }).addTo(map)]);
+const TOUR = [['inner-niger-delta-mali', 'Inner Niger Delta', 'Mali · 16 Sep 2026', 253], ['mekong-delta-vietnam', 'Mekong delta', 'Vietnam · 23 Sep 2026', 170],
+              ['irrawaddy-delta-myanmar', 'Irrawaddy delta', 'Myanmar · 17 Jul 2026', 76], ['congo-cuvette-centrale', 'Congo basin', 'Rep. of Congo · 19 Oct 2026', 75]];
+let TJ = {};
+let TL = [];
+function tourSite(key) {
+  TL.forEach(o => map.removeLayer(o)); TL = [];
+  const c = TJ[key] && TJ[key].corners; if (!c) return;
+  const Bk = L.latLngBounds([[c[1][1], c[0][0]], [c[0][1], c[1][0]]]);
+  TL = ['gfm_excluded.png', 'gfm_flood.png', 'nisar_added.png'].map(f => L.imageOverlay(`story/world/${key}/${f}`, Bk, { opacity: 0, interactive: false }).addTo(map));
+  map.flyToBounds(Bk, { duration: 2.2, paddingTopLeft: [innerWidth * .32, 20], paddingBottomRight: [20, 20] });
+  setTimeout(() => TL.forEach(o => o.setOpacity(1)), 2200);
+}
+const PB = L.latLngBounds([[58.3001, -111.8129], [58.8996, -111.0007]]);
+const CA = { nw: L.imageOverlay('story/canada/nisar_water.png', PB, { opacity: 0, interactive: false }).addTo(map),
+             rw: L.imageOverlay('story/canada/rcm_water.png', PB, { opacity: 0, interactive: false }).addTo(map),
+             ag: L.imageOverlay('story/canada/agree.png', PB, { opacity: 0, interactive: false }).addTo(map) };
+const ca = on => { for (const k in CA) { vis(CA[k], on.includes(k) ? 1 : 0); if (on.includes(k)) flash(CA[k]); } };
+LG.nw = ['#2882ff', 'Water · NISAR (10 Oct)']; LG.rw = ['#ff5050', 'Water · Canada\'s RCM (13 Oct)'];
+LG.both = ['#f5f5f5', 'Both see water']; LG.on = ['#2882ff', 'Only NISAR']; LG.or = ['#ff5050', 'Only RCM'];
+const world = () => { document.body.classList.add('wv'); map.flyToBounds([[-50, -125], [62, 160]], { duration: 3 }); };
+
+const T_ = { // tour sentences
+  'Inner Niger Delta': 'In Mali\'s Inner Niger Delta (16 Sep), NISAR found <b>253 km²</b> of water where the official map was blank, on its wettest NISAR pass.',
+  'Mekong delta': 'In the Mekong delta in Vietnam (23 Sep), NISAR found <b>170 km²</b> of water where the official map was blank, on its wettest NISAR pass.',
+  'Irrawaddy delta': 'In Myanmar\'s Irrawaddy delta (17 Jul), NISAR found <b>76 km²</b> of water where the official map was blank, on its wettest NISAR pass.',
+  'Congo basin': 'In the Congo basin (19 Oct), NISAR found <b>75 km²</b> of water where the official map was blank, on its wettest NISAR pass.' };
+const V = $('vid');                            // optional opening video: story/flood.mp4 (AI-made -> watermark)
+V.oncanplay = () => V.classList.add('ok'); V.onerror = () => V.classList.remove('ok');
+V.src = 'story/flood.mp4';
+const vid = on => { document.body.classList.toggle('vid', on); if (on) V.play().catch(() => {}); else setTimeout(() => !document.body.classList.contains('vid') && V.pause(), 2000); };
+const scenes = [
+  [6.5, () => { vid(true); say('', H('1.8 billion people live where a major flood can reach them.'), '', 'World Bank · Rentschler et al., Nature Comms 2022'); }],
+  [6.5, () => { vid(false); world(); many(plain, 1, 60); say('Flood maps · 2026', H('Satellites track them. Every few days, Europe\'s Copernicus service maps floods around the world with Sentinel-1 radar.'), '', 'Copernicus EMS · GFM'); }],
+  [7, () => { say('', H('But the maps have blanks. Under forests and in cities, this radar can\'t see the water, so those areas are marked <b class="gy">"cannot see"</b>.')); }],
+  [7, () => { many(plain, 0); document.body.classList.remove('dim', 'wv'); fit(); show([]); later(() => { flash(box); show(['gfm']); legend(['gfm']); }, 3100);
+              say('Tonle Sap, Cambodia', H('On 17 October, the official map showed <b class="bl">554 km²</b> of flooding around the lake.'), '', 'Copernicus EMS · GFM'); }],
+  [6.5, () => { show(['gfm', 'excl']); legend(['gfm', 'excl']); say('', H('A quarter of the area was marked <b class="gy">"cannot see"</b>. Most of it is forest.'), '', 'GFM exclusion mask'); }],
+  [7, () => { show(['photo']); legend([]);
+              say('Camera · 19 Oct', H('Cameras don\'t fill the gap. Two days later, Landsat and Sentinel-2 saw clouds, and under the trees only green.'), '', 'Optical · NASA HLS (Landsat + Sentinel-2)'); }],
+  [7.5, () => { show(['gfm', 'excl', 'add']); legend(['gfm', 'excl', 'add']);
+              say('NISAR sees through', H('On 17 October, inside <b class="gy">that blank</b>, NISAR measured <b>561 km²</b> of water, 362 km² of it under the trees. That is one lake, on one day.'), '', 'NISAR L-band'); }],
+  [8, () => { show(['excl', 'add']); legend(['excl', 'add']); vis(box, 0); map.flyTo([12.85, 104.25], 10.2, { duration: 3 }); later(() => vis(box, 1), 3100);
+              say('Why NISAR sees it', H('NISAR\'s radar waves are 24 cm long. They pass through the leaves and bounce back from the water below. Sentinel-1\'s 5.6 cm waves stop at the canopy.'), '', 'NISAR L-band'); }],
+  [8, () => { show([]); vis(box, 0); legend([]); $('tag').classList.remove('in'); world(); many(dots, 1, 60);
+      say('', H('We ran the same check on 16 flood sites we chose: 5 from recent flood alerts and 11 large seasonal wetlands, using NISAR\'s first months of data (June to October 2026). Each dot shows what NISAR added on that site\'s wettest pass.')); }],
+  [7, () => { many(thumbs, 1, 250); legend(['gfm', 'excl', 'add']);
+      say('', H('The biggest gaps are in flooded forests and wetlands: Tonle Sap, the Inner Niger Delta, the Mekong and the Congo basin. Elsewhere NISAR adds little.')); }],
+  [7, () => { many(thumbs, 0); TL.forEach(o => map.removeLayer(o)); TL = []; legend([]); many(dots, 0); document.body.classList.remove('wv');
+      map.flyToBounds(PB, { duration: 3, paddingTopLeft: [innerWidth * .32, 20], paddingBottomRight: [20, 20] });
+      say('Validation', H('To check our water maps, we compared them with Canada\'s RCM radar over the Peace–Athabasca Delta.')); }],
+  [5, () => { ca(['nw']); legend(['nw']); say('NISAR · 10 Oct 2026', H('This is <b class="bl">the water NISAR found</b> on 10 October.'), '', 'NISAR L-band'); }],
+  [5.5, () => { ca(['rw']); legend(['rw']); say('RCM · 13 Oct 2026', H('And this is <b class="rd">the water Canada\'s RCM found</b> three days later.'), '', 'RADARSAT Constellation Mission (CSA)'); }],
+  [6.5, () => { ca(['ag']); legend(['both', 'on', 'or']); say('Validation', H('They agree: RCM confirms <b class="wh">79%</b> of <b class="bl">the water NISAR found</b>, across four pairs of images.'), '', 'NISAR + RCM (CSA)'); }],
+  [8, () => { ca([]); TL.forEach(o => map.removeLayer(o)); TL = []; legend([]); many(dots, 1); world();
+      say('16 floods', H('Across these 16 sites, taking each site\'s wettest NISAR pass, NISAR found <b>1,182 km²</b> of water in the official maps\' blanks: <b>43% more</b> than the 2,719 km² they showed. A sample, not a global total.')); }],
+  [6, () => { legend([]); $('tag').classList.remove('in'); say('Unseen Earth', H('Unseen Earth fills the blanks in the flood map, with open NISAR data every 12 days.')); }],
+  [0, () => { say(''); document.body.classList.add('out');  setTimeout(() => location.href = '../index.html#e=tonle-sap-flood-pulse-2026', 1200); }],
+];
+let i = -1, tm = null, paused = false, t0 = 0, left = 0;
+function next() { clearTimeout(tm); sg++; i++; if (i >= scenes.length) return; const [d, f] = scenes[i]; try { map.invalidateSize(); f(); } catch (e) { console.warn('scene', i, e); } if (d) { left = d * 1000; run(); }
+  $('bar').style.width = (100 * (i + 1) / scenes.length) + '%'; dotsUI(); }
+function run() { t0 = Date.now(); if (!paused) tm = setTimeout(next, left); }
+function reset() { try { sg++; vid(false); show([]); legend([]); ca([]); TL.forEach(o => map.removeLayer(o)); TL = []; many(dots, 0); many(plain, 0); many(thumbs, 0); vis(box, 0); document.body.classList.remove('wv'); document.body.classList.add('dim'); document.body.classList.remove('out'); } catch (e) {} }
+function goTo(k) {
+  k = Math.max(0, Math.min(scenes.length - 1, k)); clearTimeout(tm); reset();
+  mgen++; fast = true;
+  for (let j = 0; j < k; j++) { try { scenes[j][1](); } catch (e) {} }
+  fast = false;
+  i = k - 1; next();
+}
+function dotsUI() { $('sd').innerHTML = scenes.map((_, k) => `<i data-k="${k}" class="${k < i ? 'done' : k === i ? 'on' : ''}"></i>`).join('');
+  $('sd').querySelectorAll('i').forEach(e => e.onclick = () => goTo(+e.dataset.k)); }
+function togglePause() { paused = !paused; $('pp').textContent = paused ? '▶' : '❚❚'; if (paused) { clearTimeout(tm); left -= Date.now() - t0; } else run(); }
+$('pp').onclick = togglePause; $('nx').onclick = () => goTo(i + 1); $('pv').onclick = () => goTo(i - 1);
+addEventListener('keydown', e => { if (e.key === 'ArrowRight') goTo(i + 1); else if (e.key === 'ArrowLeft') goTo(i - 1); else if (e.key === ' ') { e.preventDefault(); togglePause(); } });
+setTimeout(next, 600);
+})();
+</script>
+</body>
+</html>

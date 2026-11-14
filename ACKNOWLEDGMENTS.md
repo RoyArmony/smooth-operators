@@ -48,6 +48,7 @@ Our maps and numbers are derived products, not official NASA products, and not e
 | Package | Licence |
 |---|---|
 | asf_search | BSD |
+| Leaflet 1.9 (bundled in `site/vendor/leaflet/`, licence file next to it) | BSD-2-Clause |
 | numpy, scipy, h5py, rasterio, shapely | BSD-3-Clause |
 | pyproj | MIT |
 | Pillow | MIT-CMU |
@@ -57,6 +58,7 @@ Our maps and numbers are derived products, not official NASA products, and not e
 ## Research we built on
 
 - NISAR Data User Guide (ASF) — https://nisar-docs.asf.alaska.edu
+- Rentschler, J., Salhab, M., Jafino, B. A. (2022). Flood exposure and poverty in 188 countries. *Nature Communications* 13, 3527 (1.81 billion people exposed to 1-in-100-year floods; landing film) — https://doi.org/10.1038/s41467-022-30727-4
 - NISAR Mission Science Users' Handbook (JPL, 2025) — https://doi.org/10.48577/jpl.UD4HV3
 - Peacock, A., An, K., Pinto, N., & Lou, Y. (2024). *NISAR ArcGIS Storymaps.* Zenodo. https://doi.org/10.5281/zenodo.10818833
 - NISAR Applications White Papers (NASA/JPL) — https://nisar.jpl.nasa.gov/applications/societal-benefit/

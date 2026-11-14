@@ -81,6 +81,8 @@ All 14 links from the [Resources tab](https://www.spaceappschallenge.org/2026/ch
 - **NASA Worldview** — view NISAR layers in the browser — https://worldview.earthdata.nasa.gov/ (Roy, 31.10.26)
 - **Python: h5py, numpy, scipy, rasterio, pyproj, shapely, Pillow, matplotlib, requests** — read HDF5 / GeoTIFF, reproject, process, plot, call STAC APIs — https://www.h5py.org (Roy, 31.10.26)
 
+- **Leaflet** (BSD-2) — web map in the landing film — https://leafletjs.com (Shai, 14.11.26)
+
 ## AI tools
 
 - **Claude Code** (Anthropic) — coding, research and docs assistant — https://claude.com/claude-code (Roy, 30.10.26)
@@ -90,4 +92,5 @@ All 14 links from the [Resources tab](https://www.spaceappschallenge.org/2026/ch
 - **Challenge statement: Dancing with the SARs** — https://www.spaceappschallenge.org/2026/challenges/dancing-with-the-sars/ (Roy, 30.10.26)
 - **NISAR Mission Science Users' Handbook (JPL, 2025)** — https://doi.org/10.48577/jpl.UD4HV3 (Roy, 31.10.26)
 - **NASA Earth science data policy + NISAR data use & citation guidance** — licence and credit for NISAR data — https://www.earthdata.nasa.gov/data-and-information-policy · https://nisar-docs.asf.alaska.edu/data-use-citation-guidance/ (Roy, 31.10.26)
+- **Rentschler et al. 2022, Nature Comms** — 1.81 billion people exposed to floods (landing film) — https://doi.org/10.1038/s41467-022-30727-4 (Shai, 14.11.26)
 - **NISAR mission requirements** — https://science.nasa.gov/mission/nisar/mission-requirements (Shai, 09.11.26)
