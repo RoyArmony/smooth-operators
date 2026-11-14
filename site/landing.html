@@ -235,13 +235,7 @@ const scenes = [
       say('', H('We ran the same check on 16 flood sites we chose: 5 from recent flood alerts and 11 large seasonal wetlands, using NISAR\'s first months of data (June to October 2026). Each dot shows what NISAR added on that site\'s wettest pass.')); }],
   [7, () => { many(thumbs, 1, 250); legend(['gfm', 'excl', 'add']);
       say('', H('The biggest gaps are in flooded forests and wetlands: Tonle Sap, the Inner Niger Delta, the Mekong and the Congo basin. Elsewhere NISAR adds little.')); }],
-  [7, () => { many(thumbs, 0); TL.forEach(o => map.removeLayer(o)); TL = []; legend([]); many(dots, 0); document.body.classList.remove('wv');
-      map.flyToBounds(PB, { duration: 3, paddingTopLeft: [innerWidth * .32, 20], paddingBottomRight: [20, 20] });
-      say('Validation', H('To check our water maps, we compared them with Canada\'s RCM radar over the Peace–Athabasca Delta.')); }],
-  [5, () => { ca(['nw']); legend(['nw']); say('NISAR · 10 Oct 2026', H('This is <b class="bl">the water NISAR found</b> on 10 October.'), '', 'NISAR L-band'); }],
-  [5.5, () => { ca(['rw']); legend(['rw']); say('RCM · 13 Oct 2026', H('And this is <b class="rc">the water Canada\'s RCM found</b> three days later.'), '', 'RADARSAT Constellation Mission (CSA)'); }],
-  [6.5, () => { ca(['ag']); legend(['both', 'on', 'or']); say('Validation', H('They agree: RCM confirms <b class="wh">79%</b> of <b class="bl">the water NISAR found</b>, across four pairs of images.'), '', 'NISAR + RCM (CSA)'); }],
-  [8, () => { ca([]); TL.forEach(o => map.removeLayer(o)); TL = []; legend([]); many(dots, 1); world();
+  [8, () => { many(thumbs, 0); legend([]); many(dots, 1);
       say('16 floods', H('Across these 16 sites, taking each site\'s wettest NISAR pass, NISAR found <b>1,182 km²</b> of water in the official maps\' blanks: <b>43% more</b> than the 2,719 km² they showed. A sample, not a global total.')); }],
   [6, () => { legend([]); $('tag').classList.remove('in'); say('Unseen Earth', H('Unseen Earth fills the blanks in the flood map, with open NISAR data every 12 days.')); }],
   [0, () => { say(''); document.body.classList.add('out');  setTimeout(() => location.href = 'viewer/index.html#site=tonle-sap-flood-pulse-2026-83-8', 1200); }],
