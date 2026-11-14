@@ -45,12 +45,25 @@
 .ue-drop button small { display: block; color: var(--muted); font-weight: 400; margin-top: 2px; }
 .ue-drop button:hover { background: var(--surface-3); }
 .ue-right { margin-left: auto; display: flex; align-items: center; gap: var(--s3); }
-.ue-chip { font-size: var(--fs-xs); font-weight: 600; letter-spacing: .04em; color: var(--muted); padding: 5px 10px; border: 1px solid var(--line-2); border-radius: var(--r-pill); white-space: nowrap; }
-.ue-chip b { color: var(--accent); font-weight: 700; }
+.ue-sat { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 var(--s3); border-radius: var(--r-pill); border: 1px solid var(--line-2);
+  background: rgba(255, 255, 255, .03); color: var(--text); font: 600 var(--fs-sm) var(--font); cursor: pointer; white-space: nowrap; transition: border-color .15s, color .15s; }
+.ue-sat:hover { border-color: var(--accent); color: var(--accent); }
+.ue-sat svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .ue-cta { height: 34px; display: inline-flex; align-items: center; padding: 0 var(--s4); border-radius: var(--r-pill); background: var(--accent); color: var(--on-accent) !important; font-weight: 700; white-space: nowrap; }
 .ue-cta:hover { background: var(--accent-hi); }
 
 /* ---------- info dialog (About menu) ---------- */
+.ue-card.wide { width: min(860px, 100%); }
+.ue-tw { overflow-x: auto; margin: var(--s4) 0 var(--s3); border: 1px solid var(--line); border-radius: var(--r-md); }
+.ue-t { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); line-height: 1.4; min-width: 620px; }
+.ue-t th, .ue-t td { text-align: left; vertical-align: top; padding: 9px var(--s3); border-top: 1px solid var(--line); }
+.ue-t thead th { border-top: 0; font-size: var(--fs-md); color: var(--text); background: var(--surface-2); }
+.ue-t tbody th { color: var(--faint); font-weight: 500; font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .06em; width: 120px; }
+.ue-t td { color: var(--muted); } .ue-t td b { color: var(--text); font-weight: 600; }
+.ue-t .hl { background: rgba(45, 212, 191, .07); }
+.ue-t thead th.hl { color: var(--accent); background: rgba(45, 212, 191, .14); }
+.ue-t .y { color: var(--ok); font-weight: 600; } .ue-t .n { color: var(--sand); font-weight: 600; }
+.ue-card .ue-note { font-size: var(--fs-xs); color: var(--faint); margin: 0; }
 .ue-modal { position: fixed; inset: 0; z-index: 2100; display: none; align-items: flex-start; justify-content: center; padding: calc(var(--bar-h) + 40px) var(--s4) var(--s4);
   background: rgba(0, 0, 0, .55); font-family: var(--font); }
 .ue-modal.open { display: flex; }
@@ -66,7 +79,7 @@
 @media (max-width: 760px) {
   :root { --bar-h: 52px; }
   .ue-bar { gap: var(--s2); padding: 0 var(--s4); }
-  .ue-brand span, .ue-chip { display: none; }
+  .ue-brand span, .ue-sat span { display: none; }
   .ue-nav > a, .ue-menu > button { padding: 0 var(--s2); }
   .ue-cta { padding: 0 var(--s3); }
   .ue-drop { left: auto; right: -60px; }

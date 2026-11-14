@@ -1,4 +1,4 @@
-// Shared top bar for every page: brand, Home / Explorer, About menu (info dialogs), repo link.
+// Shared top bar for every page: brand, Home / Story / Explorer, About menu (info dialogs), Satellites in Use (comparison), repo link.
 // Use: <link rel="stylesheet" href="…/css/design.css"> + <script src="…/js/topbar.js" defer></script>, and <body data-page="home|story|explorer">.
 (() => {
   const root = new URL('..', document.currentScript.src);          // the site/ folder, wherever this page lives
@@ -30,6 +30,23 @@
         <li>Map: Leaflet · Font: Inter</li>
       </ul>
       <p>Full list and licences: <a href="${REPO}/blob/main/ACKNOWLEDGMENTS.md" target="_blank" rel="noopener">ACKNOWLEDGMENTS.md ↗</a></p>` },
+    sats: { k: 'Satellites in Use', t: 'Three radars, three jobs', wide: true, b: `
+      <p>Radar sees through cloud, day and night. The wavelength decides what else it sees.</p>
+      <div class="ue-tw"><table class="ue-t">
+        <thead><tr><th></th><th class="hl">NISAR</th><th>RCM</th><th>RADARSAT-1</th></tr></thead>
+        <tbody>
+          <tr><th>Our job</th><td class="hl"><b>Finds the water</b></td><td><b>Checks it</b>, same week</td><td><b>The long record</b></td></tr>
+          <tr><th>Agency</th><td class="hl">NASA + ISRO</td><td>CSA (Canada)</td><td>CSA (Canada)</td></tr>
+          <tr><th>Years</th><td class="hl">2025 →</td><td>2019 →</td><td>1995–2013</td></tr>
+          <tr><th>Satellites</th><td class="hl">1</td><td>3 (constellation)</td><td>1</td></tr>
+          <tr><th>Band</th><td class="hl"><b>L-band</b>, ~24 cm</td><td>C-band, ~5.6 cm</td><td>C-band, ~5.6 cm</td></tr>
+          <tr><th>Under forest</th><td class="hl"><span class="y">Yes</span>: waves pass the leaves, bounce off water</td><td><span class="n">Mostly no</span>: scatter off the canopy</td><td><span class="n">Mostly no</span></td></tr>
+          <tr><th>Repeat</th><td class="hl">12 days</td><td>4 days</td><td>24 days</td></tr>
+          <tr><th>Polarisation</th><td class="hl">HH + HV</td><td>Compact (RH, RV)</td><td>HH</td></tr>
+          <tr><th>What we use</th><td class="hl">L2 GCOV, 80 m grid, Jun–Oct 2026</td><td>CEOS-ARD, Peace–Athabasca</td><td>619 scenes over Peace–Athabasca, 1996–2013</td></tr>
+          <tr><th>Data</th><td class="hl">Open · ASF DAAC</td><td>Open ARD · AWS, EODMS</td><td>Open · EODMS, AWS</td></tr>
+        </tbody></table></div>
+      <p class="ue-note">We compare against optical photos (Landsat, Sentinel-2) and Sentinel-1, the radar behind the official GFM flood map.</p>` },
     team: { k: 'Team', t: 'Smooth Operators', b: `
       <p><b>Roy</b> · <b>Shai</b> · <b>Noa</b></p>
       <p>NASA Space Apps Challenge 2026, Haifa (Technion).</p>
@@ -48,12 +65,13 @@
         <div class="ue-drop" role="menu">
           <button data-i="project">The Project<small>What and why</small></button>
           <button data-i="method">How It Works<small>Data, method, checks</small></button>
+          <button data-i="sats">Satellites in Use<small>NISAR, RCM, RADARSAT-1</small></button>
           <button data-i="data">Data &amp; Credits<small>Sources and licences</small></button>
           <button data-i="team">Team<small>Smooth Operators</small></button>
         </div></div>
     </nav>
     <div class="ue-right">
-      <span class="ue-chip"><b>NISAR</b> · L-band radar</span>
+      <button type="button" class="ue-sat" data-i="sats" title="Compare NISAR, RCM and RADARSAT-1"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 7l4 4M7.5 12.5l4 4M10 10l4 4"/><rect x="9.2" y="9.2" width="5.6" height="5.6" rx="1" transform="rotate(45 12 12)"/><path d="M4.5 9.5l5-5 2 2-5 5zM14.5 19.5l5-5-2-2-5 5zM5 19a4 4 0 0 0 4-4M3 21a8 8 0 0 0 8-8"/></svg><span>Satellites in Use</span></button>
       <a class="ue-cta" href="${REPO}" target="_blank" rel="noopener">GitHub ↗</a>
     </div>`;
   document.body.prepend(bar);
@@ -68,8 +86,10 @@
   const setMenu = on => { menu.classList.toggle('open', on); mbtn.setAttribute('aria-expanded', on); };
   mbtn.onclick = e => { e.stopPropagation(); setMenu(!menu.classList.contains('open')); };
   document.addEventListener('click', () => setMenu(false));
-  menu.querySelectorAll('[data-i]').forEach(b => b.onclick = () => {
+  bar.querySelectorAll('[data-i]').forEach(b => b.onclick = e => {
+    e.stopPropagation();
     const x = INFO[b.dataset.i];
+    card.classList.toggle('wide', !!x.wide);
     card.innerHTML = `<button class="x" aria-label="Close">×</button><div class="k">${x.k}</div><h2>${x.t}</h2>${x.b}`;
     card.querySelector('.x').onclick = close;
     setMenu(false); modal.classList.add('open');
