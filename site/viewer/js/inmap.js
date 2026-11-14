@@ -31,7 +31,7 @@ $('leftcol').appendChild(panel);
 L.DomEvent.disableClickPropagation(panel); L.DomEvent.disableScrollPropagation(panel);
 
 async function openSite(id) {
-  closeSite(true);
+  closeSite('swap');
   const base = `sites/${encodeURIComponent(id)}/`;
   let D; try { D = await (await fetch(base + 'site.json', { cache: 'no-cache' })).json(); } catch (e) { return; }
   const A = n => (D.assets && D.assets[n]) || base + n;
@@ -87,13 +87,15 @@ async function openSite(id) {
   panel.hidden = false;
   map.flyToBounds(B, { paddingTopLeft: [panel.offsetWidth + 70, 30], paddingBottomRight: [30, 30], duration: 1.2 });
   render();
+  window.dispatchEvent(new CustomEvent('unseen:site', { detail: id }));   // sidebar shows only this event (globe.js)
 }
 
 function setOn(keys) { $('spO').querySelectorAll('input').forEach(x => x.checked = keys.includes(x.value)); }
 function closeSite(keepHash) {
   if (timer) togglePlay();
   if (S) { ['base', 'over', 'box', 'mo', 'fr'].forEach(k => S[k] && map.removeLayer(S[k])); (S.layers || []).forEach(l => map.removeLayer(l.ov)); (S.extra || []).forEach(x => map.removeLayer(x)); }
-  S = null; panel.hidden = true;
+  const was = !!S; S = null; panel.hidden = true;
+  if (was && keepHash !== 'swap') window.dispatchEvent(new CustomEvent('unseen:site', { detail: null }));
   if (!keepHash && location.hash.startsWith('#site=')) history.replaceState(null, '', location.pathname + location.search);
 }
 
@@ -196,5 +198,6 @@ addEventListener('keydown', ev => {
 const fromHash = () => { const m = location.hash.match(/^#site=(.+)$/); m ? openSite(decodeURIComponent(m[1])) : closeSite(true); };
 addEventListener('hashchange', fromHash);
 window.openSite = id => { location.hash = 'site=' + encodeURIComponent(id); };
+window.closeSite = () => closeSite(false);
 fromHash();
 })();

@@ -12,6 +12,7 @@ Instructions for every Claude Code session in this repo. Read them and follow th
 - `docs/03-Citation-and-AI.md`: how to credit data, tools and papers, and how to disclose AI use.
 - Flood Explorer plan: `docs/05-Flood-plan.md` (overview, stories, work split), `06-Plan-architecture.md` (serverless, Vercel + GoDaddy),
   `07-Plan-algorithm.md`, `08-Plan-data.md` (sources, bundle contract), `09-Plan-UI.md`. Each ends with its drawbacks.
+- Look and feel (fonts, sizes, colours, top bar): `docs/11-Design.md`. Follow it for every page.
 - Diagrams in docs: use Mermaid code blocks (GitHub renders them). Add one only where a flow or structure is clearer as a picture.
 
 ## What we are building toward
@@ -83,8 +84,9 @@ Current files and folders:
 - `LICENSE`: MIT (our code). NASA data keeps its own terms and credit (see `ACKNOWLEDGMENTS.md`).
 - `ACKNOWLEDGMENTS.md`: third-party data, imagery, software and papers we use, with their licences and credit lines.
 - `pipeline/`: Python package `unseen`, offline: NISAR flood analysis → bundles in `events/`. See `pipeline/README.md`.
-- `site/`: static site pages; `site/landing.html` = the flood film (Leaflet in `site/vendor/`).
-  `site/viewer/` = map viewer (ported from the prep repo; 5 flood sites in `site/viewer/sites/`). The film's Skip button and its end open it.
+- `site/`: static site pages. **Home** = `site/landing.html`, the flood film (Leaflet in `site/vendor/`).
+  **Explorer** = `site/viewer/` map viewer (ported from the prep repo; 5 flood sites in `site/viewer/sites/`). The film's Skip button and its end open it.
+  Every page loads `site/css/design.css` (tokens) and `site/js/topbar.js` (shared top bar). Design rules: `docs/11-Design.md`.
 - `events/`: site bundles written by `pipeline/` (contract: docs/08 §3).
 - `index.html`: the site's entry page (served by Vercel).
 - `.vercelignore`: allowlist of what goes to the site (see Deployment).

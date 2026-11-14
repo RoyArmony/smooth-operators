@@ -51,6 +51,7 @@ Our maps and numbers are derived products, not official NASA products, and not e
 |---|---|
 | asf_search | BSD |
 | Leaflet 1.9 (bundled in `site/vendor/leaflet/`, licence file next to it) | BSD-2-Clause |
+| Inter typeface by Rasmus Andersson (served by Google Fonts) | SIL Open Font License 1.1 |
 | numpy, scipy, h5py, rasterio, shapely | BSD-3-Clause |
 | pyproj | MIT |
 | Pillow | MIT-CMU |

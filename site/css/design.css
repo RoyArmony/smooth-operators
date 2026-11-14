@@ -1,0 +1,72 @@
+/* Unseen Earth design tokens + shared top bar. Spec: docs/11-Design.md. Load first on every page. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  color-scheme: dark;
+  /* type */
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fs-xs: 12px; --fs-sm: 13px; --fs-md: 14px; --fs-lg: 16px; --fs-xl: 20px; --fs-2xl: 24px; --fs-3xl: 32px;
+  --fs-display: clamp(40px, 6vw, 84px);
+  --lh: 1.5; --lh-tight: 1.2;
+  /* colour */
+  --bg: #070a0f; --surface: #0f141b; --surface-2: #161c25; --surface-3: #1e2531;
+  --line: #242c38; --line-2: #333d4b;
+  --text: #e8ecf1; --muted: #9aa4b2; --faint: #6b7480;
+  --accent: #ff9a2e; --accent-hi: #ffb560; --on-accent: #111;
+  --water: #4aa3ff; --danger: #f85149; --ok: #3fb950;
+  /* shape, space, depth */
+  --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-pill: 999px;
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px;
+  --shadow: 0 8px 28px rgba(0, 0, 0, .45);
+  --bar-h: 56px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}
+
+/* ---------- top bar (built by site/js/topbar.js) ---------- */
+.ue-bar { position: fixed; inset: 0 0 auto 0; height: var(--bar-h); z-index: 2000; display: flex; align-items: center; gap: var(--s5);
+  padding: 0 var(--s5); font: 500 var(--fs-md)/1 var(--font); color: var(--text);
+  background: rgba(7, 10, 15, .78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, .07); }
+.ue-bar a { color: inherit; text-decoration: none; }
+.ue-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: var(--fs-lg); letter-spacing: -.01em; white-space: nowrap; }
+.ue-brand img { width: 26px; height: 26px; }
+.ue-nav { display: flex; align-items: center; gap: var(--s1); }
+.ue-nav > a, .ue-menu > button { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 var(--s3); border-radius: var(--r-pill);
+  color: var(--muted); background: none; border: 0; font: inherit; cursor: pointer; transition: color .15s, background .15s; }
+.ue-nav > a:hover, .ue-menu > button:hover, .ue-menu.open > button { color: var(--text); background: rgba(255, 255, 255, .06); }
+.ue-nav > a.on { color: var(--text); background: rgba(255, 255, 255, .1); }
+.ue-menu { position: relative; }
+.ue-menu > button::after { content: ''; width: 6px; height: 6px; border: solid currentColor; border-width: 0 1.5px 1.5px 0; transform: translateY(-2px) rotate(45deg); }
+.ue-drop { position: absolute; top: calc(100% + 8px); left: 0; min-width: 220px; padding: var(--s1); display: none;
+  background: var(--surface-2); border: 1px solid var(--line-2); border-radius: var(--r-md); box-shadow: var(--shadow); }
+.ue-menu.open .ue-drop { display: block; }
+.ue-drop button { display: block; width: 100%; text-align: left; padding: 9px var(--s3); border: 0; border-radius: var(--r-sm); background: none;
+  color: var(--text); font: 500 var(--fs-sm)/1.3 var(--font); cursor: pointer; }
+.ue-drop button small { display: block; color: var(--muted); font-weight: 400; margin-top: 2px; }
+.ue-drop button:hover { background: var(--surface-3); }
+.ue-right { margin-left: auto; display: flex; align-items: center; gap: var(--s3); }
+.ue-chip { font-size: var(--fs-xs); font-weight: 600; letter-spacing: .04em; color: var(--muted); padding: 5px 10px; border: 1px solid var(--line-2); border-radius: var(--r-pill); white-space: nowrap; }
+.ue-chip b { color: var(--accent); font-weight: 700; }
+.ue-cta { height: 34px; display: inline-flex; align-items: center; padding: 0 var(--s4); border-radius: var(--r-pill); background: var(--accent); color: var(--on-accent) !important; font-weight: 700; white-space: nowrap; }
+.ue-cta:hover { background: var(--accent-hi); }
+
+/* ---------- info dialog (About menu) ---------- */
+.ue-modal { position: fixed; inset: 0; z-index: 2100; display: none; align-items: flex-start; justify-content: center; padding: calc(var(--bar-h) + 40px) var(--s4) var(--s4);
+  background: rgba(0, 0, 0, .55); font-family: var(--font); }
+.ue-modal.open { display: flex; }
+.ue-card { width: min(560px, 100%); max-height: calc(100vh - var(--bar-h) - 60px); overflow: auto; background: var(--surface); border: 1px solid var(--line-2);
+  border-radius: var(--r-lg); box-shadow: var(--shadow); padding: var(--s5); color: var(--text); font-size: var(--fs-md); line-height: var(--lh); }
+.ue-card .k { font-size: var(--fs-xs); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+.ue-card h2 { font-size: var(--fs-2xl); line-height: var(--lh-tight); margin: 6px 0 var(--s3); letter-spacing: -.01em; }
+.ue-card p, .ue-card li { color: var(--muted); } .ue-card b { color: var(--text); }
+.ue-card ul { padding-left: 18px; margin: var(--s2) 0; } .ue-card li { margin: 4px 0; }
+.ue-card a { color: var(--water); }
+.ue-card .x { float: right; background: none; border: 0; color: var(--muted); font-size: 22px; line-height: 1; cursor: pointer; }
+
+@media (max-width: 760px) {
+  :root { --bar-h: 52px; }
+  .ue-bar { gap: var(--s2); padding: 0 var(--s4); }
+  .ue-brand span, .ue-chip { display: none; }
+  .ue-nav > a, .ue-menu > button { padding: 0 var(--s2); }
+  .ue-cta { padding: 0 var(--s3); }
+  .ue-drop { left: auto; right: -60px; }
+}

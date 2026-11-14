@@ -86,6 +86,7 @@ All 14 links from the [Resources tab](https://www.spaceappschallenge.org/2026/ch
 - **Python: h5py, numpy, scipy, rasterio, pyproj, shapely, Pillow, matplotlib, requests** — read HDF5 / GeoTIFF, reproject, process, plot, call STAC APIs — https://www.h5py.org (Roy, 31.10.26)
 
 - **Leaflet** (BSD-2) — web map in the landing film — https://leafletjs.com (Shai, 14.11.26)
+- **Inter font via Google Fonts** (SIL OFL 1.1) — site typeface, loaded in `site/css/design.css` — https://fonts.google.com/specimen/Inter (Roy, 14.11.26)
 
 ## AI tools
 

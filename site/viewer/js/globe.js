@@ -64,7 +64,7 @@ async function loadAll() {
   if (seen) ITEMS.forEach(it => { it.isNew = !!(it.e && !seen.includes(it.e.id)); });
   try { localStorage.setItem('unseen_seen', JSON.stringify([...new Set([...(seen || []), ...ids])])); } catch (e) {}
   FEED_CHECKED = E && E.checked;
-  drawMap(wa); renderFeed(); setupSlider();
+  drawMap(wa); renderFeed(); setupSlider(); showFocus(FOCUS);
 }
 // live feed: the server refreshes GDACS every hour (server/app.py --events); poll the file and pull in new events
 let FEED_CHECKED = null;
@@ -214,6 +214,38 @@ function batchBar() {
     renderFeed(); refreshJobs();
   };
 }
+// ---------- focus: a picked event replaces the list in the sidebar; "All events" brings the list back ----------
+let FOCUS = null;
+const focusBox = document.createElement('div'); focusBox.id = 'focus'; focusBox.hidden = true;
+$('feed').before(focusBox);
+const num = v => typeof v === 'number' ? v.toLocaleString('en-GB') : v;
+function showFocus(id) {
+  FOCUS = id || null;
+  const s = FOCUS && (window.UNSEEN_SITES || []).find(x => x.id === FOCUS);
+  document.body.classList.toggle('focused', !!FOCUS);
+  focusBox.hidden = !FOCUS;
+  if (!FOCUS) return;
+  const t = s ? siteType(s) : 'SITE', st = (s && s.stack) || {}, h = s && s.headline;
+  focusBox.innerHTML = `<button class="fback" type="button">← All events</button>`
+    + (!s ? '<div class="sub">Loading…</div>' : `<div class="fcard">
+      <div class="eyebrow">${ICON[t] || ''} ${s.kind || EVT[t] || 'Event'}</div>
+      <h2>${s.title}</h2>
+      <div class="sub">${s.n_dates} NISAR passes · ${fmtDate(s.first)} → ${fmtDate(s.last)}</div>
+      ${h ? `<div class="hero"><b>${num(h[1])} <small>${h[2]}</small></b><span>${h[0]}</span></div>` : ''}
+      <div class="stats">
+        ${s.max_hidden_by_clouds != null ? `<div><b>${Math.round(s.max_hidden_by_clouds * 100)}%</b><span>most hidden by cloud (one pass)</span></div>` : ''}
+        ${st.track ? `<div><b>${st.track} / ${st.frame}</b><span>NISAR track / frame, ${st.direction || ''}</span></div>` : ''}
+      </div></div>
+      <div class="fhint">Step through the passes and switch Map / Photo / Radar in the panel on the map.</div>`);
+  focusBox.querySelector('.fback').onclick = () => {
+    window.closeSite && window.closeSite();
+    const all = (window.UNSEEN_SITES || []).map(x => [[x.bbox[1], x.bbox[0]], [x.bbox[3], x.bbox[2]]]).flat();
+    if (all.length) map.flyToBounds(L.latLngBounds(all), { padding: [60, 60], maxZoom: 4, duration: 1.2 });
+  };
+  focusBox.scrollTop = 0;
+}
+window.addEventListener('unseen:site', e => showFocus(e.detail));
+
 function flyTo(it) {
   const z = it.site ? Math.min(9, map.getBoundsZoom(L.latLngBounds([[it.site.bbox[1], it.site.bbox[0]], [it.site.bbox[3], it.site.bbox[2]]]))) : 8;
   map.flyTo([it.lat, it.lon], z, { duration: 1.4 });

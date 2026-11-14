@@ -3,24 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Unseen Earth — what NISAR sees that optical satellites miss</title>
+<title>Unseen Earth</title>
+<link rel="stylesheet" href="../css/design.css">
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
 <link rel="stylesheet" href="css/style.css">
 <link rel="icon" type="image/svg+xml" href="../favicon.svg">
 <style>#chips, #q, #mode, #static, #batch { display: none !important; }</style>
 <script src="vendor/leaflet/leaflet.js"></script>
 <script src="js/config.js"></script>
+<script src="../js/topbar.js" defer></script>
 </head>
-<body>
+<body data-page="explorer">
 <div id="app">
   <div id="leftcol">
     <div id="map"></div>
     <div id="tbar"><button id="tplay" title="Play through time">▶</button><div id="trange" title="Drag the two handles to set the time range"><canvas id="thist"></canvas><div id="ttrack"></div><div id="tfill"></div><input id="tlo" type="range" min="0" value="0" aria-label="Start date"><input id="thi" type="range" min="0" value="0" aria-label="End date"></div><span id="tlabel" class="sub"></span><button id="tall">All time</button></div>
   </div>
   <aside>
-    <h1>Unseen Earth</h1>
-    <div class="sub"><a href="../landing.html">▶ Watch the intro film</a></div>
-    <div class="sub">Flood water NISAR's L-band radar sees where other satellites can't.
+    <div id="listhead"><div class="eyebrow">Explorer</div><h1>Flood events</h1>
+    <div class="sub">Flood water NISAR's L-band radar sees where other satellites can't. Pick one.</div></div>
+    <div class="sub" hidden>
       <span id="mode" class="badge" hidden>checking server…</span></div>
 
     <input id="q" hidden type="search" placeholder="Search: place, type, month… (e.g. flod nepal, aug)" autocomplete="off">

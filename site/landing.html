@@ -5,11 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Unseen Earth</title>
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="css/design.css">
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<script src="js/topbar.js" defer></script>
 <script src="vendor/leaflet/leaflet.js"></script>
 <style>
-  :root { --o: #ff9a2e; --t: #f2f4f7; --d: #9aa4b2; }
-  html, body { margin: 0; height: 100%; background: #05070b; color: var(--t); font-family: Inter, "Segoe UI", system-ui, sans-serif; overflow: hidden; }
+  :root { --o: var(--accent); --t: var(--text); --d: var(--muted); }  /* tokens: css/design.css */
+  html, body { margin: 0; height: 100%; background: #05070b; color: var(--t); font-family: var(--font); -webkit-font-smoothing: antialiased; overflow: hidden; }
   #map { position: fixed; inset: 0; background: #0c1f2e; }
   .leaflet-image-layer { transition: opacity .9s ease; }
   .leaflet-tile-pane { transition: filter 1.2s ease; }
@@ -32,7 +34,7 @@
   .fade.in { opacity: 1; }
   #lg { position: fixed; right: 3vw; bottom: 64px; font-size: 13px; color: var(--d); display: flex; gap: 14px; align-items: center; }
   #lg span { display: inline-block; width: 90px; height: 10px; border-radius: 5px; background: linear-gradient(90deg, #2020ff, #fff, #ff2020); vertical-align: middle; margin: 0 6px; }
-  #tag { position: fixed; right: 3vw; top: 22px; font-size: 13px; color: var(--d); background: rgba(0,0,0,.45); padding: 6px 10px; border-radius: 6px; }
+  #tag { position: fixed; right: 3vw; top: calc(var(--bar-h) + 16px); font-size: 13px; color: var(--d); background: rgba(0,0,0,.45); padding: 6px 10px; border-radius: 6px; }
   .lab { color: #fff; font: 700 15px/1 Inter, system-ui, sans-serif; text-shadow: 0 1px 4px #000; white-space: nowrap; }
   .pulse { width: 14px; height: 14px; border-radius: 50%; background: #ff3b30; box-shadow: 0 0 0 0 rgba(255,59,48,.7); animation: p 1.6s infinite; }
   @keyframes p { to { box-shadow: 0 0 0 28px rgba(255,59,48,0); } }
@@ -49,7 +51,7 @@
   .rdl.l { left: auto; right: 18px; text-align: right; } .rdl.rb { top: 10px; } .rdl.t { top: -58px; left: -10px; }
   body.wv #txt { left: 31vw; right: auto; top: auto; bottom: 70px; transform: none; max-width: 52vw; background: rgba(5,7,11,.72); padding: 12px 18px; border-radius: 10px; }
   body.wv #txt h1 { font-size: clamp(16px, 1.45vw, 22px); }
-  body.wv #lg { top: 70px; bottom: auto; }
+  body.wv #lg { top: calc(var(--bar-h) + 60px); bottom: auto; }
   .rdl { background: rgba(5,7,11,.6); padding: 3px 6px; border-radius: 5px; }
   body.wv #veil { opacity: 0; } #veil { transition: opacity 1s; }
   .rdl { color: #fff; font: 600 12px/1 Inter, system-ui, sans-serif; text-shadow: 0 1px 3px #000; white-space: nowrap; margin: -4px 0 0 14px; }
@@ -70,7 +72,7 @@
   #wm { position: fixed; right: 14px; bottom: 62px; z-index: 3; font: 600 11px Inter, system-ui, sans-serif; color: #fff; background: rgba(0,0,0,.55); padding: 3px 8px; border-radius: 4px; opacity: 0; transition: opacity 1s; }
   body.vid #vid.ok ~ #wm { opacity: .9; }
   #map { z-index: 0; } #veil { z-index: 2; } #txt, #tag, #lg, #ctl, #bar, #end { z-index: 3; }
-  #skip { position: fixed; top: 18px; left: 50%; transform: translateX(-50%); z-index: 5; font: 700 17px Inter, system-ui, sans-serif; color: #111; text-decoration: none; background: #ff9a2e; padding: 12px 26px; border-radius: 999px; box-shadow: 0 4px 22px rgba(0,0,0,.5); letter-spacing: .2px; }
+  #skip { position: fixed; top: calc(var(--bar-h) + 16px); left: 50%; transform: translateX(-50%); z-index: 5; font: 700 17px Inter, system-ui, sans-serif; color: #111; text-decoration: none; background: #ff9a2e; padding: 12px 26px; border-radius: 999px; box-shadow: 0 4px 22px rgba(0,0,0,.5); letter-spacing: .2px; }
   #skip:hover { background: #ffb560; }
   #end { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle, rgba(5,7,11,.6), rgba(5,7,11,.95)); pointer-events: none; opacity: 0; transition: opacity 1s; }
   #end.in { opacity: 1; pointer-events: auto; }
@@ -83,7 +85,7 @@
   @media (max-width: 760px) { #txt { max-width: 80vw; top: 18%; transform: none; } #veil { background: linear-gradient(180deg, rgba(5,7,11,.9), rgba(5,7,11,0) 55%); } }
 </style>
 </head>
-<body class="dim">
+<body class="dim" data-page="home">
 <div id="map"></div>
 <video id="vid" muted loop playsinline preload="auto"></video><div id="wm">Video: Tonlé Sap, Cambodia · Pierre André Leclercq, CC BY-SA 4.0 (Wikimedia Commons)</div>
 <div id="veil"></div>
@@ -92,7 +94,7 @@
 <div id="lg" class="fade"></div>
 <div id="ctl"><button id="pv" title="Previous (←)">‹</button><button id="pp" title="Pause / play (space)">❚❚</button><button id="nx" title="Next (→)">›</button><span id="sd"></span></div>
 <div id="bar"></div>
-<a id="skip" href="viewer/index.html">Skip intro · open the map →</a>
+<a id="skip" href="viewer/index.html">Skip intro · open the Explorer →</a>
 <style>
   #lg { flex-direction: column; align-items: flex-start; gap: 6px; background: rgba(0,0,0,.45); padding: 10px 12px; border-radius: 8px; }
   #lg div { display: flex; align-items: center; gap: 8px; } #lg i { width: 16px; height: 12px; border-radius: 3px; display: inline-block; }
