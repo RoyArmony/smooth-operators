@@ -18,6 +18,7 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 | **ASI** | Agenzia Spaziale Italiana | Italian space agency. |
 | **AWS** | Amazon Web Services | Cloud provider. NASA Earthdata Cloud, RADARSAT-1, RCM and the Copernicus DEM are hosted there. |
 | **CC BY** | Creative Commons Attribution | Open licence: reuse freely with credit. `-NC-SA` adds non-commercial and share-alike. |
+| **CDAWeb** | Coordinated Data Analysis Web (NASA) | NASA space-physics data service; we read Kp / Dst storm indices from it. |
 | **CDN** | Content Delivery Network | Servers around the world that serve our static site fast (Vercel provides it). |
 | **CEOS** | Committee on Earth Observation Satellites | International body of space agencies; sets the ARD standard (CEOS-ARD). |
 | **CF** | Climate and Forecast conventions | The netCDF/HDF5 metadata standard that NISAR follows. |
@@ -42,6 +43,7 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 | **EPSG** | European Petroleum Survey Group (code) | Catalog numbers for coordinate systems: 4326 = lat/lon, 3857 = Web Mercator, 32636 = UTM 36N. |
 | **ESA** | European Space Agency | Runs Sentinel-1 and the Copernicus DEM (with the EU). |
 | **GCOV** | Geocoded Polarimetric Covariance | NISAR L2 "brightness" product: terrain-corrected backscatter (HH, HV), 20 m. |
+| **GCP** | Ground Control Point | A point with known coordinates used to align an image to the map. |
 | **GDACS** | Global Disaster Alert and Coordination System | UN + EU disaster alert feed (quakes, floods, volcanoes, fires, cyclones) with a free API. |
 | **GDAL** | Geospatial Data Abstraction Library | Open-source tools for reading, converting and reprojecting rasters. |
 | **GFM** | Global Flood Monitoring | Copernicus EMS service: automatic Sentinel-1 flood maps worldwide. |
@@ -50,9 +52,11 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 | **GloFAS** | Global Flood Awareness System | Copernicus global flood service; its satellite flood map is GFM. The official map we add NISAR to. |
 | **GRD** | Ground Range Detected | A common SAR product type (amplitude only). |
 | **GUNW** | Geocoded Unwrapped Interferogram | NISAR L2 ground-motion pair: phase change between two dates + coherence. |
+| **HAPI** | Heliophysics Application Programmer's Interface | Standard API that CDAWeb uses to serve time series. |
 | **HDF5** | Hierarchical Data Format v5 | The file format of NISAR products (`.h5`): a folder tree inside one file. |
 | **HH / HV / VV** | Polarizations (send / receive: Horizontal, Vertical) | HH and VV react to surfaces and water; HV to volume (vegetation). |
 | **HLS** | Harmonized Landsat Sentinel-2 | NASA's combined optical product (30 m, true color). |
+| **HR** | High Rate (SWOT) | SWOT's high-resolution data stream over land and lakes, e.g. the LakeSP product. |
 | **HTTPS** | Hypertext Transfer Protocol Secure | Encrypted web; Vercel gives our domain a certificate automatically. |
 | **InSAR** | Interferometric SAR | Comparing the phase of two SAR images to measure ground motion. |
 | **IoU** | Intersection over Union | Overlap between two maps (0–1): shared area ÷ combined area. A standard mask-accuracy measure. |
@@ -69,9 +73,12 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 | **LANCE** | Land, Atmosphere Near real-time Capability for Earth observation | NASA near-real-time service; publishes the MODIS/VIIRS global flood products. |
 | **LLM** | Large Language Model | An AI model like Claude. |
 | **LOS** | Line Of Sight | The direction from the satellite to the ground. InSAR measures motion along it. |
+| **LP DAAC** | Land Processes DAAC (NASA/USGS) | NASA archive for land data, e.g. HLS optical. |
+| **MERRA-2** | Modern-Era Retrospective analysis for Research and Applications, v2 | NASA weather reanalysis; source of NASA POWER rain and temperature. |
 | **MODIS** | Moderate Resolution Imaging Spectroradiometer | NASA optical sensor on Terra/Aqua; many GIBS layers come from it. |
 | **MVP** | Minimum Viable Product | The smallest demoable version of our app. |
 | **NASA** | National Aeronautics and Space Administration | US space agency; NISAR partner; runs Space Apps. |
+| **NASS** | National Agricultural Statistics Service (USDA) | Publishes US crop progress and field boundaries. |
 | **NHESS** | Natural Hazards and Earth System Sciences | Open-access EGU journal (landslides, floods). |
 | **NISAR** | NASA-ISRO Synthetic Aperture Radar | The satellite of our challenge: L-band + S-band radar, launched 2025, repeats every 12 days. |
 | **OCHA** | UN Office for the Coordination of Humanitarian Affairs | Co-runs GDACS. |
@@ -82,6 +89,7 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 | **PALSAR** | Phased Array type L-band SAR | The L-band radar on JAXA's ALOS (2006–2011, free at ASF). |
 | **PNG** | Portable Network Graphics | Image format of our map layers (with transparency). |
 | **PO.DAAC** | Physical Oceanography DAAC | NASA DAAC for ocean and surface-water data (OPERA DSWx, SWOT). |
+| **POWER** | Prediction Of Worldwide Energy Resources (NASA) | Free NASA API for daily weather at any point, no login. |
 | **QGIS** | Quantum GIS | Free desktop GIS. Opens GeoTIFFs and (≥ 4.2) NISAR `.h5` files. |
 | **RCM** | RADARSAT Constellation Mission | Canada's three C-band SAR satellites (CSA). |
 | **RGB** | Red, Green, Blue | Color channels; radar composites map polarizations to them. |
@@ -98,6 +106,8 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 | **SWOT** | Surface Water and Ocean Topography | NASA / CNES satellite (with CSA and the UK Space Agency) that measures water levels of lakes, rivers and the sea. |
 | **UAVSAR** | Uninhabited Aerial Vehicle Synthetic Aperture Radar | NASA/JPL airborne L-band radar (since 2009); NISAR's test bed. |
 | **UI / UX** | User Interface / User Experience | What the user sees / how it feels to use. |
+| **USDA** | United States Department of Agriculture | Parent of NASS. |
 | **USGS** | United States Geological Survey | US science agency; runs the EDEN Everglades water-level network we validate against. |
 | **VIIRS** | Visible Infrared Imaging Radiometer Suite | NASA/NOAA optical sensor; daily true-color imagery in GIBS. |
 | **WMO** | World Meteorological Organization | UN agency for weather and climate; runs OSCAR. |
+| **WMTS** | Web Map Tile Service | Standard for serving map tiles, e.g. NASA GIBS. |
