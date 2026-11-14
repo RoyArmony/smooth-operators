@@ -1,6 +1,6 @@
 # 09 · Plan: UI design
 
-**Noa, 14.11.26 18:19:10 says:** screens of the Flood Explorer. Overview: [05](05-Flood-plan.md). Rule (Shai): keep the user on
+Screens of the Flood Explorer. Overview: [05](05-Flood-plan.md). Rule: keep the user on
 the map; short text; detail only on request.
 
 ## 1. Flow
@@ -88,16 +88,15 @@ Sources & credits. Text from `methods.md` + `science.md` (markdown, written by R
 
 ## 7. Tech
 
-- **Leaflet** (copy from the shadow repo into `site/vendor/leaflet`, with its LICENSE), `L.imageOverlay` for PNG layers, a small swipe control, no build step.
-- Basemap: light open tiles (as in the films) + HLS photo from NASA GIBS.
-- Reuse from the shadow repo: `web/js/inmap.js` (date slider, overlays) and `web/landing-flood.html` (film).
+- **Leaflet** (in `site/vendor/leaflet`, with its LICENSE), `L.imageOverlay` for PNG layers, a small swipe control, no build step.
+- Basemap: light open tiles + HLS photo from NASA GIBS.
 - Must work on a laptop projector and on a phone (judges open the link on phones).
 
 ## 8. Drawbacks
 
-- **Leaflet is 2D and raster-only;** no smooth 3D globe like the films' globe.gl, and many large PNG overlays can stutter on phones. Preload the next pass, keep PNGs small.
+- **Leaflet is 2D and raster-only;** no smooth 3D globe, and many large PNG overlays can stutter on phones. Preload the next pass, keep PNGs small.
 - **Image overlays don't reproject** — fine in Web Mercator for small boxes, distorted for very large or high-latitude boxes (Peace–Athabasca at 58° N is OK; a continent is not).
-- **Legends must stay honest:** grey "cannot see" is GFM's own mask; orange is our claim. Mixing colours with overlap can confuse; no overlap colour (Shai already dropped it in the film).
+- **Legends must stay honest:** grey "cannot see" is GFM's own mask; orange is our claim. Mixing colours with overlap can confuse; use no overlap colour.
 - **HLS photo is not same-day** for every pass; show its date or it misleads.
 - **Science drawer can become a wall of text.** Keep each tab one screen; link to docs for more.
 - **Accessibility:** blue / orange is colour-blind friendly; grey on a light basemap is weak, so add a hatch pattern.

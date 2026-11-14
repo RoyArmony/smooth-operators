@@ -1,7 +1,6 @@
 # 07 · Plan: algorithm
 
-**Noa, 14.11.26 18:19:10 says:** what the pipeline computes for each flood and how we check it. Existing method details:
-shadow repo `docs/17-Detection-method.md`, `docs/20-Flood-method.md`; results and audit: shadow repo `docs/26-Edge-and-validation.md`.
+What the pipeline computes for each flood and how we check it. Results and their audit lines: `docs/10-Results.md` (created with the first number).
 Overview: [05](05-Flood-plan.md). Owner: Noa (method, validation); story owners run it (Roy: Peace–Athabasca, RCM, RADARSAT-1 · Noa: Inner Niger · Shai: Tonle Sap).
 
 ## 1. Steps per event
@@ -18,7 +17,7 @@ flowchart TB
   H --> I[8 · export bundle]
 ```
 
-## 2. Detector (exists in the shadow repo: `pipeline/unseen/detect.py`, v2)
+## 2. Detector (`pipeline/unseen/detect.py`)
 
 | Rule | What | Physics |
 |---|---|---|
@@ -28,7 +27,7 @@ flowchart TB
 | Flooded vegetation | HH up ≥ 3 dB with HV steady (< 1.5 dB), next to water | **double bounce**: water + trunks |
 | Permanent water | open on ≥ 90% of passes | removed: lake core, sea |
 
-## 3. Gap vs official map (exists: `pipeline/unseen/gfm.py`, `scripts/validation/gap_all.py`, in the shadow repo; to copy)
+## 3. Gap vs official map (`pipeline/unseen/gfm.py`, `scripts/validation/gap_all.py`)
 
 - GFM `ensemble_flood_extent` and `exclusion_mask` within ±2 days, nearest-neighbour onto the NISAR grid.
 - **adds = NISAR_water ∩ GFM_excluded ∩ valid(both)**
@@ -43,7 +42,7 @@ flowchart TB
 |---|---|---|
 | RCM same week (Peace–Athabasca) | RCM water = RL below midpoint of water/land medians; IoU with NISAR water | 79% agree, IoU 0.65 |
 | RCM flooded vegetation | RR−RL above the 90th pct of dry vegetation where NISAR says flooded veg | ~4× chance |
-| RCM polarimetry (Site C) | m-χ: surface vs double vs volume | NISAR-only water is 84% surface scattering |
+| RCM polarimetry | m-χ: surface vs double vs volume | NISAR-only water is 84% surface scattering |
 | EDEN gauges (Everglades) | depth > 5 cm = wet; precision / recall per pass | precision 0.95–1.00, recall ≤ 0.35 |
 | Plausibility (Tonle Sap) | wet % of the added area per pass; elevation; land cover | 0% Jun → 100% Oct |
 | Agreement with GFM where it sees | NISAR vs GFM flood | 85% |

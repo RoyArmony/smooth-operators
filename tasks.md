@@ -11,7 +11,7 @@ P0 = must, P1 = should, P2 = nice. Times are Israel time. Sync points: **Fri 20:
 ### All three
 - [ ] [All] Fri 19:00 — agree the plan; decide story order, GoDaddy owner, new folders (`site/`, `events/`, `pipeline/`, `scripts/`), story 2 (Inner Niger or Mekong) (docs/05 §6)
 - [ ] [All] Fri 20:30 — freeze bundle contract v1 (docs/08 §3); after this only add optional fields
-- [ ] [All] Every number we show gets an audit line in shadow docs/26 (script, input, date)
+- [ ] [All] Every number we show gets an audit line in `docs/10-Results.md` (script, input, date)
 - [ ] [All] Sat 13:00 — feature freeze; only fixes after this
 - [ ] [All] Sat 15:00 — full run-through of the demo on the GoDaddy domain, on a laptop and a phone
 
@@ -19,7 +19,7 @@ P0 = must, P1 = should, P2 = nice. Times are Israel time. Sync points: **Fri 20:
 - [ ] [Roy] P0 Fri 20:00 — `.vercelignore`: add `!site/` and `!events/`; check a preview deploy
 - [ ] [Roy] P0 Fri 20:00 — GoDaddy DNS: A `@` → Vercel IP, CNAME `www` → Vercel; remove parked record
 - [ ] [Roy] P0 Fri 20:30 — `events/schema.json` + `scripts/check_bundle.py` (schema, files exist, PNG ≤ 2048 px, total < 20 MB)
-- [ ] [Roy] P0 Fri 20:30 — mock bundles from shadow `web/story/tonlesap` and `web/story/canada` so the site can be built before real data
+- [ ] [Roy] P0 Fri 20:30 — mock bundles (placeholder layers for 2 stories) so the site can be built before real data
 - [ ] [Roy] P0 Fri 23:00 — app skeleton: one page, Leaflet map, world view with dots from `index.json`, hash routing `#e=<id>&t=<date>`
 - [ ] [Roy] P0 Sat 01:00 — event view: fly to box, default layers, 3 numbers + sentence + badge from `event.json`, back button / Esc
 - [ ] [Roy] P0 Sat 09:00 — layers panel: groups, on/off, opacity, legend, sensor + date + source link
@@ -32,27 +32,27 @@ P0 = must, P1 = should, P2 = nice. Times are Israel time. Sync points: **Fri 20:
 - [ ] [Roy] Sat 21:00 — submission: Final Project Link; check it went through
 
 ### Noa — science and algorithm
-- [ ] [Noa] P0 Fri 22:00 — pick one fixed date per story (no best pass) with each story owner; record in shadow docs/26
+- [ ] [Noa] P0 Fri 22:00 — pick one fixed date per story (no best pass) with each story owner; record in `docs/10-Results.md`
 - [ ] [Noa] P0 Fri 23:00 — one shared method for all stories: detector settings, GFM ±2 d match, `adds = NISAR ∩ GFM excluded ∩ valid`, area = pixels × 80 m × 80 m (docs/07)
 - [ ] [Noa] P1 Sat 10:00 — combined map layer (GFM flood ∪ NISAR adds), same code for every story
 - [ ] [Noa] P0 Sat 10:00 — `events/methods.md`: pipeline, detector rules, equations, physics (dark water, double bounce)
 - [ ] [Noa] P0 Sat 11:00 — validation page: EDEN table, RCM agreement, plausibility (wet % over time), GFM agreement; one screen
 - [ ] [Noa] P0 Sat 12:00 — limits text: lower bounds, best-pass vs fixed date, no forest ground truth, provisional products
-- [ ] [Noa] Sat 14:00 — audit all app numbers against shadow docs/26; fix what the app reveals
+- [ ] [Noa] Sat 14:00 — audit all app numbers against `docs/10-Results.md`; fix what the app reveals
 - [ ] [Noa] Sat 20:00 — submission: Project Details (how it works, tools, limitations) + Data & AI Disclosure
 
 ### Shai — data pipeline, bundles and pitch
-- [ ] [Shai] P0 Fri 23:00 — copy `pipeline/unseen` from the shadow repo; `pipeline/unseen/bundle.py`: GeoTIFF/stats → `events/<id>/` (PNG layers + `event.json`), passes `check_bundle.py`
+- [ ] [Shai] P0 Fri 23:00 — `pipeline/unseen/bundle.py`: GeoTIFF/stats → `events/<id>/` (PNG layers + `event.json`), passes `check_bundle.py`
 - [ ] [Shai] P0 Sat 00:30 — world bundle: 16 floods, km² added per site, +43% total, labelled "best pass" (`index.json`)
 - [ ] [Shai] P1 Sat 11:00 — per-pass stats in `timeline` (wet %, km²) for the play button, all stories
 - [ ] [Shai] P2 — people in the added area (WorldPop) and land-cover split as context layers
 - [ ] [Shai] P2 — daily live job (GitHub Action): GDACS floods → NISAR pass → bundle → commit; Earthdata secret in Actions secrets
 - [ ] [Shai] P0 Sat 17:00 — 7-slide deck (problem → NASA data → method → result → validation → CSA → impact)
 - [ ] [Shai] P0 Sat 18:00 — deck emailed to the Haifa organizers
-- [ ] [Shai] Sat 20:00 — submission: High-Level Summary and References (from docs/05, logbook, `ACKNOWLEDGMENTS.md`)
+- [ ] [Shai] Sat 20:00 — submission: High-Level Summary and References (from `docs/04`, `ACKNOWLEDGMENTS.md`, git history)
 
 ### One flood story each (owner makes the bundle + `science.md` for it)
 Each owner runs the shared method (Noa) through `bundle.py` (Shai) and checks it in the site (Roy).
-- [ ] [Roy] **Peace–Athabasca Delta, Canada** (CSA): P0 Fri 20:00 RADARSAT-1 coverage check first (none → Site C as then/now) · P0 Sat 01:00 NISAR + RCM same week + agreement layer, 79% / IoU · P1 RADARSAT-1 then layer · P1 verify CSA credit lines in `ACKNOWLEDGMENTS.md`
+- [ ] [Roy] **Peace–Athabasca Delta, Canada** (CSA): P0 Fri 20:00 RADARSAT-1 coverage check first (none → pick another Canadian site with RADARSAT-1 + RCM + NISAR) · P0 Sat 01:00 NISAR + RCM same week + agreement layer, 79% / IoU · P1 RADARSAT-1 then layer · P1 verify CSA credit lines in `ACKNOWLEDGMENTS.md`
 - [ ] [Noa] **Inner Niger Delta, Mali** (or Mekong, Vietnam): P0 Sat 09:00 GFM flood, "cannot see", NISAR adds, photo; passes Jul–Oct · `science.md`
 - [ ] [Shai] **Tonle Sap, Cambodia**: P0 Sat 01:00 GFM flood, "cannot see", NISAR adds, DSWx-S1, photo; passes Jun–Oct · `science.md`

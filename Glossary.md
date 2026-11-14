@@ -94,10 +94,10 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 | **SLC** | Single Look Complex | A full-resolution SAR image that keeps amplitude and phase. |
 | **SME** | Subject Matter Expert | NASA experts who answer questions on Space Apps Connect. |
 | **SME2** | Soil Moisture (NISAR L3 product) | Soil moisture of the top ~5 cm, 200 m. |
-| **STAC** | SpatioTemporal Asset Catalog | A standard way to search satellite data by area and date. The Bhoonidhi API uses it. |
+| **STAC** | SpatioTemporal Asset Catalog | A standard way to search satellite data by area and date (GFM, RCM catalogues). |
 | **SWOT** | Surface Water and Ocean Topography | NASA / CNES satellite (with CSA and the UK Space Agency) that measures water levels of lakes, rivers and the sea. |
 | **UAVSAR** | Uninhabited Aerial Vehicle Synthetic Aperture Radar | NASA/JPL airborne L-band radar (since 2009); NISAR's test bed. |
 | **UI / UX** | User Interface / User Experience | What the user sees / how it feels to use. |
-| **USGS** | United States Geological Survey | Runs the global earthquake feed (ComCat) used by several apps. |
+| **USGS** | United States Geological Survey | US science agency; runs the EDEN Everglades water-level network we validate against. |
 | **VIIRS** | Visible Infrared Imaging Radiometer Suite | NASA/NOAA optical sensor; daily true-color imagery in GIBS. |
 | **WMO** | World Meteorological Organization | UN agency for weather and climate; runs OSCAR. |

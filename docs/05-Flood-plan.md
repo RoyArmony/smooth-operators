@@ -1,9 +1,6 @@
 # 05 · Flood Explorer: plan overview
 
-**Noa, 14.11.26 18:09:14 says:** plan for the hackathon build (with Claude). Builds on Shai's flood work in
-shadow repo `docs/26-Edge-and-validation.md` (GFM gap, +43%, RCM 79%) and Roy's three-radar test at Site C.
-**Noa, 14.11.26 18:19:10 says:** update: serverless site (Vercel → GoDaddy domain), the app opens on the world view (not Tonle Sap),
-plan split into pages.
+Plan for the hackathon build: serverless site (Vercel, shown on our GoDaddy domain); the app opens on the world view.
 
 | Page | What |
 |---|---|
@@ -34,8 +31,7 @@ Each page ends with **Drawbacks**: what is weak, and what we do about it.
 ## 2. Order of the story (first view = the world, not one site)
 
 The app and the pitch open on the **global problem**: a world map of 16 floods, each official map's blank in grey,
-and one number: **+43%**. Then the stories. (Matches Shai's updated film, which also starts from the global maps and their
-blanks.)
+and one number: **+43%**. Then the stories.
 
 | # | Story | Now (2026) | Over time | Checked by |
 |---|---|---|---|---|
@@ -52,8 +48,8 @@ flood. Tonle Sap stays the strongest number but is not the opener. Team can stil
 
 ## 3. Work split
 
-**Noa, 14.11.26 18:32:52 says:** update: Roy = site and integration, Noa = science and algorithm, Shai = data pipeline,
-bundles and pitch. **Each of us also owns one flood story** end to end. Task list: `tasks.md` → Flood Explorer build.
+Roy = site and integration, Noa = science and algorithm, Shai = data pipeline, bundles and pitch.
+**Each of us also owns one flood story** end to end. Task list: `tasks.md` → Flood Explorer build.
 
 | | **Roy** (site + integration) | **Noa** (science + algorithm) | **Shai** (data pipeline + pitch) |
 |---|---|---|---|
@@ -84,10 +80,10 @@ Sync points: 20:30 contract freeze, 01:00 first real bundle live on vercel.app, 
 ## 5. Drawbacks of the whole plan
 
 - **Not live analysis.** Serverless means results are computed before, offline. A user can't draw a new area and get a NISAR answer on the site. We show "processed" events plus a daily job. ([06](06-Plan-architecture.md))
-- **The detector is not ours long-term.** NASA's DSWx-NI will publish NISAR water maps. Our lasting value is the gap vs official maps and the checks. ((shadow repo docs/26 §2))
+- **The detector is not ours long-term.** NASA's DSWx-NI will publish NISAR water maps. Our lasting value is the gap vs official maps and the checks.)
 - **Numbers are lower bounds** (low recall in marsh) and **forest extent has no ground truth yet**. ([07](07-Plan-algorithm.md))
 - **Validation sites ≠ headline sites.** RCM never imaged Tonle Sap; the 79% is from Canada's marsh, not from flooded forest.
-- **Tight time:** ~28 h left, three people. The flood film (shadow repo `web/landing-flood.html`) is the fallback demo.
+- **Tight time:** ~28 h left, three people. A 30 s screen recording is the fallback demo.
 - **Two hosts, two accounts** (Vercel + GoDaddy): one more thing that can break on demo day. Test the domain Saturday morning.
 
 ## 6. Decisions for the team
@@ -95,5 +91,5 @@ Sync points: 20:30 contract freeze, 01:00 first real bundle live on vercel.app, 
 1. Story order: Peace–Athabasca first (recommended, CSA + validation) or Tonle Sap first after the world view.
 2. Map library: keep **Leaflet** (recommended) vs MapLibre GL ([09](09-Plan-UI.md)).
 3. Commit curated bundles in `events/` (< 20 MB) so the serverless site has its data ([08](08-Plan-data.md)).
-4. GoDaddy domain owner (Vercel already deploys this repo) and the new folders `site/`, `events/`, `pipeline/`, `scripts/` ([06 §3b](06-Plan-architecture.md)).
+4. GoDaddy domain owner and the new folders `site/`, `events/`, `pipeline/`, `scripts/` ([06 §3b](06-Plan-architecture.md)).
 5. Story 2: Inner Niger (bigger gain) or Mekong (farms, people).

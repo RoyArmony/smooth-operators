@@ -1,6 +1,6 @@
 # 08 · Plan: data
 
-**Noa, 14.11.26 18:19:10 says:** which data we use, how it reaches the site, and the bundle contract everyone codes against.
+Which data we use, how it reaches the site, and the bundle contract everyone codes against.
 Overview: [05](05-Flood-plan.md). Full source list: [04](04-Sources-and-tools.md); credits: `ACKNOWLEDGMENTS.md`.
 
 ## 1. Sources
@@ -15,7 +15,7 @@ Overview: [05](05-Flood-plan.md). Full source list: [04](04-Sources-and-tools.md
 | HLS true colour | the photo layer | optical | NASA GIBS tiles (browser) | `site/` |
 | **CSA RCM** ARD | validation, now | C-band compact-pol, 20 m | AWS `rcm-ceos-ard` | `rcm.py` |
 | **CSA RADARSAT-1** | then (1996–2013) | C-band | AWS `radarsat-r1-l1-cog` | to build (Roy) |
-| USGS EDEN | ground truth | gauges → 400 m | USGS | `scripts/validation/eden_*.py` (shadow) |
+| USGS EDEN | ground truth | gauges → 400 m | USGS | `scripts/validation/eden_*.py` |
 | WorldCover, WorldPop, Copernicus DEM | context | 10–90 m | open | `landcover.py`, `population.py`, `dem.py` |
 | GDACS | event list | – | open RSS/API | `events.py` |
 | ALOS PALSAR (optional) | L-band then (2006–11) | L-band | ASF | P2 |
@@ -77,12 +77,12 @@ events/
 }
 ```
 
-(Values 0 and the bbox are placeholders until Roy's bundle exists.)
+(Values 0 and the bbox are placeholders until the Peace–Athabasca bundle exists.)
 
 Rules:
 - Layer groups: `base`, `radar`, `official`, `result`, `validation`, `context`. Layer ids from a fixed list ([09](09-Plan-UI.md)).
 - Every number in the UI comes from `event.json`, written by the pipeline. No numbers typed in HTML.
-- Each number has an audit line in shadow repo `docs/26-Edge-and-validation.md`.
+- Each number has an audit line (script, input, date) in `docs/10-Results.md`.
 - `scripts/check_bundle.py` validates schema, file existence, PNG size, total size. Run before every push.
 
 ## 4. Drawbacks
@@ -92,6 +92,6 @@ Rules:
 - **Licences differ per source.** RCM / RADARSAT-1 credit lines are still to verify against the CSA licence; GFM, WorldPop, WorldCover each have their own. All must be in `ACKNOWLEDGMENTS.md` before the site is public.
 - **Mixed dates.** "Same week" pairs are ±2–3 days apart; floods move. Each layer shows its own date.
 - **Earthdata login needed** for NISAR and DSWx downloads; only people with `.netrc` can re-run the pipeline. The site needs no login.
-- **RADARSAT-1 coverage is uneven** and geolocation needs fixing (Roy's Dead Sea test). Coverage over Peace–Athabasca not yet confirmed.
+- **RADARSAT-1 coverage is uneven** and its geolocation needs fixing. Coverage over Peace–Athabasca not yet confirmed.
 - **GFM gaps:** some GFM items lack the exclusion mask (6 sites failed one pass); 3 sites had no overlap with NISAR.
 - **Schema freeze is a bottleneck.** Changing it after tonight breaks other people's work; add optional fields only.

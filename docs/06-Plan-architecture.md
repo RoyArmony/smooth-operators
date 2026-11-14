@@ -1,6 +1,6 @@
 # 06 · Plan: architecture (serverless)
 
-**Noa, 14.11.26 18:19:10 says:** how the Flood Explorer runs with no server of our own. Overview: [05](05-Flood-plan.md).
+How the Flood Explorer runs with no server of our own. Overview: [05](05-Flood-plan.md).
 
 ## 1. The idea in one line
 
@@ -29,11 +29,10 @@ flowchart LR
 | Site | `index.html` + `site/` | browser | plain HTML/JS + Leaflet, no build step ([09](09-Plan-UI.md)) |
 | Optional functions | `api/` | Vercel serverless | only small jobs: GDACS feed proxy (CORS) with cache. **No** NISAR processing. |
 | Daily job (P2) | `.github/workflows/live.yml` | GitHub Actions (free) | once a day: GDACS floods → NISAR pass? → bundle → commit → Vercel redeploys |
-| Local server | shadow repo `server/` (FastAPI) | laptop only | dev tool for on-demand analysis; not copied |
 
-## 3. Vercel setup (already live, Roy)
+## 3. Vercel setup (Roy)
 
-1. The repo already deploys from `main` on every push; Vercel serves the **repo root** as a static site, `index.html` is the entry page.
+1. The repo deploys from `main` on every push; Vercel serves the **repo root** as a static site, `index.html` is the entry page.
 2. **`.vercelignore` is an allowlist.** For this plan add `!site/` and `!events/` (and nothing from `docs/`, `pipeline/`, `scripts/`, `data/`).
 3. Other branches get preview URLs: try changes there before `main` (the demo).
 4. Optional `vercel.json`: short cache for `events/**` so new bundles show up.
@@ -43,10 +42,10 @@ flowchart LR
 
 | Folder | What | Deployed |
 |---|---|---|
-| `index.html` (exists) | the app page | yes |
+| `index.html` | the app page | yes |
 | `site/` | JS, CSS, vendor libraries (Leaflet + LICENSE) | yes |
 | `events/` | bundles: `index.json`, `<id>/event.json`, PNG layers, `science.md`, `schema.json` | yes |
-| `pipeline/` | Python package `unseen`, copied from the shadow repo | no |
+| `pipeline/` | Python package `unseen` (fetch, detect, compare, validate, export) | no |
 | `scripts/` | `check_bundle.py`, validation scripts | no |
 
 ## 4. GoDaddy domain
