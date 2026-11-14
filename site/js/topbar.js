@@ -1,4 +1,4 @@
-// Shared top bar for every page: brand, Home / Story / Explorer, About menu (info dialogs), Satellites in Use (comparison), repo link.
+// Shared top bar + footer for every page: brand, Home / Story / Explorer, About menu (info dialogs), Satellites in Use (comparison), repo link.
 // Use: <link rel="stylesheet" href="…/css/design.css"> + <script src="…/js/topbar.js" defer></script>, and <body data-page="home|story|explorer">.
 (() => {
   const root = new URL('..', document.currentScript.src);          // the site/ folder, wherever this page lives
@@ -74,6 +74,14 @@
       <a class="ue-cta" href="${REPO}" target="_blank" rel="noopener">GitHub ↗</a>
     </div>`;
   document.body.prepend(bar);
+
+  // shared footer: in the page flow, except on the full-screen film (fixed to the bottom there)
+  const foot = document.createElement('footer');
+  foot.className = 'ue-foot' + (page === 'story' ? ' fixed' : '');
+  foot.innerHTML = `
+    <span><b>Unseen Earth</b> · Smooth Operators · Haifa<span class="mh"> (Technion)</span>, Israel<span class="mh"> · NASA Space Apps Challenge 2026</span></span>
+    <span class="r">Data: NASA, ISRO, CSA, Copernicus · <a href="${REPO}" target="_blank" rel="noopener">Code &amp; credits ↗</a></span>`;
+  document.body.appendChild(foot);
 
   const modal = document.createElement('div');
   modal.className = 'ue-modal';

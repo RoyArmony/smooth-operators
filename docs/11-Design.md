@@ -44,6 +44,7 @@ belong to the layers and their legends only. Don't use orange for buttons or hea
 
 - **Top bar** on every page (`site/js/topbar.js`, height `--bar-h` = 56 px, 52 on phones): brand · Home · Story · Explorer · About ▾ · Satellites in Use (comparison dialog) · GitHub.
   Pages pad their top by `--bar-h`. Mark the page with `<body data-page="home|story|explorer">`.
+- **Footer** on every page (same script, height `--foot-h` = 34 px): team, Haifa (Technion), Israel, challenge; data + code link on wide screens. In the page flow; fixed to the bottom on the full-screen film.
 - **About** opens a dialog over the page (the user stays in place).
 - Visitor path: **Home** = welcome page (`site/home.html`) → **Story** = the film (`site/landing.html`) → **Explorer** = the map (`site/viewer/index.html`): map left, 380 px sidebar right.
 - Explorer sidebar: list of events → click one → only that event's card + "← All events".

@@ -19,7 +19,7 @@
   --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-pill: 999px;
   --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px;
   --shadow: 0 8px 28px rgba(0, 0, 0, .45);
-  --bar-h: 56px;
+  --bar-h: 56px; --foot-h: 34px;
   --ease: cubic-bezier(.2, .7, .2, 1);
 }
 
@@ -52,6 +52,15 @@
 .ue-cta { height: 34px; display: inline-flex; align-items: center; padding: 0 var(--s4); border-radius: var(--r-pill); background: var(--accent); color: var(--on-accent) !important; font-weight: 700; white-space: nowrap; }
 .ue-cta:hover { background: var(--accent-hi); }
 
+/* ---------- footer (built by site/js/topbar.js) ---------- */
+.ue-foot { height: var(--foot-h); display: flex; align-items: center; justify-content: space-between; gap: var(--s4); padding: 0 var(--s5);
+  border-top: 1px solid var(--line); background: var(--bg); font: 400 var(--fs-xs)/1 var(--font); color: var(--faint); white-space: nowrap; overflow: hidden; }
+.ue-foot.fixed { position: fixed; inset: auto 0 0 0; z-index: 2000; background: rgba(6, 20, 27, .82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.ue-foot b { color: var(--muted); font-weight: 600; }
+.ue-foot span { overflow: hidden; text-overflow: ellipsis; }
+.ue-foot a { color: var(--muted); text-decoration: none; } .ue-foot a:hover { color: var(--accent); }
+@media (max-width: 1000px) { .ue-foot .r { display: none; } }
+
 /* ---------- info dialog (About menu) ---------- */
 .ue-card.wide { width: min(860px, 100%); }
 .ue-tw { overflow-x: auto; margin: var(--s4) 0 var(--s3); border: 1px solid var(--line); border-radius: var(--r-md); }
@@ -80,7 +89,8 @@
 @media (max-width: 760px) {
   :root { --bar-h: 52px; }
   .ue-bar { gap: var(--s2); padding: 0 var(--s4); }
-  .ue-brand span, .ue-sat span { display: none; }
+  .ue-brand span, .ue-sat span, .ue-foot .r, .ue-foot .mh, .ue-cta { display: none; }
+  .ue-foot { padding: 0 var(--s4); }
   .ue-nav > a, .ue-menu > button { padding: 0 var(--s2); }
   .ue-cta { padding: 0 var(--s3); }
   .ue-drop { left: auto; right: -60px; }
