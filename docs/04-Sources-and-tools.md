@@ -79,7 +79,7 @@ All 14 links from the [Resources tab](https://www.spaceappschallenge.org/2026/ch
 - **GoDaddy** — custom domain for presenting the site (DNS pointed at Vercel) — https://www.godaddy.com (Noa, 14.11.26)
 - **asf_search** (Python, ASF) — NISAR / ALOS / Sentinel-1 search — https://docs.asf.alaska.edu/asf_search/basics/ (Roy, 31.10.26)
 - **NASA Worldview** — view NISAR layers in the browser — https://worldview.earthdata.nasa.gov/ (Roy, 31.10.26)
-- **Python: h5py, numpy, scipy, rasterio, pyproj, shapely, Pillow, matplotlib** — read HDF5 / GeoTIFF, reproject, process, plot — https://www.h5py.org (Roy, 31.10.26)
+- **Python: h5py, numpy, scipy, rasterio, pyproj, shapely, Pillow, matplotlib, requests** — read HDF5 / GeoTIFF, reproject, process, plot, call STAC APIs — https://www.h5py.org (Roy, 31.10.26)
 
 ## AI tools
 

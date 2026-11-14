@@ -52,6 +52,7 @@ Our maps and numbers are derived products, not official NASA products, and not e
 | pyproj | MIT |
 | Pillow | MIT-CMU |
 | matplotlib | PSF-based |
+| requests | Apache-2.0 |
 
 ## Research we built on
 
