@@ -5,22 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Unseen Earth</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='22' y='4' width='20' height='6' rx='3' fill='%239aa3b8'/%3E%3Crect x='29' y='9' width='6' height='8' fill='%239aa3b8'/%3E%3Cpath d='M6 18h34a12 12 0 0 1 12 12v4h-12v-2a2 2 0 0 0-2-2H6z' fill='%23c7ced9' stroke='%235b6577' stroke-width='2'/%3E%3Crect x='40' y='33' width='12' height='5' fill='%235b6577'/%3E%3Cpath d='M46 42c0 0-6 8-6 12a6 6 0 0 0 12 0c0-4-6-12-6-12z' fill='%231e90ff'/%3E%3C/svg%3E">
+  <!-- Entry page: forwards to the landing film (site/landing.html). -->
+  <meta http-equiv="refresh" content="0; url=site/landing.html">
+  <script>location.replace('site/landing.html' + location.search + location.hash);</script>
   <style>
     :root { color-scheme: dark; }
-    body {
-      margin: 0; min-height: 100vh; display: grid; place-items: center;
-      background: #0b1020; color: #e6e9f2;
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif; text-align: center; padding: 16px;
-    }
-    h1 { margin: 0 0 8px; font-size: 2rem; }
-    p { margin: 4px 0; color: #9aa3b8; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #05070b; color: #9aa4b2;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif; padding: 16px; }
+    a { color: #ff9a2e; }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Smooth Operators</h1>
-    <p>Dancing with the SARs · NASA Space Apps Challenge 2026</p>
-    <p>Coming soon.</p>
-  </main>
+  <p><a href="site/landing.html">Open Unseen Earth</a></p>
 </body>
 </html>
