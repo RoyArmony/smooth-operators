@@ -47,6 +47,10 @@ Let the submission and the judging criteria guide every design and development d
 These files feed the Disclosure, References and Summary parts of the submission. Update them as you go, without being asked,
 and commit them with the related change. How to write each credit line: `docs/03-Citation-and-AI.md`.
 
+**Rule: every new source updates both `docs/04-Sources-and-tools.md` and `ACKNOWLEDGMENTS.md`, in the same commit.**
+A source is any data, API, map tiles, library, service, paper or AI tool. Before each commit, check: did this change
+use something not yet in both files? If yes, add it. For data, docs/04 also says how to get it (login, API, tool).
+
 - **`docs/04-Sources-and-tools.md`: what we used.** Add a line the first time we use something new: a data source, library,
   service, AI tool, or a reference we relied on. This includes things the user tells you they used outside the repo.
 - **`ACKNOWLEDGMENTS.md`: credits and licences.** Whenever we rely on someone else's data, code, API, map tiles, library or paper,
