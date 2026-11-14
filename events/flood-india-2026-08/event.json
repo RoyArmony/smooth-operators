@@ -1,0 +1,145 @@
+{
+ "id": "flood-india-2026-08",
+ "title": "Tamil Nadu floods, India",
+ "place": "Tamil Nadu floods, India",
+ "kind": "site",
+ "bbox": [
+  78.11,
+  10.932,
+  79.11,
+  11.732
+ ],
+ "headline": {
+  "date": "2026-06-24",
+  "sentence": "On 2026-06-24, NISAR found 0 km² of water where the official flood map (Copernicus GFM, 2026-06-23) says it cannot see.",
+  "numbers": [
+   {
+    "label": "Official map: flood",
+    "value": 3.9,
+    "unit": "km²"
+   },
+   {
+    "label": "NISAR adds, in the blank",
+    "value": 0.1,
+    "unit": "km²"
+   },
+   {
+    "label": "of it in forest (ESA WorldCover)",
+    "value": 0.0,
+    "unit": "km²"
+   }
+  ],
+  "badge": {
+   "text": "Wettest NISAR pass",
+   "ref": "timeline"
+  }
+ },
+ "timeline": [
+  {
+   "date": "2026-06-24",
+   "gfm_date": "2026-06-23",
+   "stats": {
+    "gfm_flood": 3.9,
+    "gfm_excluded": 4018.8,
+    "nisar_wet": 0.2,
+    "nisar_adds": 0.1,
+    "nisar_adds_canopy": 0.0,
+    "nisar_adds_forest": 0.0,
+    "nisar_adds_wetland": 0.0,
+    "nisar_adds_cropland": 0.0
+   },
+   "layers": [
+    "gfm_flood",
+    "gfm_excluded",
+    "nisar_adds"
+   ]
+  }
+ ],
+ "layers": {
+  "gfm_flood": {
+   "group": "official",
+   "sensor": "Sentinel-1 (Copernicus GFM)",
+   "label": "Flood on the official map",
+   "legend": "#2882ff",
+   "files": {
+    "2026-06-24": "layers/gfm_flood_2026-06-24.png"
+   },
+   "bounds": [
+    [
+     10.92436,
+     78.10187
+    ],
+    [
+     11.74059,
+     79.11487
+    ]
+   ],
+   "default": true
+  },
+  "gfm_excluded": {
+   "group": "official",
+   "sensor": "Sentinel-1 (Copernicus GFM)",
+   "label": "Official map: \"cannot see\"",
+   "legend": "hatch",
+   "files": {
+    "2026-06-24": "layers/gfm_excluded_2026-06-24.png"
+   },
+   "bounds": [
+    [
+     10.92436,
+     78.10187
+    ],
+    [
+     11.74059,
+     79.11487
+    ]
+   ],
+   "default": true
+  },
+  "nisar_adds": {
+   "group": "result",
+   "sensor": "NISAR L-band",
+   "label": "Only NISAR: water in the blank",
+   "legend": "#ff9628",
+   "files": {
+    "2026-06-24": "layers/nisar_adds_2026-06-24.png"
+   },
+   "bounds": [
+    [
+     10.92436,
+     78.10187
+    ],
+    [
+     11.74059,
+     79.11487
+    ]
+   ],
+   "default": true
+  }
+ },
+ "validation": {},
+ "sources": [
+  {
+   "name": "NISAR L2 GCOV",
+   "url": "https://search.asf.alaska.edu",
+   "credit": "NASA/JPL-Caltech, ISRO; data via ASF DAAC"
+  },
+  {
+   "name": "Copernicus EMS Global Flood Monitoring",
+   "url": "https://global-flood.emergency.copernicus.eu",
+   "credit": "© European Union, Copernicus Emergency Management Service"
+  },
+  {
+   "name": "OPERA DSWx-HLS",
+   "url": "https://www.jpl.nasa.gov/go/opera",
+   "credit": "NASA/JPL OPERA; data via PO.DAAC"
+  }
+ ],
+ "method": {
+  "detector": "detect.py (open water + water under vegetation, HH/HV)",
+  "calibration": null,
+  "pixel_m": 80.0,
+  "gap": "NISAR water inside GFM exclusion mask, both valid, permanent water removed",
+  "stack": null
+ }
+}

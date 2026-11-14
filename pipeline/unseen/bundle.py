@@ -95,9 +95,23 @@ def new_event(eid, title, kind, bbox, place=None):
                 validation={}, sources=[])
 
 
+SCIENCE = """# {title}
+
+**What:** water NISAR (L-band radar) sees inside the official flood map's "cannot see" area (Copernicus GFM exclusion mask).
+
+**Method:** per NISAR pass: open water + water under vegetation from HH/HV (`pipeline/unseen/detect.py`), permanent water
+removed; compared with GFM within 2 days; area = 80 m pixels. Shared method: `events/methods.md`.
+
+**Limits:** a NISAR detection inside GFM's blank is a candidate, not proven flood; validation: docs/10-Results.md.
+"""
+
+
 def write_event(ev):
     d = EVENTS_DIR / ev["id"]
     d.mkdir(parents=True, exist_ok=True)
+    ev["headline"]["numbers"] = ev["headline"]["numbers"][:3]           # contract: at most 3
+    if not (d / "science.md").exists():
+        (d / "science.md").write_text(SCIENCE.format(title=ev["title"]))
     ev["timeline"].sort(key=lambda r: r["date"])
     (d / "event.json").write_text(json.dumps(ev, indent=1, ensure_ascii=False))
     return d / "event.json"

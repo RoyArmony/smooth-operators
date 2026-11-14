@@ -47,8 +47,8 @@ def site(eid, title, bbox, kind="site", passes="all", place=None, use_optical=Tr
         numbers=[dict(label="Official map: flood", value=k["gfm_flood"], unit="km²"),
                  dict(label="NISAR adds, in the blank", value=k["nisar_adds"], unit="km²"),
 ]
-                + ([dict(label="of it in forest (ESA WorldCover)", value=k["nisar_adds_forest"], unit="km²")] if "nisar_adds_forest" in k else [])
-                + ([dict(label="more than the official map", value=pct, unit="%")] if pct is not None else []),
+                + ([dict(label="more than the official map", value=pct, unit="%")] if pct is not None else
+                   [dict(label="of it in forest (ESA WorldCover)", value=k["nisar_adds_forest"], unit="km²")] if "nisar_adds_forest" in k else []),
         badge=dict(text="Wettest NISAR pass", ref="timeline"))
     ev["method"] = dict(detector="detect.py (open water + water under vegetation, HH/HV)",
                         calibration=cal if cal and cal.get("used") else None, pixel_m=grid["dx"],
@@ -95,8 +95,7 @@ def world():
                  f"{tot_gfm:,.0f} km² they showed. A sample, not a global total.",
         numbers=[dict(label="NISAR adds, in the blanks", value=round(tot_add, 1), unit="km²"),
                  dict(label="Official maps: flood", value=round(tot_gfm, 1), unit="km²"),
-                 dict(label="more", value=pct, unit="%"),
-                 dict(label="sites", value=len(rows), unit="")],
+                 dict(label="more", value=pct, unit="%")],
         badge=dict(text="Wettest pass per site · sample", ref="sites"))
     ev["sources"] = [dict(name="Site bundles", url="events/", credit="see each site's event.json")]
     bundle.write_event(ev)

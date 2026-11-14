@@ -1,0 +1,295 @@
+{
+ "id": "sudd-wetland-south-sudan",
+ "title": "Sudd wetland, South Sudan",
+ "place": "Sudd wetland, South Sudan",
+ "kind": "site",
+ "bbox": [
+  30.3,
+  7.0,
+  30.9,
+  7.6
+ ],
+ "headline": {
+  "date": "2026-10-06",
+  "sentence": "On 2026-10-06, NISAR found 916 km² of water where the official flood map (Copernicus GFM, 2026-10-05) says it cannot see.",
+  "numbers": [
+   {
+    "label": "Official map: flood",
+    "value": 55.4,
+    "unit": "km²"
+   },
+   {
+    "label": "NISAR adds, in the blank",
+    "value": 916.1,
+    "unit": "km²"
+   },
+   {
+    "label": "of it in forest (ESA WorldCover)",
+    "value": 0.9,
+    "unit": "km²"
+   }
+  ],
+  "badge": {
+   "text": "Wettest NISAR pass",
+   "ref": "timeline"
+  }
+ },
+ "timeline": [
+  {
+   "date": "2026-06-20",
+   "gfm_date": "2026-06-18",
+   "stats": {
+    "gfm_flood": 71.5,
+    "gfm_excluded": 2023.5,
+    "nisar_wet": 9.3,
+    "nisar_adds": 1.4,
+    "nisar_adds_canopy": 0.0,
+    "nisar_adds_forest": 0.0,
+    "nisar_adds_wetland": 1.2,
+    "nisar_adds_cropland": 0.0
+   },
+   "layers": []
+  },
+  {
+   "date": "2026-07-02",
+   "gfm_date": "2026-07-01",
+   "stats": {
+    "gfm_flood": 61.9,
+    "gfm_excluded": 1949.3,
+    "nisar_wet": 1.9,
+    "nisar_adds": 0.1,
+    "nisar_adds_canopy": 0.0,
+    "nisar_adds_forest": 0.0,
+    "nisar_adds_wetland": 0.1,
+    "nisar_adds_cropland": 0.0
+   },
+   "layers": []
+  },
+  {
+   "date": "2026-07-14",
+   "gfm_date": "2026-07-13",
+   "stats": {
+    "gfm_flood": 57.5,
+    "gfm_excluded": 1930.7,
+    "nisar_wet": 3.5,
+    "nisar_adds": 0.1,
+    "nisar_adds_canopy": 0.0,
+    "nisar_adds_forest": 0.0,
+    "nisar_adds_wetland": 0.1,
+    "nisar_adds_cropland": 0.0
+   },
+   "layers": []
+  },
+  {
+   "date": "2026-07-26",
+   "gfm_date": "2026-07-25",
+   "stats": {
+    "gfm_flood": 82.9,
+    "gfm_excluded": 1927.9,
+    "nisar_wet": 12.6,
+    "nisar_adds": 0.7,
+    "nisar_adds_canopy": 0.1,
+    "nisar_adds_forest": 0.0,
+    "nisar_adds_wetland": 0.7,
+    "nisar_adds_cropland": 0.0
+   },
+   "layers": []
+  },
+  {
+   "date": "2026-08-19",
+   "gfm_date": "2026-08-18",
+   "stats": {
+    "gfm_flood": 64.7,
+    "gfm_excluded": 2024.8,
+    "nisar_wet": 14.6,
+    "nisar_adds": 0.4,
+    "nisar_adds_canopy": 0.2,
+    "nisar_adds_forest": 0.0,
+    "nisar_adds_wetland": 0.4,
+    "nisar_adds_cropland": 0.0
+   },
+   "layers": []
+  },
+  {
+   "date": "2026-08-31",
+   "gfm_date": "2026-08-30",
+   "stats": {
+    "gfm_flood": 57.6,
+    "gfm_excluded": 2024.8,
+    "nisar_wet": 29.4,
+    "nisar_adds": 7.5,
+    "nisar_adds_canopy": 0.6,
+    "nisar_adds_forest": 0.0,
+    "nisar_adds_wetland": 4.9,
+    "nisar_adds_cropland": 0.0
+   },
+   "layers": []
+  },
+  {
+   "date": "2026-09-12",
+   "gfm_date": "2026-09-11",
+   "stats": {
+    "gfm_flood": 80.7,
+    "gfm_excluded": 2023.8,
+    "nisar_wet": 41.4,
+    "nisar_adds": 17.1,
+    "nisar_adds_canopy": 1.9,
+    "nisar_adds_forest": 0.0,
+    "nisar_adds_wetland": 13.0,
+    "nisar_adds_cropland": 0.0
+   },
+   "layers": []
+  },
+  {
+   "date": "2026-09-24",
+   "gfm_date": "2026-09-23",
+   "stats": {
+    "gfm_flood": 58.0,
+    "gfm_excluded": 2023.8,
+    "nisar_wet": 39.1,
+    "nisar_adds": 17.3,
+    "nisar_adds_canopy": 1.7,
+    "nisar_adds_forest": 0.0,
+    "nisar_adds_wetland": 13.3,
+    "nisar_adds_cropland": 0.0
+   },
+   "layers": []
+  },
+  {
+   "date": "2026-10-06",
+   "gfm_date": "2026-10-05",
+   "stats": {
+    "gfm_flood": 55.4,
+    "gfm_excluded": 2023.5,
+    "nisar_wet": 1405.6,
+    "nisar_adds": 916.1,
+    "nisar_adds_canopy": 125.6,
+    "nisar_adds_forest": 0.9,
+    "nisar_adds_wetland": 894.8,
+    "nisar_adds_cropland": 0.0
+   },
+   "layers": [
+    "gfm_flood",
+    "gfm_excluded",
+    "nisar_adds"
+   ]
+  },
+  {
+   "date": "2026-10-18",
+   "gfm_date": "2026-10-17",
+   "stats": {
+    "gfm_flood": 90.8,
+    "gfm_excluded": 2023.5,
+    "nisar_wet": 240.3,
+    "nisar_adds": 43.0,
+    "nisar_adds_canopy": 7.8,
+    "nisar_adds_forest": 0.0,
+    "nisar_adds_wetland": 34.8,
+    "nisar_adds_cropland": 0.0
+   },
+   "layers": []
+  },
+  {
+   "date": "2026-10-30",
+   "gfm_date": "2026-10-29",
+   "stats": {
+    "gfm_flood": 53.8,
+    "gfm_excluded": 2023.5,
+    "nisar_wet": 500.3,
+    "nisar_adds": 49.8,
+    "nisar_adds_canopy": 13.5,
+    "nisar_adds_forest": 1.9,
+    "nisar_adds_wetland": 29.9,
+    "nisar_adds_cropland": 0.0
+   },
+   "layers": []
+  }
+ ],
+ "layers": {
+  "gfm_flood": {
+   "group": "official",
+   "sensor": "Sentinel-1 (Copernicus GFM)",
+   "label": "Flood on the official map",
+   "legend": "#2882ff",
+   "files": {
+    "2026-10-06": "layers/gfm_flood_2026-10-06.png"
+   },
+   "bounds": [
+    [
+     6.99652,
+     30.29645
+    ],
+    [
+     7.60362,
+     30.90282
+    ]
+   ],
+   "default": true
+  },
+  "gfm_excluded": {
+   "group": "official",
+   "sensor": "Sentinel-1 (Copernicus GFM)",
+   "label": "Official map: \"cannot see\"",
+   "legend": "hatch",
+   "files": {
+    "2026-10-06": "layers/gfm_excluded_2026-10-06.png"
+   },
+   "bounds": [
+    [
+     6.99652,
+     30.29645
+    ],
+    [
+     7.60362,
+     30.90282
+    ]
+   ],
+   "default": true
+  },
+  "nisar_adds": {
+   "group": "result",
+   "sensor": "NISAR L-band",
+   "label": "Only NISAR: water in the blank",
+   "legend": "#ff9628",
+   "files": {
+    "2026-10-06": "layers/nisar_adds_2026-10-06.png"
+   },
+   "bounds": [
+    [
+     6.99652,
+     30.29645
+    ],
+    [
+     7.60362,
+     30.90282
+    ]
+   ],
+   "default": true
+  }
+ },
+ "validation": {},
+ "sources": [
+  {
+   "name": "NISAR L2 GCOV",
+   "url": "https://search.asf.alaska.edu",
+   "credit": "NASA/JPL-Caltech, ISRO; data via ASF DAAC"
+  },
+  {
+   "name": "Copernicus EMS Global Flood Monitoring",
+   "url": "https://global-flood.emergency.copernicus.eu",
+   "credit": "© European Union, Copernicus Emergency Management Service"
+  },
+  {
+   "name": "OPERA DSWx-HLS",
+   "url": "https://www.jpl.nasa.gov/go/opera",
+   "credit": "NASA/JPL OPERA; data via PO.DAAC"
+  }
+ ],
+ "method": {
+  "detector": "detect.py (open water + water under vegetation, HH/HV)",
+  "calibration": null,
+  "pixel_m": 80.0,
+  "gap": "NISAR water inside GFM exclusion mask, both valid, permanent water removed",
+  "stack": null
+ }
+}
