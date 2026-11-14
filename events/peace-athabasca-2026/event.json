@@ -1,0 +1,172 @@
+{
+  "id": "peace-athabasca-2026",
+  "title": "Peace–Athabasca Delta, Canada",
+  "place": "Alberta, Canada",
+  "kind": "story",
+  "mock": true,
+  "bbox": [
+    -112.0,
+    58.3,
+    -110.8,
+    59.0
+  ],
+  "headline": {
+    "date": "2026-10-10",
+    "sentence": "MOCK: Canada's RCM radar checks NISAR's water, the same week.",
+    "numbers": [
+      {
+        "label": "RCM agrees",
+        "value": 0,
+        "unit": "%"
+      },
+      {
+        "label": "NISAR water",
+        "value": 0,
+        "unit": "km²"
+      },
+      {
+        "label": "since 1998",
+        "value": 0,
+        "unit": "km²"
+      }
+    ],
+    "badge": {
+      "text": "Independent radar check",
+      "ref": "validation"
+    }
+  },
+  "timeline": [
+    {
+      "date": "2026-09-28",
+      "stats": {},
+      "layers": [
+        "photo",
+        "nisar_water",
+        "rcm_water",
+        "agreement",
+        "rs1_rgb"
+      ]
+    },
+    {
+      "date": "2026-10-10",
+      "stats": {},
+      "layers": [
+        "photo",
+        "nisar_water",
+        "rcm_water",
+        "agreement",
+        "rs1_rgb"
+      ]
+    }
+  ],
+  "layers": {
+    "photo": {
+      "group": "base",
+      "sensor": "HLS",
+      "legend": "#ffffff",
+      "files": {
+        "2026-09-28": "layers/photo_2026-09-28.png",
+        "2026-10-10": "layers/photo_2026-10-10.png"
+      },
+      "bounds": [
+        [
+          58.3,
+          -112.0
+        ],
+        [
+          59.0,
+          -110.8
+        ]
+      ],
+      "default": true
+    },
+    "nisar_water": {
+      "group": "result",
+      "sensor": "NISAR",
+      "legend": "#1e90ff",
+      "files": {
+        "2026-09-28": "layers/nisar_water_2026-09-28.png",
+        "2026-10-10": "layers/nisar_water_2026-10-10.png"
+      },
+      "bounds": [
+        [
+          58.3,
+          -112.0
+        ],
+        [
+          59.0,
+          -110.8
+        ]
+      ],
+      "default": true
+    },
+    "rcm_water": {
+      "group": "validation",
+      "sensor": "RCM",
+      "legend": "#3aa0ff",
+      "files": {
+        "2026-09-28": "layers/rcm_water_2026-09-28.png",
+        "2026-10-10": "layers/rcm_water_2026-10-10.png"
+      },
+      "bounds": [
+        [
+          58.3,
+          -112.0
+        ],
+        [
+          59.0,
+          -110.8
+        ]
+      ],
+      "default": false
+    },
+    "agreement": {
+      "group": "validation",
+      "sensor": "NISAR + RCM",
+      "legend": "#2ecc71",
+      "files": {
+        "2026-09-28": "layers/agreement_2026-09-28.png",
+        "2026-10-10": "layers/agreement_2026-10-10.png"
+      },
+      "bounds": [
+        [
+          58.3,
+          -112.0
+        ],
+        [
+          59.0,
+          -110.8
+        ]
+      ],
+      "default": false
+    },
+    "rs1_rgb": {
+      "group": "radar",
+      "sensor": "RADARSAT-1",
+      "legend": "#c0c0c0",
+      "files": {
+        "2026-09-28": "layers/rs1_rgb_2026-09-28.png",
+        "2026-10-10": "layers/rs1_rgb_2026-10-10.png"
+      },
+      "bounds": [
+        [
+          58.3,
+          -112.0
+        ],
+        [
+          59.0,
+          -110.8
+        ]
+      ],
+      "default": false
+    }
+  },
+  "validation": {},
+  "sources": [
+    {
+      "name": "MOCK",
+      "url": "https://example.com",
+      "credit": "Placeholder, not real data"
+    }
+  ]
+}

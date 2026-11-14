@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "mock": true,
+  "events": [
+    {
+      "id": "peace-athabasca-2026",
+      "title": "Peace–Athabasca Delta, Canada",
+      "place": "Alberta, Canada",
+      "date": "2026-10-10",
+      "bbox": [
+        -112.0,
+        58.3,
+        -110.8,
+        59.0
+      ],
+      "kind": "story",
+      "mock": true,
+      "numbers": [
+        {
+          "label": "RCM agrees",
+          "value": 0,
+          "unit": "%"
+        },
+        {
+          "label": "NISAR water",
+          "value": 0,
+          "unit": "km²"
+        },
+        {
+          "label": "since 1998",
+          "value": 0,
+          "unit": "km²"
+        }
+      ]
+    },
+    {
+      "id": "tonle-sap-2026",
+      "title": "Tonle Sap, Cambodia",
+      "place": "Cambodia",
+      "date": "2026-10-07",
+      "bbox": [
+        103.6,
+        12.3,
+        104.7,
+        13.3
+      ],
+      "kind": "story",
+      "mock": true,
+      "numbers": [
+        {
+          "label": "Official map",
+          "value": 0,
+          "unit": "km²"
+        },
+        {
+          "label": "NISAR adds",
+          "value": 0,
+          "unit": "km²"
+        },
+        {
+          "label": "More water",
+          "value": 0,
+          "unit": "%"
+        }
+      ]
+    }
+  ]
+}

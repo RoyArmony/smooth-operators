@@ -2,3 +2,5 @@
 # Adding a file or folder the site needs? Add a "!path" line below in the same commit.
 /*
 !index.html
+!site/
+!events/

@@ -1,0 +1,164 @@
+{
+  "id": "tonle-sap-2026",
+  "title": "Tonle Sap, Cambodia",
+  "place": "Cambodia",
+  "kind": "story",
+  "mock": true,
+  "bbox": [
+    103.6,
+    12.3,
+    104.7,
+    13.3
+  ],
+  "headline": {
+    "date": "2026-10-07",
+    "sentence": "MOCK: NISAR sees flood water under the forest that the official map leaves blank.",
+    "numbers": [
+      {
+        "label": "Official map",
+        "value": 0,
+        "unit": "km²"
+      },
+      {
+        "label": "NISAR adds",
+        "value": 0,
+        "unit": "km²"
+      },
+      {
+        "label": "More water",
+        "value": 0,
+        "unit": "%"
+      }
+    ],
+    "badge": {
+      "text": "Checked against optical and elevation",
+      "ref": "validation"
+    }
+  },
+  "timeline": [
+    {
+      "date": "2026-08-20",
+      "stats": {},
+      "layers": [
+        "photo",
+        "gfm_flood",
+        "gfm_excluded",
+        "nisar_adds"
+      ]
+    },
+    {
+      "date": "2026-09-13",
+      "stats": {},
+      "layers": [
+        "photo",
+        "gfm_flood",
+        "gfm_excluded",
+        "nisar_adds"
+      ]
+    },
+    {
+      "date": "2026-10-07",
+      "stats": {},
+      "layers": [
+        "photo",
+        "gfm_flood",
+        "gfm_excluded",
+        "nisar_adds"
+      ]
+    }
+  ],
+  "layers": {
+    "photo": {
+      "group": "base",
+      "sensor": "HLS",
+      "legend": "#ffffff",
+      "files": {
+        "2026-08-20": "layers/photo_2026-08-20.png",
+        "2026-09-13": "layers/photo_2026-09-13.png",
+        "2026-10-07": "layers/photo_2026-10-07.png"
+      },
+      "bounds": [
+        [
+          12.3,
+          103.6
+        ],
+        [
+          13.3,
+          104.7
+        ]
+      ],
+      "default": true
+    },
+    "gfm_flood": {
+      "group": "official",
+      "sensor": "Sentinel-1 (GFM)",
+      "legend": "#5dade2",
+      "files": {
+        "2026-08-20": "layers/gfm_flood_2026-08-20.png",
+        "2026-09-13": "layers/gfm_flood_2026-09-13.png",
+        "2026-10-07": "layers/gfm_flood_2026-10-07.png"
+      },
+      "bounds": [
+        [
+          12.3,
+          103.6
+        ],
+        [
+          13.3,
+          104.7
+        ]
+      ],
+      "default": true
+    },
+    "gfm_excluded": {
+      "group": "official",
+      "sensor": "Sentinel-1 (GFM)",
+      "legend": "#808080",
+      "files": {
+        "2026-08-20": "layers/gfm_excluded_2026-08-20.png",
+        "2026-09-13": "layers/gfm_excluded_2026-09-13.png",
+        "2026-10-07": "layers/gfm_excluded_2026-10-07.png"
+      },
+      "bounds": [
+        [
+          12.3,
+          103.6
+        ],
+        [
+          13.3,
+          104.7
+        ]
+      ],
+      "default": true
+    },
+    "nisar_adds": {
+      "group": "result",
+      "sensor": "NISAR",
+      "legend": "#ff3b30",
+      "files": {
+        "2026-08-20": "layers/nisar_adds_2026-08-20.png",
+        "2026-09-13": "layers/nisar_adds_2026-09-13.png",
+        "2026-10-07": "layers/nisar_adds_2026-10-07.png"
+      },
+      "bounds": [
+        [
+          12.3,
+          103.6
+        ],
+        [
+          13.3,
+          104.7
+        ]
+      ],
+      "default": true
+    }
+  },
+  "validation": {},
+  "sources": [
+    {
+      "name": "MOCK",
+      "url": "https://example.com",
+      "credit": "Placeholder, not real data"
+    }
+  ]
+}
