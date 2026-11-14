@@ -1,0 +1,181 @@
+{
+ "note": "16 flood sites we chose (recent flood alerts + large seasonal wetlands), NISAR passes Jun–Oct 2026. A sample, not a global total.",
+ "sites": [
+  {
+   "id": "tonle-sap-flood-pulse-2026",
+   "title": "Tonle Sap, Cambodia",
+   "bbox": [
+    103.6,
+    12.3,
+    104.7,
+    13.3
+   ],
+   "kind": "story"
+  },
+  {
+   "id": "inner-niger-delta-mali",
+   "title": "Inner Niger Delta, Mali",
+   "bbox": [
+    -4.6,
+    14.6,
+    -4.0,
+    15.2
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "mekong-delta-vietnam",
+   "title": "Mekong delta, Vietnam",
+   "bbox": [
+    105.0,
+    10.4,
+    105.6,
+    11.0
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "irrawaddy-delta-myanmar",
+   "title": "Irrawaddy delta, Myanmar",
+   "bbox": [
+    95.0,
+    16.3,
+    95.6,
+    16.9
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "congo-cuvette-centrale",
+   "title": "Congo basin (Cuvette Centrale), Rep. of Congo",
+   "bbox": [
+    17.3,
+    0.2,
+    17.9,
+    0.8
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "sylhet-haor-bangladesh",
+   "title": "Sylhet haor, Bangladesh",
+   "bbox": [
+    91.1,
+    24.4,
+    91.7,
+    25.0
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "amazon-varzea-mamiraua",
+   "title": "Amazon várzea (Mamirauá), Brazil",
+   "bbox": [
+    -65.2,
+    -3.3,
+    -64.6,
+    -2.7
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "assam-brahmaputra",
+   "title": "Brahmaputra, Assam, India",
+   "bbox": [
+    92.2,
+    26.3,
+    92.8,
+    26.9
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "thailand-floods-bang-pakong-2026",
+   "title": "Bang Pakong floods, Thailand",
+   "bbox": [
+    100.7,
+    13.41,
+    101.3,
+    13.89
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "flood-in-china-2026",
+   "title": "Hubei floods, China",
+   "bbox": [
+    110.472,
+    30.428,
+    111.472,
+    31.228
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "flood-in-nepal-2026",
+   "title": "Nepal floods",
+   "bbox": [
+    84.865,
+    26.895,
+    85.865,
+    27.695
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "flood-india-2026-08",
+   "title": "Tamil Nadu floods, India",
+   "bbox": [
+    78.11,
+    10.932,
+    79.11,
+    11.732
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "atchafalaya-basin",
+   "title": "Atchafalaya Basin, USA",
+   "bbox": [
+    -91.6,
+    30.0,
+    -91.2,
+    30.5
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "okavango-delta",
+   "title": "Okavango Delta, Botswana",
+   "bbox": [
+    22.6,
+    -19.6,
+    23.2,
+    -19.0
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "pantanal-brazil",
+   "title": "Pantanal, Brazil",
+   "bbox": [
+    -57.4,
+    -18.8,
+    -56.8,
+    -18.2
+   ],
+   "kind": "site"
+  },
+  {
+   "id": "sudd-wetland-south-sudan",
+   "title": "Sudd wetland, South Sudan",
+   "bbox": [
+    30.3,
+    7.0,
+    30.9,
+    7.6
+   ],
+   "kind": "site"
+  }
+ ]
+}

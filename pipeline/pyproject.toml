@@ -1,0 +1,16 @@
+[project]
+name = "unseen"
+version = "0.2.0"
+description = "Unseen Earth flood pipeline: NISAR L-band water vs Copernicus GFM -> site bundles (events/)"
+requires-python = ">=3.10"
+dependencies = ["numpy", "scipy", "pillow", "h5py", "rasterio", "pyproj", "shapely", "asf_search>=8", "requests"]
+
+[project.scripts]
+unseen = "unseen.cli:main"
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["unseen"]

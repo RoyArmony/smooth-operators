@@ -81,6 +81,7 @@ Current files and folders:
 - `data/` (when needed): local data files only. Git ignores it, so it is never committed.
 - `LICENSE`: MIT (our code). NASA data keeps its own terms and credit (see `ACKNOWLEDGMENTS.md`).
 - `ACKNOWLEDGMENTS.md`: third-party data, imagery, software and papers we use, with their licences and credit lines.
+- `pipeline/`: Python package `unseen`, offline: NISAR flood analysis → bundles in `events/`. See `pipeline/README.md`.
 - `index.html`: the site's entry page (served by Vercel).
 - `.vercelignore`: allowlist of what goes to the site (see Deployment).
 
