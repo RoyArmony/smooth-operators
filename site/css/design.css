@@ -8,11 +8,12 @@
   --fs-xs: 12px; --fs-sm: 13px; --fs-md: 14px; --fs-lg: 16px; --fs-xl: 20px; --fs-2xl: 24px; --fs-3xl: 32px;
   --fs-display: clamp(40px, 6vw, 84px);
   --lh: 1.5; --lh-tight: 1.2;
-  /* colour */
-  --bg: #070a0f; --surface: #0f141b; --surface-2: #161c25; --surface-3: #1e2531;
-  --line: #242c38; --line-2: #333d4b;
-  --text: #e8ecf1; --muted: #9aa4b2; --faint: #6b7480;
-  --accent: #ff9a2e; --accent-hi: #ffb560; --on-accent: #111;
+  /* colour: "Deep water" palette. Map data colours (GFM blue, NISAR orange) are NOT here: they stay as each layer's legend */
+  --bg: #06141b; --surface: #0c222b; --surface-2: #112a34; --surface-3: #16323c;
+  --line: #1b3843; --line-2: #23444f;
+  --text: #e6f1f2; --muted: #8fb0b8; --faint: #5f7f88;
+  --accent: #2dd4bf; --accent-hi: #5eead4; --on-accent: #04342c;
+  --sand: #f4c27a;
   --water: #4aa3ff; --danger: #f85149; --ok: #3fb950;
   /* shape, space, depth */
   --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-pill: 999px;
@@ -25,7 +26,7 @@
 /* ---------- top bar (built by site/js/topbar.js) ---------- */
 .ue-bar { position: fixed; inset: 0 0 auto 0; height: var(--bar-h); z-index: 2000; display: flex; align-items: center; gap: var(--s5);
   padding: 0 var(--s5); font: 500 var(--fs-md)/1 var(--font); color: var(--text);
-  background: rgba(7, 10, 15, .78); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, .07); }
+  background: rgba(6, 20, 27, .82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, .07); }
 .ue-bar a { color: inherit; text-decoration: none; }
 .ue-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: var(--fs-lg); letter-spacing: -.01em; white-space: nowrap; }
 .ue-brand img { width: 26px; height: 26px; }

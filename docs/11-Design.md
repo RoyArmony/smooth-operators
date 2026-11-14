@@ -18,19 +18,21 @@ Use the tokens (`var(--…)`), not raw values.
 | `--fs-3xl` | 32 px | big numbers (800) |
 | `--fs-display` | 40–84 px | film headlines |
 
-## Colour (dark only)
+## Colour: "Deep water" (dark only)
 
 | Token | Value | Use |
 |---|---|---|
-| `--bg` | `#070a0f` | page |
-| `--surface` / `-2` / `-3` | `#0f141b` / `#161c25` / `#1e2531` | cards, buttons, hover |
-| `--line` / `-2` | `#242c38` / `#333d4b` | borders |
-| `--text` / `--muted` / `--faint` | `#e8ecf1` / `#9aa4b2` / `#6b7480` | text levels |
-| `--accent` | `#ff9a2e` | brand orange: primary actions, key numbers, selected |
-| `--water` | `#4aa3ff` | water, links in dialogs |
+| `--bg` | `#06141b` | page |
+| `--surface` / `-2` / `-3` | `#0c222b` / `#112a34` / `#16323c` | cards, buttons, hover |
+| `--line` / `-2` | `#1b3843` / `#23444f` | borders |
+| `--text` / `--muted` / `--faint` | `#e6f1f2` / `#8fb0b8` / `#5f7f88` | text levels |
+| `--accent` (+ `--accent-hi`, `--on-accent`) | `#2dd4bf` (`#5eead4`, `#04342c`) | aqua: buttons, active, key numbers |
+| `--sand` | `#f4c27a` | rare highlight |
+| `--water` | `#4aa3ff` | links in dialogs |
 | `--danger` / `--ok` | `#f85149` / `#3fb950` | alerts / checks |
 
-Map layer colours (NISAR water, cloud-hidden, etc.) stay as each layer's legend defines them.
+**Map data colours are not UI colours.** GFM flood blue `#2882ff`, the grey "cannot see" hatch and NISAR orange `#ff9a2e`
+belong to the layers and their legends only. Don't use orange for buttons or headings, so NISAR's water stands out.
 
 ## Space and shape
 
