@@ -12,6 +12,8 @@ Team **Smooth Operators** at the [NASA Space Apps Challenge 2026](https://www.sp
 - [`docs/02-Submission-guide.md`](docs/02-Submission-guide.md): what to submit and how
 - [`docs/03-Citation-and-AI.md`](docs/03-Citation-and-AI.md): how we credit sources and disclose AI use
 - [`docs/04-Sources-and-tools.md`](docs/04-Sources-and-tools.md): what we use
+- [`docs/05-Flood-plan.md`](docs/05-Flood-plan.md): plan (with architecture, algorithm, data and UI in 06–09)
+- [`tasks.md`](tasks.md): team tasks
 - [`Glossary.md`](Glossary.md): abbreviations (A-Z)
 - [`CLAUDE.md`](CLAUDE.md): team workflow rules (also read by Claude Code)
 

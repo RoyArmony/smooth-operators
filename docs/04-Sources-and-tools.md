@@ -15,6 +15,9 @@ Feeds the **Data & AI Disclosure** and **References** parts of the submission. C
 
 ## Tools and services
 
+- **Vercel (Hobby, free)** — serverless static hosting of the site, deploys from `main` — https://vercel.com (Noa, 14.11.26)
+- **GoDaddy** — custom domain for presenting the site (DNS pointed at Vercel) — https://www.godaddy.com (Noa, 14.11.26)
+
 ## AI tools
 
 ## References

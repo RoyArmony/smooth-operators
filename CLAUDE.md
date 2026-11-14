@@ -10,6 +10,8 @@ Instructions for every Claude Code session in this repo. Read them and follow th
   what to submit, judging, prizes, the full challenge statement and all official resources.
 - `docs/02-Submission-guide.md`: form fields, AI watermark rules, demo limits, final checklist.
 - `docs/03-Citation-and-AI.md`: how to credit data, tools and papers, and how to disclose AI use.
+- Flood Explorer plan: `docs/05-Flood-plan.md` (overview, stories, work split), `06-Plan-architecture.md` (serverless, Vercel + GoDaddy),
+  `07-Plan-algorithm.md`, `08-Plan-data.md` (sources, bundle contract), `09-Plan-UI.md`. Each ends with its drawbacks.
 - Diagrams in docs: use Mermaid code blocks (GitHub renders them). Add one only where a flow or structure is clearer as a picture.
 
 ## What we are building toward
@@ -69,6 +71,7 @@ and commit them with the related change. How to write each credit line: `docs/03
 Current files and folders:
 
 - `docs/`: markdown notes. Name files `NN-Topic.md`, numbered from 01.
+- `tasks.md`: the team task list, split per person. When a task is done, tick it.
 - `Glossary.md`: every abbreviation we use. When a doc introduces a new abbreviation, add it here in the same commit.
   **Keep it in strict A-Z order** (insert in place, never append at the end).
 - `data/` (when needed): local data files only. Git ignores it, so it is never committed.
