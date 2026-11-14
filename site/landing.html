@@ -55,10 +55,11 @@
   #bar { position: fixed; left: 0; bottom: 0; height: 3px; background: var(--o); width: 0; }
   #ctl { position: fixed; left: 6vw; bottom: 20px; display: flex; gap: 10px; }
   #ctl button, #end a { background: rgba(255,255,255,.08); color: var(--t); border: 1px solid rgba(255,255,255,.15); border-radius: 18px; padding: 7px 14px; font: 600 13px Inter, system-ui, sans-serif; cursor: pointer; text-decoration: none; }
-  #vid { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 2s; pointer-events: none; z-index: 400; }
+  #vid { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 2s; pointer-events: none; z-index: 1; }
   body.vid #vid.ok { opacity: .55; }
-  #wm { position: fixed; right: 14px; bottom: 34px; z-index: 401; font: 600 11px Inter, system-ui, sans-serif; color: #fff; background: rgba(0,0,0,.55); padding: 3px 8px; border-radius: 4px; opacity: 0; transition: opacity 1s; }
+  #wm { position: fixed; right: 14px; bottom: 34px; z-index: 3; font: 600 11px Inter, system-ui, sans-serif; color: #fff; background: rgba(0,0,0,.55); padding: 3px 8px; border-radius: 4px; opacity: 0; transition: opacity 1s; }
   body.vid #vid.ok ~ #wm { opacity: .9; }
+  #map { z-index: 0; } #veil { z-index: 2; } #txt, #tag, #lg, #ctl, #bar, #end { z-index: 3; }
   #end { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle, rgba(5,7,11,.6), rgba(5,7,11,.95)); pointer-events: none; opacity: 0; transition: opacity 1s; }
   #end.in { opacity: 1; pointer-events: auto; }
   #end h2 { font-size: clamp(40px, 6vw, 84px); margin: 0; }
@@ -72,7 +73,7 @@
 </head>
 <body class="dim">
 <div id="map"></div>
-<video id="vid" muted loop playsinline preload="auto"></video><div id="wm">AI-generated video</div>
+<video id="vid" muted loop playsinline preload="auto"></video><div id="wm">Video: Leine flood, Germany, 2017 · CC0, Wikimedia Commons</div>
 <div id="veil"></div>
 <div id="tag" class="fade"></div>
 <div id="txt"><div class="k fade" id="k"></div><div id="h" class="fade"></div><p id="s" class="fade"></p></div>
@@ -180,7 +181,7 @@ const T_ = { // tour sentences
   'Mekong delta': 'In the Mekong delta in Vietnam (23 Sep), NISAR found <b>170 km²</b> of water where the official map was blank, on its wettest NISAR pass.',
   'Irrawaddy delta': 'In Myanmar\'s Irrawaddy delta (17 Jul), NISAR found <b>76 km²</b> of water where the official map was blank, on its wettest NISAR pass.',
   'Congo basin': 'In the Congo basin (19 Oct), NISAR found <b>75 km²</b> of water where the official map was blank, on its wettest NISAR pass.' };
-const V = $('vid');                            // optional opening video: story/flood.mp4 (AI-made -> watermark)
+const V = $('vid');                            // opening video: story/flood.mp4 (real footage, CC0; credit shown on screen)
 V.oncanplay = () => V.classList.add('ok'); V.onerror = () => V.classList.remove('ok');
 V.src = 'story/flood.mp4';
 const vid = on => { document.body.classList.toggle('vid', on); if (on) V.play().catch(() => {}); else setTimeout(() => !document.body.classList.contains('vid') && V.pause(), 2000); };

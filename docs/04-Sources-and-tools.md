@@ -73,6 +73,8 @@ All 14 links from the [Resources tab](https://www.spaceappschallenge.org/2026/ch
 - **EOX Sentinel-2 cloudless 2023** (CC BY-NC-SA 4.0) — sharp basemap patches — https://s2maps.eu (Shai, 09.11.26)
 - **Esri World Imagery, OpenStreetMap** — basemaps — https://www.openstreetmap.org/copyright (Shai, 31.10.26)
 
+- **Wikimedia Commons: Leine flood video (CC0)** — opening shot of the landing film, cut to 6 s — https://commons.wikimedia.org/wiki/File:Leine_flood_Hemmingen_2017-07-28_L_389,_K_221_crossing.webm (Shai, 14.11.26)
+
 ## Tools and services
 
 - **Vercel (Hobby, free)** — serverless static hosting of the site, deploys from `main` — https://vercel.com (Noa, 14.11.26)

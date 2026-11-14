@@ -35,6 +35,8 @@ Our maps and numbers are derived products, not official NASA products, and not e
 | **Open-Meteo** | Archived rain forecasts | CC BY 4.0; "Weather data by Open-Meteo.com" |
 | **Microsoft Planetary Computer** | STAC access to Sentinel, ALOS mosaics, USDA layers | Service; each dataset keeps its own licence (above) |
 
+- Flood video in the landing film: "Leine flood Hemmingen 2017-07-28", Wikimedia Commons, CC0 1.0 (public domain dedication) — https://commons.wikimedia.org/wiki/File:Leine_flood_Hemmingen_2017-07-28_L_389,_K_221_crossing.webm
+
 ## Map imagery
 
 | Source | Terms |
