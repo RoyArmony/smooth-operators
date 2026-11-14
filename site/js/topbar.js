@@ -7,12 +7,12 @@
   const REPO = 'https://github.com/RoyArmony/smooth-operators';
 
   const INFO = {
-    project: { k: 'About', t: 'Floods the official map leaves blank', b: `
+    project: { k: 'The Project', t: 'Floods the official map leaves blank', b: `
+      <p>NASA Space Apps Challenge 2026 · <b>Dancing with the SARs</b>.<br>By team <b>Smooth Operators</b> from Haifa, Israel.</p>
       <p>Flood maps from optical and C-band radar satellites leave gaps: cloud, forest canopy and cities hide the water.
       <b>NISAR's L-band radar</b> sees through them.</p>
-      <p>Unseen Earth shows, flood by flood, the water NISAR finds where the official map says <b>"cannot see"</b>.</p>
-      <p>NASA Space Apps Challenge 2026 · <b>Dancing with the SARs</b>.</p>` },
-    method: { k: 'How it works', t: 'Problem → NASA data → method → result', b: `
+      <p>Unseen Earth shows, flood by flood, the water NISAR finds where the official map says <b>"cannot see"</b>.</p>` },
+    method: { k: 'How It Works', t: 'Problem → NASA data → method → result', b: `
       <ul>
         <li><b>Data:</b> NISAR L2 GCOV radar passes (every 12 days), Copernicus Global Flood Monitoring (GFM), optical photos.</li>
         <li><b>Detect:</b> open water is dark to radar; flooded forest is bright (double bounce).</li>
@@ -20,7 +20,7 @@
         <li><b>Check:</b> against Canada's RADARSAT Constellation Mission (CSA) and the GFM flood map.</li>
       </ul>
       <p>Areas are lower bounds: NISAR products are still provisional.</p>` },
-    data: { k: 'Data & credits', t: 'Built on open data', b: `
+    data: { k: 'Data & Credits', t: 'Built on open data', b: `
       <ul>
         <li>NISAR L2 GCOV: NASA/ISRO, via ASF DAAC</li>
         <li>OPERA DSWx: NASA JPL</li>
@@ -31,7 +31,7 @@
       </ul>
       <p>Full list and licences: <a href="${REPO}/blob/main/ACKNOWLEDGMENTS.md" target="_blank" rel="noopener">ACKNOWLEDGMENTS.md ↗</a></p>` },
     team: { k: 'Team', t: 'Smooth Operators', b: `
-      <p><b>Roy</b> · site and integration<br><b>Shai</b> · data pipeline and story<br><b>Noa</b> · science and algorithm</p>
+      <p><b>Roy</b> · <b>Shai</b> · <b>Noa</b></p>
       <p>NASA Space Apps Challenge 2026, Haifa (Technion).</p>
       <p>Code: <a href="${REPO}" target="_blank" rel="noopener">GitHub ↗</a> · made with help from Claude Code (AI).</p>` },
   };
@@ -46,9 +46,9 @@
       <a href="${u('viewer/index.html')}" class="${page === 'explorer' ? 'on' : ''}">Explorer</a>
       <div class="ue-menu"><button type="button" aria-haspopup="true" aria-expanded="false">About</button>
         <div class="ue-drop" role="menu">
-          <button data-i="project">The project<small>What and why</small></button>
-          <button data-i="method">How it works<small>Data, method, checks</small></button>
-          <button data-i="data">Data &amp; credits<small>Sources and licences</small></button>
+          <button data-i="project">The Project<small>What and why</small></button>
+          <button data-i="method">How It Works<small>Data, method, checks</small></button>
+          <button data-i="data">Data &amp; Credits<small>Sources and licences</small></button>
           <button data-i="team">Team<small>Smooth Operators</small></button>
         </div></div>
     </nav>
