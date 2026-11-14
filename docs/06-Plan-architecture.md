@@ -53,7 +53,7 @@ flowchart LR
 1. Vercel → Project → Settings → Domains → add `ourdomain.com` and `www.ourdomain.com`.
 2. GoDaddy → DNS: **A** record `@` → the IP Vercel shows (usually `76.76.21.21`); **CNAME** `www` → the target Vercel shows (`cname.vercel-dns.com`). Remove GoDaddy's default "parked" A record and forwarding.
 3. Wait for Vercel to say "Valid configuration"; HTTPS certificate is automatic.
-4. **Do it tonight:** DNS can take minutes to hours. Test on phone data (not office Wi-Fi) Saturday morning.
+4. **Do it tonight:** DNS can take minutes to hours. Test on phone data (not office Wi-Fi) Sunday morning.
 5. The submission "Final Project Link" is the domain; it goes in the README only when we submit (repo rule). Keep the vercel.app link privately as a backup.
 
 ## 5. Module boundaries (so 3 people work in parallel)

@@ -56,8 +56,8 @@ Roy = site and integration, Noa = science and algorithm, Shai = data pipeline, b
 | Owns | [06](06-Plan-architecture.md), [09](09-Plan-UI.md), `index.html` + `site/`, bundle schema, Vercel + GoDaddy | [07](07-Plan-algorithm.md), `methods.md`, validation, limits, number audit | `bundle.py`, world bundle, timeline stats, live job, deck |
 | Flood story | **Peace–Athabasca** (RCM, RADARSAT-1, CSA) | **Inner Niger** (or Mekong) | **Tonle Sap** |
 | Tonight | DNS; schema + checker + mock bundles; app skeleton; RADARSAT-1 coverage check | fixed dates; shared method | `bundle.py`; world bundle; Tonle Sap bundle |
-| Sat morning | layers, science drawer, play, swipe, domain | combined map; `methods.md`; validation page; Inner Niger bundle | timeline stats; P2 context layers / live job |
-| Sat afternoon | polish, phone, 30 s video | audit numbers; limits | deck → email 18:00 |
+| Sun morning | layers, science drawer, play, swipe, domain | combined map; `methods.md`; validation page; Inner Niger bundle | timeline stats; P2 context layers / live job |
+| Sun afternoon | polish, phone, 30 s video | audit numbers; limits | deck → email 18:00 |
 | Evening | Final link | Project Details, Disclosure | Summary, References |
 
 Sync points: 20:30 contract freeze, 01:00 first real bundle live on vercel.app, 13:00 feature freeze.
@@ -66,12 +66,12 @@ Sync points: 20:30 contract freeze, 01:00 first real bundle live on vercel.app, 
 
 | When | Milestone |
 |---|---|
-| Fri 20:30 | Contract v1 frozen; empty site live on `*.vercel.app`; GoDaddy DNS set (needs hours to spread) |
-| Sat 01:00 | **P0**: world view + one real story on vercel.app |
-| Sat 11:00 | **P1**: 3 stories, time play, science drawer; custom domain works |
-| Sat 13:00 | Feature freeze |
-| Sat 18:00 | Deck emailed |
-| Sat 22:00 | Submitted (hard deadline 23:59) |
+| Sat 20:30 | Contract v1 frozen; empty site live on `*.vercel.app`; GoDaddy DNS set (needs hours to spread) |
+| Sun 01:00 | **P0**: world view + one real story on vercel.app |
+| Sun 11:00 | **P1**: 3 stories, time play, science drawer; custom domain works |
+| Sun 13:00 | Feature freeze |
+| Sun 18:00 | Deck emailed |
+| Sun 22:00 | Submitted (hard deadline 23:59) |
 
 - **P0:** world view, event list, event view (3 numbers + sentence), GFM / NISAR adds / photo layers, back, 2 stories, science text, public link.
 - **P1:** time play, then/now swipe (RADARSAT-1), story 3, RCM agreement layer, validation charts, custom domain.
@@ -84,7 +84,7 @@ Sync points: 20:30 contract freeze, 01:00 first real bundle live on vercel.app, 
 - **Numbers are lower bounds** (low recall in marsh) and **forest extent has no ground truth yet**. ([07](07-Plan-algorithm.md))
 - **Validation sites ≠ headline sites.** RCM never imaged Tonle Sap; the 79% is from Canada's marsh, not from flooded forest.
 - **Tight time:** ~28 h left, three people. A 30 s screen recording is the fallback demo.
-- **Two hosts, two accounts** (Vercel + GoDaddy): one more thing that can break on demo day. Test the domain Saturday morning.
+- **Two hosts, two accounts** (Vercel + GoDaddy): one more thing that can break on demo day. Test the domain Sunday morning.
 
 ## 6. Decisions for the team
 
