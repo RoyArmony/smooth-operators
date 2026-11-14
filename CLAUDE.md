@@ -88,7 +88,10 @@ Current files and folders:
 
 - Everyone pushes straight to `main`. No PRs.
 - Once per clone, make sure `git config pull.rebase true` is set. Check and set it at the start if it isn't.
-- Before you start work, and before every push: `git pull`.
+- **Pull all the time.** All three of us push to `main` constantly. Run `git pull`:
+  - when you start working (the first thing in every session, and before every new task);
+  - right before every commit and every push;
+  - right after every push (to pick up what others pushed meanwhile).
 - Make small, focused commits and push often.
 - **Never** force-push (`git push --force` / `-f`). Never rewrite history that is already pushed.
 - Commit only what the user asked to change. Don't sweep in unrelated files.
@@ -117,11 +120,13 @@ Current files and folders:
 
 ## Conflicts
 
-- If a `git pull` gives a conflict, the person whose push failed fixes it.
-- **Simple conflict**, where both changes can obviously be kept (e.g. different lines, two new entries): resolve it, then tell the user what you did.
-- **Real conflict**, where both people changed the same thing differently: **stop and flag it.** Don't pick a side.
-  - Find who made the other change from the `[NAME]` in that commit's title (`git log`).
-  - Tell your user to check with that person before resolving. Example: "Conflict in `backend/api.py` with Roy's commit `[Roy] ...`. Check with Roy before resolving."
+- If a `git pull` gives a conflict, the person whose push failed fixes it. **Claude resolves it without asking**, then tells the user in one line what it did.
+- **Try to keep both sides.** Read both commits (`git log`, `git show`) to understand what each person meant, and merge so both changes still work
+  (both new entries, both new lines, both fixes). Keep lists sorted (e.g. `Glossary.md` A-Z) and remove duplicates.
+- After resolving, check the result still works (run what's relevant: tests, a script, open the page) before pushing.
+- **Only stop** when the two changes truly can't both hold (same value set two different ways, opposite decisions, one deletes what the other edits).
+  Then don't pick a side: name the other person from the `[NAME]` in their commit title and tell the user to check with them.
+  Example: "Conflict in `backend/api.py` with Roy's commit `[Roy] ...`. Check with Roy before resolving."
 
 ## Data
 
