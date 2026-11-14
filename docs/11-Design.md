@@ -31,8 +31,8 @@ Use the tokens (`var(--…)`), not raw values.
 | `--water` | `#4aa3ff` | links in dialogs |
 | `--danger` / `--ok` | `#f85149` / `#3fb950` | alerts / checks |
 
-**Map data colours are not UI colours.** GFM flood blue `#2882ff`, the grey "cannot see" hatch and NISAR orange `#ff9a2e`
-belong to the layers and their legends only. Don't use orange for buttons or headings, so NISAR's water stands out.
+**Map data colours are not UI colours.** GFM flood blue `#2882ff`, the "cannot see" blank (white 135° lines on violet `rgba(70,52,120,.6)`) and NISAR orange `#ff9a2e`
+belong to the layers and their legends only. Legend names: "Flood in the official map (GFM)", "cannot see here", "NISAR addition: water in the blank". Don't use orange for buttons or headings, so NISAR's water stands out.
 
 ## Space and shape
 

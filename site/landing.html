@@ -21,9 +21,9 @@
   #txt .k { font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--o); margin-bottom: 14px; min-height: 1em; }
   #txt h1 { font-size: clamp(20px, 2.1vw, 32px); line-height: 1.3; margin: 0; font-weight: 600; }
   #txt h1 b { color: #ff9a2e; font-weight: 700; } #txt h1 b.bl { color: #4aa3ff; } #txt h1 b.rc { color: #ff6060; } #txt h1 b.wh { color: #fff; }
-  #txt h1 b.gy { color: #d6d6e0; padding: 0 4px; position: relative; isolation: isolate; }
+  #txt h1 b.gy { color: #e6e2ff; padding: 0 4px; position: relative; isolation: isolate; }
   #txt h1 b.gy::before { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: 3px; opacity: 0;
-    background: repeating-linear-gradient(45deg,rgba(200,200,210,.28) 0 2px,transparent 2px 6px);
+    background: repeating-linear-gradient(135deg,rgba(236,238,248,.35) 0 1.5px,transparent 1.5px 6px), rgba(70,52,120,.55);
     animation: gyin .9s ease forwards; animation-delay: var(--d, 0ms); }
   @keyframes gyin { to { opacity: 1; } }
   .ch { opacity: 0; animation: chIn .35s ease forwards; } @keyframes chIn { to { opacity: 1; } }
@@ -115,7 +115,7 @@ map.attributionControl.setPrefix('');
 ['flyTo', 'flyToBounds', 'fitBounds', 'setView'].forEach(fn => { const o = map[fn].bind(map); map[fn] = (...a) => { try { return o(...a); } catch (e) { return map; } }; });   // never let a camera move break a scene
 const A = 'story/tonlesap/', B = L.latLngBounds([[12.3005, 103.5949], [13.2994, 104.7009]]);
 const img = f => L.imageOverlay(A + f, B, { opacity: 0, interactive: false }).addTo(map);
-const P = { photo: img('photo_2026-10-19.jpg'), excl: img('gfm_excluded.png'), gfm: img('gfm_flood.png'), add: img('nisar_added.png') };
+const P = { photo: img('photo_2026-10-19.jpg'), excl: img('gfm_excluded_violet.png'), gfm: img('gfm_flood.png'), add: img('nisar_added.png') };
 const box = L.rectangle(B, { color: '#ffffff', weight: 2.5, dashArray: '6 5', fill: false, opacity: 0, interactive: false }).addTo(map);
 let fast = false, mgen = 0;
 const many = (os, v, step = 0) => { const g = mgen; os.forEach((o, k) => (fast || !step) ? vis(o, v) : setTimeout(() => g === mgen && vis(o, v), k * step)); };
@@ -127,8 +127,8 @@ function flash(o) {                            // blink a newly shown layer so i
 }
 let on_ = [];
 const show = on => { for (const k in P) { const was = on_.includes(k), now = on.includes(k); vis(P[k], now ? 1 : 0); if (now && !was) flash(P[k]); } on_ = on.slice(); };
-const LG = { gfm: ['#2882ff', 'Flood seen by Sentinel-1 (GFM)'], excl: ['repeating-linear-gradient(45deg,#c8c8d2 0 2px,#3c3c46 2px 6px)', 'GFM: "cannot see here"'],
-             add: ['#ff9a2e', 'Only NISAR: water in the blank'] };
+const LG = { gfm: ['#2882ff', 'Flood seen by Sentinel-1 (GFM)'], excl: ['repeating-linear-gradient(135deg,rgba(236,238,248,.9) 0 1.5px,transparent 1.5px 4px),#46347a', 'GFM: "cannot see here"'],
+             add: ['#ff9a2e', 'NISAR addition: water in the blank'] };
 const legend = ks => { $('lg').innerHTML = ks.map(k => `<div><i style="background:${LG[k][0]}"></i>${LG[k][1]}</div>`).join(''); $('lg').classList.toggle('in', ks.length > 0); };
 let sayGen = 0;
 function typeset(el, html, start) {          // each character fades in, one after another
