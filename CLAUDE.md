@@ -38,6 +38,7 @@ Let the submission and the judging criteria guide every design and development d
 
 ## UI and writing style
 
+- Every page: tab title **Unseen Earth** and the earth favicon `site/favicon.svg` (`<link rel="icon" type="image/svg+xml" href="…/favicon.svg">`).
 - Keep it short. UI text, docs and replies: fewer words, no long explanations, unless someone asks for detail.
 - Keep the user in one place. Show results on the map/globe in context (a panel over the map, layers draped in place),
   not on a separate page that loses scale and location.
