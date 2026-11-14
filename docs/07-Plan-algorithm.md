@@ -101,6 +101,26 @@ Test = **track 138**, never used for fitting. F1 = 2·precision·recall / (preci
 - Why it works: brightness alone cannot separate water from dark, dry Sahel soil at L-band (−17 vs −18 dB HH).
   Coherence and HV can. Both are NISAR L-band products.
 
+### v3 vs the handbook classifier (v4) and the paper method, Inner Niger
+
+v4 = NISAR Science Users' Handbook §6.3–6.4 classifier: classes NI / OW / IV / NC from change against the pixel's own
+recent dry state, confidence P = Φ(m/σ) ≥ 0.8, mask without cropland, built-up, bare land and slopes > 5°.
+Same passes, same truth (OPERA DSWx-HLS, clear days), same quality check. Mean F1 over flood-season passes that have coherence.
+
+| Method | Track 145 (v3 fitted here) | **Track 138 (held out)** | Dry-season false water (km², Jun–Jul) | Precision / recall style |
+|---|---|---|---|---|
+| Old detector (§2) | 0.21 | 0.01 | 70–1,738 | breaks on one bad pass |
+| Paper method (Martinis) | 0.62 | 0.61 | 525–2,280 | over-detects |
+| v4 handbook, θ_ow −17 dB | 0.57 (0.61 in its mask) | 0.57 (0.61 in its mask) | 231–400 | high precision, low recall |
+| v4 handbook, θ_ow −16 dB | 0.60 (0.64) | 0.60 (0.64) | 465–800 | |
+| **v3 fused** | **0.71** | **0.70** | 6–537 | balanced (P ≈ 0.6–0.7, R ≈ 0.8–0.9) |
+
+- Newest pass (no coherence yet): v4 0.56–0.64; v3 without coherence 0.68–0.73. v3 still ahead.
+- v4 keeps 84 % of this box (it masks cropland 12 %, bare 3 %); it still lets in 230–400 km² of dry dark ground.
+- **Use:** v3 for water extent. Keep v4's **IV class** (flooded vegetation, double bounce) and its confidence layer:
+  optical cannot see water under vegetation, so this test cannot score IV. Next: v3 ∪ v4-IV, scored at a site with
+  ground truth under vegetation (Everglades EDEN).
+
 ### Limits of v3
 - One site so far (Inner Niger, two tracks). Must be re-tested elsewhere (Everglades with EDEN gauges, Mekong) before it is a general claim.
 - Labels are optical: optical misses water under vegetation, so some "false" NISAR water may be real flooded grass.
