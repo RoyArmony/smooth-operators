@@ -62,6 +62,8 @@
   #ctl button, #end a { background: rgba(255,255,255,.08); color: var(--t); border: 1px solid rgba(255,255,255,.15); border-radius: 18px; padding: 7px 14px; font: 600 13px Inter, system-ui, sans-serif; cursor: pointer; text-decoration: none; }
   #vid { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s, left 1.8s ease, top 1.8s ease, width 1.8s ease, height 1.8s ease, border-radius 1.8s; pointer-events: none; z-index: 1; left: 0; top: 0; }
   #vid.pin { transition: opacity 1.2s; }
+  #lead { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .8s; }
+  #lead.in { opacity: 1; }
   #vid.card { border: 2px solid #fff; border-radius: 8px; box-shadow: 0 6px 30px rgba(0,0,0,.6); }
   body.vid #vid.ok.card { opacity: 1; }
   body.vid #vid.ok { opacity: .85; }
@@ -197,15 +199,25 @@ const T_ = { // tour sentences
 const V = $('vid');                            // opening video: real footage of Tonle Sap (CC BY-SA 4.0; credit on screen); shrinks onto the map
 V.oncanplay = () => V.classList.add('ok'); V.onerror = () => V.classList.remove('ok');
 V.src = 'story/tonle.mp4';
-const TS = [12.8, 104.15];
+const TS = [13.12, 103.65];                       // where the clip was filmed: Prek Toal, NW shore
+const LD = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); LD.id = 'lead'; document.body.appendChild(LD);
+function lead(on) {                              // dashed line from the card to where the clip was filmed
+  if (!on) { LD.classList.remove('in'); return; }
+  const p = map.latLngToContainerPoint(TS), r = V.getBoundingClientRect();
+  LD.innerHTML = `<line x1="${r.left}" y1="${r.top}" x2="${p.x}" y2="${p.y}" stroke="#fff" stroke-width="1.6" stroke-dasharray="5 5"/>`
+    + `<circle cx="${p.x}" cy="${p.y}" r="6" fill="#ff9a2e" stroke="#fff" stroke-width="2"/>`
+    + `<text x="${p.x - 10}" y="${p.y + 22}" text-anchor="end" fill="#fff" font-size="13" font-weight="600" style="paint-order:stroke;stroke:#000;stroke-width:3px">Filmed here · Prek Toal</text>`;
+  LD.classList.add('in');
+}
 function vidCard(on) {                          // full screen <-> a framed card pinned on Tonle Sap
-  if (!on) { V.classList.remove('card', 'pin'); Object.assign(V.style, { left: '0px', top: '0px', width: '100%', height: '100%' }); return; }
-  const p = map.latLngToContainerPoint(TS), w = 260, h = 146;
+  if (!on) { V.classList.remove('card', 'pin'); Object.assign(V.style, { left: '0px', top: '0px', width: '100%', height: '100%' }); lead(false); return; }
+  const p = map.latLngToContainerPoint(TS), w = 280, h = 158;
   if (!V.classList.contains('card')) setTimeout(() => V.classList.contains('card') && V.classList.add('pin'), 1900);
-  V.classList.add('card'); Object.assign(V.style, { left: (p.x - w / 2) + 'px', top: (p.y - h - 18) + 'px', width: w + 'px', height: h + 'px' });
+  V.classList.add('card'); Object.assign(V.style, { left: (p.x + 70) + 'px', top: (p.y + 50) + 'px', width: w + 'px', height: h + 'px' });
+  if (V.classList.contains('pin')) lead(true); else setTimeout(() => V.classList.contains('card') && lead(true), 1850);
 }
 map.on('move moveend resize', () => V.classList.contains('card') && vidCard(true));   // keep the card on the lake
-const vid = on => { if (!on) setTimeout(() => !document.body.classList.contains('vid') && vidCard(false), 1300); document.body.classList.toggle('vid', on); if (on) V.play().catch(() => {}); else setTimeout(() => !document.body.classList.contains('vid') && V.pause(), 2000); };
+const vid = on => { if (!on) { lead(false); } if (!on) setTimeout(() => !document.body.classList.contains('vid') && vidCard(false), 1300); document.body.classList.toggle('vid', on); if (on) V.play().catch(() => {}); else setTimeout(() => !document.body.classList.contains('vid') && V.pause(), 2000); };
 const scenes = [
   [6.5, () => { document.body.classList.remove('wv'); map.fitBounds(B, { animate: false, paddingTopLeft: [innerWidth * .38, 20], paddingBottomRight: [20, 20] }); vid(true);
               say('Tonle Sap, Cambodia', H('Every rainy season, this lake grows about six times bigger and floods the forest around it.')); }],
