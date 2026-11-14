@@ -30,6 +30,7 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 | **CORS** | Cross-Origin Resource Sharing | Browser rule that blocks reading other sites' data; why a GDACS feed may need a small proxy function. |
 | **CSA** | Canadian Space Agency | Runs RADARSAT / RCM. A Haifa prize is for the best use of CSA data. |
 | **DAAC** | Distributed Active Archive Center | One of ~12 NASA data centers, each for a science area (e.g. ASF, PO.DAAC). |
+| **dB** | decibel | Log scale for radar brightness: 10·log10(γ⁰). Water at L-band ≈ −18 dB HH, dry land ≈ −13. |
 | **DEM** | Digital Elevation Model | A height map of the ground, e.g. Copernicus DEM GLO-30. |
 | **DISP** | Displacement (OPERA product) | OPERA ground-motion product from InSAR. |
 | **DLR** | Deutsches Zentrum für Luft- und Raumfahrt (German Aerospace Center) | Co-owner of the Copernicus DEM source data. |
@@ -42,6 +43,7 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 | **EODMS** | Earth Observation Data Management System | Canada's portal for RADARSAT / RCM data. |
 | **EPSG** | European Petroleum Survey Group (code) | Catalog numbers for coordinate systems: 4326 = lat/lon, 3857 = Web Mercator, 32636 = UTM 36N. |
 | **ESA** | European Space Agency | Runs Sentinel-1 and the Copernicus DEM (with the EU). |
+| **F1** | F1 score | Balance of precision and recall (0–1): 2·P·R/(P+R). How we score water maps against a reference. |
 | **GCOV** | Geocoded Polarimetric Covariance | NISAR L2 "brightness" product: terrain-corrected backscatter (HH, HV), 20 m. |
 | **GCP** | Ground Control Point | A point with known coordinates used to align an image to the map. |
 | **GDACS** | Global Disaster Alert and Coordination System | UN + EU disaster alert feed (quakes, floods, volcanoes, fires, cyclones) with a free API. |
@@ -68,6 +70,7 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 | **JRC** | Joint Research Centre (EU) | EU science service; co-runs GDACS. |
 | **JS** | JavaScript | The language of our web app (no build step). |
 | **JSON** | JavaScript Object Notation | Text format of our event bundles (`event.json`, `index.json`). |
+| **KI** | Kittler–Illingworth (thresholding) | Picks the threshold that best splits a histogram into two Gaussians; used per tile in our fused detector. |
 | **L-band / S-band / C-band / X-band** | Radar frequency bands | L ≈ 24 cm (NISAR), S ≈ 9.4 cm (NISAR, ISRO), C ≈ 5.6 cm (Sentinel-1, RCM, RADARSAT-1), X ≈ 3 cm. |
 | **L2 / L3** | Processing Level 2 / 3 | L2: geocoded products (GCOV, GUNW). L3: derived geophysical maps (e.g. soil moisture). |
 | **LANCE** | Land, Atmosphere Near real-time Capability for Earth observation | NASA near-real-time service; publishes the MODIS/VIIRS global flood products. |

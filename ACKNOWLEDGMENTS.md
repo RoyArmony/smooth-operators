@@ -62,6 +62,8 @@ Our maps and numbers are derived products, not official NASA products, and not e
 
 - NISAR Data User Guide (ASF) — https://nisar-docs.asf.alaska.edu
 - Rentschler, J., Salhab, M., Jafino, B. A. (2022). Flood exposure and poverty in 188 countries. *Nature Communications* 13, 3527 (1.81 billion people exposed to 1-in-100-year floods; landing film) — https://doi.org/10.1038/s41467-022-30727-4
+- Martinis, S., Kersten, J., Twele, A. (2015). A fully automated TerraSAR-X based flood service. *ISPRS Journal of Photogrammetry and Remote Sensing* 104, 203–212 (tile-based thresholding + fuzzy refinement; our fused detector) — https://doi.org/10.1016/j.isprsjprs.2014.07.014
+- Kittler, J., Illingworth, J. (1986). Minimum error thresholding. *Pattern Recognition* 19(1), 41–47 — https://doi.org/10.1016/0031-3203(86)90030-0
 - NISAR Mission Science Users' Handbook (JPL, 2025) — https://doi.org/10.48577/jpl.UD4HV3
 - Peacock, A., An, K., Pinto, N., & Lou, Y. (2024). *NISAR ArcGIS Storymaps.* Zenodo. https://doi.org/10.5281/zenodo.10818833
 - NISAR Applications White Papers (NASA/JPL) — https://nisar.jpl.nasa.gov/applications/societal-benefit/

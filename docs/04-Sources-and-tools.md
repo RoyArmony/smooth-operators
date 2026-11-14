@@ -98,4 +98,6 @@ All 14 links from the [Resources tab](https://www.spaceappschallenge.org/2026/ch
 - **NISAR Mission Science Users' Handbook (JPL, 2025)** — https://doi.org/10.48577/jpl.UD4HV3 (Roy, 31.10.26)
 - **NASA Earth science data policy + NISAR data use & citation guidance** — licence and credit for NISAR data — https://www.earthdata.nasa.gov/data-and-information-policy · https://nisar-docs.asf.alaska.edu/data-use-citation-guidance/ (Roy, 31.10.26)
 - **Rentschler et al. 2022, Nature Comms** — 1.81 billion people exposed to floods (landing film) — https://doi.org/10.1038/s41467-022-30727-4 (Shai, 14.11.26)
+- **Martinis, Kersten & Twele 2015, ISPRS J. Photogramm. Remote Sens. 104:203–212** — fully automated TerraSAR-X flood service: tile-based KI threshold + fuzzy refinement; basis of our fused detector (docs/07 §2b) — https://doi.org/10.1016/j.isprsjprs.2014.07.014 (Noa, 14.11.26)
+- **Kittler & Illingworth 1986, Pattern Recognition 19(1):41–47** — minimum-error thresholding (KI) — https://doi.org/10.1016/0031-3203(86)90030-0 (Noa, 14.11.26)
 - **NISAR mission requirements** — https://science.nasa.gov/mission/nisar/mission-requirements (Shai, 09.11.26)
