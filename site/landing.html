@@ -59,8 +59,10 @@
   #bar { position: fixed; left: 0; bottom: 0; height: 3px; background: var(--o); width: 0; }
   #ctl { position: fixed; left: 6vw; bottom: 20px; display: flex; gap: 10px; }
   #ctl button, #end a { background: rgba(255,255,255,.08); color: var(--t); border: 1px solid rgba(255,255,255,.15); border-radius: 18px; padding: 7px 14px; font: 600 13px Inter, system-ui, sans-serif; cursor: pointer; text-decoration: none; }
-  #vid { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 2s; pointer-events: none; z-index: 1; }
-  body.vid #vid.ok { opacity: .55; }
+  #vid { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s, left 1.8s ease, top 1.8s ease, width 1.8s ease, height 1.8s ease, border-radius 1.8s; pointer-events: none; z-index: 1; left: 0; top: 0; }
+  #vid.card { border: 2px solid #fff; border-radius: 8px; box-shadow: 0 6px 30px rgba(0,0,0,.6); }
+  body.vid #vid.ok.card { opacity: 1; }
+  body.vid #vid.ok { opacity: .85; }
   #wm { position: fixed; right: 14px; bottom: 34px; z-index: 3; font: 600 11px Inter, system-ui, sans-serif; color: #fff; background: rgba(0,0,0,.55); padding: 3px 8px; border-radius: 4px; opacity: 0; transition: opacity 1s; }
   body.vid #vid.ok ~ #wm { opacity: .9; }
   #map { z-index: 0; } #veil { z-index: 2; } #txt, #tag, #lg, #ctl, #bar, #end { z-index: 3; }
@@ -77,7 +79,7 @@
 </head>
 <body class="dim">
 <div id="map"></div>
-<video id="vid" muted loop playsinline preload="auto"></video><div id="wm">Video: Leine flood, Germany, 2017 · CC0, Wikimedia Commons</div>
+<video id="vid" muted loop playsinline preload="auto"></video><div id="wm">Video: Tonlé Sap, Cambodia · Pierre André Leclercq, CC BY-SA 4.0 (Wikimedia Commons)</div>
 <div id="veil"></div>
 <div id="tag" class="fade"></div>
 <div id="txt"><div class="k fade" id="k"></div><div id="h" class="fade"></div><p id="s" class="fade"></p></div>
@@ -187,15 +189,22 @@ const T_ = { // tour sentences
   'Mekong delta': 'In the Mekong delta in Vietnam (23 Sep), NISAR found <b>170 km²</b> of water where the official map was blank, on its wettest NISAR pass.',
   'Irrawaddy delta': 'In Myanmar\'s Irrawaddy delta (17 Jul), NISAR found <b>76 km²</b> of water where the official map was blank, on its wettest NISAR pass.',
   'Congo basin': 'In the Congo basin (19 Oct), NISAR found <b>75 km²</b> of water where the official map was blank, on its wettest NISAR pass.' };
-const V = $('vid');                            // opening video: story/flood.mp4 (real footage, CC0; credit shown on screen)
+const V = $('vid');                            // opening video: real footage of Tonle Sap (CC BY-SA 4.0; credit on screen); shrinks onto the map
 V.oncanplay = () => V.classList.add('ok'); V.onerror = () => V.classList.remove('ok');
-V.src = 'story/flood.mp4';
-const vid = on => { document.body.classList.toggle('vid', on); if (on) V.play().catch(() => {}); else setTimeout(() => !document.body.classList.contains('vid') && V.pause(), 2000); };
+V.src = 'story/tonle.mp4';
+const TS = [12.8, 104.15];
+function vidCard(on) {                          // full screen <-> a framed card pinned on Tonle Sap
+  if (!on) { V.classList.remove('card'); Object.assign(V.style, { left: '0px', top: '0px', width: '100%', height: '100%' }); return; }
+  const p = map.latLngToContainerPoint(TS), w = 260, h = 146;
+  V.classList.add('card'); Object.assign(V.style, { left: (p.x - w / 2) + 'px', top: (p.y - h - 18) + 'px', width: w + 'px', height: h + 'px' });
+}
+map.on('moveend resize', () => V.classList.contains('card') && vidCard(true));   // keep the card on the lake
+const vid = on => { if (!on) setTimeout(() => !document.body.classList.contains('vid') && vidCard(false), 1300); document.body.classList.toggle('vid', on); if (on) V.play().catch(() => {}); else setTimeout(() => !document.body.classList.contains('vid') && V.pause(), 2000); };
 const scenes = [
   [6.5, () => { vid(true); say('', H('1.8 billion people live where a major flood can reach them.'), '', 'World Bank · Rentschler et al., Nature Comms 2022'); }],
-  [6.5, () => { vid(false); world(); many(plain, 1, 60); say('Flood maps · 2026', H('Satellites track them. Every few days, Europe\'s Copernicus service maps floods around the world with Sentinel-1 radar.'), '', 'Copernicus EMS · GFM'); }],
+  [6.5, () => { vid(true); world(); later(() => vidCard(true), 3100); many(plain, 1, 60); say('Flood maps · 2026', H('Satellites track them. Every few days, Europe\'s Copernicus service maps floods around the world with Sentinel-1 radar.'), '', 'Copernicus EMS · GFM'); }],
   [7, () => { say('', H('But the maps have blanks. Under forests and in cities, this radar can\'t see the water, so those areas are marked <b class="gy">"cannot see"</b>.')); }],
-  [7, () => { many(plain, 0); document.body.classList.remove('dim', 'wv'); fit(); show([]); later(() => { flash(box); show(['gfm']); legend(['gfm']); }, 3100);
+  [7, () => { vid(false); many(plain, 0); document.body.classList.remove('dim', 'wv'); fit(); show([]); later(() => { flash(box); show(['gfm']); legend(['gfm']); }, 3100);
               say('Tonle Sap, Cambodia', H('On 17 October, the official map showed <b class="bl">554 km²</b> of flooding around the lake.'), '', 'Copernicus EMS · GFM'); }],
   [6.5, () => { show(['gfm', 'excl']); legend(['gfm', 'excl']); say('', H('A quarter of the area was marked <b class="gy">"cannot see"</b>. Most of it is forest.'), '', 'GFM exclusion mask'); }],
   [7, () => { show(['photo']); legend([]);
