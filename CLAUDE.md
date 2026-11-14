@@ -156,5 +156,9 @@ The repo is public and judges will read it. Everything committed stays in the hi
 - The site deploys from `main` on every push. Vercel serves the repo root as a static site; `index.html` at the root is the entry page.
 - **`.vercelignore` is an allowlist:** it ignores everything, then un-ignores only what the site needs.
   When you add a file or folder the site must serve, add a `!path` line there in the same commit.
+- **Every site change must be visible on the live site.** A new page, layer, feature or asset is only done when:
+  1. it is reachable from `index.html` (a link, menu item, button or layer toggle; no orphan pages);
+  2. its files are allowed in `.vercelignore`;
+  3. it is pushed to `main`, and after the deploy you (or the user) open the live site and see it there.
 - Never let `docs/`, `data/`, scripts, `.env*` or other non-site files into the deployment.
 - If we add a build step later (e.g. a framework in its own folder), update `.vercelignore` and this section together.
