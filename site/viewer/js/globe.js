@@ -53,7 +53,7 @@ async function loadAll() {
     const g = gainOf(e); if (!g) return;
     const [w, so, ea, n] = e.bbox, lat = (so + n) / 2, lon = (w + ea) / 2;
     const own = S.find(s => !s.history && (s.id.startsWith(e.id) || inBox(s.bbox, lat, lon)));
-    if (own) { if (!own.gain) own.gain = g; own.place = own.place || e.place; return; }
+    if (own) { if (!own.gain || g.n) own.gain = g; own.place = own.place || e.place; return; }   // pooled total (g.n) beats the world bundle's one pass
     S.push({ id: 'ev-' + e.id, bundle: e.id, title: e.title, place: e.place, bbox: e.bbox, kind: 'flood', hazard: 'FL', event_date: e.date, last: e.date, gain: g });
   });
   // v2 event folders (events/<place>/<YYYY-MM>-flood, docs/12): their summary wins; place.json gives the clean name
@@ -69,7 +69,10 @@ async function loadAll() {
     }
     if (!own) return;
     own.place = nm;
-    if (f) own.gain = { gfm_flood_km2: f.baseline_flood_km2, nisar_adds_km2: f.nisar_adds_km2, pct: f.improvement_pct ?? null, date: f.flood_date, baseline: f.baseline, val: f.validation, kind: f.kind };
+    const T = f && f.total;                                // pooled over the flood's passes (bundle.pooled)
+    if (f) own.gain = T ? { gfm_flood_km2: T.flood_km2, nisar_adds_km2: T.adds_km2, pct: T.pct ?? null, n: T.n, first: T.first, last: T.last, peak_adds: f.nisar_adds_km2,
+                            date: f.flood_date, baseline: T.baseline || f.baseline, val: f.validation, kind: f.kind }
+                        : { gfm_flood_km2: f.baseline_flood_km2, nisar_adds_km2: f.nisar_adds_km2, pct: f.improvement_pct ?? null, date: f.flood_date, baseline: f.baseline, val: f.validation, kind: f.kind };
   });
   // multi-year histories (events/<place>/history, RADARSAT-1 → NISAR): their own items; they replace the old site-based one
   (V2.places || []).filter(p => p.history && p.bbox).forEach(p => {
@@ -219,7 +222,7 @@ function renderFeed() {
   const hist = L_.filter(it => it.site && it.site.history), now = L_.filter(it => !(it.site && it.site.history) && !isVal(it)).sort((a, b) => rank(b) - rank(a) || b.date.localeCompare(a.date));
   const val = L_.filter(isVal).sort((a, b) => ((headCheck(G(b)) || {}).agreement_pct || 0) - ((headCheck(G(a)) || {}).agreement_pct || 0));
   const head = t => { const h = document.createElement('div'); h.className = 'fmonth'; h.textContent = t; $('feed').appendChild(h); };
-  const adds = now.reduce((t, it) => t + ((G(it) && G(it).nisar_adds_km2) || 0), 0);
+  const adds = now.reduce((t, it) => { const g = G(it); return t + ((g && (g.peak_adds ?? g.nisar_adds_km2)) || 0); }, 0);   // one pass per flood
   $('fsum').innerHTML = adds ? `NISAR found <b>${Math.round(adds).toLocaleString('en-GB')} km²</b> of flood the official maps couldn't see, across ${now.filter(G).length} floods.` : '';
   [[hist, 'Over the years · older radars → NISAR'], [now, '2026 floods · biggest gain first'],
    [val, 'Validation · NISAR vs official maps where they can see']].forEach(([list, title]) => { if (!list.length) return; head(title);
@@ -232,7 +235,7 @@ function renderFeed() {
     const hc = headCheck(g);
     const gain = !g ? '' : hc ? `<span class="fval">✓${Math.round(hc.agreement_pct)}%</span>` : g.pct != null ? (g.pct > 0 ? '↑' : '') + `${g.pct.toLocaleString('en-GB')}%`
       : g.nisar_adds_km2 > 0 ? `↑<small>+${km(g.nisar_adds_km2)} km²</small>` : '0%';
-    const tip = !g ? '' : hc ? `Validated: NISAR's water agrees with ${VNAME[hc.k]} on ${hc.agreement_pct}% of pixels (IoU ${hc.iou}). NISAR adds ${km(g.nisar_adds_km2 || 0)} km² (${g.pct ?? 0}%).` : `Official map ${km(g.gfm_flood_km2 || 0)} km² · NISAR adds ${km(g.nisar_adds_km2 || 0)} km²` + (g.pct == null ? ' (official map under 5 km²: no %)' : '');
+    const tip = !g ? '' : hc ? `Validated: NISAR's water agrees with ${VNAME[hc.k]} on ${hc.agreement_pct}% of pixels (IoU ${hc.iou}). NISAR adds ${km(g.nisar_adds_km2 || 0)} km² (${g.pct ?? 0}%).` : `Official map ${km(g.gfm_flood_km2 || 0)} km² · NISAR adds ${km(g.nisar_adds_km2 || 0)} km²${g.n > 1 ? `, summed over ${g.n} passes` : ''}` + (g.pct == null ? ' (official map under 5 km²: no %)' : '');
     const when = it.site && it.site.history ? `${it.site.first.slice(0, 4)}–${it.site.last.slice(0, 4)}` : day;
     c.innerHTML = `<div class="fbody"><div class="ftitle">${it.title}</div><div class="fdate">${when}${it.site ? sensorTags(it.site) : ''}</div></div>`
       + (gain ? `<div class="fgain" title="${tip}">${gain}</div>` : '');
@@ -291,7 +294,9 @@ function gainOf(e) {
     return { gfm_flood_km2: m.baseline_flood_km2, nisar_adds_km2: m.nisar_adds_km2, pct: m.improvement_pct ?? null, date: e.flood_date || e.date };
   const b = hnum(e, /^Official map: flood/), a = hnum(e, /^NISAR adds/);
   if (b == null || a == null || (!b && !a)) return null;
-  return { gfm_flood_km2: b, nisar_adds_km2: a, pct: b >= 5 ? Math.round(100 * a / b) : null, date: e.date };
+  const T = e.total;                                       // pooled over all passes (bundle.pooled): the % and totals shown
+  return T ? { gfm_flood_km2: T.flood_km2, nisar_adds_km2: T.adds_km2, pct: T.pct ?? null, n: T.n, first: T.first, last: T.last, peak_adds: a, date: e.date }
+           : { gfm_flood_km2: b, nisar_adds_km2: a, pct: b >= 5 ? Math.round(100 * a / b) : null, date: e.date };
 }
 // which satellites an event uses: NISAR, plus the Canadian Space Agency's RADARSAT-1 (1995–2013) or RCM (2019–)
 const CSA_RCM = ['peace-athabasca'];                       // real NISAR vs RCM comparison (site/story/canada)
@@ -307,11 +312,14 @@ function gainHTML(m) {
   if (m.base == null || m.adds == null) return '';
   const hc = headCheck({ pct: m.pct, val: m.val, kind: m.kind });
   const km = v => `${(v < 10 ? Math.round(v * 10) / 10 : Math.round(v)).toLocaleString('en-GB')}<small> km²</small>`;
-  return (m.kind === 'validation' ? '' : `<div class="gcol"><b class="gbase">${km(m.base)}</b><span>${BASE_NAME[m.baseline] || 'Official map'}</span></div>`
-    + `<div class="gcol"><b class="gadd">+${km(m.adds)}</b><span>NISAR addition</span></div>`)
+  const sum = m.n > 1 ? `, all ${m.n} passes` : '';
+  return (m.kind === 'validation' ? '' : `<div class="gcol"><b class="gbase">${km(m.base)}</b><span>${BASE_NAME[m.baseline] || 'Official map'}${sum}</span></div>`
+    + `<div class="gcol"><b class="gadd">+${km(m.adds)}</b><span>NISAR addition${sum}</span></div>`)
     + (hc ? `<div class="gpct gvhead"><span class="garrow">✓</span><b>${Math.round(hc.agreement_pct)}%</b><span>validated: agrees with ${VNAME[hc.k]} · IoU ${hc.iou}</span></div>`
        : m.pct != null ? `<div class="gpct"><span class="garrow">↑</span><b>${m.pct.toLocaleString('en-GB')}%</b><span>more flood seen with NISAR</span></div>` : '')
-    + valHTML(m.val, hc && hc.k);
+    + valHTML(m.val, hc && hc.k)
+    + (m.n > 1 && m.kind !== 'validation' ? `<ul class="gpoint"><li>Total of ${m.n} NISAR passes, ${fmtDate(m.first)} – ${fmtDate(m.last)}: `
+       + `% = Σ NISAR addition ÷ Σ official flood. Each pass’s own numbers are in the map panel.</li></ul>` : '');
 }
 // when NISAR adds < 5 % (clear sky, little hidden), headline the independent check instead: % agreement (RCM first)
 const VNAME = { rcm: 'Canada’s RCM radar (CSA)', dswx: 'NASA’s DSWx map', lance: 'NASA’s LANCE flood map', gfm: 'Copernicus GFM' };
@@ -331,6 +339,8 @@ async function loadSummary(s) {
   const pl = ((V2.version === 2 && V2.places) || []).find(p => s.id.startsWith(p.id));
   const fl = pl && pl.floods && pl.floods.length && [...pl.floods].sort((a, b) => (b.flood_date || '').localeCompare(a.flood_date || ''))[0];
   if (!fl) return null;
+  const T = fl.total;
+  if (T) return { base: T.flood_km2, adds: T.adds_km2, pct: T.pct ?? null, n: T.n, first: T.first, last: T.last, baseline: T.baseline || fl.baseline, val: fl.validation, kind: fl.kind };
   const ev = await getJSON(`../../events/${pl.folder || pl.id}/${fl.id}/event.json`), m = ev && ev.summary;
   return m ? { base: m.baseline_flood_km2, adds: m.nisar_adds_km2, pct: m.improvement_pct, baseline: m.baseline, val: m.validation, kind: fl.kind } : null;
 }
@@ -348,7 +358,7 @@ function showFocus(id) {
       <h2>${s.title}</h2>
       <div class="fwhen">${when}</div>
       <div class="stags">${tags}</div>
-      <div class="gainbox" id="gainbox">${g ? gainHTML({ base: g.gfm_flood_km2, adds: g.nisar_adds_km2, pct: g.pct, baseline: g.baseline || 'gfm', val: g.val, kind: g.kind }) : ''}</div>
+      <div class="gainbox" id="gainbox">${g ? gainHTML({ base: g.gfm_flood_km2, adds: g.nisar_adds_km2, pct: g.pct, baseline: g.baseline || 'gfm', val: g.val, kind: g.kind, n: g.n, first: g.first, last: g.last }) : ''}</div>
       ${s.bundle && s.kind !== 'validation' ? `<div class="legend sub blegend"><div><span style="background:#2882ff"></span>Official flood (GFM)</div>
         <div><span style="background:repeating-linear-gradient(45deg,#dcdce4 0 2px,#696973 2px 6px)"></span>Official map: "cannot see"</div>
         <div><span style="background:var(--orange)"></span>NISAR adds, in the blank</div></div>` : ''}

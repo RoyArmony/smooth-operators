@@ -175,3 +175,18 @@ image, Youden J ≥ 0.5 quality check). Each RADARSAT-1 flood map checked by eye
 | Tonle Sap, Cambodia | 13 | 9 (1998–2006), 0 dropped | 1,716 km² (2001-08-30) → 4,060 km² (NISAR 2026-10-17) | flood pulse: dry 300–700, wet 1,000–1,700 km² |
 | Sylhet haor, Bangladesh | 9 | 4 (1996–2002), 3 dropped (J < 0.5) | 931 km² (2002-07-01) → 920 km² (NISAR 2026-07-24) | monsoon haor edges; no MODIS before 2000, cloud after |
 | Nepal (small box) | – | 10 found, all unusable | – | box holds only a thin river: no tile with both permanent water and land, so no threshold |
+
+## Improvement %: pooled over passes (15.11.26, Noa)
+
+% = 100 × Σ NISAR addition ÷ Σ official flood over every pass with a baseline (`bundle.pooled`). Was: the wettest pass only.
+
+| Flood | Passes | Σ official | Σ NISAR adds | Pooled % | Was (one pass) |
+|---|---|---|---|---|---|
+| Inner Niger Delta | 10 | 569 | 2,083 | **366 %** | 493 % |
+| Tonle Sap | 11 | 3,719 | 2,387 | **64 %** | 98 % |
+| Mekong (v2) | 5 | 3,146 | 769 | **24 %** | 24 % |
+| Peace–Athabasca (v2, DSWx) | 3 | 1,822 | 383 | **21 %** | 0 % |
+| Irrawaddy | 11 | 2,543 | 471 | **19 %** | – |
+| Sylhet | 11 | 908 | 72 | **8 %** | – |
+
+km² summed over passes (km² × passes, not one area). Each pass's own numbers: `events/<id>/event.json` timeline / passes.

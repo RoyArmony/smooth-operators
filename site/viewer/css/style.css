@@ -289,3 +289,4 @@ body.focused #listhead, body.focused #feed, body.focused aside > details.more2 {
 .pinpick button { text-align:left; padding:6px 10px; border-radius:6px; border:1px solid var(--line-2, #2a3a44); background:var(--card, #12303b);
                   color:var(--text, #e8eef5); font-size:12px; cursor:pointer; }
 .pinpick button:hover { border-color:#ff9a2e; }
+.gpoint { grid-column:1 / -1; margin:0; padding:var(--s2) 0 0 16px; border-top:1px solid var(--line); font-size:var(--fs-xs); color:var(--muted); }

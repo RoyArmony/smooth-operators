@@ -265,3 +265,9 @@ in the panel, chart = % agreement per pass). The summary of a validation folder 
 (`gfm.py` falls back to `data/gfm/` when the STAC server is down). Mask without cropland (`no_map=(50, 60)`): the haor is
 flooded farmland. **GFM agreement 79 %, precision 0.78, recall 0.84 (5 passes); NASA DSWx 77 % (4); NASA LANCE 80 % (6).**
 Explorer: validation places always get their own item; steps use the first reference present (GFM, then DSWx, then LANCE).
+
+**Noa, 15.11.26 16:34:21 says:** the Explorer's improvement % is now **pooled over all passes**, not the wettest pass.
+`bundle.write_index()` adds `total` to every flood in `index.json` (v1 events and v2 place floods):
+`flood_km2` = Σ official flood, `adds_km2` = Σ NISAR addition, `pct` = 100 × Σ addition ÷ Σ flood (null if Σ flood < 5 km²), `n`, `first`, `last`.
+Side card and list show the total; the map panel shows each pass's own km² and %. The page headline still sums one pass per flood
+(summing pass totals would count the same water many times). Inner Niger: 493 % (wettest pass) → **366 %** (10 passes, per pass 188–1,080 %).

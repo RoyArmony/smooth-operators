@@ -50,6 +50,7 @@ async function openSite(id) {
   S.ev = []; if (!D.history) try {          // history cases draw their own per-image overlay (site.json)
     const eid = id.replace(/-\d+-\d+$/, ''), E = await (await fetch(`../../events/${eid}/event.json`, { cache: 'no-cache' })).json();
     const ORDER = ['gfm_flood', 'gfm_excluded', 'both_blind', 'nisar_water', 'nisar_adds'];
+    S.evE = E;                                                       // its timeline: each pass's own km²
     S.ev = Object.entries(E.layers || {}).sort((a, b) => (ORDER.indexOf(a[0]) + 1 || 99) - (ORDER.indexOf(b[0]) + 1 || 99))
       .map(([k, l]) => ({ k, l, base: `../../events/${eid}/`, ov: L.imageOverlay('data:,', L.latLngBounds(l.bounds), { pane: 'analysis', interactive: false, opacity: 0, className: k === 'gfm_excluded' ? 'excl' : '' }).addTo(map) }));
   } catch (e) { S.ev = []; }
@@ -156,6 +157,13 @@ function renderVs(k) {                                  // one pass: other senso
     + `<div class="sub" style="grid-column:1/-1">All passes: ${pc(A.agreement_pct)} agree, IoU ${A.iou} (${A.n_dates})${k === 'dswx' && X ? `. RCM vs NASA, without NISAR: ${pc(X.agreement_pct)}, IoU ${X.iou}` : ''}.`
     + `${P.length > 1 ? ' Click a bar near another pass.' : ''}</div>`;
   vclip(); chart();
+}
+// one pass's own numbers (not the total): official flood, NISAR addition, % for that pass (none if flood < 5 km²)
+function passLine(st, date, gdate) {
+  if (!st || st.gfm_flood == null) return '';
+  const p = st.gfm_flood >= 5 && st.nisar_adds != null ? ` (<b class="o">+${Math.round(100 * st.nisar_adds / st.gfm_flood).toLocaleString('en-GB')}%</b>)` : '';
+  return `<div class="sub" style="grid-column:1/-1">This pass ${fmt(date)}${gdate ? ` (GFM ${fmt(gdate)})` : ''}: official ${km(st.gfm_flood)} km²`
+    + (st.nisar_adds != null ? ` · NISAR adds <b class="o">${km(st.nisar_adds)} km²</b>${p}` : '') + '</div>';
 }
 const R_ = D => D.report || {};
 function setStep(i) {
@@ -276,7 +284,7 @@ function renderBundle() {
   $('spK').innerHTML = '<i class="kb"></i>official flood <i class="ko"></i>NISAR adds';
   const miss = drawEv(x.date, on);
   $('spL').innerHTML = S.ev.filter(v => on.has('E_' + v.k)).map(v => `<div><span style="background:${v.l.legend === 'hatch' ? HATCH : v.l.legend || '#888'}"></span>${v.l.label || v.k}</div>`).join('')
-    + (on.size && st.gfm_flood != null ? `<div class="sub">Official ${km(st.gfm_flood)} km²${on.has('E_nisar_adds') && st.nisar_adds != null ? ` · NISAR adds <b class="o">${km(st.nisar_adds)} km²</b>` : ''}</div>` : '')
+    + (on.size ? passLine(st, x.date, x.gfm_date) : '')
     + (miss.length ? '<div class="sub">No map for this date: pick a bright bar</div>' : '');
   bchart();
 }
@@ -473,7 +481,9 @@ function render() {
   }
   const seen = new Set();                                         // one legend per distinct scale
   $('spL').innerHTML = (on.has('rcm') ? '<div><span style="background:#f5f5f5"></span>both see water</div><div><span style="background:#2882ff"></span>only NISAR</div><div><span style="background:#ff5050"></span>only RCM</div><div class="sub">Agree on <b>79%</b> of the water</div>' : '') + (S.ev || []).filter(x => on.has('E_' + x.k)).map(x => `<div><span style="background:${x.l.legend === 'hatch' ? HATCH : x.l.legend || '#888'}"></span>${x.l.label || x.k}</div>`).join('')
-    + (evNote.length ? `<div class="sub">Not on this date: ${evNote.join(', ')}</div>` : '') + (pr && (on.has('motion') || on.has('fringes')) ? `<div class="pair${pr.event ? ' ev' : ''}">Pair ${fmt(pr.ref)} → ${fmt(pr.sec)}${pr.event ? ' · spans the event' : ''}</div>` : '')
+    + (evNote.length ? `<div class="sub">Not on this date: ${evNote.join(', ')}</div>` : '')
+    + ([...on].some(k => k.startsWith('E_')) && S.evE ? (r => r ? passLine(r.stats, r.date, r.gfm_date) : '')(
+        (S.evE.timeline || []).find(r => Math.abs(dn(r.date) - dn(f.date)) <= 6)) : '') + (pr && (on.has('motion') || on.has('fringes')) ? `<div class="pair${pr.event ? ' ev' : ''}">Pair ${fmt(pr.ref)} → ${fmt(pr.sec)}${pr.event ? ' · spans the event' : ''}</div>` : '')
     + [...(on.has('motion') && S.P ? [S.P.motion_legend] : []), ...(on.has('fringes') && S.P ? [S.P.fringe_legend] : [])]
       .map(lg => lg.map(([c, t]) => `<div><span style="background:${c}${c.startsWith('linear') ? ';width:60px' : ''}"></span>${t}</div>`).join('')).join('')
     + (S.layers || []).filter((l, i) => on.has(`L${i}`)).map(l => l.legend.map(([c, t]) => `<div><span style="background:${c}${c.startsWith('linear') ? ';width:60px' : ''}"></span>${t}</div>`).join(''))

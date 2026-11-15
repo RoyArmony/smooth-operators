@@ -118,6 +118,18 @@ def write_event(ev):
     return d / "event.json"
 
 
+def pooled(rows):
+    """Improvement over the whole window, not one pass: rows = [(date, baseline flood km², NISAR addition km²)].
+    pct = 100 × Σ NISAR addition / Σ baseline flood (None if Σ flood < 5 km²). Sums are km² × passes, not one area."""
+    rows = [r for r in rows if r[1] is not None and r[2] is not None]
+    if not rows:
+        return None
+    B, A = sum(r[1] for r in rows), sum(r[2] for r in rows)
+    return dict(flood_km2=round(B, 1), adds_km2=round(A, 1), pct=round(100 * A / B) if B >= 5 else None,
+                n=len(rows), first=min(r[0] for r in rows), last=max(r[0] for r in rows),
+                rule="100 × Σ NISAR addition / Σ official flood, all passes")
+
+
 def write_index():
     """Rebuild events/index.json: "events" from every events/<id>/event.json (v1), "places" from events/<place>/place.json (v2)."""
     out = []
@@ -126,11 +138,23 @@ def write_index():
         if e.get("hidden"):                         # kept on disk, left out of the Explorer list
             continue
         h = e.get("headline", {})
+        tot = pooled([(r["date"], (r.get("stats") or {}).get("gfm_flood"), (r.get("stats") or {}).get("nisar_adds"))
+                      for r in e.get("timeline", []) if r.get("date")])
         out.append(dict(id=e["id"], title=e["title"], place=e.get("place"), date=h.get("date"), bbox=e["bbox"],
-                        kind=e["kind"], headline=dict(sentence=h.get("sentence"), numbers=h.get("numbers", []))))
+                        kind=e["kind"], headline=dict(sentence=h.get("sentence"), numbers=h.get("numbers", [])),
+                        **(dict(total=tot) if tot else {})))
     places = []                                    # v2 (docs/12): events/<place>/place.json -> its floods + history
     for f in sorted(EVENTS_DIR.glob("*/place.json")):
         p = json.loads(f.read_text(encoding="utf-8"))
+        for fl in p.get("floods", []):              # v2 flood: pooled over its passes, against its main baseline
+            ef = f.parent / fl["id"] / "event.json"
+            if ef.exists():
+                E = json.loads(ef.read_text(encoding="utf-8"))
+                mb = (E.get("summary") or {}).get("baseline")
+                tot = pooled([(q["date"], q["baselines"][mb].get("flood_km2"), q["baselines"][mb].get("nisar_adds_km2"))
+                              for q in E.get("passes", []) if mb in q.get("baselines", {})])
+                if tot:
+                    fl["total"] = dict(tot, baseline=mb)
         places.append(dict(id=p["id"], folder=f.parent.name, name=p["name"], country=p.get("country"), bbox=p["bbox"],
                            floods=p.get("floods", []), history=p.get("history"), validation=p.get("validation") or []))
     idx = dict(version=2 if places else 1, events=out, **(dict(places=places) if places else {}))
