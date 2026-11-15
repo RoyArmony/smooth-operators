@@ -23,6 +23,7 @@ L.DomEvent.disableClickPropagation(panel); L.DomEvent.disableScrollPropagation(p
 
 async function openSite(id) {
   closeSite('swap');
+  if (id.startsWith('ev-')) return openBundle(id.slice(3));
   const base = `sites/${encodeURIComponent(id)}/`;
   let D; try { D = await (await fetch(base + 'site.json', { cache: 'no-cache' })).json(); } catch (e) { return; }
   const A = n => (D.assets && D.assets[n]) || base + n;
@@ -88,6 +89,21 @@ function setStep(i) {
   $('spBk').style.visibility = S.step ? '' : 'hidden';
   $('spNx').textContent = S.step < n - 1 ? `Next: ${S.steps[S.step + 1].label} →` : '↺ Start over';
   render();
+}
+// an event bundle with no Explorer site (events/<id>/event.json): official flood, "cannot see" and NISAR adds draped on the map
+async function openBundle(eid) {
+  let E; try { E = await (await fetch(`../../events/${eid}/event.json`, { cache: 'no-cache' })).json(); } catch (e) { return; }
+  const [w, s, e, n] = E.bbox, B = L.latLngBounds([[s, w], [n, e]]), base = `../../events/${eid}/`;
+  const day = (E.headline && E.headline.date) || (E.timeline || []).map(t => t.date).pop();
+  const near = files => Object.keys(files || {}).sort((a, b) => Math.abs(dn(a) - dn(day)) - Math.abs(dn(b) - dn(day)))[0];
+  S = { bundle: true, id: 'ev-' + eid,
+        box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, interactive: false }).addTo(map),
+        ev: ['gfm_flood', 'gfm_excluded', 'nisar_adds'].filter(k => E.layers && E.layers[k]).map(k => {
+          const l = E.layers[k], d = near(l.files);
+          return { k, l, ov: L.imageOverlay(d ? base + l.files[d] : 'data:,', L.latLngBounds(l.bounds), { pane: 'analysis', interactive: false, opacity: d ? 1 : 0 }).addTo(map) };
+        }) };
+  map.flyToBounds(B, { padding: [40, 40], duration: 1.2 });
+  window.dispatchEvent(new CustomEvent('unseen:site', { detail: S.id }));
 }
 function closeSite(keepHash) {
   if (S) { ['base', 'over', 'box', 'tag', 'mo', 'fr'].forEach(k => S[k] && map.removeLayer(S[k])); (S.layers || []).forEach(l => map.removeLayer(l.ov)); (S.ev || []).forEach(x => map.removeLayer(x.ov)); (S.extra || []).forEach(x => map.removeLayer(x)); }
@@ -224,6 +240,7 @@ $('spNx').onclick = () => setStep(S.step < S.steps.length - 1 ? S.step + 1 : 0);
 addEventListener('keydown', ev => {
   if (!S || /INPUT|TEXTAREA/.test(document.activeElement?.tagName) && document.activeElement.type !== 'range') return;
   if (ev.key === 'Escape') closeSite(false);
+  else if (S.bundle) return;
   else if (ev.key === 'ArrowRight') setT(S.t + 1);
   else if (ev.key === 'ArrowLeft') setT(S.t - 1);
   else if (ev.key === 'ArrowDown' || ev.key === 'Enter') { ev.preventDefault(); setStep(S.step + 1); }

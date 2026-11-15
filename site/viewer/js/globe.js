@@ -46,7 +46,17 @@ async function loadAll() {
   if (!S) S = await getJSON('sites/samples.json');      // fresh clone / static hosting: only the committed samples
   // NISAR gain per site (water in the official map's blank vs the official flood area), from the world bundle
   (S || []).forEach(s => { const w = !s.history && ((WD && WD.sites) || []).find(x => s.id.startsWith(x.id)); if (w) s.gain = w; });
-  window.UNSEEN_SITES = S || []; window.dispatchEvent(new Event('unseen:sites'));
+  // Noa's event bundles (events/index.json): each one gets the same numbers; bundles with no Explorer site become their own item
+  if (V2 === null) V2 = (await getJSON('../../events/index.json')) || {};
+  S = S || [];
+  (V2.events || []).filter(e => e.kind !== 'world' && e.bbox).forEach(e => {
+    const g = gainOf(e); if (!g) return;
+    const [w, so, ea, n] = e.bbox, lat = (so + n) / 2, lon = (w + ea) / 2;
+    const own = S.find(s => !s.history && (s.id.startsWith(e.id) || inBox(s.bbox, lat, lon)));
+    if (own) { if (!own.gain) own.gain = g; return; }
+    S.push({ id: 'ev-' + e.id, bundle: e.id, title: e.title, bbox: e.bbox, kind: 'flood', hazard: 'FL', event_date: e.date, last: e.date, gain: g });
+  });
+  window.UNSEEN_SITES = S; window.dispatchEvent(new Event('unseen:sites'));
   const sites = window.UNSEEN_SITES, wa = (W && W.areas) || [], used = new Set();
   ITEMS = [];
   ((E && E.events) || []).forEach(e => {
@@ -222,10 +232,17 @@ let FOCUS = null;
 const focusBox = document.createElement('div'); focusBox.id = 'focus'; focusBox.hidden = true;
 $('feed').before(focusBox);
 const num = v => typeof v === 'number' ? v.toLocaleString('en-GB') : v;
+// v1 bundle headline → { official flood, NISAR adds, % more } (pct only when the official flood is ≥ 5 km², as in the pipeline)
+const hnum = (e, re) => { const x = ((e.headline || {}).numbers || []).find(k => re.test(k.label)); return x ? x.value : null; };
+function gainOf(e) {
+  const b = hnum(e, /^Official map: flood/), a = hnum(e, /^NISAR adds/);
+  if (b == null || a == null || (!b && !a)) return null;
+  return { gfm_flood_km2: b, nisar_adds_km2: a, pct: b >= 5 ? Math.round(100 * a / b) : null, date: e.date };
+}
 const BASE_NAME = { gfm: 'Official map (GFM)', dswx: 'NASA OPERA DSWx' };
 function gainHTML(m) {
   if (m.base == null || m.adds == null) return '';
-  const km = v => `${Math.round(v).toLocaleString('en-GB')}<small> km²</small>`;
+  const km = v => `${(v < 10 ? Math.round(v * 10) / 10 : Math.round(v)).toLocaleString('en-GB')}<small> km²</small>`;
   return `<div class="gcol"><b class="gbase">${km(m.base)}</b><span>${BASE_NAME[m.baseline] || 'Official map'}</span></div>`
     + `<div class="gcol"><b class="gadd">+${km(m.adds)}</b><span>NISAR addition</span></div>`
     + (m.pct != null ? `<div class="gpct"><span class="garrow">↑</span><b>${m.pct.toLocaleString('en-GB')}%</b><span>more flood seen with NISAR</span></div>` : '');
@@ -254,9 +271,12 @@ function showFocus(id) {
       <div class="fwhen">${when}</div>
       <div class="stags">${tags}</div>
       <div class="gainbox" id="gainbox">${g ? gainHTML({ base: g.gfm_flood_km2, adds: g.nisar_adds_km2, pct: g.pct, baseline: 'gfm' }) : ''}</div>
+      ${s.bundle ? `<div class="legend sub blegend"><div><span style="background:#2882ff"></span>Official flood (GFM)</div>
+        <div><span style="background:repeating-linear-gradient(45deg,#c8c8d2 0 2px,#3c3c46 2px 6px)"></span>Official map: "cannot see"</div>
+        <div><span style="background:var(--orange)"></span>NISAR adds, in the blank</div></div>` : ''}
       </div>`);
   // v2 metadata (docs/12): events/<place>/<flood>/event.json, summary = wettest pass vs the main baseline
-  if (s && !s.history) loadSummary(s).then(m => { const box = $('gainbox'); if (m && box && FOCUS === s.id) box.innerHTML = gainHTML(m); });
+  if (s && !s.history && !s.bundle) loadSummary(s).then(m => { const box = $('gainbox'); if (m && box && FOCUS === s.id) box.innerHTML = gainHTML(m); });
   focusBox.querySelector('.fback').onclick = () => {
     window.closeSite && window.closeSite();
     const all = (window.UNSEEN_SITES || []).map(x => [[x.bbox[1], x.bbox[0]], [x.bbox[3], x.bbox[2]]]).flat();
