@@ -59,3 +59,17 @@ km². GFM "cannot see" on 2026-09-23: 1,050 km² (all vegetation / city). DSWx %
 | 2006 | 6 | 2,680 km² (10-22, RADARSAT-1); dry 110–343 km² | MODIS | none |
 | 2007 | 1 | 182 km² (05-04, RADARSAT-1), dry season only | MODIS | none |
 | 2026 | 4 | 1,854 km² (09-23, NISAR) | HLS | GFM 706 km², DSWx-HLS 278 km² (09-21; 3,894 km² under cloud) |
+
+## Detector v2 (`detect.py`): F1 vs optical, tuned per site
+
+Leave-one-out: each clear OPERA DSWx-HLS day is scored with HH/HV thresholds tuned on the other days (`detect.calibrate`).
+Read from each bundle's `method.calibration.loo` in `events/*/event.json`. Date (who): 15.11.26 (Noa).
+
+| What | Value |
+|---|---|
+| Mean F1, all passes | **0.70** (74 passes, 10 sites) |
+| Mean F1 per site | Likouala 0.91 · Amazon várzea 0.86 · Sylhet 0.72 · Thailand 0.70 · Congo 0.68 · China 0.64 · Tonle Sap 0.64 · Assam 0.63 · Irrawaddy 0.63 · Mekong 0.63 |
+| Tonle Sap, all 9 days fitted (no leave-out) | 0.78 (default thresholds −17 / −24 dB: 0.43) |
+
+Not the same test as the Inner Niger held-out track (docs/07 §2b), where v2 scored 0.01 because a corrupt pass broke its baseline.
+

@@ -168,11 +168,12 @@
   .tag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: var(--r-pill); background: var(--surface-3); color: var(--accent); }
   .took { margin: var(--s3) 0 0; padding: 0 0 0 18px; font-size: var(--fs-sm); color: var(--muted); } .took b { color: var(--text); }
   .cmp { margin-top: var(--s4); padding: var(--s4) var(--s5); }
-  .cb { display: grid; grid-template-columns: 220px 1fr 80px; gap: var(--s3); align-items: center; margin-top: 8px; font-size: var(--fs-sm); color: var(--muted); }
+  .cb { display: grid; grid-template-columns: 300px 1fr 80px; gap: var(--s3); align-items: center; margin-top: 8px; font-size: var(--fs-sm); color: var(--muted); }
   .cb i { display: block; height: 10px; border-radius: 0 5px 5px 0; background: var(--surface-3); }
+  .cb small { display: block; font-size: 11px; color: var(--faint); font-weight: 400; }
   .cb b { color: var(--text); font-variant-numeric: tabular-nums; text-align: right; }
   .cb.hi span, .cb.hi b { color: var(--accent); font-weight: 700; } .cb.hi i { background: var(--accent); }
-  @media (max-width: 960px) { .litg, .eqbar { grid-template-columns: 1fr; } .cb { grid-template-columns: 130px 1fr 70px; } }
+  @media (max-width: 960px) { .litg, .eqbar { grid-template-columns: 1fr; } .cb { grid-template-columns: 150px 1fr 70px; } }
 </style>
 </head>
 <body data-page="science">
@@ -430,11 +431,11 @@
       </div>
     </div>
     <div class="card cmp">
-      <div class="k">Inner Niger Delta · held-out track 138 · truth: NASA OPERA DSWx-HLS · mean F1</div>
-      <div class="cb"><span>Our first detector</span><i style="width:1%"></i><b>0.01</b></div>
-      <div class="cb"><span>NISAR handbook classifier</span><i style="width:60%"></i><b>0.57–0.60</b></div>
-      <div class="cb"><span>Martinis et al. 2015</span><i style="width:61%"></i><b>0.61</b></div>
-      <div class="cb hi"><span>Ours, v3 (paper + L-band)</span><i style="width:70%"></i><b>0.70</b></div>
+      <div class="k">Truth: NASA OPERA DSWx-HLS, clear days · mean F1 · scored on data not used for tuning</div>
+      <div class="cb"><span>Shai's detector v2, tuned per site<small>10 sites · 74 passes · leave-one-out · 0.63–0.91 per site</small></span><i style="width:70%"></i><b>0.70</b></div>
+      <div class="cb"><span>NISAR handbook classifier<small>Inner Niger, held-out track</small></span><i style="width:60%"></i><b>0.57–0.60</b></div>
+      <div class="cb"><span>Martinis et al. 2015<small>Inner Niger, held-out track</small></span><i style="width:61%"></i><b>0.61</b></div>
+      <div class="cb hi"><span>Ours, v3 (paper + L-band)<small>Inner Niger, held-out track</small></span><i style="width:70%"></i><b>0.70</b></div>
     </div>
   </div>
 </section>
