@@ -120,16 +120,21 @@ const A = 'story/tonlesap/', B = L.latLngBounds([[12.3005, 103.5949], [13.2994, 
 const img = f => L.imageOverlay(A + f, B, { opacity: 0, interactive: false }).addTo(map);
 const PH = ['2026-06-18', '2026-06-21', '2026-07-01', '2026-07-11', '2026-07-18', '2026-07-21', '2026-07-25', '2026-08-16', '2026-08-17',
             '2026-08-25', '2026-08-27', '2026-09-09', '2026-09-16', '2026-09-18', '2026-10-04', '2026-10-16', '2026-10-19'];   // every HLS photo of the lake
-const PHS = PH.filter((d, k) => (PH.length - 1 - k) % 2 === 0);                   // every other look, ending on 19 Oct
+const PHS = ['2026-06-18', '2026-07-01', '2026-07-18', '2026-08-27', '2026-09-16', '2026-10-04', '2026-10-19'];   // full-frame looks (no half-empty swaths)
 const PHP = d => `viewer/sites/tonle-sap-flood-pulse-2026-83-8/photo_${d}.jpg`;
 PH.forEach(d => { const im = new Image(); im.src = PHP(d); });                       // preload, so the flick is smooth
 const fmtD = d => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 function flick() {                               // step fast through every optical look, end on 19 Oct
   if (fast) { P.photo.setUrl(PHP(PH[PH.length - 1])); return; }
-  const g = sg; PHS.forEach((d, k) => setTimeout(() => { if (g !== sg) return; P.photo.setUrl(PHP(d)); $('tag').textContent = 'Optical · ' + fmtD(d); $('tag').classList.add('in'); }, k * 1000));
+  const g = sg; let k = 0;                                // loop through the looks until the scene changes
+  const step = () => { if (g !== sg) return; const d = PHS[k++ % PHS.length]; P.photo.setUrl(PHP(d)); $('tag').textContent = 'Optical · ' + fmtD(d); $('tag').classList.add('in'); setTimeout(step, 1000); };
+  step();
 }
 const P = { photo: img('photo_2026-10-19.jpg'), excl: img('gfm_excluded.png'), gfm: img('gfm_flood.png'), add: L.imageOverlay('../events/tonle-sap-flood-pulse-2026/layers/nisar_adds_2026-10-17.png', [[12.29647, 103.59453], [13.30351, 104.70096]], { opacity: 0, interactive: false }).addTo(map) };   // same bundle the Explorer shows
-const EDGE = L.imageOverlay(A + 'gfm_excluded_edge.png', B, { opacity: 0, interactive: false }).addTo(map);   // outline of the blank, flashed once
+const EDGE = L.imageOverlay(A + 'gfm_excluded_edge.png', B, { opacity: 0, interactive: false }).addTo(map);
+const EDGE_G = L.imageOverlay(A + 'gfm_flood_edge.png', B, { opacity: 0, interactive: false }).addTo(map);
+const EDGE_A = L.imageOverlay(A + 'nisar_adds_edge.png', [[12.29647, 103.59453], [13.30351, 104.70096]], { opacity: 0, interactive: false }).addTo(map);
+const outline = o => later(() => { vis(o, 1); later(() => vis(o, 0), 1700); }, 400);   // trace a new layer for a moment   // outline of the blank, flashed once
 const box = L.rectangle(B, { color: '#ffffff', weight: 2.5, dashArray: '6 5', fill: false, opacity: 0, interactive: false }).addTo(map);
 let fast = false, mgen = 0;
 const many = (os, v, step = 0) => { const g = mgen; os.forEach((o, k) => (fast || !step) ? vis(o, v) : setTimeout(() => g === mgen && vis(o, v), k * step)); };
@@ -173,6 +178,7 @@ const fit = () => map.flyToBounds(B, { duration: 3, paddingTopLeft: [innerWidth 
 const QS = [ // name, lat, lon, NISAR km² in GFM's blank (wettest pass), % vs GFM flood (null if GFM < 5 km²); from events/world/event.json
   ['Tonle Sap', 12.8, 104.15, 542, 98], ['Inner Niger Delta', 14.9, -4.3, 253, 493], ['Mekong delta', 10.7, 105.3, 170, 24], ['Irrawaddy delta', 16.6, 95.3, 76, 8], ['Congo basin', 0.5, 17.6, 118, null], ['Sylhet', 24.7, 91.4, 14, 3], ['Amazon várzea', -3.0, -64.9, 11, null], ['Assam', 26.6, 92.5, 19, 140], ['Thailand', 13.65, 101.0, 25, 17], ['Hubei', 30.83, 110.97, 28, null], ['Nepal', 27.3, 85.36, 1, 16], ['Tamil Nadu', 11.33, 78.61, 0, null], ['Atchafalaya', 30.25, -91.4, 0, null], ['Okavango', -19.3, 22.9, 0, 0], ['Pantanal', -18.5, -57.1, 2, null], ['Sudd', 7.3, 30.6, 916, 1654], ['Likouala', 1.6, 17.9, 2, null]];
 const NOCMP = [];
+QS.splice(0, QS.length, ...QS.filter(q => q[3] >= 1));     // sites where NISAR added nothing are not shown
 const SIDE = { 'Tonle Sap': 't', 'Mekong delta': 'rb', 'Irrawaddy delta': 'l', 'Inner Niger Delta': 'r', 'Congo basin': 'l', 'Likouala': 'r', 'Sudd': 'r', 'Okavango': 'r',
                'Amazon várzea': 'r', 'Pantanal': 'r', 'Atchafalaya': 'r' };   // the clustered small Asian sites stay unlabelled
 const mk = (la, lo, html) => L.marker([la, lo], { icon: L.divIcon({ className: '', html, iconSize: [12, 12], iconAnchor: [6, 6] }), opacity: 0, interactive: false }).addTo(map);
@@ -239,10 +245,10 @@ const scenes = [
               say('', H('1.8 billion people live where floods like this can reach them.'), '', 'World Bank · Rentschler et al., Nature Comms 2022'); }],
   [10.5, () => { vid(false); document.body.classList.remove('dim'); show([]); later(() => { flash(box); show(['photo']); flick(); }, 900); legend([]);
               say('Optical satellites · Jun–Oct 2026', H('Optical satellites can\'t see it. Look after look since June: clouds, or the forest canopy over the water.'), '', 'Optical · NASA HLS (Landsat + Sentinel-2)'); }],
-  [7.5, () => { show(['gfm']); legend(['gfm']);
+  [7.5, () => { show(['gfm']); legend(['gfm']); outline(EDGE_G);
               say('Official flood map · 17 Oct 2026', H('Official flood maps use radar, which sees through clouds. On 17 October, the map showed <b class="bl">554 km²</b> of flooding around the lake.'), '', 'Copernicus EMS · GFM (Sentinel-1 radar)'); }],
   [7, () => { show(['gfm', 'excl']); legend(['gfm', 'excl']); later(() => { vis(EDGE, 1); later(() => vis(EDGE, 0), 1700); }, 400); say('', H('But a quarter of the area is marked <b class="gy">"cannot see"</b>. Under the trees, this radar can\'t see the water.'), '', 'GFM exclusion mask'); }],
-  [7.5, () => { show(['gfm', 'excl', 'add']); legend(['gfm', 'excl', 'add']);
+  [7.5, () => { show(['gfm', 'excl', 'add']); legend(['gfm', 'excl', 'add']); outline(EDGE_A);
               say('NISAR to the rescue', H('On 17 October, inside <b class="gy">that blank</b>, NISAR measured <b>542 km²</b> of water, 344 km² of it in forest. That is one lake, on one day.'), '', 'NISAR L-band'); }],
   [8, () => { show([]); vis(box, 0); legend([]); $('tag').classList.remove('in'); world(); many(dots, 1, 60);
       say('', H('We ran the same check on 17 flood sites we chose, from recent flood alerts and large seasonal wetlands, using NISAR\'s first months of data (June to October 2026). Each dot shows what NISAR added on that site\'s wettest pass.')); }],
@@ -257,7 +263,7 @@ let i = -1, tm = null, paused = false, t0 = 0, left = 0;
 function next() { clearTimeout(tm); sg++; i++; if (i >= scenes.length) return; const [d, f] = scenes[i]; try { map.invalidateSize(); f(); } catch (e) { console.warn('scene', i, e); } if (d) { left = d * 1000; run(); }
   $('bar').style.width = (100 * (i + 1) / scenes.length) + '%'; dotsUI(); }
 function run() { t0 = Date.now(); if (!paused && $('au').checked) tm = setTimeout(next, left); }
-function reset() { try { sg++; vid(false); vis(EDGE, 0); show([]); legend([]); ca([]); TL.forEach(o => map.removeLayer(o)); TL = []; many(dots, 0); many(plain, 0); many(thumbs, 0); vis(box, 0); document.body.classList.remove('wv'); document.body.classList.add('dim'); document.body.classList.remove('out'); } catch (e) {} }
+function reset() { try { sg++; vid(false); [EDGE, EDGE_G, EDGE_A].forEach(o => vis(o, 0)); show([]); legend([]); ca([]); TL.forEach(o => map.removeLayer(o)); TL = []; many(dots, 0); many(plain, 0); many(thumbs, 0); vis(box, 0); document.body.classList.remove('wv'); document.body.classList.add('dim'); document.body.classList.remove('out'); } catch (e) {} }
 function goTo(k) {
   k = Math.max(0, Math.min(scenes.length - 1, k)); clearTimeout(tm); reset();
   mgen++; fast = true;
