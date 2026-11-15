@@ -255,3 +255,9 @@ body.focused #listhead, body.focused #feed, body.focused aside > details.more2 {
 #sp .spsteps button.csa:not(.on) { color:#ff8a8a; }
 .gcsa { color:#ff6b6b; }
 .gnote { grid-column:1 / -1; font-size:var(--fs-xs); color:var(--faint); padding-top:var(--s2); border-top:1px solid var(--line); }
+
+/* main list: headline total, group headings, card highlight from the map dot */
+.fsum { margin-top:6px; font-size:var(--fs-sm); color:var(--muted); line-height:1.4; } .fsum b { color:#ff9a2e; }
+.fsum:empty { display:none; }
+.fitem.hl { background:var(--surface-2); border-color:#ff9a2e; }
+.fgain small { font-size:var(--fs-sm); font-weight:700; margin-left:1px; }

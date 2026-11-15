@@ -53,14 +53,23 @@ async function loadAll() {
     const g = gainOf(e); if (!g) return;
     const [w, so, ea, n] = e.bbox, lat = (so + n) / 2, lon = (w + ea) / 2;
     const own = S.find(s => !s.history && (s.id.startsWith(e.id) || inBox(s.bbox, lat, lon)));
-    if (own) { if (!own.gain) own.gain = g; return; }
-    S.push({ id: 'ev-' + e.id, bundle: e.id, title: e.title, bbox: e.bbox, kind: 'flood', hazard: 'FL', event_date: e.date, last: e.date, gain: g });
+    if (own) { if (!own.gain) own.gain = g; own.place = own.place || e.place; return; }
+    S.push({ id: 'ev-' + e.id, bundle: e.id, title: e.title, place: e.place, bbox: e.bbox, kind: 'flood', hazard: 'FL', event_date: e.date, last: e.date, gain: g });
+  });
+  // v2 event folders (events/<place>/<YYYY-MM>-flood, docs/12): their summary wins; place.json gives the clean name
+  (V2.places || []).filter(p => p.bbox).forEach(p => {
+    const nm = p.country ? `${p.name}, ${p.country}` : p.name, [w, so, ea, n] = p.bbox, lat = (so + n) / 2, lon = (w + ea) / 2;
+    const own = S.find(s => !s.history && (s.id.startsWith(p.id) || s.bundle === p.id || inBox(s.bbox, lat, lon)));
+    if (!own) return;
+    own.place = nm;
+    const f = (p.floods || []).filter(x => x.nisar_adds_km2 != null).sort((a, b) => (b.flood_date || '').localeCompare(a.flood_date || ''))[0];
+    if (f) own.gain = { gfm_flood_km2: f.baseline_flood_km2, nisar_adds_km2: f.nisar_adds_km2, pct: f.improvement_pct ?? null, date: f.flood_date, baseline: f.baseline };
   });
   // multi-year histories (events/<place>/history, RADARSAT-1 → NISAR): their own items; they replace the old site-based one
   (V2.places || []).filter(p => p.history && p.bbox).forEach(p => {
     const h = p.history, [w, so, ea, n] = p.bbox;
     S = S.filter(s => !(s.history && !s.v2 && inBox(p.bbox, (s.bbox[1] + s.bbox[3]) / 2, (s.bbox[0] + s.bbox[2]) / 2)));
-    S.push({ id: 'hist-' + (p.folder || p.id), v2: true, history: true, title: p.name, bbox: p.bbox,
+    S.push({ id: 'hist-' + (p.folder || p.id), v2: true, history: true, title: p.name, place: p.country ? `${p.name}, ${p.country}` : p.name, bbox: p.bbox,
              kind: 'flood history', hazard: 'FL', first: h.first, last: h.last, event_date: h.last, sensors: h.sensors, n_images: h.n_images });
   });
   window.UNSEEN_SITES = S; window.dispatchEvent(new Event('unseen:sites'));
@@ -74,7 +83,7 @@ async function loadAll() {
   });
   sites.filter(s => !used.has(s.id)).forEach(s => {
     const [w, so, ea, n] = s.bbox;
-    ITEMS.push({ kind: 'site', type: siteType(s), date: s.event_date || s.last, lat: (so + n) / 2, lon: (w + ea) / 2, site: s, title: s.title, score: -1 });
+    ITEMS.push({ kind: 'site', type: siteType(s), date: s.history ? s.last : (s.gain && s.gain.date) || s.event_date || s.last, lat: (so + n) / 2, lon: (w + ea) / 2, site: s, title: (s.place || s.title).replace(/\s*\([^)]*\)\s*$/, ''), score: -1 });
   });
   // "new since your last visit": events not seen before get a NEW badge (kept per browser)
   let seen = null; try { seen = JSON.parse(localStorage.getItem('unseen_seen') || 'null'); } catch (e) {}
@@ -113,7 +122,9 @@ function drawMap(wa) {
     const k = it.lat.toFixed(1) + ',' + it.lon.toFixed(1), dx = 14 * (at[k] = (at[k] ?? -1) + 1);   // same spot: nudge sideways
     it.marker = L.marker([it.lat, it.lon], { title: it.title, riseOnHover: true,
       icon: L.divIcon({ className: 'pin', html: '<i></i><b></b>', iconSize: [18, 18], iconAnchor: [9 - dx, 9] }) })
-      .bindTooltip(it.title, { direction: 'top', offset: [dx, -10] }).on('click', () => window.openSite(it.site.id)).addTo(pinLayer);
+      .bindTooltip(it.title, { direction: 'top', offset: [dx, -10] }).on('click', () => window.openSite(it.site.id))
+      .on('mouseover', () => { if (it.card) { it.card.classList.add('hl'); it.card.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } })
+      .on('mouseout', () => it.card && it.card.classList.remove('hl')).addTo(pinLayer);
   });
   const sites = new Set((window.UNSEEN_SITES || []).map(s => s.id));
   wa.filter(a => !(a.site && sites.has(a.site))).forEach(a => {
@@ -184,22 +195,32 @@ function renderFeed() {
   const L_ = ITEMS.filter(it => visible(it) && (!q || it.qs > 0)).sort((a, b) => q ? b.qs - a.qs || b.date.localeCompare(a.date)
     : sortBy === 'score' ? b.score - a.score : b.date.localeCompare(a.date));
   $('feed').innerHTML = L_.length ? '' : '<div class="sub" style="padding:10px">Nothing here for this filter / time.</div>';
-  L_.forEach(it => {
-    const c = document.createElement('div');
+  // two groups: over the years (CSA RADARSAT-1 → NISAR), then 2026 floods, biggest NISAR gain first
+  const G = it => it.site && it.site.gain, rank = it => { const g = G(it); return !g ? -2 : g.pct != null ? g.pct : -1 + (g.nisar_adds_km2 || 0) / 1e6; };
+  const hist = L_.filter(it => it.site && it.site.history), now = L_.filter(it => !(it.site && it.site.history)).sort((a, b) => rank(b) - rank(a) || b.date.localeCompare(a.date));
+  const head = t => { const h = document.createElement('div'); h.className = 'fmonth'; h.textContent = t; $('feed').appendChild(h); };
+  const adds = now.reduce((t, it) => t + ((G(it) && G(it).nisar_adds_km2) || 0), 0);
+  $('fsum').innerHTML = adds ? `NISAR found <b>${Math.round(adds).toLocaleString('en-GB')} km²</b> of flood the official maps couldn't see, across ${now.filter(G).length} floods.` : '';
+  [[hist, 'Over the years · RADARSAT-1 → NISAR'], [now, '2026 floods · biggest gain first']].forEach(([list, title]) => { if (!list.length) return; head(title);
+  list.forEach(it => {
+    const c = document.createElement('div'); it.card = c;
     c.className = 'fitem' + (PICK.has(key(it)) ? ' picked' : '');
     const day = new Date(it.date + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
-    const g = it.site && it.site.gain;
-    const gain = g && g.pct != null ? (g.pct > 0 ? '↑' : '') + `${g.pct.toLocaleString('en-GB')}%` : '';   // blank = no % in the event folder yet
+    const g = G(it), km = v => (v < 10 ? Math.round(v * 10) / 10 : Math.round(v)).toLocaleString('en-GB');
+    // % when the official map shows ≥ 5 km² of flood (else a % misleads: show the km² NISAR adds)
+    const gain = !g ? '' : g.pct != null ? (g.pct > 0 ? '↑' : '') + `${g.pct.toLocaleString('en-GB')}%`
+      : g.nisar_adds_km2 > 0 ? `↑<small>+${km(g.nisar_adds_km2)} km²</small>` : '0%';
+    const tip = !g ? '' : `Official map ${km(g.gfm_flood_km2 || 0)} km² · NISAR adds ${km(g.nisar_adds_km2 || 0)} km²` + (g.pct == null ? ' (official map under 5 km²: no %)' : '');
     const when = it.site && it.site.history ? `${it.site.first.slice(0, 4)}–${it.site.last.slice(0, 4)}` : day;
     c.innerHTML = `<div class="fbody"><div class="ftitle">${it.title}</div><div class="fdate">${when}${it.site ? sensorTags(it.site) : ''}</div></div>`
-      + (gain ? `<div class="fgain" title="More flood water NISAR found than the official flood map showed">${gain}</div>` : '');
+      + (gain ? `<div class="fgain" title="${tip}">${gain}</div>` : '');
     c.onclick = ev => {
       if (ev.target.classList.contains('fsel')) { PICK.has(key(it)) ? PICK.delete(key(it)) : PICK.add(key(it)); c.classList.toggle('picked'); batchBar(); return; }
       if (ev.target.tagName === 'A') return; it.site ? window.openSite(it.site.id) : flyTo(it); };
     c.onmouseenter = () => it.marker && it.marker.getElement()?.classList.add('hl');
     c.onmouseleave = () => it.marker && it.marker.getElement()?.classList.remove('hl');
     $('feed').appendChild(c);
-  });
+  }); });
   ITEMS.forEach(it => { if (it.marker) it.marker.setOpacity(visible(it) ? 1 : 0.12); });
   $('fcount').textContent = `${L_.length} of ${ITEMS.length}`;
   SHOWN = L_; batchBar();
