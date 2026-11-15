@@ -134,7 +134,7 @@ const P = { photo: img('photo_2026-10-19.jpg'), excl: img('gfm_excluded.png'), g
 const EDGE = L.imageOverlay(A + 'gfm_excluded_edge.png', B, { opacity: 0, interactive: false }).addTo(map);
 const EDGE_G = L.imageOverlay(A + 'gfm_flood_edge.png', B, { opacity: 0, interactive: false }).addTo(map);
 const EDGE_A = L.imageOverlay(A + 'nisar_adds_edge.png', [[12.29647, 103.59453], [13.30351, 104.70096]], { opacity: 0, interactive: false }).addTo(map);
-const outline = o => later(() => { vis(o, 1); later(() => vis(o, 0), 1700); }, 400);   // trace a new layer for a moment   // outline of the blank, flashed once
+   // outline of the blank, flashed once
 const box = L.rectangle(B, { color: '#ffffff', weight: 2.5, dashArray: '6 5', fill: false, opacity: 0, interactive: false }).addTo(map);
 let fast = false, mgen = 0;
 const many = (os, v, step = 0) => { const g = mgen; os.forEach((o, k) => (fast || !step) ? vis(o, v) : setTimeout(() => g === mgen && vis(o, v), k * step)); };
@@ -145,7 +145,8 @@ function flash(o) {                            // blink a newly shown layer so i
   if (fast) return vis(o, 1); const g = sg; [0.15, 1, 0.15, 1, 0.15, 1].forEach((v, k) => setTimeout(() => g === sg && vis(o, v), 230 * (k + 1)));
 }
 let on_ = [];
-const show = on => { for (const k in P) { const was = on_.includes(k), now = on.includes(k); vis(P[k], now ? 1 : 0); if (now && !was) flash(P[k]); } on_ = on.slice(); };
+const EDGES = () => ({ gfm: EDGE_G, excl: EDGE, add: EDGE_A });                // outlines, in each layer's own colour, stay with the layer
+const show = on => { const E = EDGES(); for (const k in E) vis(E[k], on.includes(k) ? 1 : 0); for (const k in P) { const was = on_.includes(k), now = on.includes(k); vis(P[k], now ? 1 : 0); if (now && !was) flash(P[k]); } on_ = on.slice(); };
 const LG = { gfm: ['#2882ff', 'Flood seen by Sentinel-1 (GFM)'], excl: ['repeating-linear-gradient(45deg,#c8c8d2 0 2px,#3c3c46 2px 6px)', 'GFM: "cannot see here"'],
              add: ['#ff9a2e', 'NISAR addition: water in the blank'] };
 const legend = ks => { $('lg').innerHTML = ks.map(k => `<div><i style="background:${LG[k][0]}"></i>${LG[k][1]}</div>`).join(''); $('lg').classList.toggle('in', ks.length > 0); };
@@ -245,10 +246,10 @@ const scenes = [
               say('', H('1.8 billion people live where floods like this can reach them.'), '', 'World Bank · Rentschler et al., Nature Comms 2022'); }],
   [10.5, () => { vid(false); document.body.classList.remove('dim'); show([]); later(() => { flash(box); show(['photo']); flick(); }, 900); legend([]);
               say('Optical satellites · Jun–Oct 2026', H('Optical satellites can\'t see it. Look after look since June: clouds, or the forest canopy over the water.'), '', 'Optical · NASA HLS (Landsat + Sentinel-2)'); }],
-  [7.5, () => { show(['gfm']); legend(['gfm']); outline(EDGE_G);
+  [7.5, () => { show(['gfm']); legend(['gfm']);
               say('Official flood map · 17 Oct 2026', H('Official flood maps use radar, which sees through clouds. On 17 October, the map showed <b class="bl">554 km²</b> of flooding around the lake.'), '', 'Copernicus EMS · GFM (Sentinel-1 radar)'); }],
-  [7, () => { show(['gfm', 'excl']); legend(['gfm', 'excl']); later(() => { vis(EDGE, 1); later(() => vis(EDGE, 0), 1700); }, 400); say('', H('But a quarter of the area is marked <b class="gy">"cannot see"</b>. Under the trees, this radar can\'t see the water.'), '', 'GFM exclusion mask'); }],
-  [7.5, () => { show(['gfm', 'excl', 'add']); legend(['gfm', 'excl', 'add']); outline(EDGE_A);
+  [7, () => { show(['gfm', 'excl']); legend(['gfm', 'excl']); say('', H('But a quarter of the area is marked <b class="gy">"cannot see"</b>. Under the trees, this radar can\'t see the water.'), '', 'GFM exclusion mask'); }],
+  [7.5, () => { show(['gfm', 'excl', 'add']); legend(['gfm', 'excl', 'add']);
               say('NISAR to the rescue', H('On 17 October, inside <b class="gy">that blank</b>, NISAR measured <b>542 km²</b> of water, 344 km² of it in forest. That is one lake, on one day.'), '', 'NISAR L-band'); }],
   [8, () => { show([]); vis(box, 0); legend([]); $('tag').classList.remove('in'); world(); many(dots, 1, 60);
       say('', H('We ran the same check on 17 flood sites we chose, from recent flood alerts and large seasonal wetlands, using NISAR\'s first months of data (June to October 2026). Each dot shows what NISAR added on that site\'s wettest pass.')); }],
