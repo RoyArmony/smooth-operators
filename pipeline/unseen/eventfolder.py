@@ -145,7 +145,7 @@ PLACES = {
         name="Sylhet haor (validation)", country="Bangladesh", bbox=(91.1, 24.4, 91.7, 25.0),
         stack_key="sylhet-haor-validation",           # NISAR track 69 frame 14 (same stack as the Sylhet flood site)
         open_hh=-12.0, open_hv=-21.0,                 # that site's calibration on clear optical days
-        detector="v3", no_map=(50, 60),               # no_map: doc33 only (handbook mask without cropland: the haor is flooded farmland)
+        detector="doc33", no_map=(50, 60),            # flood_nasa.final(); handbook mask without cropland: the haor is flooded farmland
         kind="validation",                            # a check: GFM "cannot see" ~3 % of the box, NASA LANCE cloud-free
         validation=["gfm", "lance"],                  # + DSWx when it downloads
         flood_limits="validation site: seasonal haor wetland, mostly flooded farmland, little tree cover; GFM covers about "

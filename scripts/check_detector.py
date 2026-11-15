@@ -15,6 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 EV, SITES = ROOT / "events", ROOT / "site" / "viewer" / "sites"
 V3 = "fused v3"
+KEEP = {"sylhet-haor-validation/2026-10-flood": "doc33"}     # kept on another detector by team decision (15.11)
 bad, rows = [], []
 
 
@@ -42,7 +43,8 @@ for p in idx.get("places", []):
         f = EV / (p.get("folder") or p["id"]) / fl["id"] / "event.json"
         E = json.loads(f.read_text(encoding="utf-8"))
         det = E["method"]["detector"]
-        note("v2", f, det, det.startswith(V3))
+        keep = KEEP.get(f"{p.get('folder') or p['id']}/{fl['id']}")
+        note("v2", f, det, None if keep else det.startswith(V3), f"kept on {keep} (team decision)" if keep else "")
     if p.get("history"):
         f = EV / (p.get("folder") or p["id"]) / "history" / "event.json"
         E = json.loads(f.read_text(encoding="utf-8"))
