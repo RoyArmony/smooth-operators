@@ -60,6 +60,9 @@
   #sd { display: flex; gap: 5px; align-items: center; margin-left: 6px; } #sd i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; }
   #sd i.on { background: var(--o); } #sd i.done { background: rgba(255,154,46,.5); }
   #bar { position: fixed; left: 0; bottom: var(--foot-h); height: 3px; background: var(--o); width: 0; }
+  #ctl .opt { display: flex; align-items: center; gap: 5px; font: 600 12px Inter, system-ui, sans-serif; color: #cfd6df; background: rgba(0,0,0,.45); padding: 0 10px; border-radius: 999px; cursor: pointer; user-select: none; }
+  #ctl .opt input { accent-color: #ff9a2e; margin: 0; }
+  #ctl { align-items: center; }
   #ctl { position: fixed; left: 6vw; bottom: calc(var(--foot-h) + 20px); display: flex; gap: 10px; }
   #ctl button, #end a { background: rgba(255,255,255,.08); color: var(--t); border: 1px solid rgba(255,255,255,.15); border-radius: 18px; padding: 7px 14px; font: 600 13px Inter, system-ui, sans-serif; cursor: pointer; text-decoration: none; }
   #vid { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s, left 1.8s ease, top 1.8s ease, width 1.8s ease, height 1.8s ease, border-radius 1.8s; pointer-events: none; z-index: 1; left: 0; top: 0; }
@@ -92,7 +95,7 @@
 <div id="tag" class="fade"></div>
 <div id="txt"><div class="k fade" id="k"></div><div id="h" class="fade"></div><p id="s" class="fade"></p></div>
 <div id="lg" class="fade"></div>
-<div id="ctl"><button id="pv" title="Previous (←)">‹</button><button id="pp" title="Pause / play (space)">❚❚</button><button id="nx" title="Next (→)">›</button><span id="sd"></span></div>
+<div id="ctl"><button id="pv" title="Previous (←)">‹</button><button id="pp" title="Pause / play (space)">❚❚</button><button id="nx" title="Next (→)">›</button><span id="sd"></span><label class="opt" title="Advance scenes by themselves (off: click or space for the next scene)"><input type="checkbox" id="au" checked> Auto</label><label class="opt" title="Start again at the end (off: open the Explorer)"><input type="checkbox" id="lp" checked> Loop</label></div>
 <div id="bar"></div>
 <a id="skip" href="viewer/index.html">Skip intro · open the Explorer →</a>
 <style>
@@ -238,12 +241,12 @@ const scenes = [
   [7.5, () => { many(thumbs, 0); legend([]); many(dots, 1); $('tag').classList.remove('in');
       say('16 flood sites · June–October 2026', BIG('+43%', 'more flood water', 'o') + H('than the official maps showed, on each site\'s wettest NISAR pass.'), 'A sample, not a global total.'); }],
   [7, () => { say('Unseen Earth', BIG('1,234 km²', '', 'o') + H('of flood water hidden in the official maps\' blanks, found by NISAR.')); }],
-  [0, () => { say(''); document.body.classList.add('out');  setTimeout(() => location.href = 'viewer/index.html#site=tonle-sap-flood-pulse-2026-83-8', 1200); }],
+  [0, () => { if ($('lp').checked) { setTimeout(() => goTo(0), 0); return; } say(''); document.body.classList.add('out');  setTimeout(() => location.href = 'viewer/index.html#site=tonle-sap-flood-pulse-2026-83-8', 1200); }],
 ];
 let i = -1, tm = null, paused = false, t0 = 0, left = 0;
 function next() { clearTimeout(tm); sg++; i++; if (i >= scenes.length) return; const [d, f] = scenes[i]; try { map.invalidateSize(); f(); } catch (e) { console.warn('scene', i, e); } if (d) { left = d * 1000; run(); }
   $('bar').style.width = (100 * (i + 1) / scenes.length) + '%'; dotsUI(); }
-function run() { t0 = Date.now(); if (!paused) tm = setTimeout(next, left); }
+function run() { t0 = Date.now(); if (!paused && $('au').checked) tm = setTimeout(next, left); }
 function reset() { try { sg++; vid(false); show([]); legend([]); ca([]); TL.forEach(o => map.removeLayer(o)); TL = []; many(dots, 0); many(plain, 0); many(thumbs, 0); vis(box, 0); document.body.classList.remove('wv'); document.body.classList.add('dim'); document.body.classList.remove('out'); } catch (e) {} }
 function goTo(k) {
   k = Math.max(0, Math.min(scenes.length - 1, k)); clearTimeout(tm); reset();
@@ -256,7 +259,12 @@ function dotsUI() { $('sd').innerHTML = scenes.map((_, k) => `<i data-k="${k}" c
   $('sd').querySelectorAll('i').forEach(e => e.onclick = () => goTo(+e.dataset.k)); }
 function togglePause() { paused = !paused; $('pp').textContent = paused ? '▶' : '❚❚'; if (paused) { clearTimeout(tm); left -= Date.now() - t0; } else run(); }
 $('pp').onclick = togglePause; $('nx').onclick = () => goTo(i + 1); $('pv').onclick = () => goTo(i - 1);
-addEventListener('keydown', e => { if (e.key === 'ArrowRight') goTo(i + 1); else if (e.key === 'ArrowLeft') goTo(i - 1); else if (e.key === ' ') { e.preventDefault(); togglePause(); } });
+addEventListener('keydown', e => { if (e.key === 'ArrowRight') goTo(i + 1); else if (e.key === 'ArrowLeft') goTo(i - 1);
+  else if (e.key === ' ') { e.preventDefault(); $('au').checked ? togglePause() : goTo(i + 1); } });
+// manual mode: click anywhere (outside the controls and links) for the next scene; options remembered per browser
+addEventListener('click', e => { if (!$('au').checked && !e.target.closest('#ctl, a, button, label, #skip, header, nav')) goTo(i + 1); });
+['au', 'lp'].forEach(k => { try { const v = localStorage.getItem('film_' + k); if (v !== null) $(k).checked = v === '1'; } catch (e) {}
+  $(k).onchange = () => { try { localStorage.setItem('film_' + k, $(k).checked ? '1' : '0'); } catch (e) {} if (k === 'au') { clearTimeout(tm); if ($('au').checked) run(); } }; });
 setTimeout(next, 600);
 })();
 </script>
