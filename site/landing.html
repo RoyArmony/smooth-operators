@@ -241,7 +241,9 @@ map.on('move moveend resize', () => V.classList.contains('card') && vidCard(true
 const vid = on => { if (!on) { lead(false); } if (!on) setTimeout(() => !document.body.classList.contains('vid') && vidCard(false), 1300); document.body.classList.toggle('vid', on); if (on) V.play().catch(() => {}); else setTimeout(() => !document.body.classList.contains('vid') && V.pause(), 2000); };
 const scenes = [
   [6.5, () => { document.body.classList.remove('wv'); map.fitBounds(B, { animate: false, paddingTopLeft: [innerWidth * .38, 20], paddingBottomRight: [20, 20] }); vidCard(false); vid(true);
-              say('Tonle Sap, Cambodia', H('Every rainy season, this lake grows about six times bigger and floods the forest around it.')); }],
+              say('Flooded forests', H('Every rainy season, rivers spill into forests and wetlands. The water spreads under the trees, where satellites struggle to see it.')); }],
+  [6.5, () => { vid(true); vidCard(true);
+              say('Tonle Sap, Cambodia', H('Here, the lake grows about six times bigger each rainy season and floods the forest around it.')); }],
   [6.5, () => { vid(true); vidCard(true);
               say('Why map the water', H('Knowing where the water is matters. Rice farmers and fishers plan their season around it, insurers pay flood claims by it, and relief teams decide where to send boats.')); }],
   [7, () => { vid(false); document.body.classList.remove('dim'); show([]); P.photo.setUrl(A + 'photo_2026-10-19.jpg'); later(() => { flash(box); show(['photo']); }, 900); legend([]);
