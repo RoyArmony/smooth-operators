@@ -40,7 +40,7 @@ P0 = must, P1 = should, P2 = nice. Times are Israel time. Sync points: **Sat 20:
 - [ ] [Noa] P0 Sun 12:00 — limits text: lower bounds, best-pass vs fixed date, no forest ground truth, provisional products
 - [ ] [Noa] Sun 14:00 — audit all app numbers against `docs/10-Results.md`; fix what the app reveals
 - [ ] [Noa] Sun 20:00 — submission: Project Details (how it works, tools, limitations) + Data & AI Disclosure
-- [ ] [Noa] P0 — **Science page** (asked by Roy, 15.11): a new page `site/science.html`, linked in the top bar **between Explorer and About**
+- [x] [Noa] P0 — **Science page** (asked by Roy, 15.11): a new page `site/science.html`, linked in the top bar **between Explorer and About**
   (`site/js/topbar.js`, `data-page="science"`; add to `.vercelignore` if needed). Goal: a judge understands in a few seconds that
   there is real science behind the map, not just colours.
   - First review the real method: `pipeline/unseen/` (`nisar.py`, `gcov.py`, `detect.py`, `flood.py`, `fused.py`, `gfm.py`, `rcm.py`, `history.py`, …),

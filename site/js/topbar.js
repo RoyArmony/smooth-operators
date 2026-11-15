@@ -1,5 +1,5 @@
-// Shared top bar + footer for every page: brand, Home / Story / Explorer, About menu (info dialogs), Satellites in Use (comparison), repo link.
-// Use: <link rel="stylesheet" href="…/css/design.css"> + <script src="…/js/topbar.js" defer></script>, and <body data-page="home|story|explorer">.
+// Shared top bar + footer for every page: brand, Home / Story / Explorer / Science, About menu (info dialogs), Satellites in Use (comparison), repo link.
+// Use: <link rel="stylesheet" href="…/css/design.css"> + <script src="…/js/topbar.js" defer></script>, and <body data-page="home|story|explorer|science">.
 (() => {
   const root = new URL('..', document.currentScript.src);          // the site/ folder, wherever this page lives
   const u = p => new URL(p, root).href;
@@ -60,6 +60,7 @@
       <a href="${u('home.html')}" class="${page === 'home' ? 'on' : ''}">Home</a>
       <a href="${u('landing.html')}" class="${page === 'story' ? 'on' : ''}">Story</a>
       <a href="${u('viewer/index.html')}" class="${page === 'explorer' ? 'on' : ''}">Explorer</a>
+      <a href="${u('science.html')}" class="${page === 'science' ? 'on' : ''}">Science</a>
       <div class="ue-menu"><button type="button" aria-haspopup="true" aria-expanded="false">About</button>
         <div class="ue-drop" role="menu">
           <button data-i="project">The Project<small>What and why</small></button>

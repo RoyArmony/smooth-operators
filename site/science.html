@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Unseen Earth</title>
+<meta name="description" content="The science behind Unseen Earth: NISAR L-band radar physics, our flood detector, the comparison with the official flood map, and how we checked it.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="css/design.css">
+<script src="js/topbar.js" defer></script>
+<style>
+  /* Science page. Tokens: css/design.css · rules: docs/11-Design.md · numbers: docs/10-Results.md + events/ bundles */
+  * { box-sizing: border-box; }
+  body { margin: 0; padding-top: var(--bar-h); background: var(--bg); color: var(--text); font: var(--fs-md)/var(--lh) var(--font); -webkit-font-smoothing: antialiased; }
+  a { color: var(--accent); }
+  .wrap { width: min(1120px, 100%); margin: 0 auto; padding: 0 var(--s5); }
+  .eyebrow { font-size: var(--fs-xs); font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+  h1, h2, h3 { margin: 0; letter-spacing: -.02em; line-height: var(--lh-tight); }
+  section { padding: 56px 0; border-top: 1px solid var(--line); }
+  section > .wrap > h2 { font-size: clamp(24px, 2.6vw, 32px); font-weight: 700; margin: 8px 0 var(--s3); }
+  .lead { font-size: var(--fs-lg); color: var(--muted); max-width: 700px; margin: 0; }
+  .num { font-variant-numeric: tabular-nums; }
+  .card { background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-md); }
+  .note { font-size: var(--fs-sm); color: var(--faint); margin-top: var(--s4); }
+  code { font-size: .92em; color: var(--muted); background: var(--surface-2); padding: 1px 6px; border-radius: var(--r-sm); }
+
+  /* hero */
+  .hero { padding: 56px 0 40px; border: 0; }
+  .hero h1 { font-size: clamp(34px, 4.6vw, 56px); font-weight: 800; margin: 10px 0 var(--s4); }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .chain { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s5); }
+  .chain a { font-size: var(--fs-sm); font-weight: 600; padding: 6px 14px; border-radius: var(--r-pill); border: 1px solid var(--line-2); background: var(--surface); color: var(--muted); text-decoration: none; }
+  .chain a:hover { border-color: var(--accent); color: var(--text); }
+  .chain i { font-style: normal; color: var(--faint); align-self: center; }
+
+  /* physics */
+  .phys { margin-top: var(--s5); padding: var(--s4); overflow: hidden; }
+  .phys svg { display: block; width: 100%; height: auto; }
+  .cap3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s4); margin-top: var(--s3); }
+  .cap3 div { font-size: var(--fs-sm); color: var(--muted); }
+  .cap3 b { display: block; color: var(--text); font-size: var(--fs-md); }
+
+  /* pipeline */
+  .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 28px; margin-top: var(--s5); counter-reset: st; }
+  .step { position: relative; padding: var(--s4); }
+  .step:not(:last-child)::after { content: ''; position: absolute; right: -22px; top: 50%; border: solid transparent; border-width: 8px 0 8px 12px; border-left-color: var(--accent); transform: translateY(-50%); }
+  .step .n { counter-increment: st; font-size: var(--fs-xs); font-weight: 700; color: var(--accent); letter-spacing: .1em; }
+  .step .n::before { content: counter(st) ' · '; }
+  .step h3 { font-size: var(--fs-lg); margin: 4px 0 6px; }
+  .step p { margin: 0; font-size: var(--fs-sm); color: var(--muted); }
+  .step code { font-size: 11px; }
+
+  /* detector rules */
+  .rules { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s4); margin-top: var(--s5); }
+  .rule { padding: var(--s4); }
+  .rule svg { width: 100%; height: 70px; display: block; margin-bottom: var(--s2); }
+  .rule h3 { font-size: var(--fs-md); margin-bottom: 4px; }
+  .rule .eq { font-size: var(--fs-sm); color: var(--text); font-variant-numeric: tabular-nums; }
+  .rule p { margin: 6px 0 0; font-size: var(--fs-sm); color: var(--muted); }
+  .cal { margin-top: var(--s4); padding: var(--s4) var(--s5); display: flex; flex-wrap: wrap; gap: var(--s5); align-items: center; }
+  .cal p { margin: 0; flex: 1 1 360px; color: var(--muted); font-size: var(--fs-sm); }
+  .cal .f1 { display: flex; gap: var(--s5); }
+  .cal .f1 div { text-align: center; } .cal .f1 b { display: block; font-size: var(--fs-3xl); font-weight: 800; } .cal .f1 span { font-size: var(--fs-xs); color: var(--faint); }
+
+  /* the gap */
+  .gap { display: grid; grid-template-columns: 1fr 1.1fr; gap: 40px; align-items: center; margin-top: var(--s5); }
+  .gap svg { width: 100%; height: auto; display: block; }
+  .formula { padding: var(--s5); }
+  .formula .f { font-size: clamp(16px, 1.7vw, 20px); font-weight: 700; margin: 0 0 var(--s3); font-variant-numeric: tabular-nums; }
+  .formula .f .o { color: #ff9a2e; } .formula .f .g { color: #c8c8d2; } .formula .f .b { color: #2882ff; }
+  .formula p { margin: 0 0 var(--s2); color: var(--muted); font-size: var(--fs-sm); }
+
+  /* results */
+  .big { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s4); margin-top: var(--s5); }
+  .big .card { padding: var(--s5); }
+  .big b { display: block; font-size: var(--fs-3xl); font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .big span { color: var(--muted); font-size: var(--fs-sm); }
+  .chart { margin-top: var(--s5); padding: var(--s5); }
+  .chart .lg { display: flex; flex-wrap: wrap; gap: var(--s5); font-size: var(--fs-sm); color: var(--muted); margin-bottom: var(--s4); }
+  .chart .lg i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .row { display: grid; grid-template-columns: 190px 1fr 120px; gap: var(--s3); align-items: center; padding: 3px 0; font-size: var(--fs-sm); }
+  .row .nm { color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .row .bars { display: grid; gap: 2px; }
+  .row .bar { height: 7px; border-radius: 0 4px 4px 0; min-width: 1px; }
+  .row .bar.g { background: #2882ff; } .row .bar.o { background: #ff9a2e; }
+  .row .v { text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .row .v b { color: var(--text); font-weight: 600; }
+  .row.hl .nm { color: var(--accent); font-weight: 700; }
+
+  /* validation */
+  .val { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s4); margin-top: var(--s5); }
+  .val .card { padding: var(--s5) var(--s4); }
+  .val .k { font-size: var(--fs-xs); font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+  .val b { display: block; font-size: var(--fs-3xl); font-weight: 800; margin: 6px 0; font-variant-numeric: tabular-nums; }
+  .val p { margin: 0; font-size: var(--fs-sm); color: var(--muted); }
+  .val .ok { color: var(--ok); } .val .wn { color: var(--sand); }
+
+  /* limits */
+  .lim { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s4); margin-top: var(--s5); }
+  .lim div { padding: var(--s4); border-left: 3px solid var(--sand); background: var(--surface); border-radius: 0 var(--r-md) var(--r-md) 0; }
+  .lim b { display: block; margin-bottom: 4px; }
+  .lim span { font-size: var(--fs-sm); color: var(--muted); }
+
+  .end { text-align: center; }
+  .btn { display: inline-flex; align-items: center; height: 44px; padding: 0 var(--s5); border-radius: var(--r-pill); font-weight: 700; text-decoration: none; margin: var(--s2); }
+  .btn.primary { background: var(--accent); color: var(--on-accent); } .btn.primary:hover { background: var(--accent-hi); }
+  .btn.ghost { border: 1px solid var(--line-2); color: var(--text); } .btn.ghost:hover { border-color: var(--text); }
+
+  @media (max-width: 960px) {
+    .flow { grid-template-columns: 1fr; gap: 22px; }
+    .step:not(:last-child)::after { right: 50%; top: auto; bottom: -18px; transform: translateX(50%) rotate(90deg); }
+    .rules, .val { grid-template-columns: 1fr 1fr; }
+    .gap { grid-template-columns: 1fr; }
+    .lim, .big { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 760px) {
+    .wrap { padding: 0 var(--s4); }
+    .rules, .val, .cap3 { grid-template-columns: 1fr; }
+    .row { grid-template-columns: 110px 1fr 84px; }
+  }
+</style>
+</head>
+<body data-page="science">
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Science</div>
+    <h1>Real radar physics, <em>not just colours</em></h1>
+    <p class="lead">Every orange pixel on the map comes from NASA NISAR radar, a published physical rule and a check against independent data. Here is how.</p>
+    <nav class="chain" aria-label="Sections">
+      <a href="#physics">Physics</a><i>→</i><a href="#pipeline">Pipeline</a><i>→</i><a href="#detect">Detect</a><i>→</i><a href="#gap">Compare</a><i>→</i><a href="#results">Result</a><i>→</i><a href="#checks">Checks</a><i>→</i><a href="#limits">Limits</a>
+    </nav>
+  </div>
+</section>
+
+<!-- 1 · physics -->
+<section id="physics">
+  <div class="wrap">
+    <div class="eyebrow">1 · Physics</div>
+    <h2>Why L-band sees water under trees</h2>
+    <p class="lead">NISAR sends a 24 cm radar wave. Water changes how it comes back.</p>
+    <div class="card phys">
+      <svg viewBox="0 0 960 300" role="img" aria-label="Three scenes: rough dry ground scatters the wave back (medium), open water reflects it away (dark), flooded forest bounces it off water and trunk back to the satellite (bright). A short C-band wave stops in the leaves; the long L-band wave reaches the water.">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#2dd4bf"/></marker>
+          <marker id="aw" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5f7f88"/></marker>
+          <marker id="ao" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#ff9a2e"/></marker>
+        </defs>
+        <!-- panel 1: dry ground -->
+        <g>
+          <text x="20" y="28" fill="#8fb0b8" font-size="13" font-weight="600" letter-spacing="1.5">DRY GROUND</text>
+          <path d="M20 240 l15 -8 l12 10 l14 -12 l16 9 l12 -7 l15 10 l14 -9 l13 8 l16 -10 l14 9 l14 -6 l15 8 l14 -9 l16 9 l15 -6 l17 6 L300 240 L300 270 L20 270z" fill="#5a4a36"/>
+          <line x1="70" y1="60" x2="150" y2="228" stroke="#2dd4bf" stroke-width="2.5" marker-end="url(#ah)"/>
+          <line x1="150" y1="228" x2="95" y2="150" stroke="#2dd4bf" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#ah)"/>
+          <line x1="150" y1="228" x2="210" y2="160" stroke="#5f7f88" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#aw)"/>
+          <line x1="150" y1="228" x2="155" y2="150" stroke="#5f7f88" stroke-width="1.6" stroke-dasharray="4 4" marker-end="url(#aw)"/>
+          <rect x="190" y="40" width="96" height="30" rx="15" fill="#16323c"/><text x="238" y="60" fill="#e6f1f2" font-size="13" text-anchor="middle" font-weight="700">medium</text>
+        </g>
+        <!-- panel 2: open water -->
+        <g transform="translate(320 0)">
+          <text x="20" y="28" fill="#8fb0b8" font-size="13" font-weight="600" letter-spacing="1.5">OPEN WATER</text>
+          <rect x="20" y="236" width="280" height="34" fill="#2882ff" opacity=".75"/>
+          <line x1="20" y1="236" x2="300" y2="236" stroke="#9cc6ff" stroke-width="2"/>
+          <line x1="70" y1="60" x2="150" y2="234" stroke="#2dd4bf" stroke-width="2.5" marker-end="url(#ah)"/>
+          <line x1="150" y1="234" x2="230" y2="66" stroke="#5f7f88" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#aw)"/>
+          <rect x="190" y="90" width="96" height="30" rx="15" fill="#0b1016" stroke="#23444f"/><text x="238" y="110" fill="#e6f1f2" font-size="13" text-anchor="middle" font-weight="700">dark</text>
+          <text x="160" y="222" fill="#8fb0b8" font-size="12">mirror: wave bounces away</text>
+        </g>
+        <!-- panel 3: flooded forest -->
+        <g transform="translate(640 0)">
+          <text x="20" y="28" fill="#8fb0b8" font-size="13" font-weight="600" letter-spacing="1.5">FLOODED FOREST</text>
+          <rect x="20" y="236" width="280" height="34" fill="#2882ff" opacity=".75"/>
+          <line x1="20" y1="236" x2="300" y2="236" stroke="#9cc6ff" stroke-width="2"/>
+          <g fill="#3a5e3a"><ellipse cx="200" cy="120" rx="48" ry="36"/><ellipse cx="262" cy="132" rx="34" ry="28"/></g>
+          <g stroke="#6b4f33" stroke-width="7"><line x1="200" y1="150" x2="200" y2="236"/><line x1="262" y1="156" x2="262" y2="236"/></g>
+          <!-- C-band stops in the leaves -->
+          <text x="130" y="56" fill="#8fb0b8" font-size="12">C-band 5.6 cm: stops in leaves</text>
+          <line x1="140" y1="64" x2="172" y2="98" stroke="#8fb0b8" stroke-width="2" stroke-dasharray="3 3" marker-end="url(#aw)"/>
+          <!-- L-band double bounce: water, then trunk, then back -->
+          <text x="20" y="96" fill="#ff9a2e" font-size="12" font-weight="700">L-band 24 cm</text>
+          <polyline points="40,104 160,234 194,212" fill="none" stroke="#ff9a2e" stroke-width="3" stroke-linejoin="round"/>
+          <line x1="194" y1="212" x2="66" y2="114" stroke="#ff9a2e" stroke-width="3" marker-end="url(#ao)"/>
+          <rect x="20" y="40" width="96" height="30" rx="15" fill="#ff9a2e"/><text x="68" y="60" fill="#04342c" font-size="13" text-anchor="middle" font-weight="800">bright</text>
+          <text x="24" y="258" fill="#fff" font-size="12" font-weight="600">double bounce</text>
+        </g>
+      </svg>
+      <div class="cap3">
+        <div><b>Rough ground scatters</b>some of the wave returns.</div>
+        <div><b>Open water is dark</b>a smooth surface sends the wave away. HH and HV both drop.</div>
+        <div><b>Flooded forest is bright</b>water + trunk form a corner reflector. HH rises, HV stays.</div>
+      </div>
+    </div>
+    <p class="note">The official flood map (Copernicus GFM) uses Sentinel-1 C-band. Under forest and in cities it marks the area "cannot see". That blank is where we look.</p>
+  </div>
+</section>
+
+<!-- 2 · pipeline -->
+<section id="pipeline">
+  <div class="wrap">
+    <div class="eyebrow">2 · Pipeline</div>
+    <h2>From radar pass to km²</h2>
+    <p class="lead">Python package <code>pipeline/unseen</code>, run per flood site. Open source.</p>
+    <div class="flow">
+      <div class="card step"><div class="n">NASA data</div><h3>NISAR GCOV</h3><p>L2 backscatter, HH + HV, 80 m grid, every 12 days. Calibrated passes only (Provisional / Validated).</p><p><code>nisar.py</code> <code>gcov.py</code></p></div>
+      <div class="card step"><div class="n">Stack</div><h3>One track, one mode</h3><p>Same orbit track, frame and mode, so pixels compare over time. Drift of stable land removed.</p><p><code>nisar.py</code></p></div>
+      <div class="card step"><div class="n">Detect</div><h3>Water per pass</h3><p>Open water, flooded fields, water under trees. Permanent water removed.</p><p><code>detect.py</code></p></div>
+      <div class="card step"><div class="n">Compare</div><h3>vs official map</h3><p>Copernicus GFM within ±2 days: its flood and its "cannot see" mask.</p><p><code>gfm.py</code> <code>flood.py</code></p></div>
+      <div class="card step"><div class="n">Result</div><h3>Added km²</h3><p>Water only NISAR sees, split by land cover (ESA WorldCover). Checked against other sensors.</p><p><code>bundle.py</code></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · detector -->
+<section id="detect">
+  <div class="wrap">
+    <div class="eyebrow">3 · Detect</div>
+    <h2>Four rules, each one physics</h2>
+    <p class="lead">Each pixel is compared with its own dry self, not with a fixed colour scale.</p>
+    <div class="rules">
+      <div class="card rule">
+        <svg viewBox="0 0 200 70" aria-hidden="true"><rect x="0" y="10" width="200" height="50" rx="6" fill="#112a34"/><rect x="0" y="40" width="200" height="20" fill="#2882ff" opacity=".7"/><text x="100" y="32" fill="#8fb0b8" font-size="12" text-anchor="middle">HH &lt; t  and  HV &lt; t</text></svg>
+        <h3>Open water</h3>
+        <div class="eq">HH &lt; −17 dB · HV &lt; −24 dB</div>
+        <p>Mirror surface, dark in both channels. Thresholds tuned per site (below).</p>
+      </div>
+      <div class="card rule">
+        <svg viewBox="0 0 200 70" aria-hidden="true"><polyline points="10,20 70,20 90,52 190,52" fill="none" stroke="#ff9a2e" stroke-width="3"/><text x="40" y="14" fill="#8fb0b8" font-size="11">dry</text><text x="130" y="44" fill="#8fb0b8" font-size="11">−2.5 dB</text></svg>
+        <h3>Flooded field</h3>
+        <div class="eq">HH and HV drop ≥ 2.5 dB</div>
+        <p>Patch ≥ 0.5 km², ends ≤ −12 dB, HH drops at least as much as HV (water, not lost leaves).</p>
+      </div>
+      <div class="card rule">
+        <svg viewBox="0 0 200 70" aria-hidden="true"><polyline points="10,48 80,48 100,16 190,16" fill="none" stroke="#ff9a2e" stroke-width="3"/><polyline points="10,38 190,38" fill="none" stroke="#5f7f88" stroke-width="2" stroke-dasharray="5 4"/><text x="140" y="12" fill="#ff9a2e" font-size="11">HH +3</text><text x="140" y="56" fill="#8fb0b8" font-size="11">HV steady</text></svg>
+        <h3>Water under trees</h3>
+        <div class="eq">HH up ≥ 3 dB · |ΔHV| &lt; 1.5 dB</div>
+        <p>Double bounce, only within 3 km of detected water.</p>
+      </div>
+      <div class="card rule">
+        <svg viewBox="0 0 200 70" aria-hidden="true"><g fill="#2882ff"><rect x="10" y="22" width="14" height="30" rx="2"/><rect x="30" y="22" width="14" height="30" rx="2"/><rect x="50" y="22" width="14" height="30" rx="2"/><rect x="70" y="22" width="14" height="30" rx="2"/><rect x="90" y="22" width="14" height="30" rx="2"/><rect x="110" y="22" width="14" height="30" rx="2"/><rect x="130" y="22" width="14" height="30" rx="2"/><rect x="150" y="22" width="14" height="30" rx="2"/><rect x="170" y="22" width="14" height="30" rx="2" opacity=".25"/></g><text x="100" y="16" fill="#8fb0b8" font-size="11" text-anchor="middle">wet on ≥ 90% of passes</text></svg>
+        <h3>Not a flood</h3>
+        <div class="eq">permanent water removed</div>
+        <p>Lake core, river, sea: always water, so not flood. Plus an optical ocean mask.</p>
+      </div>
+    </div>
+    <div class="card cal">
+      <p><b style="color:var(--text)">Optical teaches radar.</b> On cloud-free days we pick the HH/HV thresholds that best match NASA's optical water map (OPERA DSWx-HLS), and score each day left out. Tonle Sap: −13.5 / −18.5 dB from 9 clear days.</p>
+      <div class="f1"><div><b style="color:var(--muted)">0.43</b><span>F1, default thresholds</span></div><div><b style="color:var(--accent)">0.78</b><span>F1, tuned</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · compare -->
+<section id="gap">
+  <div class="wrap">
+    <div class="eyebrow">4 · Compare</div>
+    <h2>Only the water the official map cannot see</h2>
+    <p class="lead">We count NISAR water only inside GFM's blank. Water both maps see is not counted as ours.</p>
+    <div class="gap">
+      <svg viewBox="0 0 440 300" role="img" aria-label="Venn diagram: NISAR water (orange) overlaps the official map's cannot-see area (grey hatched). The overlap is what NISAR adds. The official map's flood (blue) is separate.">
+        <defs>
+          <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#3c3c46"/><line x1="0" y1="0" x2="0" y2="8" stroke="#c8c8d2" stroke-width="2"/></pattern>
+          <clipPath id="cx"><circle cx="270" cy="150" r="110"/></clipPath>
+        </defs>
+        <circle cx="270" cy="150" r="110" fill="url(#hatch)" opacity=".9"/>
+        <circle cx="90" cy="150" r="70" fill="#2882ff" opacity=".85"/>
+        <circle cx="175" cy="150" r="90" fill="#ff9a2e" opacity=".35"/>
+        <circle cx="175" cy="150" r="90" fill="#ff9a2e" clip-path="url(#cx)"/>
+        <circle cx="175" cy="150" r="90" fill="none" stroke="#ff9a2e" stroke-width="2"/>
+        <text x="60" y="154" fill="#fff" font-size="13" font-weight="700">GFM flood</text>
+        <text x="330" y="60" fill="#c8c8d2" font-size="13" font-weight="700" text-anchor="middle">"cannot see"</text>
+        <text x="215" y="148" fill="#04342c" font-size="15" font-weight="800" text-anchor="middle">NISAR</text>
+        <text x="215" y="166" fill="#04342c" font-size="15" font-weight="800" text-anchor="middle">adds</text>
+        <text x="175" y="282" fill="#ff9a2e" font-size="12" text-anchor="middle">NISAR water (orange ring)</text>
+      </svg>
+      <div class="card formula">
+        <p class="f"><span class="o">adds</span> = NISAR water ∩ <span class="g">GFM "cannot see"</span> ∩ both valid</p>
+        <p class="f">area = pixels × 80 m × 80 m</p>
+        <p class="f">more = <span class="o">adds</span> ÷ <span class="b">GFM flood</span></p>
+        <p>GFM = Copernicus Global Flood Monitoring (Sentinel-1). Nearest map within ±2 days, put on our 80 m grid.</p>
+        <p>"More %" is shown only where GFM maps ≥ 5 km² of flood, so tiny bases don't inflate it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · results -->
+<section id="results">
+  <div class="wrap">
+    <div class="eyebrow">5 · Result</div>
+    <h2>What NISAR adds, site by site</h2>
+    <p class="lead">Each site's wettest NISAR pass, Jun–Oct 2026. A sample of floods we chose, not a global total.</p>
+    <div class="big">
+      <div class="card"><b id="r-tot">2,177 km²</b><span>water NISAR found in the official maps' blanks, <span id="r-n">17</span> sites</span></div>
+      <div class="card"><b id="r-med">+20%</b><span>more flood water than the official map, median site</span></div>
+      <div class="card"><b id="r-ts">542 km²</b><span>added at Tonle Sap, Cambodia (official map: <span id="r-tsg">554</span> km²), <span id="r-tsf">344</span> km² in forest</span></div>
+    </div>
+    <div class="card chart">
+      <div class="lg"><span><i style="background:#2882ff"></i>Flood in the official map (GFM)</span><span><i style="background:#ff9a2e"></i>NISAR addition: water in the blank</span></div>
+      <div id="rows"><p class="note">Loading the site bundles…</p></div>
+      <p class="note">Source: <code>events/world/event.json</code>, built by the pipeline. Audit lines: <code>docs/10-Results.md</code>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · checks -->
+<section id="checks">
+  <div class="wrap">
+    <div class="eyebrow">6 · Checks</div>
+    <h2>Checked against independent data</h2>
+    <p class="lead">Other radars, ground gauges and optical maps, never the same data we detect with.</p>
+    <div class="val">
+      <div class="card"><div class="k">Canada's RCM radar (CSA)</div><b class="ok">79%</b><p>of NISAR water confirmed by RCM the same week. Peace–Athabasca Delta, 4 pairs, IoU 0.65.</p></div>
+      <div class="card"><div class="k">RCM double bounce</div><b class="ok">~4×</b><p>Where NISAR flags water under vegetation, RCM sees double bounce 42–45% of the time vs 10% by chance.</p></div>
+      <div class="card"><div class="k">USGS EDEN gauges</div><b class="ok">0.95–1.00</b><p>precision in the Everglades: what we call water is water. Recall ≤ 0.35: we miss shallow marsh.</p></div>
+      <div class="card"><div class="k">Next detector (v3)</div><b class="wn">F1 0.70</b><p>vs optical water on a held-out track, Inner Niger. Published method alone (Martinis 2015): 0.61.</p></div>
+    </div>
+    <p class="note">History: RADARSAT-1 (CSA, 1998–2007) on the same grid shows the Mekong delta's flood pulse, ~100–350 km² dry vs ~1,500–2,800 km² wet. NISAR 2026 peak: 1,854 km².</p>
+  </div>
+</section>
+
+<!-- 7 · limits -->
+<section id="limits">
+  <div class="wrap">
+    <div class="eyebrow">7 · Limits</div>
+    <h2>What we don't claim</h2>
+    <div class="lim">
+      <div><b>Lower bounds</b><span>Shallow water in grass barely changes L-band. Read every number as "at least".</span></div>
+      <div><b>Candidates, not proof</b><span>Water in the blank is a strong candidate. Flooded forest has no ground truth yet.</span></div>
+      <div><b>A sample</b><span>Wettest pass per site, sites we picked. Not a global or average figure.</span></div>
+      <div><b>Provisional data</b><span>Most NISAR passes are still Provisional; calibration may change.</span></div>
+      <div><b>80 m grid</b><span>GFM (20 m) and NISAR dates differ by ≤ 2 days. Small or fast floods blur.</span></div>
+      <div><b>Detector versions</b><span>Site numbers use detector v2. v3 (with coherence) is tested on one site so far.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="end">
+  <div class="wrap">
+    <a class="btn primary" href="viewer/index.html">See it on the map →</a>
+    <a class="btn ghost" href="https://github.com/RoyArmony/smooth-operators/tree/main/pipeline/unseen" target="_blank" rel="noopener">Read the code ↗</a>
+  </div>
+</section>
+
+<script>
+// Numbers come from the pipeline's world bundle, so the page always matches the Explorer.
+(async () => {
+  let w;
+  try { w = await (await fetch('../events/world/event.json')).json(); } catch (e) { document.getElementById('rows').innerHTML = '<p class="note">Could not load the site bundles.</p>'; return; }
+  const S = w.sites.filter(s => s.compared);
+  const fmt = v => v.toLocaleString('en-US', { maximumFractionDigits: 0 });
+  const tot = S.reduce((a, s) => a + s.nisar_adds_km2, 0);
+  const p = S.map(s => s.pct).filter(v => v != null).sort((a, b) => a - b);
+  const med = p.length ? (p.length % 2 ? p[(p.length - 1) / 2] : (p[p.length / 2 - 1] + p[p.length / 2]) / 2) : null;
+  document.getElementById('r-tot').textContent = fmt(tot) + ' km²';
+  document.getElementById('r-n').textContent = S.length;
+  if (med != null) document.getElementById('r-med').textContent = '+' + Math.floor(med) + '%';
+  const ts = S.find(s => s.id === 'tonle-sap-flood-pulse-2026');
+  if (ts) { document.getElementById('r-ts').textContent = fmt(ts.nisar_adds_km2) + ' km²'; document.getElementById('r-tsg').textContent = fmt(ts.gfm_flood_km2); }
+  try {
+    const t = await (await fetch('../events/tonle-sap-flood-pulse-2026/event.json')).json();
+    const f = t.headline.numbers.find(n => /forest/i.test(n.label));
+    if (f) document.getElementById('r-tsf').textContent = fmt(f.value);
+  } catch (e) { /* keep the static value */ }
+  const rows = S.filter(s => s.nisar_adds_km2 >= 1 || s.gfm_flood_km2 >= 1).sort((a, b) => b.nisar_adds_km2 - a.nisar_adds_km2);
+  const max = Math.max(...rows.map(s => Math.max(s.nisar_adds_km2, s.gfm_flood_km2)));
+  const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  document.getElementById('rows').innerHTML = rows.map(s => `
+    <div class="row${s === ts ? ' hl' : ''}" title="${esc(s.title)} · NISAR ${s.date} · GFM ${s.gfm_date}">
+      <div class="nm">${esc(s.title.split(',')[0])}</div>
+      <div class="bars"><div class="bar g" style="width:${100 * s.gfm_flood_km2 / max}%"></div><div class="bar o" style="width:${100 * s.nisar_adds_km2 / max}%"></div></div>
+      <div class="v">${fmt(s.gfm_flood_km2)} · <b>+${fmt(s.nisar_adds_km2)}</b></div>
+    </div>`).join('') + (S.length > rows.length ? `<p class="note">${S.length - rows.length} more sites with under 1 km² on both maps.</p>` : '');
+})();
+</script>
+</body>
+</html>
