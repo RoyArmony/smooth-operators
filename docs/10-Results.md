@@ -203,7 +203,7 @@ Every NISAR pass has HH, HV, the RGB picture and our water map. **⚠** = only o
 | Assam (Sep) **⚠** | 5 | 5 (VIIRS) | 0 | 4 | 4 | 100 % | – | 370 % |
 | Congo Cuvette (Oct), *numbers only* | 3 | 2 (HLS) | 3 | 3 | 2 | 100 % | – | – (flood < 5 km²) |
 | Dead Sea (Oct) **⚠** | 5 | 5 (VIIRS) | 0 | 5 | 3 | 100 % | DSWx, LANCE | 7 % |
-| Hubei, China (Oct) **⚠** | 3 | 3 (VIIRS) | 0 | 2 | 2 | 90 % | DSWx | 14 % |
+| Hubei, China (Oct, hidden 15.11: GFM shows no flood) **⚠** | 3 | 3 (VIIRS) | 0 | 2 | 2 | 90 % | DSWx | 14 % |
 | Nepal (Jul, small box) | 4 | 4 (VIIRS) | 1 | 4 | 4 | 100 % | – | – (flood < 5 km²) |
 | Tamil Nadu (Oct, hidden), *numbers only* **⚠** | 3 | 0 | 0 | 3 | 1 | 93 % | DSWx | 9 % |
 | GERD (Nov) **⚠** | 3 | **3 (HLS, added)** | 0 | 3 | 2 | 100 % | – | 7 % |

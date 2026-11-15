@@ -128,48 +128,6 @@
    }
   },
   {
-   "id": "flood-in-china-2026",
-   "title": "Hubei floods, China",
-   "place": "Hubei floods, China",
-   "date": "2026-07-23",
-   "bbox": [
-    110.472,
-    30.428,
-    111.472,
-    31.228
-   ],
-   "kind": "site",
-   "headline": {
-    "sentence": "On 2026-07-23, NISAR found 20 km² of water where the official flood map (Copernicus GFM, 2026-07-23) says it cannot see.",
-    "numbers": [
-     {
-      "label": "Official map: flood",
-      "value": 0.0,
-      "unit": "km²"
-     },
-     {
-      "label": "NISAR adds, in the blank",
-      "value": 19.9,
-      "unit": "km²"
-     },
-     {
-      "label": "of it in forest (ESA WorldCover)",
-      "value": 17.4,
-      "unit": "km²"
-     }
-    ]
-   },
-   "total": {
-    "flood_km2": 0.1,
-    "adds_km2": 102.1,
-    "pct": null,
-    "n": 10,
-    "first": "2026-06-17",
-    "last": "2026-10-15",
-    "rule": "100 × Σ NISAR addition / Σ official flood, all passes"
-   }
-  },
-  {
    "id": "flood-in-nepal-2026",
    "title": "Nepal floods",
    "place": "Nepal floods",
@@ -823,54 +781,6 @@
    "validation": [
     "dswx",
     "lance"
-   ]
-  },
-  {
-   "id": "flood-in-china-2026",
-   "folder": "flood-in-china-2026",
-   "name": "Hubei floods",
-   "country": "China",
-   "bbox": [
-    110.472,
-    30.428,
-    111.472,
-    31.228
-   ],
-   "floods": [
-    {
-     "id": "2026-10-flood",
-     "flood_date": "2026-10-27",
-     "title": "Hubei floods flood, Oct 2026",
-     "baseline": "gfm",
-     "improvement_pct": null,
-     "nisar_adds_km2": 5.3,
-     "baseline_flood_km2": 0.0,
-     "validation": {
-      "source": "dswx",
-      "dswx": {
-       "agreement_pct": 92.0,
-       "iou": 0.18,
-       "n_dates": 2
-      },
-      "agreement_pct": 92.0,
-      "iou": 0.18,
-      "n_dates": 2
-     },
-     "total": {
-      "flood_km2": 0.0,
-      "adds_km2": 14.0,
-      "pct": null,
-      "n": 2,
-      "first": "2026-10-03",
-      "last": "2026-10-15",
-      "rule": "100 × Σ NISAR addition / Σ official flood, all passes",
-      "baseline": "gfm"
-     }
-    }
-   ],
-   "history": null,
-   "validation": [
-    "dswx"
    ]
   },
   {
