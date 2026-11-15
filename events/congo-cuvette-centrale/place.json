@@ -17,7 +17,8 @@
    "baseline": "gfm",
    "improvement_pct": 723,
    "nisar_adds_km2": 78.7,
-   "baseline_flood_km2": 10.9
+   "baseline_flood_km2": 10.9,
+   "badge": "km2"
   }
  ],
  "history": null,

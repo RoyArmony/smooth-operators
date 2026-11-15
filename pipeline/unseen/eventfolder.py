@@ -46,6 +46,7 @@ PLACES = {
         open_hh=-17.0, open_hv=-24.0,                 # detect.py defaults: that site's calibration was not used (too few clear days)
         gfm_bundle="inner-niger-delta-mali"),
     "congo-cuvette-centrale": dict(
+        badge="km2",                                  # Explorer: NISAR addition in km², not % (official flood only ~11 km²)
         name="Congo basin (Cuvette Centrale)", country="Rep. of Congo", bbox=(17.3, 0.2, 17.9, 0.8),
         stack_key="congo-cuvette-centrale-101-2",     # track 101 frame 2 ascending
         viewer_site="congo-cuvette-centrale-101-2",
@@ -714,6 +715,7 @@ def build(place, flood_date=None):
               floods=[dict(id=fid, flood_date=fd, title=ev["title"], baseline=mb, **(dict(kind=case["kind"]) if case.get("kind") else {}),
                            improvement_pct=summary["improvement_pct"], nisar_adds_km2=summary["nisar_adds_km2"],
                            baseline_flood_km2=summary["baseline_flood_km2"],
+                           **({"badge": case["badge"]} if case.get("badge") else {}),
                            **(dict(validation=summary["validation"]) if validation else {}))],
               history=None)
     pf = EVENTS_DIR / place / "place.json"

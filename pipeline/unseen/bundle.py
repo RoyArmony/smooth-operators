@@ -142,7 +142,7 @@ def write_index():
                       for r in e.get("timeline", []) if r.get("date")])
         out.append(dict(id=e["id"], title=e["title"], place=e.get("place"), date=h.get("date"), bbox=e["bbox"],
                         kind=e["kind"], headline=dict(sentence=h.get("sentence"), numbers=h.get("numbers", [])),
-                        **(dict(total=tot) if tot else {})))
+                        **(dict(total=tot) if tot else {}), **({"badge": e["badge"]} if e.get("badge") else {})))
     places = []                                    # v2 (docs/12): events/<place>/place.json -> its floods + history
     for f in sorted(EVENTS_DIR.glob("*/place.json")):
         p = json.loads(f.read_text(encoding="utf-8"))

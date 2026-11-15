@@ -83,7 +83,8 @@
     "first": "2026-07-03",
     "last": "2026-10-19",
     "rule": "100 × Σ NISAR addition / Σ official flood, all passes"
-   }
+   },
+   "badge": "km2"
   },
   {
    "id": "flood-in-nepal-2026",
@@ -530,6 +531,7 @@
      "improvement_pct": 723,
      "nisar_adds_km2": 78.7,
      "baseline_flood_km2": 10.9,
+     "badge": "km2",
      "total": {
       "flood_km2": 10.9,
       "adds_km2": 137.5,

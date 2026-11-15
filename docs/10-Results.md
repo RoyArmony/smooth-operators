@@ -224,3 +224,6 @@ Optical there: MODIS 2000–2013, HLS 2026, none before 2000.
 Missing photos filled with `scripts/fill_photos.py` (NASA GIBS true colour ± 5 d: HLS Sentinel-2 / Landsat, then VIIRS,
 then MODIS; least cloud, ≥ 70 % of the box): GERD 5 Oct and 20 Oct (HLS Sentinel-2) and 31 Oct (HLS Landsat), cloud 0–3 %.
 Numbers-only folders (Congo, Tamil Nadu, Inner Niger, Tonle Sap) have no pictures, so no photo was added there.
+
+Congo Cuvette Centrale (15.11.26, Noa): Explorer shows the NISAR addition in km² (+138 km², 2 passes), not % — the official
+GFM flood is only 11 km², so the % (1,261 %) would mislead. Setting: `badge="km2"` (PLACES → place.json → index.json).
