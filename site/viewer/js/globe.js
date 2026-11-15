@@ -214,24 +214,41 @@ let FOCUS = null;
 const focusBox = document.createElement('div'); focusBox.id = 'focus'; focusBox.hidden = true;
 $('feed').before(focusBox);
 const num = v => typeof v === 'number' ? v.toLocaleString('en-GB') : v;
+const BASE_NAME = { gfm: 'Official map (GFM)', dswx: 'NASA OPERA DSWx' };
+function gainHTML(m) {
+  if (m.base == null || m.adds == null) return '';
+  const km = v => `${Math.round(v).toLocaleString('en-GB')}<small> km²</small>`;
+  return `<div class="gcol"><b class="gbase">${km(m.base)}</b><span>${BASE_NAME[m.baseline] || 'Official map'}</span></div>`
+    + `<div class="gcol"><b class="gadd">+${km(m.adds)}</b><span>NISAR addition</span></div>`
+    + (m.pct != null ? `<div class="gpct"><span class="garrow">↑</span><b>${m.pct.toLocaleString('en-GB')}%</b><span>more flood seen with NISAR</span></div>` : '');
+}
+let V2 = null;
+async function loadSummary(s) {
+  if (V2 === null) V2 = (await getJSON('../../events/index.json')) || {};
+  const pl = ((V2.version === 2 && V2.places) || []).find(p => s.id.startsWith(p.id));
+  const fl = pl && pl.floods && pl.floods.length && [...pl.floods].sort((a, b) => (b.flood_date || '').localeCompare(a.flood_date || ''))[0];
+  if (!fl) return null;
+  const ev = await getJSON(`../../events/${pl.folder || pl.id}/${fl.id}/event.json`), m = ev && ev.summary;
+  return m ? { base: m.baseline_flood_km2, adds: m.nisar_adds_km2, pct: m.improvement_pct, baseline: m.baseline } : null;
+}
 function showFocus(id) {
   FOCUS = id || null;
   const s = FOCUS && (window.UNSEEN_SITES || []).find(x => x.id === FOCUS);
   document.body.classList.toggle('focused', !!FOCUS);
   focusBox.hidden = !FOCUS;
   if (!FOCUS) return;
-  const t = s ? siteType(s) : 'SITE', st = (s && s.stack) || {}, h = s && s.headline;
+  const yr = d => d.slice(0, 4), g = s && s.gain;
+  const when = !s ? '' : s.history ? `${yr(s.first)}–${yr(s.last)}` : fmtDate((g && g.date) || s.event_date || s.last);
+  const tags = !s ? '' : (s.history ? '<span class="stag">RADARSAT-1</span>' : '') + '<span class="stag nisar">NISAR</span>';
   focusBox.innerHTML = `<button class="fback" type="button">← All events</button>`
     + (!s ? '<div class="sub">Loading…</div>' : `<div class="fcard">
-      <div class="eyebrow">${ICON[t] || ''} ${s.kind || EVT[t] || 'Event'}</div>
       <h2>${s.title}</h2>
-      <div class="sub">${s.history ? `${s.n_rs1} RADARSAT-1 (CSA) + ${s.n_nisar} NISAR images` : `${s.n_dates} NISAR passes`} · ${fmtDate(s.first)} → ${fmtDate(s.last)}</div>
-      ${h ? `<div class="hero"><b>${num(h[1])} <small>${h[2]}</small></b><span>${h[0]}</span></div>` : ''}
-      <div class="stats">
-        ${s.max_hidden_by_clouds != null && !s.history ? `<div><b>${Math.round(s.max_hidden_by_clouds * 100)}%</b><span>most hidden by cloud (one pass)</span></div>` : ''}
-        ${st.track ? `<div><b>${st.track} / ${st.frame}</b><span>NISAR track / frame, ${st.direction || ''}</span></div>` : ''}
-      </div></div>
-      <div class="fhint">Step through the passes and switch Map / Photo / Radar in the panel on the map.</div>`);
+      <div class="fwhen">${when}</div>
+      <div class="stags">${tags}</div>
+      <div class="gainbox" id="gainbox">${g ? gainHTML({ base: g.gfm_flood_km2, adds: g.nisar_adds_km2, pct: g.pct, baseline: 'gfm' }) : ''}</div>
+      </div>`);
+  // v2 metadata (docs/12): events/<place>/<flood>/event.json, summary = wettest pass vs the main baseline
+  if (s && !s.history) loadSummary(s).then(m => { const box = $('gainbox'); if (m && box && FOCUS === s.id) box.innerHTML = gainHTML(m); });
   focusBox.querySelector('.fback').onclick = () => {
     window.closeSite && window.closeSite();
     const all = (window.UNSEEN_SITES || []).map(x => [[x.bbox[1], x.bbox[0]], [x.bbox[3], x.bbox[2]]]).flat();
