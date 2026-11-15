@@ -127,7 +127,9 @@ def dswx_classes(files, date, grid, shape):
 def photo_for(case, date):
     """HLS photo of the Explorer site within ± PHOTO_DAYS with the most clear land: cloud-free fraction (DSWx-HLS)
     × part of the box the swath covers."""
-    site = REPO / "site" / "viewer" / "sites" / case["viewer_site"]
+    site = REPO / "site" / "viewer" / "sites" / (case.get("viewer_site") or "-")
+    if not (site / "site.json").exists():               # place without an Explorer site: no photos yet
+        return None, None, None
     S = json.loads((site / "site.json").read_text())
     clear = {o["date"]: o["clear"] for o in S.get("timeline", {}).get("optical", [])}
     c = []
@@ -167,8 +169,9 @@ def build(place, flood_date=None):
     except Exception as e:  # noqa: BLE001
         print(f"[warn] DSWx-HLS: {e!r}"[:120]); dfiles = []
     track, frame = (st or {}).get("track"), (st or {}).get("frame")
-    if track is None:
-        stk = json.loads((REPO / "site/viewer/sites" / case["viewer_site"] / "site.json").read_text()).get("stack", {})
+    vs = REPO / "site/viewer/sites" / (case.get("viewer_site") or "-") / "site.json"
+    if track is None and vs.exists():
+        stk = json.loads(vs.read_text()).get("stack", {})
         track, frame = stk.get("track"), stk.get("frame")
     try:
         from .fused import coherence
