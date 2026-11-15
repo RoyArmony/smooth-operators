@@ -398,18 +398,19 @@
         <div class="src"><span class="tag">NASA · JPL</span><a href="https://doi.org/10.48577/jpl.UD4HV3" target="_blank" rel="noopener">NISAR Mission Science Users' Handbook (2025), §6.3–6.4 ↗</a></div>
         <svg viewBox="0 0 440 190" role="img" aria-label="Handbook change classes: a not-inundated pixel becomes open water when HH drops, or inundated vegetation when HH rises with HV steady.">
           <defs><marker id="lt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8fb0b8"/></marker></defs>
-          <rect x="20" y="70" width="110" height="50" rx="10" fill="#16323c"/><text x="75" y="101" fill="#e6f1f2" font-size="15" font-weight="800" text-anchor="middle">NI</text>
-          <rect x="310" y="10" width="110" height="50" rx="10" fill="#2882ff"/><text x="365" y="41" fill="#fff" font-size="15" font-weight="800" text-anchor="middle">OW</text>
-          <rect x="310" y="130" width="110" height="50" rx="10" fill="#ff9a2e"/><text x="365" y="161" fill="#1a1206" font-size="15" font-weight="800" text-anchor="middle">IV</text>
-          <path d="M130 86 L310 38" stroke="#8fb0b8" stroke-width="2" fill="none" marker-end="url(#lt)"/>
-          <path d="M130 104 L310 152" stroke="#8fb0b8" stroke-width="2" fill="none" marker-end="url(#lt)"/>
-          <text x="200" y="50" fill="#e6f1f2" font-size="12" text-anchor="middle">N2O: HH ↓</text>
-          <text x="200" y="152" fill="#e6f1f2" font-size="12" text-anchor="middle">N2IV: HH ↑, HV ≈</text>
-          <text x="75" y="140" fill="#8fb0b8" font-size="11" text-anchor="middle">not inundated</text>
-          <text x="250" y="105" fill="#8fb0b8" font-size="11" text-anchor="middle">vs reference σ̄</text>
+          <rect x="10" y="66" width="130" height="58" rx="10" fill="#16323c"/><text x="75" y="91" fill="#e6f1f2" font-size="15" font-weight="800" text-anchor="middle">NI</text><text x="75" y="110" fill="#8fb0b8" font-size="11" text-anchor="middle">Not Inundated</text>
+          <rect x="280" y="6" width="150" height="58" rx="10" fill="#2882ff"/><text x="355" y="31" fill="#fff" font-size="15" font-weight="800" text-anchor="middle">OW</text><text x="355" y="50" fill="#e6f1f2" font-size="11" text-anchor="middle">Open Water</text>
+          <rect x="280" y="126" width="150" height="58" rx="10" fill="#ff9a2e"/><text x="355" y="151" fill="#1a1206" font-size="15" font-weight="800" text-anchor="middle">IV</text><text x="355" y="170" fill="#1a1206" font-size="11" text-anchor="middle">Inundated Vegetation</text>
+          <path d="M140 84 L280 38" stroke="#8fb0b8" stroke-width="2" fill="none" marker-end="url(#lt)"/>
+          <path d="M140 106 L280 152" stroke="#8fb0b8" stroke-width="2" fill="none" marker-end="url(#lt)"/>
+          <text x="196" y="52" fill="#e6f1f2" font-size="12" text-anchor="middle">N2O: HH ↓</text>
+          <text x="196" y="150" fill="#e6f1f2" font-size="12" text-anchor="middle">N2IV: HH ↑, HV ≈</text>
+          
+          <text x="205" y="100" fill="#8fb0b8" font-size="11" text-anchor="middle">vs reference σ̄</text>
         </svg>
         <math display="block"><msub><mi>f</mi><mi>n</mi></msub><mo>=</mo><mfrac><msub><mrow><mo>⟨</mo><mi>σ</mi><mo>(</mo><mi>A</mi><mo>)</mo><mo>⟩</mo></mrow><mi>t</mi></msub><mrow><msub><mi>σ</mi><mi>n</mi></msub><mo>(</mo><mi>A</mi><mo>)</mo></mrow></mfrac><mspace width="1em"/><msubsup><mi>σ</mi><mi>n</mi><mi>c</mi></msubsup><mo>=</mo><msub><mi>f</mi><mi>n</mi></msub><msub><mi>σ</mi><mi>n</mi></msub><mspace width="1em"/><mtext>(6.3-5, 6.3-6)</mtext></math>
         <math display="block"><mtext>N2IV:</mtext><mspace width=".4em"/><mfrac><msub><mi>HH</mi><mi>n</mi></msub><mover><mi>HH</mi><mo>‾</mo></mover></mfrac><mo>&gt;</mo><msub><mi>T</mi><mi>iv</mi></msub><mo>,</mo><mspace width=".4em"/><mfrac><msub><mi>HV</mi><mi>n</mi></msub><mover><mi>HV</mi><mo>‾</mo></mover></mfrac><mo>&lt;</mo><msub><mi>T</mi><mi>HV</mi></msub><mspace width="1em"/><mtext>(6.4-4)</mtext></math>
+        <p class="note" style="margin-top:0">N2O = Not inundated → Open water · N2IV = Not inundated → Inundated vegetation.</p>
         <ul class="took"><li><b>We use:</b> change vs the pixel's own reference, stable-land calibration (our drift <i>d<sub>t</sub></i>), the double-bounce rule ④ with the same thresholds.</li><li><b>We tested</b> the full classifier as a second opinion (<code>flood_nasa.py</code>).</li></ul>
       </div>
       <div class="card lit">
