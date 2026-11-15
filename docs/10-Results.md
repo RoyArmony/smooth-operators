@@ -29,3 +29,19 @@ Flood = water beyond permanent water (dark on ≥ 90 % of NISAR passes). Area = 
 Caveats: C-band (RADARSAT-1) and L-band (NISAR) see flooded rice differently, and the methods differ (one threshold per
 image vs our calibrated detector), so compare the pattern (dry ≈ 100–350 km², wet ≈ 1,500–2,800 km²), not exact km².
 1998 and 2007 have dry-season images only.
+
+## Mekong delta, Vietnam: flood Sep 2026 (event folder v2)
+
+`python -m unseen.eventfolder mekong-delta-vietnam` → `events/mekong-delta-vietnam/2026-09-flood/`. Window 2026-08-24 → 2026-10-23.
+NISAR track 83 frame 7, detect.py v2 (HH −13 / HV −18 dB). Baselines: GFM (± 2 d; read from the v1 bundle, GFM server down 15.11),
+DSWx-HLS (± 3 d). Permanent water removed. Date (who): 15.11.26 (Noa).
+
+| Pass | GFM flood | NISAR adds (GFM blank) | vs GFM | DSWx flood (date) | NISAR adds (clouds) | vs DSWx |
+|---|---|---|---|---|---|---|
+| 2026-08-30 | 1,081 | 129 | +12% | 55 (2026-09-01) | 1,067 | +1,927% |
+| 2026-09-11 | 585 | 167 | +29% | – | – | – |
+| **2026-09-23** | **706** | **170** | **+24%** | 278 (2026-09-21) | 1,618 | +581% |
+| 2026-10-05 | 429 | 161 | +38% | 725 (2026-10-05) | 370 | +51% |
+| 2026-10-17 | 345 | 142 | +41% | 1,031 (2026-10-16) | 811 | +79% |
+
+km². GFM "cannot see" on 2026-09-23: 1,050 km² (all vegetation / city). DSWx % are large because clouds hid most of the box.

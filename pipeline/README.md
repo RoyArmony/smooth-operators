@@ -27,6 +27,7 @@ permanent water removed; area = pixels × 80 m × 80 m.
 | `fused.py` | **default detector v3**: QA, per-scene threshold, dry-season change, HV, GUNW coherence → water |
 | `detect.py`, `flood_nasa.py` | old detector v2 (also gives water under vegetation); NISAR handbook §6.4 classifier (second opinion) |
 | `gfm.py`, `optical.py`, `rcm.py` | Copernicus GFM, OPERA DSWx-HLS, Canada's RCM on our grid |
+| `eventfolder.py` | one flood in event-folder format v2 (docs/12): `events/<place>/<YYYY-MM>-flood/` + `place.json` (`python -m unseen.eventfolder <place>`) |
 | `history.py` | flood history of one place: RADARSAT-1 (1996–2013) + NISAR on one grid, flood per image, vs GFM → Explorer case `site/viewer/sites/<id>/` + bundle `events/mekong-delta-history/` (`python -m unseen.history`) |
 | `landcover.py`, `population.py` | ESA WorldCover, WorldPop on our grid (context) |
 

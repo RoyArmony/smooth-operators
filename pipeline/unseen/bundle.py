@@ -119,12 +119,18 @@ def write_event(ev):
 
 
 def write_index():
-    """Rebuild events/index.json from every events/<id>/event.json."""
+    """Rebuild events/index.json: "events" from every events/<id>/event.json (v1), "places" from events/<place>/place.json (v2)."""
     out = []
     for f in sorted(EVENTS_DIR.glob("*/event.json")):
         e = json.loads(f.read_text())
         h = e.get("headline", {})
         out.append(dict(id=e["id"], title=e["title"], place=e.get("place"), date=h.get("date"), bbox=e["bbox"],
                         kind=e["kind"], headline=dict(sentence=h.get("sentence"), numbers=h.get("numbers", []))))
-    (EVENTS_DIR / "index.json").write_text(json.dumps(dict(version=1, events=out), indent=1, ensure_ascii=False))
+    places = []                                    # v2 (docs/12): events/<place>/place.json -> its floods + history
+    for f in sorted(EVENTS_DIR.glob("*/place.json")):
+        p = json.loads(f.read_text())
+        places.append(dict(id=p["id"], folder=f.parent.name, name=p["name"], country=p.get("country"), bbox=p["bbox"],
+                           floods=p.get("floods", []), history=p.get("history")))
+    idx = dict(version=2 if places else 1, events=out, **(dict(places=places) if places else {}))
+    (EVENTS_DIR / "index.json").write_text(json.dumps(idx, indent=1, ensure_ascii=False))
     return out
