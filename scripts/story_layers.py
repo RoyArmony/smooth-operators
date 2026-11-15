@@ -85,8 +85,7 @@ def canada():
         Image.open(base / f).save(STORY / "canada" / f"{out}.png", optimize=True)
     (s, w), (n, e) = E["layers"]["agreement"]["bounds"]
     json.dump({"corners": [[w, n], [e, s]]}, open(STORY / "canada" / "pad.json", "w"))
-    p = next(p for p in E["passes"] if p["date"] == d)
-    print("canada", d, (p.get("validation") or {}).get("rcm"))
+    print("canada: RCM day", d)
 
 
 if __name__ == "__main__":
