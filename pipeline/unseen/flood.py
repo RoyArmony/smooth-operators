@@ -17,8 +17,12 @@ def load(bbox, sid, refresh=False):
     hit = sorted((DATA_DIR / "stacks").glob(f"{sid}-*.npz"))
     if hit and not refresh:
         z = np.load(hit[0], allow_pickle=True)
-        tr, fr = hit[0].stem.rsplit("-", 2)[-2:]                     # cache name <sid>-<track>-<frame>.npz
-        st = dict(track=int(tr), frame=int(fr) if fr.isdigit() else None, direction=None, cached=True)
+        try:                                                         # track/frame/direction from the first scene name
+            f = str(z["scenes"][0]).split("_")                       # NISAR_L2_PR_GCOV_<cycle>_<track>_<A|D>_<frame>_...
+            st = dict(track=int(f[5]), frame=int(f[7]), direction={"A": "ascending", "D": "descending"}.get(f[6]), cached=True)
+        except Exception:  # noqa: BLE001                            # older caches: name <sid>-<track>-<frame>.npz
+            tr, fr = hit[0].stem.rsplit("-", 2)[-2:]
+            st = dict(track=int(tr) if tr.isdigit() else None, frame=int(fr) if fr.isdigit() else None, direction=None, cached=True)
         return z["stack"], [str(d) for d in z["dates"]], z["grid"].item(), st
     lon0, lat0, lon1, lat1 = bbox
     if not (lon0 < lon1 and lat0 < lat1) or max(lon1 - lon0, lat1 - lat0) > MAX_DEG:
@@ -78,7 +82,7 @@ def water(stack, dates, grid, bbox, use_optical=True, detector="v3", st=None, dr
     return L, cal
 
 
-def gap(L, dates, grid, bbox, days=2, lc=None):
+def gap(L, dates, grid, bbox, days=2, lc=None, key=None):
     """Per NISAR pass: GFM nearest in time (± days) and what NISAR adds. Yields one dict per pass with masks + km².
     lc: ESA WorldCover classes on our grid (optional) -> split of the added area by land cover."""
     px = (grid["dx"] / 1000) ** 2
@@ -87,8 +91,10 @@ def gap(L, dates, grid, bbox, days=2, lc=None):
         try:
             G = gfm.on_grid(bbox, d, grid, L["valid"].shape, days=days)
         except Exception as e:  # noqa: BLE001
-            print(f"[warn] GFM {d}: {e!r}"[:120])
-            continue
+            print(f"[warn] GFM {d}: {e!r}"[:120]); G = None
+        if not G and key:                    # GFM server down and not cached: the GFM layers already in the site's bundle
+            from .history import gfm_from_bundle
+            G = gfm_from_bundle(key, d, grid, L["valid"].shape)
         if not G:
             continue
         v = L["valid"] & G["seen"]          # valid is one map for the whole stack

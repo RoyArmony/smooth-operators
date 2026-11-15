@@ -73,10 +73,15 @@ def modis_photo(bbox, date, size=300):
 def build(place):
     case = PLACES[place]
     bbox = case["bbox"]
-    stack, ndates, grid, _ = load(bbox, case["stack_key"])
+    stack, ndates, grid, st = load(bbox, case["stack_key"])
     shape = stack.shape[-2:]
     px = (grid["dx"] / 1000) ** 2
-    L = detect(stack, pixel_m=grid["dx"], open_hh=case["open_hh"], open_hv=case["open_hv"])
+    from .fused import detect_fused, qa
+    stack, ndates, _ = qa(stack, ndates)                 # corrupt NISAR passes out
+    L = detect(stack, pixel_m=grid["dx"], open_hh=case["open_hh"], open_hv=case["open_hv"])   # hh for alignment
+    F = detect_fused(stack, ndates, grid, bbox, track=(st or {}).get("track"), frame=(st or {}).get("frame"),
+                     dry_dates=case.get("dry_dates"))   # NISAR water: fused v3 (docs/07 §2b)
+    L.update(water=F["water"], canopy=F["canopy"], permanent=F["permanent"], valid=F["valid"])
     perm, valid = L["permanent"], L["valid"]
     ref = np.nanmedian(L["hh"], 0)
     folder = EVENTS_DIR / place / "history"
@@ -258,7 +263,8 @@ def build(place):
                     rs1="RADARSAT-1 HH warped with its GCPs, aligned to NISAR by edges, one threshold per image "
                         "(Otsu on tiles with both river and land); image dropped if that threshold does not separate "
                         f"permanent water from land (Youden J < {MIN_J})",
-                    nisar=f"detect.py v2, thresholds HH {case['open_hh']} / HV {case['open_hv']} dB (calibrated on clear optical days)",
+                    nisar="fused v3 (fused.py: per-scene threshold, change from the dry season, HV, GUNW coherence; water under "
+                          "vegetation from detect.py)",
                     flood="water beyond permanent water (dark on ≥ 90 % of NISAR passes); area = pixels × 80 m × 80 m",
                     optical=f"MODIS (250 m) least cloudy day within ± {MODIS_DAYS} d for 2000–2013; HLS (30 m) clearest within ± 5 d for 2026; none before 2000",
                     baselines="GFM (Sentinel-1) exists from 2015, NASA OPERA DSWx-HLS from 2023: only on NISAR dates"),

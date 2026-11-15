@@ -22,7 +22,7 @@ def site(eid, title, bbox, kind="site", passes="all", place=None, use_optical=Tr
         lc = landcover.on_grid(grid, bbox, key=eid)
     except Exception as e:  # noqa: BLE001
         print(f"[warn] land cover skipped: {e}"); lc = None
-    rows = list(flood.gap(L, dates, grid, bbox, lc=lc))
+    rows = list(flood.gap(L, dates, grid, bbox, lc=lc, key=eid))
     if not rows:
         raise RuntimeError("no NISAR pass has a Copernicus GFM map within 2 days")
     best = max(rows, key=lambda r: r["km2"]["nisar_adds"])
@@ -68,6 +68,16 @@ def site(eid, title, bbox, kind="site", passes="all", place=None, use_optical=Tr
         dict(name="Copernicus EMS Global Flood Monitoring", url="https://global-flood.emergency.copernicus.eu",
              credit="© European Union, Copernicus Emergency Management Service"),
         dict(name="OPERA DSWx-HLS", url="https://www.jpl.nasa.gov/go/opera", credit="NASA/JPL OPERA; data via PO.DAAC")]
+    from .config import EVENTS_DIR                          # a rebuild keeps what others added to the bundle
+    old = EVENTS_DIR / eid / "event.json"
+    if old.exists():
+        o = json.loads(old.read_text(encoding="utf-8"))
+        for k in ("hidden", "hidden_why"):                    # left out of the Explorer list on purpose
+            if k in o:
+                ev[k] = o[k]
+        for k, lay in (o.get("layers") or {}).items():        # layers from other scripts (e.g. both_blind): not NISAR
+            if k not in ev["layers"] and k not in ("gfm_flood", "gfm_excluded", "nisar_water", "nisar_adds"):
+                ev["layers"][k] = lay
     bundle.write_event(ev)
     return ev
 

@@ -153,9 +153,14 @@ def gfm_from_bundle(eid, date, grid, shape):
     from rasterio.warp import Resampling, reproject
     if not eid:
         return None
-    root = REPO / "events" / eid
-    E = json.loads((root / "event.json").read_text())
-    row = next((r for r in E["timeline"] if r["date"] == date and "gfm_flood" in r["layers"]), None)
+    row = None                                   # this repo's bundle, else the local copy of the v2 bundles (data/v2-backup)
+    for root in (REPO / "events" / eid, REPO / "data" / "v2-backup" / "events" / eid):
+        if not (root / "event.json").exists():
+            continue
+        E = json.loads((root / "event.json").read_text())
+        row = next((r for r in E["timeline"] if r["date"] == date and "gfm_flood" in r.get("layers", [])), None)
+        if row is not None:
+            break
     if row is None:
         return None
     x, y, dx = grid["x"], grid["y"], grid["dx"]

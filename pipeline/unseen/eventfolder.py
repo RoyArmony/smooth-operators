@@ -23,6 +23,8 @@ from .config import EVENTS_DIR, REPO
 from .detect import detect
 from .flood import load
 
+DETECTOR = None                                           # --detector: overrides every place (default v3)
+
 PLACES = {
     "mekong-delta-vietnam": dict(
         name="Mekong delta", country="Vietnam", bbox=(105.0, 10.4, 105.6, 11.0),
@@ -132,7 +134,7 @@ PLACES = {
         name="Dead Sea (validation)", country="Israel", bbox=(35.37, 30.97, 35.52, 31.30),
         stack_key="dead-sea-israel",                  # NISAR stack: best one covering the box (track 151 descending)
         open_hh=-17.0, open_hv=-24.0,                 # handbook / detect defaults: no optical calibration here
-        detector="doc33",                             # flood_nasa.final(): handbook §6.4 + confidence >= 0.8 + handbook mask
+        detector="v3",                                # fused v3 (was doc33, flood_nasa.final(), until 15.11.26)
         kind="validation",                            # not a flood story: a clear-sky check against the official maps
         validation=["lance", "gfm"],                  # + DSWx (always when present): NISAR water vs each map where it can see
         flood_limits="validation site, not a flood: desert valley floor (open water, salt ponds, bare shore), no "
@@ -141,7 +143,7 @@ PLACES = {
         name="Sylhet haor (validation)", country="Bangladesh", bbox=(91.1, 24.4, 91.7, 25.0),
         stack_key="sylhet-haor-validation",           # NISAR track 69 frame 14 (same stack as the Sylhet flood site)
         open_hh=-12.0, open_hv=-21.0,                 # that site's calibration on clear optical days
-        detector="doc33", no_map=(50, 60),            # handbook mask without cropland: the haor is flooded farmland (paddies)
+        detector="v3", no_map=(50, 60),               # no_map: doc33 only (handbook mask without cropland: the haor is flooded farmland)
         kind="validation",                            # a check: GFM "cannot see" ~3 % of the box, NASA LANCE cloud-free
         validation=["gfm", "lance"],                  # + DSWx when it downloads
         flood_limits="validation site: seasonal haor wetland, mostly flooded farmland, little tree cover; GFM covers about "
@@ -346,13 +348,25 @@ def build(place, flood_date=None):
     stack, dates, grid, st = load(bbox, case["stack_key"])
     shape = stack.shape[-2:]
     px = (grid["dx"] / 1000) ** 2
-    L = detect(stack, pixel_m=grid["dx"], open_hh=case["open_hh"], open_hv=case["open_hv"])
+    det = DETECTOR or case.get("detector") or "v3"
+    track, frame = (st or {}).get("track"), (st or {}).get("frame")
+    vs = REPO / "site/viewer/sites" / (case.get("viewer_site") or "-") / "site.json"
+    if track is None and vs.exists():
+        stk = json.loads(vs.read_text(encoding="utf-8")).get("stack", {})
+        track, frame = stk.get("track"), stk.get("frame")
+    qa_dropped = []
+    if det == "v3":                                       # fused v3 (fused.py, docs/07 §2b): the site's detector
+        from .fused import detect_fused, qa
+        stack, dates, qa_dropped = qa(stack, dates)
+        L = detect_fused(stack, dates, grid, bbox, track=track, frame=frame, dry_dates=case.get("dry_dates"))
+    else:
+        L = detect(stack, pixel_m=grid["dx"], open_hh=case["open_hh"], open_hv=case["open_hv"])
     perm, valid = L["permanent"], L["valid"]
     wet = [(L["water"][t] | L["canopy"][t]) & ~perm & valid for t in range(len(dates))]
     vals = case.get("validation") or []
     vals = [vals] if isinstance(vals, str) else list(vals)
     nopen_all = None                                      # doc33: NISAR water incl. permanent, for the checks
-    if case.get("detector") == "doc33":                  # NISAR handbook §6.4 + confidence + handbook mask (flood_nasa.final)
+    if det == "doc33":                                   # NISAR handbook §6.4 + confidence + handbook mask (flood_nasa.final)
         from . import dem
         from .detect import _db
         from .flood_nasa import final
@@ -384,11 +398,6 @@ def build(place, flood_date=None):
         dfiles = optical.download(og, earthdata_session()) if og else []
     except Exception as e:  # noqa: BLE001
         print(f"[warn] DSWx-HLS: {e!r}"[:120]); dfiles = []
-    track, frame = (st or {}).get("track"), (st or {}).get("frame")
-    vs = REPO / "site/viewer/sites" / (case.get("viewer_site") or "-") / "site.json"
-    if track is None and vs.exists():
-        stk = json.loads(vs.read_text(encoding="utf-8")).get("stack", {})
-        track, frame = stk.get("track"), stk.get("frame")
     try:
         from .fused import coherence
         coh = coherence(bbox, grid, track, frame, [dates[t] for t in idx])
@@ -657,13 +666,15 @@ def build(place, flood_date=None):
         window=dict(start=w0.isoformat(), end=w1.isoformat(), days_before=WINDOW_DAYS, days_after=WINDOW_DAYS),
         bbox=list(bbox), area_km2=round(float(valid.sum() * px)), baselines=sorted({k for p in passes for k in p["baselines"]}),
         summary=summary, passes=passes, layers=W.layers, **(dict(validation=validation) if validation else {}),
-        method=dict(detector=("flood_nasa.final(): NISAR handbook §6.4 classes + transitions, confidence >= 0.8, handbook mask "
+        method=dict(detector=("fused v3 (fused.py: per-scene threshold, change from the dry season, HV, GUNW coherence; "
+                              "water under vegetation from detect.py)") if det == "v3" else ("flood_nasa.final(): NISAR handbook §6.4 classes + transitions, confidence >= 0.8, handbook mask "
                               + ("(no city, bare land, slope > 5°; cropland kept here: the haor is flooded farmland)" if "no_map" in case
                                  else "(no cropland, city, bare land, slope > 5°)")
                               + f"; open-water HH threshold {case['open_hh']} dB")
-                             if case.get("detector") == "doc33" else
+                             if det == "doc33" else
                              "detect.py v2 (open water + water under vegetation, HH/HV), thresholds calibrated on clear "
                              f"optical days: HH {case['open_hh']} / HV {case['open_hv']} dB",
+                    detector_info=L.get("info"), qa_dropped=qa_dropped,
                     pixel_m=grid["dx"], permanent_water="dark on ≥ 90 % of NISAR passes",
                     matching=dict(photo_days=PHOTO_DAYS, gfm_days=GFM_DAYS, dswx_days=DSWX_DAYS),
                     nisar=dict(track=track, frame=frame, product="L2 GCOV (HH, HV) + L2 GUNW coherence"),
@@ -682,7 +693,7 @@ def build(place, flood_date=None):
            if validation and "lance" in validation else [])
         + ([dict(name="Copernicus DEM GLO-30 (slope for the handbook mask)", url="https://registry.opendata.aws/copernicus-dem/",
                  credit="© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018, provided under COPERNICUS by the "
-                        "European Union and ESA")] if case.get("detector") == "doc33" else [])
+                        "European Union and ESA")] if det == "doc33" else [])
         + ([dict(name="RADARSAT Constellation Mission (RCM) CEOS-ARD", url="https://registry.opendata.aws/rcm-ceos-ard/",
                  credit="RCM data © Government of Canada (Canadian Space Agency); RCM Public User Licence")]
            if validation and "rcm" in validation else []),
@@ -755,7 +766,10 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("place", choices=sorted(PLACES))
     ap.add_argument("--date", help="flood date YYYY-MM-DD (default: wettest NISAR pass)")
+    ap.add_argument("--detector", choices=["v3", "v2", "doc33"], help="default: v3 (fused.py), or the place's own")
     a = ap.parse_args(argv)
+    global DETECTOR
+    DETECTOR = a.detector
     build(a.place, a.date)
 
 
