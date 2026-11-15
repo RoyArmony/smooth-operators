@@ -321,10 +321,10 @@ function gainHTML(m) {
     + (m.n > 1 && m.kind !== 'validation' ? `<ul class="gpoint"><li>Total of ${m.n} NISAR passes, ${fmtDate(m.first)} – ${fmtDate(m.last)}: `
        + `% = Σ NISAR addition ÷ Σ official flood. Each pass’s own numbers are in the map panel.</li></ul>` : '');
 }
-// when NISAR adds < 5 % (clear sky, little hidden), headline the independent check instead: % agreement (RCM first)
+// validation cards headline the independent check: % agreement (RCM first); flood cards headline NISAR's gain
 const VNAME = { rcm: 'Canada’s RCM radar (CSA)', dswx: 'NASA’s DSWx map', lance: 'NASA’s LANCE flood map', gfm: 'Copernicus GFM' };
-function headCheck(g) {                                 // validation places always lead with the check
-  const v = g && g.val; if (!v || (g.kind !== 'validation' && !v.rcm && g.pct != null && g.pct >= 5)) return null;   // RCM check: validation too
+function headCheck(g) {                                 // only validation cards (validation folders, RCM checks) lead with the check
+  const v = g && g.val; if (!v || (g.kind !== 'validation' && !v.rcm)) return null;   // other floods lead with their gain; checks stay as rows
   const k = ['rcm', 'gfm', 'dswx', 'lance'].find(x => v[x]); return k ? { k, ...v[k] } : null;
 }
 // independent checks of NISAR's water (docs/12 §11): % of pixels where the other sensor agrees, same days
