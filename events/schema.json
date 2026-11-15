@@ -97,7 +97,7 @@
         "nisar_rgb", "rcm_rgb", "rs1_rgb",
         "gfm_flood", "gfm_excluded", "dswx_s1", "gfm_refwater",
         "nisar_water", "nisar_floodveg", "nisar_adds", "combined",
-        "rcm_water", "rs1_water", "agreement",
+        "rcm_water", "rs1_water", "agreement", "s1_vv", "s1_wet",
         "landcover", "people", "both_blind"
       ]
     }

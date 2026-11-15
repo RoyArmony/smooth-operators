@@ -150,7 +150,7 @@ def build(eid):
     nd = len(nisar.search(bbox, start="2026-06-17"))
     (d1a, k1, w1), (d1b, k2, w2) = nums
     ev["headline"] = dict(
-        date=storm, badge=None,
+        date=storm,                                          # no badge: schema wants an object or nothing
         sentence=f"On the afternoon of the storm ({d1a}), Sentinel-1 radar saw {w1:,.0f} km² of soaked ground in the Sharon "
                  f"({w2:,.0f} km² the next morning) but {k1:,.0f} km² of standing water in open fields: the flash flood ran "
                  "off through the streets within hours. NISAR passed on " + use[0]["startTime"][:10] + " (before).",

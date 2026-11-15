@@ -68,9 +68,9 @@ Rule: **3 numbers, 2 sentences, 3 colours, 1 badge.** Everything else is one cli
 | Group | Layer ids | Default |
 |---|---|---|
 | base | `basemap`, `photo` (HLS true colour) | photo on |
-| radar | `nisar_rgb` (HH/HV), `rcm_rgb`, `rs1_rgb` (RADARSAT-1) | off |
-| official | `gfm_flood`, `gfm_excluded`, `dswx_s1`, `gfm_refwater` | flood + excluded on |
-| result | `nisar_water`, `nisar_floodveg`, `nisar_adds`, `combined`, `rs1_water` (RADARSAT-1 flood, history bundles) | adds on |
+| radar | `nisar_rgb` (HH/HV), `rcm_rgb`, `rs1_rgb` (RADARSAT-1), `s1_vv` (Sentinel-1 VV, Israel storm) | off |
+| official | `gfm_flood`, `gfm_excluded`, `dswx_s1`, `gfm_refwater`, `both_blind` (GFM blank ∩ DSWx-HLS cloud, Mekong) | flood + excluded on |
+| result | `nisar_water`, `nisar_floodveg`, `nisar_adds`, `combined`, `rs1_water` (RADARSAT-1 flood, history bundles), `s1_wet` (Sentinel-1 soaked ground, Israel storm) | adds on |
 | validation | `rcm_water`, `agreement` | off |
 | context | `landcover`, `people` | off |
 
