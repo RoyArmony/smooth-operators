@@ -214,7 +214,7 @@ Every NISAR pass has HH, HV, the RGB picture and our water map. **⚠** = only o
 | Peace–Athabasca (Jun) **⚠** | 3 | 3 (HLS) | 0 | 3 | 1 | 100 % | RCM, DSWx | 21 % |
 | Sylhet (Jul) **⚠** | 4 | 4 (VIIRS) | 0 | 4 | 0 | 97 % | – | 316 % |
 | Sylhet, validation (Oct) | 6 | 6 (VIIRS) | 5 | 5 | 0 | 97 % | GFM, DSWx, LANCE | 25 % |
-| Bang Pakong, Thailand (Oct) **⛔** | 3 | 3 (VIIRS) | 1 | 0 | 0 | 93 % | – | 17 % (1 pass) |
+| Bang Pakong, Thailand (Oct, hidden 15.11) **⛔** | 3 | 3 (VIIRS) | 1 | 0 | 0 | 93 % | – | 17 % (1 pass) |
 | Tonle Sap (Oct), *numbers only* | 4 | 3 (HLS) | 4 | 3 | 2 | 100 % | – | 88 % |
 
 Over the years (`history/`): Peace–Athabasca 26 images (22 RADARSAT-1 + 4 NISAR, 1997–2026), Mekong 17 (13 + 4),

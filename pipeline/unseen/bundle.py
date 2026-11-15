@@ -146,6 +146,8 @@ def write_index():
     places = []                                    # v2 (docs/12): events/<place>/place.json -> its floods + history
     for f in sorted(EVENTS_DIR.glob("*/place.json")):
         p = json.loads(f.read_text(encoding="utf-8"))
+        if p.get("hidden"):                         # kept on disk, left out of the Explorer
+            continue
         for fl in p.get("floods", []):              # v2 flood: pooled over its passes, against its main baseline
             ef = f.parent / fl["id"] / "event.json"
             if ef.exists():
