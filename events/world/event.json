@@ -27,6 +27,11 @@
     "label": "more",
     "value": 74,
     "unit": "%"
+   },
+   {
+    "label": "sites",
+    "value": 17,
+    "unit": ""
    }
   ],
   "badge": {
