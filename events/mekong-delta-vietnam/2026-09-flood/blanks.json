@@ -1,0 +1,214 @@
+{
+ "what": "Each official map's 'cannot see' area split by cause and by land cover underneath (ESA WorldCover 2021)",
+ "script": "scripts/blank_breakdown.py",
+ "box_km2": 4402.2,
+ "passes": [
+  {
+   "nisar": "2026-08-30",
+   "gfm": "2026-08-30",
+   "dswx": "2026-09-01",
+   "gfm_blank": {
+    "km2": 1068.1,
+    "cause": {
+     "vegetation, city, radar shadow": 1068.1,
+     "cloud": 0.0
+    },
+    "landcover": {
+     "forest": 421.4,
+     "cropland": 394.9,
+     "built-up": 141.9,
+     "wetland": 3.0,
+     "shrub & grass": 38.9,
+     "water": 64.2,
+     "other": 3.9
+    }
+   },
+   "dswx_blank": {
+    "km2": 3012.8,
+    "cause": {
+     "cloud / cloud shadow": 3012.8
+    },
+    "landcover": {
+     "forest": 475.3,
+     "cropland": 2170.7,
+     "built-up": 146.5,
+     "wetland": 3.9,
+     "shrub & grass": 67.1,
+     "water": 139.5,
+     "other": 9.9
+    }
+   },
+   "both_blind": {
+    "km2": 858.1,
+    "landcover": {
+     "forest": 349.6,
+     "cropland": 298.9,
+     "built-up": 123.5,
+     "wetland": 0.9,
+     "shrub & grass": 30.5,
+     "water": 51.7,
+     "other": 3.1
+    }
+   },
+   "stored": {
+    "gfm": 1060.2,
+    "dswx": 2990.3
+   }
+  },
+  {
+   "nisar": "2026-09-23",
+   "gfm": "2026-09-23",
+   "dswx": "2026-09-21",
+   "gfm_blank": {
+    "km2": 1057.8,
+    "cause": {
+     "vegetation, city, radar shadow": 1057.8,
+     "cloud": 0.0
+    },
+    "landcover": {
+     "forest": 421.0,
+     "cropland": 393.5,
+     "built-up": 141.7,
+     "wetland": 2.8,
+     "shrub & grass": 38.8,
+     "water": 56.2,
+     "other": 3.8
+    }
+   },
+   "dswx_blank": {
+    "km2": 3921.9,
+    "cause": {
+     "cloud / cloud shadow": 3921.9
+    },
+    "landcover": {
+     "forest": 564.0,
+     "cropland": 2893.9,
+     "built-up": 163.9,
+     "wetland": 19.4,
+     "shrub & grass": 91.4,
+     "water": 177.4,
+     "other": 11.9
+    }
+   },
+   "both_blind": {
+    "km2": 1008.8,
+    "landcover": {
+     "forest": 405.7,
+     "cropland": 368.1,
+     "built-up": 136.9,
+     "wetland": 2.7,
+     "shrub & grass": 37.0,
+     "water": 54.6,
+     "other": 3.7
+    }
+   },
+   "stored": {
+    "gfm": 1049.9,
+    "dswx": 3893.5
+   }
+  },
+  {
+   "nisar": "2026-10-05",
+   "gfm": "2026-10-05",
+   "dswx": "2026-10-05",
+   "gfm_blank": {
+    "km2": 1059.7,
+    "cause": {
+     "vegetation, city, radar shadow": 1059.7,
+     "cloud": 0.0
+    },
+    "landcover": {
+     "forest": 421.1,
+     "cropland": 393.6,
+     "built-up": 141.8,
+     "wetland": 2.8,
+     "shrub & grass": 38.8,
+     "water": 57.8,
+     "other": 3.8
+    }
+   },
+   "dswx_blank": {
+    "km2": 1353.8,
+    "cause": {
+     "cloud / cloud shadow": 1353.8
+    },
+    "landcover": {
+     "forest": 237.7,
+     "cropland": 931.1,
+     "built-up": 73.3,
+     "wetland": 0.8,
+     "shrub & grass": 33.4,
+     "water": 71.8,
+     "other": 5.6
+    }
+   },
+   "both_blind": {
+    "km2": 404.0,
+    "landcover": {
+     "forest": 171.1,
+     "cropland": 131.7,
+     "built-up": 61.1,
+     "shrub & grass": 13.7,
+     "water": 24.5,
+     "other": 1.7
+    }
+   },
+   "stored": {
+    "gfm": 1051.9,
+    "dswx": 1343.8
+   }
+  },
+  {
+   "nisar": "2026-10-17",
+   "gfm": "2026-10-17",
+   "dswx": "2026-10-16",
+   "gfm_blank": {
+    "km2": 1059.7,
+    "cause": {
+     "vegetation, city, radar shadow": 1059.7,
+     "cloud": 0.0
+    },
+    "landcover": {
+     "forest": 421.1,
+     "cropland": 393.6,
+     "built-up": 141.8,
+     "wetland": 2.8,
+     "shrub & grass": 38.8,
+     "water": 57.8,
+     "other": 3.8
+    }
+   },
+   "dswx_blank": {
+    "km2": 2695.5,
+    "cause": {
+     "cloud / cloud shadow": 2695.5
+    },
+    "landcover": {
+     "forest": 409.2,
+     "cropland": 1964.6,
+     "built-up": 118.8,
+     "wetland": 8.3,
+     "shrub & grass": 62.7,
+     "water": 122.8,
+     "other": 9.2
+    }
+   },
+   "both_blind": {
+    "km2": 716.3,
+    "landcover": {
+     "forest": 290.6,
+     "cropland": 253.3,
+     "built-up": 99.4,
+     "wetland": 1.2,
+     "shrub & grass": 26.3,
+     "water": 42.8,
+     "other": 2.7
+    }
+   },
+   "stored": {
+    "gfm": 1051.9,
+    "dswx": 2676.4
+   }
+  }
+ ]
+}

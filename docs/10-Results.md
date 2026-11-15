@@ -147,3 +147,16 @@ relative orbit 50, the pass nearest 1 Oct each year, on the NISAR 80 m grid. Wat
 | Not forest | Sudd 96% wetland · Okavango 66% wetland · Pantanal 62% wetland · Inner Niger 53% shrub & grass + 18% bare/sand · Bang Pakong 32% built-up |
 | Mekong, 21–23 Sep 2026, box 4,366 km² | GFM cannot see 1,050 km² (vegetation / city, 0% cloud) · OPERA DSWx-HLS cannot see 3,894 km² (cloud) — from `events/mekong-delta-vietnam/2026-09-flood/event.json` |
 
+### Mekong, both official maps' blanks split (event folder v2)
+
+`python scripts/blank_breakdown.py mekong-delta-vietnam/2026-09-flood` → `events/mekong-delta-vietnam/2026-09-flood/blanks.json`.
+Blanks from the folder's `gfm_classes` / `dswx_classes` layers; land cover ESA WorldCover 2021 (~40 m overview). km² below are
+the bundle's stored values (both blind: overlay km², except 23 Sep scaled to the stored blank); shares from the overlay (its own pixel areas run ~0.7% higher). Date (who): 15.11.26 (Noa).
+
+| Pass (GFM / DSWx date) | GFM blank km² (cause: vegetation, city, radar shadow; cloud 0%) | DSWx-HLS blank km² (cause: cloud / shadow) | Both blind |
+|---|---|---|---|
+| 30 Aug (30 Aug / 1 Sep) | 1,060: forest 39% · cropland 37% · built-up 13% | 2,990: cropland 72% · forest 16% | 858 km² (80% of GFM blank) |
+| **23 Sep (23 Sep / 21 Sep)** | **1,050: forest 40% · cropland 37% · built-up 13% · water 5%** | **3,894: cropland 74% · forest 14% · water 5%** | **≈ 1,001 km² (95%)** |
+| 5 Oct (5 Oct / 5 Oct) | 1,052 | 1,344: cropland 69% · forest 18% | 404 km² (38%) |
+| 17 Oct (17 Oct / 16 Oct) | 1,052 | 2,676: cropland 73% · forest 15% | 716 km² (68%) |
+

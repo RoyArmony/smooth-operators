@@ -192,6 +192,12 @@
   .bar2 i { display: block; height: 100%; } .bar2 .veg { background: #3a7d44; } .bar2 .cld { background: #c8d3d8; }
   .vs p { margin: 0; font-size: var(--fs-sm); color: var(--muted); } .vs .n { color: var(--text); font-size: var(--fs-lg); }
   @media (max-width: 960px) { .blank2 { grid-template-columns: 1fr; } .bkr { grid-template-columns: 110px 1fr 60px; } }
+  .mk { margin-bottom: 12px; } .mk .h { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .mk .h b { font-size: var(--fs-md); } .mk .h span { font-size: var(--fs-xs); color: var(--faint); }
+  .mk .stack { height: 18px; margin: 6px 0 4px; } .mk .stack i span { font-size: 10px; }
+  .mk .n { font-size: var(--fs-xl); font-weight: 800; font-variant-numeric: tabular-nums; } .mk .c { font-size: var(--fs-sm); color: var(--muted); }
+  .mkt { display: grid; grid-template-columns: 60px 1fr 1fr; gap: 4px 10px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .mkt b { color: var(--faint); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
 </style>
 </head>
 <body data-page="science">
@@ -302,17 +308,11 @@
         <div id="bk-rows"></div>
       </div>
       <div class="card bk">
-        <div class="k">Two kinds of blank · Mekong delta, 21–23 Sep 2026 · box 4,366 km²</div>
-        <div class="vs">
-          <div><b>Radar map (GFM)</b><span>Sentinel-1, C-band</span>
-            <div class="bar2"><i class="veg" style="width:24%"></i></div>
-            <p><b class="n">1,050 km²</b> cannot see<br>0% cloud · 100% vegetation &amp; city</p></div>
-          <div><b>Optical map (OPERA DSWx-HLS)</b><span>Landsat / Sentinel-2</span>
-            <div class="bar2"><i class="cld" style="width:89%"></i></div>
-            <p><b class="n">3,894 km²</b> cannot see<br>100% cloud</p></div>
-        </div>
-        <div class="bklg"><span><i style="background:#3a7d44"></i>vegetation &amp; city</span><span><i style="background:#c8d3d8"></i>cloud</span></div>
-        <p class="note">NISAR sees through both: L-band passes cloud and canopy.</p>
+        <div class="k">Mekong delta · one flood, two official maps · NISAR pass <span id="mk-d">23 Sep 2026</span></div>
+        <div id="mk"><p class="note">Loading…</p></div>
+        <div class="k" style="margin-top:14px">Blank on each pass, km²</div>
+        <div id="mk-t"></div>
+        <p class="note">Shares are ESA WorldCover land cover under each blank. NISAR sees through both.</p>
       </div>
     </div>
   </div>
@@ -566,6 +566,38 @@
   const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   document.getElementById('bk-rows').innerHTML = d.sites.slice().sort((a, b) => (b.share.forest || 0) - (a.share.forest || 0)).map(r =>
     `<div class="bkr"><span title="${esc(r.title)}">${esc(r.title.split(/[,(]/)[0].trim())}</span><div class="stack">${bar(r.share)}</div><b>${fmt(r.cannot_see_km2 || 0)} km²</b></div>`).join('');
+})();
+</script>
+<script>
+// Mekong: both official maps' blanks, split by cause and land cover (events/mekong-delta-vietnam/2026-09-flood/blanks.json, scripts/blank_breakdown.py)
+(async () => {
+  const C = { 'forest': '#3a7d44', 'cropland': '#d8b45a', 'built-up': '#c0566a', 'wetland': '#5fb3a8', 'shrub & grass': '#93a85a', 'water': '#4a6fa5', 'other': '#5f7f88' };
+  const F = '../events/mekong-delta-vietnam/2026-09-flood/';
+  let b, e; try { [b, e] = await Promise.all([fetch(F + 'blanks.json').then(r => r.json()), fetch(F + 'event.json').then(r => r.json())]); } catch (x) { return; }
+  const fmt = v => Math.round(v).toLocaleString('en-US');
+  const day = d => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+  const P = b.passes.find(p => p.nisar === e.summary.pass_date) || b.passes[0];
+  const st = e.passes.find(p => p.date === P.nisar).baselines;
+  const pct = (lc, k) => { const t = Object.values(lc).reduce((a, v) => a + v, 0); return t ? lc[k] / t : 0; };
+  const bar = lc => Object.keys(C).filter(k => pct(lc, k) >= .005).map(k => `<i style="width:${100 * pct(lc, k)}%;background:${C[k]}" title="${k} ${Math.round(100 * pct(lc, k))}%">${pct(lc, k) >= .09 ? `<span>${Math.round(100 * pct(lc, k))}%</span>` : ''}</i>`).join('');
+  const top = lc => Object.keys(C).filter(k => pct(lc, k) >= .03).sort((a, z) => pct(lc, z) - pct(lc, a)).slice(0, 3).map(k => `${k} ${Math.round(100 * pct(lc, k))}%`).join(' · ');
+  const both = P.both_blind.km2 / P.gfm_blank.km2;
+  document.getElementById('mk-d').textContent = day(P.nisar) + ' 2026';
+  document.getElementById('mk').innerHTML = `
+    <div class="mk"><div class="h"><b>Radar map · Copernicus GFM</b><span>Sentinel-1 · ${day(P.gfm)}</span></div>
+      <div class="stack">${bar(P.gfm_blank.landcover)}</div>
+      <span class="n">${fmt(st.gfm.cannot_see_km2)} km²</span> <span class="c">cause: vegetation, city, radar shadow · cloud 0%</span><br><span class="c">${top(P.gfm_blank.landcover)}</span></div>
+    <div class="mk"><div class="h"><b>Optical map · NASA OPERA DSWx-HLS</b><span>Landsat / Sentinel-2 · ${day(P.dswx)}</span></div>
+      <div class="stack">${bar(P.dswx_blank.landcover)}</div>
+      <span class="n">${fmt(st.dswx.cannot_see_km2)} km²</span> <span class="c">cause: cloud / cloud shadow 100%</span><br><span class="c">under the cloud: ${top(P.dswx_blank.landcover)}</span></div>
+    <div class="mk"><div class="h"><b style="color:var(--accent)">Both blind: only NISAR sees</b><span>GFM blank ∩ cloud</span></div>
+      <div class="stack">${bar(P.both_blind.landcover)}</div>
+      <span class="n" style="color:var(--accent)">≈ ${fmt(st.gfm.cannot_see_km2 * both)} km²</span> <span class="c">${Math.round(100 * both)}% of GFM's blank</span></div>
+    <div class="bklg">${Object.keys(C).map(k => `<span><i style="background:${C[k]}"></i>${k}</span>`).join('')}</div>`;
+  const ratio = P.gfm_blank.km2 ? st.gfm.cannot_see_km2 / P.gfm_blank.km2 : 1;
+  document.getElementById('mk-t').innerHTML = '<div class="mkt"><b>pass</b><b>GFM blank</b><b>cloud (DSWx)</b>' + b.passes.map(p => {
+    const s2 = e.passes.find(x => x.date === p.nisar).baselines;
+    return `<span>${day(p.nisar)}</span><span>${fmt(s2.gfm.cannot_see_km2)}</span><span>${fmt(s2.dswx.cannot_see_km2)}</span>`; }).join('') + '</div>';
 })();
 </script>
 </body>
