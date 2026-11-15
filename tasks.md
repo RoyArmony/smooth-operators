@@ -40,6 +40,16 @@ P0 = must, P1 = should, P2 = nice. Times are Israel time. Sync points: **Sat 20:
 - [ ] [Noa] P0 Sun 12:00 — limits text: lower bounds, best-pass vs fixed date, no forest ground truth, provisional products
 - [ ] [Noa] Sun 14:00 — audit all app numbers against `docs/10-Results.md`; fix what the app reveals
 - [ ] [Noa] Sun 20:00 — submission: Project Details (how it works, tools, limitations) + Data & AI Disclosure
+- [ ] [Noa] P0 — **Science page** (asked by Roy, 15.11): a new page `site/science.html`, linked in the top bar **between Explorer and About**
+  (`site/js/topbar.js`, `data-page="science"`; add to `.vercelignore` if needed). Goal: a judge understands in a few seconds that
+  there is real science behind the map, not just colours.
+  - First review the real method: `pipeline/unseen/` (`nisar.py`, `gcov.py`, `detect.py`, `flood.py`, `fused.py`, `gfm.py`, `rcm.py`, `history.py`, …),
+    `docs/07-Plan-algorithm.md`, `docs/10-Results.md`, `events/methods.md` / `science.md`. Show what the code does, not the plan.
+  - Content: high-level infographics + simple diagrams/flowchart: NISAR L-band data → processing → detection (dark water, double bounce
+    under forest) → compare with GFM / optical → "added" flood area (km², %) → validation (RCM, EDEN, …) → limits.
+  - Short text, big visuals (inline SVG, no new heavy libraries). Follow `docs/11-Design.md`, tab title **Unseen Earth**, favicon, shared top bar.
+  - Every number shown must match `docs/10-Results.md` / the event bundles.
+  - Done = live on the site, reachable from the top bar on every page; new sources in `docs/04` + `ACKNOWLEDGMENTS.md`.
 
 ### Shai — data pipeline, bundles and pitch
 - [ ] [Shai] P0 Sat 23:00 — `pipeline/unseen/bundle.py`: GeoTIFF/stats → `events/<id>/` (PNG layers + `event.json`), passes `check_bundle.py`
