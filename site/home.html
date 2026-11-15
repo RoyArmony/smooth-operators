@@ -52,6 +52,7 @@
   .viz.f0 .photo { opacity: 0; }
   .viz.f1 .photo { filter: none; }
   #hmap { background: #0b1016; z-index: 0; } #hmap .leaflet-control-attribution { font-size: 9px; background: rgba(0,0,0,.5); color: #bbb; }
+  .viz .lyr.nb { left: -0.033%; top: -0.412%; width: 100.039%; height: 100.815%; }   /* the bundle's NISAR layer (same one the Story and Explorer show) has its own, slightly larger bounds */
   .viz .L { opacity: 0; transition: opacity .7s var(--ease); }
   .viz.f2 .gfm, .viz.f4 .gfm, .viz.f3 .excl, .viz.f4 .excl, .viz.f4 .add { opacity: 1; }
   .viz.f3 .gfm { opacity: .35; }                                        /* step 4: dim what it found, light up what it misses */
@@ -150,7 +151,7 @@
         <img class="lyr photo" id="hph" src="story/tonlesap/photo_2026-10-19.jpg" alt="Tonle Sap lake, Cambodia, from orbit">
         <img class="lyr L excl" src="story/tonlesap/gfm_excluded.png" alt=""><img class="lyr L excl" src="story/tonlesap/gfm_excluded_edge.png" alt="">
         <img class="lyr L gfm" src="story/tonlesap/gfm_flood.png" alt=""><img class="lyr L gfm" src="story/tonlesap/gfm_flood_edge.png" alt="">
-        <img class="lyr L add" src="story/tonlesap/nisar_added.png" alt="">
+        <img class="lyr L add nb" src="../events/tonle-sap-flood-pulse-2026/layers/nisar_adds_2026-10-17.png" alt=""><img class="lyr L add nb" src="story/tonlesap/nisar_adds_edge.png" alt="">
         <span class="tag" id="htag">Tonle Sap, Cambodia · 17 Oct 2026</span>
       </div>
       <figcaption class="cap">
