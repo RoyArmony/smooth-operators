@@ -54,7 +54,7 @@
   body.wv #lg { top: calc(var(--bar-h) + 60px); bottom: auto; }
   .rdl { background: rgba(5,7,11,.6); padding: 3px 6px; border-radius: 5px; }
   body.wv #veil { opacity: 0; } #veil { transition: opacity 1s; }
-  .rdl { color: #fff; font: 600 12px/1 Inter, system-ui, sans-serif; text-shadow: 0 1px 3px #000; white-space: nowrap; margin: -4px 0 0 14px; }
+  .rdl { color: #fff; font: 600 15px/1 Inter, system-ui, sans-serif; text-shadow: 0 1px 3px #000; white-space: nowrap; margin: -4px 0 0 14px; }
   .leaflet-marker-icon { transition: opacity .6s ease; }
   @keyframes pop { from { opacity: 0; transform: scale(.85); } }
   #sd { display: flex; gap: 5px; align-items: center; margin-left: 6px; } #sd i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; }
@@ -128,7 +128,7 @@ function flick() {                               // step fast through every opti
   if (fast) { P.photo.setUrl(PHP(PH[PH.length - 1])); return; }
   const g = sg; PHS.forEach((d, k) => setTimeout(() => { if (g !== sg) return; P.photo.setUrl(PHP(d)); $('tag').textContent = 'Optical · ' + fmtD(d); $('tag').classList.add('in'); }, k * 600));
 }
-const P = { photo: img('photo_2026-10-19.jpg'), excl: img('gfm_excluded.png'), gfm: img('gfm_flood.png'), add: img('nisar_added.png') };
+const P = { photo: img('photo_2026-10-19.jpg'), excl: img('gfm_excluded.png'), gfm: img('gfm_flood.png'), add: L.imageOverlay('../events/tonle-sap-flood-pulse-2026/layers/nisar_adds_2026-10-17.png', [[12.29647, 103.59453], [13.30351, 104.70096]], { opacity: 0, interactive: false }).addTo(map) };   // same bundle the Explorer shows
 const EDGE = L.imageOverlay(A + 'gfm_excluded_edge.png', B, { opacity: 0, interactive: false }).addTo(map);   // outline of the blank, flashed once
 const box = L.rectangle(B, { color: '#ffffff', weight: 2.5, dashArray: '6 5', fill: false, opacity: 0, interactive: false }).addTo(map);
 let fast = false, mgen = 0;
@@ -170,19 +170,18 @@ function say(k, h, s, tag) {
 const H = t => `<h1>${t}</h1>`, BIG = (n, u, c = '') => `<div class="big ${c}">${n}<small> ${u}</small></div>`;
 const fit = () => map.flyToBounds(B, { duration: 3, paddingTopLeft: [innerWidth * .38, 20], paddingBottomRight: [20, 20] });
 
-const QS = [ // name, lat, lon, NISAR km² in GFM's blank (wettest pass), % vs GFM flood (null if GFM < 5 km²)
-  ['Tonle Sap', 12.8, 104.15, 561, 101], ['Inner Niger Delta', 14.9, -4.3, 253, 493], ['Mekong delta', 10.7, 105.3, 170, 24], ['Irrawaddy delta', 16.6, 95.3, 76, 8],
-  ['Congo basin', 0.5, 17.6, 75, null], ['Sylhet', 24.7, 91.4, 13, 4], ['Amazon várzea', -3.0, -64.9, 11, null], ['Assam', 26.6, 92.5, 10, 95], ['Thailand', 13.65, 101.0, 7, 30],
-  ['Hubei', 30.8, 111.0, 5, null], ['Nepal', 27.3, 85.4, 1, 16], ['Tamil Nadu', 11.3, 78.6, 0, null], ['Atchafalaya', 30.25, -91.4, 0, null]];
-const NOCMP = [['Okavango', -19.3, 22.9], ['Pantanal', -18.5, -57.1], ['Sudd', 7.3, 30.6]];   // no GFM–NISAR overlap
-const SIDE = { 'Tonle Sap': 't', 'Mekong delta': 'rb', 'Irrawaddy delta': 'l', 'Inner Niger Delta': 'r', 'Congo basin': 'r' };
+const QS = [ // name, lat, lon, NISAR km² in GFM's blank (wettest pass), % vs GFM flood (null if GFM < 5 km²); from events/world/event.json
+  ['Tonle Sap', 12.8, 104.15, 542, 98], ['Inner Niger Delta', 14.9, -4.3, 253, 493], ['Mekong delta', 10.7, 105.3, 170, 24], ['Irrawaddy delta', 16.6, 95.3, 76, 8], ['Congo basin', 0.5, 17.6, 118, null], ['Sylhet', 24.7, 91.4, 14, 3], ['Amazon várzea', -3.0, -64.9, 11, null], ['Assam', 26.6, 92.5, 19, 140], ['Thailand', 13.65, 101.0, 25, 17], ['Hubei', 30.83, 110.97, 28, null], ['Nepal', 27.3, 85.36, 1, 16], ['Tamil Nadu', 11.33, 78.61, 0, null], ['Atchafalaya', 30.25, -91.4, 0, null], ['Okavango', -19.3, 22.9, 0, 0], ['Pantanal', -18.5, -57.1, 2, null], ['Sudd', 7.3, 30.6, 916, 1654], ['Likouala', 1.6, 17.9, 2, null]];
+const NOCMP = [];
+const SIDE = { 'Tonle Sap': 't', 'Mekong delta': 'rb', 'Irrawaddy delta': 'l', 'Inner Niger Delta': 'r', 'Congo basin': 'l', 'Likouala': 'r', 'Sudd': 'r', 'Okavango': 'r',
+               'Amazon várzea': 'r', 'Pantanal': 'r', 'Atchafalaya': 'r' };   // the clustered small Asian sites stay unlabelled
 const mk = (la, lo, html) => L.marker([la, lo], { icon: L.divIcon({ className: '', html, iconSize: [12, 12], iconAnchor: [6, 6] }), opacity: 0, interactive: false }).addTo(map);
 const plain = QS.concat(NOCMP).map(([n, la, lo]) => mk(la, lo, '<div class="rd"></div>'));
 const dots = QS.map(([n, la, lo, km, pc]) => mk(la, lo, `<div class="rd"></div>` + (SIDE[n] ? `<div class="rdl ${SIDE[n]}">${n}<br><b>+${km} km²</b>${pc != null ? ` · +${pc}%` : ''}</div>` : '')))
   .concat(NOCMP.map(([n, la, lo]) => mk(la, lo, '<div class="rd" style="background:#888;box-shadow:none"></div>')));
 const THUMBS = [ // site key, name, dot, card position (ocean)
   ['tonle-sap', 'Tonle Sap', [12.8, 104.15], [-8, 112]], ['inner-niger-delta-mali', 'Inner Niger Delta', [14.9, -4.3], [24, -38]],
-  ['mekong-delta-vietnam', 'Mekong delta', [10.7, 105.3], [22, 140]], ['congo-cuvette-centrale', 'Congo basin', [0.5, 17.6], [-14, -12]]];
+  ['mekong-delta-vietnam', 'Mekong delta', [10.7, 105.3], [22, 140]], ['congo-cuvette-centrale', 'Congo basin', [0.5, 17.6], [-4, -22]]];
 const thumbs = THUMBS.flatMap(([k, n, dot, at]) => [
   L.polyline([dot, at], { color: '#fff', weight: 1, opacity: 0, dashArray: '3 4', interactive: false }).addTo(map),
   L.marker(at, { icon: L.divIcon({ className: '', html: `<div class="th"><img src="story/world/thumbs/${k}.jpg"><span>${n}</span></div>`, iconSize: [130, 145], iconAnchor: [65, 72] }), opacity: 0, interactive: false }).addTo(map)]);
@@ -244,14 +243,14 @@ const scenes = [
               say('Official flood map · 17 Oct 2026', H('Official flood maps use radar, which sees through clouds. On 17 October, the map showed <b class="bl">554 km²</b> of flooding around the lake.'), '', 'Copernicus EMS · GFM (Sentinel-1 radar)'); }],
   [7, () => { show(['gfm', 'excl']); legend(['gfm', 'excl']); later(() => { vis(EDGE, 1); later(() => vis(EDGE, 0), 1700); }, 400); say('', H('But a quarter of the area is marked <b class="gy">"cannot see"</b>. Under the trees, this radar can\'t see the water.'), '', 'GFM exclusion mask'); }],
   [7.5, () => { show(['gfm', 'excl', 'add']); legend(['gfm', 'excl', 'add']);
-              say('NISAR to the rescue', H('On 17 October, inside <b class="gy">that blank</b>, NISAR measured <b>561 km²</b> of water, 362 km² of it under the trees. That is one lake, on one day.'), '', 'NISAR L-band'); }],
+              say('NISAR to the rescue', H('On 17 October, inside <b class="gy">that blank</b>, NISAR measured <b>542 km²</b> of water, 344 km² of it in forest. That is one lake, on one day.'), '', 'NISAR L-band'); }],
   [8, () => { show([]); vis(box, 0); legend([]); $('tag').classList.remove('in'); world(); many(dots, 1, 60);
-      say('', H('We ran the same check on 16 flood sites we chose: 5 from recent flood alerts and 11 large seasonal wetlands, using NISAR\'s first months of data (June to October 2026). Each dot shows what NISAR added on that site\'s wettest pass.')); }],
+      say('', H('We ran the same check on 17 flood sites we chose, from recent flood alerts and large seasonal wetlands, using NISAR\'s first months of data (June to October 2026). Each dot shows what NISAR added on that site\'s wettest pass.')); }],
   [7, () => { many(thumbs, 1, 250); legend(['gfm', 'excl', 'add']);
-      say('', H('The biggest gaps are in flooded forests and wetlands: Tonle Sap, the Inner Niger Delta, the Mekong and the Congo basin. Elsewhere NISAR adds little.')); }],
+      say('', H('The biggest gaps are in flooded forests and wetlands: the Sudd, Tonle Sap, the Inner Niger Delta, the Congo basin and the Mekong. Elsewhere NISAR adds little.')); }],
   [7.5, () => { many(thumbs, 0); legend([]); many(dots, 1); $('tag').classList.remove('in');
-      say('16 flood sites · June–October 2026', BIG('+43%', 'more flood water', 'o') + H('than the official maps showed, on each site\'s wettest NISAR pass.'), 'A sample, not a global total.'); }],
-  [7, () => { say('Unseen Earth', BIG('1,234 km²', '', 'o') + H('of flood water hidden in the official maps\' blanks, found by NISAR.')); }],
+      say('17 flood sites · June–October 2026', BIG('+74%', 'more flood water', 'o') + H('than the official maps showed, on each site\'s wettest NISAR pass.'), 'A sample, not a global total.'); }],
+  [7, () => { say('Unseen Earth', BIG('2,177 km²', '', 'o') + H('of flood water hidden in the official maps\' blanks, found by NISAR.')); }],
   [0, () => { if ($('lp').checked) { setTimeout(() => goTo(0), 0); return; } say(''); document.body.classList.add('out');  setTimeout(() => location.href = 'viewer/index.html#site=tonle-sap-flood-pulse-2026-83-8', 1200); }],
 ];
 let i = -1, tm = null, paused = false, t0 = 0, left = 0;
