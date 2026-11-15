@@ -72,16 +72,6 @@
   .key span { opacity: .3; transition: opacity .5s; }
   .key span.on { opacity: 1; }
 
-  /* journey */
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s4); margin-top: var(--s6); counter-reset: st; }
-  .step { position: relative; display: block; padding: var(--s5); border-radius: var(--r-lg); border: 1px solid var(--line); background: var(--surface); text-decoration: none; transition: border-color .15s, transform .15s var(--ease); }
-  a.step:hover { border-color: var(--accent); transform: translateY(-2px); }
-  .step .n { font-size: var(--fs-xs); font-weight: 700; color: var(--faint); letter-spacing: .1em; }
-  .step h3 { font-size: var(--fs-xl); margin: var(--s2) 0 6px; }
-  .step p { margin: 0; color: var(--muted); font-size: var(--fs-sm); }
-  .step .go { margin-top: var(--s4); font-weight: 600; font-size: var(--fs-sm); color: var(--accent); }
-  .step.here { border-style: dashed; background: transparent; }
-  .step.here .go { color: var(--faint); }
 
   /* features */
   .feats { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s4); margin-top: var(--s6); }
@@ -120,7 +110,7 @@
 
   @media (max-width: 900px) {
     .hero .wrap { grid-template-columns: 1fr; gap: var(--s6); }
-    .steps, .feats, .data { grid-template-columns: 1fr; }
+    .feats, .data { grid-template-columns: 1fr; }
     .nums { grid-template-columns: 1fr 1fr; gap: var(--s5); }
     section { padding: 56px 0; }
   }
@@ -174,39 +164,26 @@
     </figure>
   </div>
 </section>
-
-<section id="path">
-  <div class="wrap">
-    <div class="eyebrow">How to explore</div>
-    <h2>Three stops</h2>
-    <div class="steps">
-      <div class="step here"><div class="n">01</div><h3>Welcome</h3><p>What we built and why. You are here.</p><div class="go">You are here</div></div>
-      <a class="step" href="landing.html"><div class="n">02</div><h3>The story</h3><p>A 2-minute guided film: one lake, one blank, what NISAR sees there, and how Canada's radar checks it.</p><div class="go">Watch →</div></a>
-      <a class="step" href="viewer/index.html"><div class="n">03</div><h3>The Explorer</h3><p>Your turn: 5 flood sites on a live map. Step through every NISAR pass, switch radar / photo / map.</p><div class="go">Explore →</div></a>
-    </div>
-  </div>
-</section>
-
 <section>
   <div class="wrap">
-    <div class="eyebrow">What's different</div>
-    <h2>A smarter flood map</h2>
-    <p class="lead">We don't redraw the flood map. We fill its blanks, and show how sure we are.</p>
+    <div class="eyebrow">What we do</div>
+    <h2>Fill the blanks in the flood map</h2>
+    <p class="lead">We keep the official flood map as it is, and add the water NISAR finds where that map says it can't see.</p>
     <div class="feats">
       <div class="feat">
         <div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 15l6-6 4 4 3-3 5 5"/><path d="M14 3l7 7M9 3l12 12" opacity=".5"/></svg></div>
         <h3>Where the map is blind</h3>
-        <p>Copernicus <b>GFM</b> marks forest and cities as <b>"cannot see"</b>. L-band radar goes through leaves, so NISAR finds water <b>inside that blank</b>.</p>
+        <p>The official map (Copernicus <b>GFM</b>, Sentinel-1 C-band) marks flooded forest and towns <b>"cannot see"</b>. NISAR's longer L-band wave reaches through the leaves, so we look for water <b>inside that blank</b>.</p>
       </div>
       <div class="feat">
         <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
-        <h3>Over time</h3>
-        <p>NISAR passes over every <b>12 days</b>, cloud or not. Play a flood rising and falling, Jun → Oct 2026, and compare with <b>RADARSAT-1</b> back to 1996.</p>
+        <h3>Pass by pass</h3>
+        <p>NISAR passes every <b>12 days</b>, cloud or not. Follow each flood from June to October 2026, and compare the Mekong delta with <b>RADARSAT-1</b> from 1998–2007.</p>
       </div>
       <div class="feat">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></div>
         <h3>Checked, not guessed</h3>
-        <p>We test NISAR against an independent radar: Canada's <b>RCM</b>, the same week, over the Peace–Athabasca Delta.</p>
+        <p>We compare NISAR with an independent radar: Canada's <b>RCM</b>, the same week, over the Peace–Athabasca Delta. They agree <b>79%</b>.</p>
       </div>
     </div>
   </div>
@@ -217,12 +194,12 @@
     <div class="eyebrow">What we found</div>
     <h2>First results</h2>
     <div class="nums">
-      <div class="num hl"><b>561<small> km²</small></b><span>water NISAR found in GFM's blank at Tonle Sap, 17 Oct 2026</span></div>
-      <div class="num hl"><b>+43%</b><span>more flood than the official maps showed, across 16 sites</span></div>
-      <div class="num"><b>79%</b><span>of NISAR's water confirmed by Canada's RCM radar</span></div>
-      <div class="num"><b>12<small> days</small></b><span>between NISAR passes, through cloud</span></div>
+      <div class="num hl"><b>2,177<small> km²</small></b><span>of water NISAR found where the official maps can't see, across 17 flood sites</span></div>
+      <div class="num hl"><b>+20%</b><span>more flood water than the official map showed, at the median site</span></div>
+      <div class="num"><b>542<small> km²</small></b><span>in the blank at Tonle Sap, Cambodia, 17 Oct 2026 (344 km² in forest)</span></div>
+      <div class="num"><b>79%</b><span>agreement with Canada's RCM radar, same week (Peace–Athabasca, Canada)</span></div>
     </div>
-    <p class="fine">16 sites we chose (each on its wettest NISAR pass, Jun–Oct 2026): a sample, not a global total. NISAR products are still provisional, so areas are lower bounds.</p>
+    <p class="fine">17 sites we chose, each on its wettest NISAR pass, Jun–Oct 2026: a sample, not a global total. Candidate water, not checked on the ground. NISAR products are still provisional.</p>
   </div>
 </section>
 
@@ -240,11 +217,12 @@
       <div class="src csa"><div class="who"><b>Canadian Space Agency</b><span>CSA</span></div>
         <ul>
           <li><b>RADARSAT Constellation Mission (RCM)</b>independent check, same week as NISAR</li>
-          <li><b>RADARSAT-1</b>the long record, 1996–2013</li>
+          <li><b>RADARSAT-1</b>the long record: Mekong delta, 1998–2007</li>
         </ul></div>
-      <div class="src ref"><div class="who"><b>The map we improve</b><span>REFERENCE</span></div>
+      <div class="src ref"><div class="who"><b>The map we fill, and land cover</b><span>REFERENCE</span></div>
         <ul>
           <li><b>Copernicus GFM</b>Global Flood Monitoring (Sentinel-1), with its "cannot see" mask</li>
+          <li><b>ESA WorldCover</b>land cover, to tell forest from field</li>
         </ul></div>
     </div>
   </div>
@@ -280,7 +258,7 @@
              'The optical photo: a <b>cloud</b> covers the lake, and trees hide the water.',
              'The official flood map (Sentinel-1 radar) finds <b>554 km²</b> of flooding.',
              'But it marks a quarter of the area <b>"cannot see"</b>: the flooded forest is <b>missing</b>.',
-             'Inside that blank, NISAR measured <b>561 km²</b> of water, 362 km² of it under the trees.'];
+             'Inside that blank, NISAR measured <b>542 km²</b> of water, 344 km² of it in forest.'];
   const TAG = ['Tonle Sap, Cambodia · Esri World Imagery', 'Optical · NASA HLS (Landsat + Sentinel-2) · 4 Oct 2026', 'Sentinel-1 radar · Copernicus GFM · 17 Oct 2026',
                'Sentinel-1 · GFM "cannot see" mask · 17 Oct 2026', 'NISAR L-band radar · 17 Oct 2026'];
   const MS = [2200, 2400, 2200, 3200, 4500];
