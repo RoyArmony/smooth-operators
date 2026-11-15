@@ -34,6 +34,8 @@ flowchart LR
 
 ## 3. Bundle contract v1 (freeze tonight)
 
+> v2 draft (place → flood → history folders, event window, metadata): [12](12-Event-folders.md).
+
 ```
 events/
   index.json            # all events: id, title, place, date, bbox, kind (world|story|site|live), headline numbers

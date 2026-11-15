@@ -54,6 +54,7 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 | **GloFAS** | Global Flood Awareness System | Copernicus global flood service; its satellite flood map is GFM. The official map we add NISAR to. |
 | **GRD** | Ground Range Detected | A common SAR product type (amplitude only). |
 | **GUNW** | Geocoded Unwrapped Interferogram | NISAR L2 ground-motion pair: phase change between two dates + coherence. |
+| **HAND** | Height Above Nearest Drainage | Height of each pixel above the closest stream: low HAND = can flood, high = flood unlikely. |
 | **HAPI** | Heliophysics Application Programmer's Interface | Standard API that CDAWeb uses to serve time series. |
 | **HDF5** | Hierarchical Data Format v5 | The file format of NISAR products (`.h5`): a folder tree inside one file. |
 | **HH / HV / VV** | Polarizations (send / receive: Horizontal, Vertical) | HH and VV react to surfaces and water; HV to volume (vegetation). |

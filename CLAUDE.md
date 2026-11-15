@@ -12,6 +12,7 @@ Instructions for every Claude Code session in this repo. Read them and follow th
 - `docs/03-Citation-and-AI.md`: how to credit data, tools and papers, and how to disclose AI use.
 - Flood Explorer plan: `docs/05-Flood-plan.md` (overview, stories, work split), `06-Plan-architecture.md` (serverless, Vercel + GoDaddy),
   `07-Plan-algorithm.md`, `08-Plan-data.md` (sources, bundle contract), `09-Plan-UI.md`. Each ends with its drawbacks.
+  `docs/12-Event-folders.md`: event folders v2 (place → flood → history, ±30-day event window, `event.json` metadata).
 - Look and feel (fonts, sizes, colours, top bar): `docs/11-Design.md`. Follow it for every page.
 - Diagrams in docs: use Mermaid code blocks (GitHub renders them). Add one only where a flow or structure is clearer as a picture.
 
