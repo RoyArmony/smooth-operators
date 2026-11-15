@@ -274,17 +274,19 @@
     const fit = () => { m.invalidateSize(); m.fitBounds([[12.3005, 103.5949], [13.2994, 104.7009]], { padding: [0, 0], animate: false }); };
     fit(); addEventListener('resize', fit);
   } catch (e) {}
+  const ph = $('hph'), BASE = ph.getAttribute('src'), CLOUD = 'viewer/sites/tonle-sap-flood-pulse-2026-83-8/photo_2026-10-04.jpg';   // optical step: the look with a big cloud over the lake
+  new Image().src = CLOUD;
   const T = ['<b>Tonle Sap</b>, Cambodia: the lake and its flooded forest.',
-             'The optical photo: <b>clouds</b> and trees hide the water.',
+             'The optical photo: a <b>cloud</b> covers the lake, and trees hide the water.',
              'The official flood map (Sentinel-1 radar) finds <b>554 km²</b> of flooding.',
              'But it marks a quarter of the area <b>"cannot see"</b>: the flooded forest is <b>missing</b>.',
              'Inside that blank, NISAR measured <b>561 km²</b> of water, 362 km² of it under the trees.'];
-  const TAG = ['Tonle Sap, Cambodia · Esri World Imagery', 'Optical · NASA HLS (Landsat + Sentinel-2) · 19 Oct 2026', 'Sentinel-1 radar · Copernicus GFM · 17 Oct 2026',
+  const TAG = ['Tonle Sap, Cambodia · Esri World Imagery', 'Optical · NASA HLS (Landsat + Sentinel-2) · 4 Oct 2026', 'Sentinel-1 radar · Copernicus GFM · 17 Oct 2026',
                'Sentinel-1 · GFM "cannot see" mask · 17 Oct 2026', 'NISAR L-band radar · 17 Oct 2026'];
   const MS = [2200, 2400, 2200, 3200, 4500];
   let f = 4, run = true, tm;
   function set(n) {
-    f = n; fig.className = 'viz f' + n; say.innerHTML = T[n]; tag.textContent = TAG[n];
+    f = n; fig.className = 'viz f' + n; say.innerHTML = T[n]; tag.textContent = TAG[n]; ph.src = n === 1 ? CLOUD : BASE;
     bs.forEach(b => b.classList.toggle('on', +b.dataset.v === n));
     ks.forEach(k => k.classList.toggle('on', +k.dataset.f <= n));
     if (run) tm = setTimeout(() => set((f + 1) % 5), MS[n]);
