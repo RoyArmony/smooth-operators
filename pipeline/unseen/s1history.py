@@ -16,7 +16,6 @@ from scipy.ndimage import median_filter
 
 from . import bundle
 from .config import DATA_DIR, EVENTS_DIR
-from .detect import detect
 from .eventfolder import C, HEX, PLACES, Writer, classes_rgba, grey
 from .flood import load
 from .history import CA, otsu

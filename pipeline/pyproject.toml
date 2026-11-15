@@ -5,6 +5,10 @@ description = "Unseen Earth flood pipeline: NISAR L-band water vs Copernicus GFM
 requires-python = ">=3.10"
 dependencies = ["numpy", "scipy", "pillow", "h5py", "rasterio", "pyproj", "shapely", "asf_search>=8", "requests"]
 
+[project.optional-dependencies]
+# Sentinel-1 history and flash-flood modules (s1history, s1event); bundle schema check (scripts/check_bundle.py)
+extra = ["pystac-client", "planetary-computer", "jsonschema"]
+
 [project.scripts]
 unseen = "unseen.cli:main"
 

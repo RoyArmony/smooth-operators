@@ -7,7 +7,6 @@ F1 0.70 vs 0.61 (paper method) and 0.57-0.60 (handbook classifier). One site so 
     L = detect_fused(stack, dates, grid, bbox, track=145, frame=9)      # same keys as detect.detect()
 
 Water under vegetation (double bounce) still comes from detect.detect() ('canopy')."""
-import datetime as dt
 import numpy as np
 from scipy import ndimage as ndi
 

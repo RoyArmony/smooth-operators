@@ -11,7 +11,6 @@
   gfm         Copernicus GFM flood extent + exclusion mask on our grid
   rcm         Canada's RCM CEOS-ARD scenes (CSA) on our grid, for validation
   landcover   ESA WorldCover on our grid (context)
-  population  WorldPop on our grid (context)
   flood       stack -> water -> per-pass gap vs GFM (km², masks)
   bundle      masks -> events/<id>/ (PNG layers in EPSG:4326 + event.json), events/index.json
   cli         the `unseen` command

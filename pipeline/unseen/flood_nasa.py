@@ -142,17 +142,6 @@ def masks_from_landcover(lc):
     return np.isin(lc, (80, 90, 95)), lc == 50
 
 
-def to_hectare(cls, pixel_m):
-    """1 ha cells by majority vote (handbook 6.4.2). At 80 m a pixel is already 0.64 ha: returned unchanged."""
-    k = int(round(100 / pixel_m))
-    if k <= 1:
-        return cls
-    H, W = cls.shape[-2] // k * k, cls.shape[-1] // k * k
-    c = cls[..., :H, :W].reshape(*cls.shape[:-2], H // k, k, W // k, k)
-    votes = np.stack([(c == v).sum((-1, -3)) for v in (NI, IV, OW, NC)])
-    return votes.argmax(0).astype(np.uint8)
-
-
 # ---- Final flood algorithm (Nov 14, 2026; shadow repo docs/33-Flood-algorithm.md) -----------------------------------------------
 CONF_MIN = 0.8           # keep a pixel only if the handbook error layer gives P(correct) >= this
 SLOPE_MAX = 5.0          # degrees; steeper = not mapped (handbook mask)

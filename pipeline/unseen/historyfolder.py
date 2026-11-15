@@ -20,7 +20,7 @@ from scipy.ndimage import median_filter
 
 from . import bundle, optical
 from .auth import session as earthdata_session
-from .config import EVENTS_DIR, REPO
+from .config import EVENTS_DIR
 from .detect import detect
 from .eventfolder import C, HEX, PLACES, Writer, classes_rgba, dswx_classes, gfm_on_grid, grey, photo_for
 from .flood import load

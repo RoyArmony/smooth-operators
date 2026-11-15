@@ -32,6 +32,6 @@ permanent water removed; area = pixels × 80 m × 80 m.
 | `historyfolder.py` | over the years in event-folder format v2 (docs/12 §10): `events/<place>/history/` (`python -m unseen.historyfolder <place>`) |
 | `s1event.py` | a flash flood seen by Sentinel-1 on the day (same-track change: new water, soaked ground), NISAR before/after on its grid (`python -m unseen.s1event israel-sharon-2026-11`) |
 | `history.py` | flood history of one place: RADARSAT-1 (1996–2013) + NISAR on one grid, flood per image, vs GFM → Explorer case `site/viewer/sites/<id>/` (`python -m unseen.history`) |
-| `landcover.py`, `population.py` | ESA WorldCover, WorldPop on our grid (context) |
+| `landcover.py` | ESA WorldCover on our grid (context) |
 
 Caches go to `data/` (git-ignored).

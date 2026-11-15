@@ -6,7 +6,7 @@ DSWx-HLS WTR classes: 0 not water, 1 open water, 2 partial surface water, 252 sn
 from __future__ import annotations
 
 from .remote import get_retry
-import collections, json, os, re, urllib.parse, urllib.request
+import collections, json, os, urllib.parse, urllib.request
 import numpy as np
 
 from .config import DATA_DIR

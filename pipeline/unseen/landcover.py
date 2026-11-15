@@ -11,10 +11,6 @@ import numpy as np
 from .config import DATA_DIR
 
 URL = "https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map/ESA_WorldCover_10m_2021_v200_{tile}_Map.tif"
-NAMES = {10: "forest", 20: "shrubland", 30: "grassland", 40: "cropland", 50: "built-up", 60: "bare", 70: "snow/ice",
-         80: "water", 90: "wetland", 95: "mangroves", 100: "moss"}
-
-
 def _tile(lat, lon):
     la, lo = 3 * math.floor(lat / 3), 3 * math.floor(lon / 3)
     return f"{'N' if la >= 0 else 'S'}{abs(la):02d}{'E' if lo >= 0 else 'W'}{abs(lo):03d}"
@@ -63,10 +59,3 @@ def on_grid(grid, bbox, key=None, overview=3):
         cache.parent.mkdir(parents=True, exist_ok=True)
         np.save(cache, out)
     return out
-
-
-def breakdown(mask, lc, px_km2, classes=(40, 50, 10, 20, 30, 90, 95)):
-    """km² of a boolean change mask per land class (only classes that matter)."""
-    if lc is None:
-        return {}
-    return {NAMES[c]: round(float((mask & (lc == c)).sum() * px_km2), 2) for c in classes if (mask & (lc == c)).any()}

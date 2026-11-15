@@ -17,7 +17,7 @@ import numpy as np
 from PIL import Image
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
-from gfm_blank_landcover import GROUP, ORDER, worldcover  # noqa: E402
+from gfm_blank_landcover import GROUP, worldcover  # noqa: E402
 
 EV = pathlib.Path(__file__).resolve().parents[1] / "events"
 GREY, CLOUD = (140, 140, 150), (235, 235, 240)      # eventfolder.C["blank"], C["clouds"]

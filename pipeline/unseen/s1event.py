@@ -10,7 +10,6 @@ not water before. Everything is on the NISAR 80 m grid (from the NISAR pass befo
 Writes events/<id>/ in the v1 bundle format (docs/08 §3) and refreshes events/index.json.
 """
 import argparse
-import datetime as dt
 
 import numpy as np
 from PIL import Image

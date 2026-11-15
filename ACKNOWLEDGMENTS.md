@@ -27,7 +27,7 @@ Our maps and numbers are derived products, not official NASA products, and not e
 | **Sentinel-1, Sentinel-2** (ESA Copernicus; ASF, Planetary Computer) | C-band radar (GERD history 2016–2025: Sentinel-1 RTC, Planetary Computer), optical checks | Free and open; "Contains modified Copernicus Sentinel data [year]" |
 | **Global Seasonal Sentinel-1 Coherence** (Kellndorfer et al. 2022, AWS) | C-band coherence reference | CC BY 4.0; cite Kellndorfer et al. 2022, *Sci. Data* 9:73 |
 | **Copernicus DEM GLO-30** (ESA / EU, AWS) | Elevation, shadow/layover, troposphere | "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA" |
-| **GLO-30 HAND** (ASF / Alaska Satellite Facility, from Copernicus DEM GLO-30; AWS open data) | Height above nearest drainage: smart fill of flood maps | Derived from Copernicus DEM: "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA"; HAND dataset by ASF (licence: see https://registry.opendata.aws/glo-30-hand/, to verify before submission) |
+| **GLO-30 HAND** (ASF / Alaska Satellite Facility, from Copernicus DEM GLO-30; AWS open data) | Height above nearest drainage: smart fill of flood maps | Derived from Copernicus DEM: "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA"; HAND: "Copyright 2022 Alaska Satellite Facility (ASF)", CC0 1.0 — https://registry.opendata.aws/glo-30-hand/ |
 | **ESA WorldCover 2021 v200** | Land cover | CC BY 4.0; "© ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium" |
 | **WorldPop 2025** (Univ. of Southampton) | Population | CC BY 4.0; credit WorldPop |
 | **Copernicus EMS Global Flood Monitoring** | Sentinel-1 flood extent | "© European Union, Copernicus Emergency Management Service"; free and open |
@@ -54,7 +54,7 @@ Our maps and numbers are derived products, not official NASA products, and not e
 | Package | Licence |
 |---|---|
 | asf_search | BSD |
-| Leaflet 1.9 (bundled in `site/vendor/leaflet/`, licence file next to it) | BSD-2-Clause |
+| Leaflet 1.9 (bundled in `site/vendor/leaflet/` and `site/viewer/vendor/leaflet/`, licence file next to each) | BSD-2-Clause |
 | Inter typeface by Rasmus Andersson (served by Google Fonts) | SIL Open Font License 1.1 |
 | numpy, scipy, h5py, rasterio, shapely | BSD-3-Clause |
 | pyproj | MIT |
@@ -77,7 +77,7 @@ Our maps and numbers are derived products, not official NASA products, and not e
 | **NASA Worldview** | Browsing NISAR and MODIS layers | NASA EOSDIS; free |
 | **EODC STAC** (Earth Observation Data Centre, Vienna) | Access to Copernicus GFM flood maps | Open catalogue; data keep the GFM credit above |
 | **EODMS STAC** (Natural Resources Canada) | Finding RCM and RADARSAT-1 scenes | Government of Canada; data keep their CSA licence above |
-| **GitHub, GitHub Actions** | Code hosting, deploys | GitHub terms |
+| **GitHub** | Code hosting | GitHub terms |
 | **Vercel** | Static site hosting | Vercel terms |
 | **GoDaddy, Porkbun** | Domain and DNS | Their terms |
 | **Google Fonts** | Serving the Inter typeface | Google Fonts terms; font under SIL OFL 1.1 (above) |

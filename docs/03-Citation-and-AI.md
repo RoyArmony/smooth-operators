@@ -8,7 +8,7 @@ parts of the submission ([01](01-Competition.md#what-to-submit), [02](02-Submiss
 - **Where it goes:**
   - [`04-Sources-and-tools.md`](04-Sources-and-tools.md): one line when we first use something.
   - [`ACKNOWLEDGMENTS.md`](../ACKNOWLEDGMENTS.md): the credit / licence line, in the same commit.
-  - Bundled third-party code: keep its licence file next to it (e.g. `web/vendor/<lib>/LICENSE`).
+  - Bundled third-party code: keep its licence file next to it (e.g. `site/vendor/<lib>/LICENSE`).
 - **Use the provider's own wording** when it gives one (NISAR, Copernicus, ESA, CSA, JAXA). Copy it word for word.
 - **Derived ≠ official.** Our maps and numbers are our processing, not official NASA products, and not endorsed by NASA or ISRO. Say so.
 - **No NASA logos, flags or mission insignia** in our own or AI-made graphics.
