@@ -154,6 +154,25 @@
   .vb p { margin: 6px 0 0; font-size: var(--fs-sm); color: var(--muted); } .vb p b { color: var(--text); }
   .vb .lim1 { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--line); }
   @media (max-width: 960px) { .rules2, .vgrid { grid-template-columns: 1fr; } }
+  /* equations (MathML, no library) + literature */
+  math { font-size: 1.08em; color: var(--text); }
+  math[display="block"] { margin: 8px 0; overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+  .eqbar { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s4); padding: var(--s3) var(--s5); margin-top: var(--s5); }
+  .eqbar .k, .cmp .k { font-size: var(--fs-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+  .rl math { margin: 6px 0; }
+  .litg { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); margin-top: var(--s5); }
+  .lit { padding: var(--s5); }
+  .lit svg { width: 100%; height: auto; display: block; margin: var(--s3) 0; }
+  .lit .src { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; font-weight: 700; }
+  .lit .src a { color: var(--text); text-decoration: none; } .lit .src a:hover { color: var(--accent); }
+  .tag { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: var(--r-pill); background: var(--surface-3); color: var(--accent); }
+  .took { margin: var(--s3) 0 0; padding: 0 0 0 18px; font-size: var(--fs-sm); color: var(--muted); } .took b { color: var(--text); }
+  .cmp { margin-top: var(--s4); padding: var(--s4) var(--s5); }
+  .cb { display: grid; grid-template-columns: 220px 1fr 80px; gap: var(--s3); align-items: center; margin-top: 8px; font-size: var(--fs-sm); color: var(--muted); }
+  .cb i { display: block; height: 10px; border-radius: 0 5px 5px 0; background: var(--surface-3); }
+  .cb b { color: var(--text); font-variant-numeric: tabular-nums; text-align: right; }
+  .cb.hi span, .cb.hi b { color: var(--accent); font-weight: 700; } .cb.hi i { background: var(--accent); }
+  @media (max-width: 960px) { .litg, .eqbar { grid-template-columns: 1fr; } .cb { grid-template-columns: 130px 1fr 70px; } }
 </style>
 </head>
 <body data-page="science">
@@ -166,7 +185,7 @@
   </div>
 </section>
 
-<nav class="secbar" aria-label="Sections"><div class="wrap"><a href="#why"><i>1</i>L-band &amp; the blank</a><a href="#sats"><i>2</i>Satellites</a><a href="#pipeline"><i>3</i>Pipeline</a><a href="#detect"><i>4</i>Algorithm</a><a href="#checks"><i>5</i>Validation</a><a href="#limits"><i>6</i>Limits</a></div></nav>
+<nav class="secbar" aria-label="Sections"><div class="wrap"><a href="#why"><i>1</i>L-band &amp; the blank</a><a href="#sats"><i>2</i>Satellites</a><a href="#pipeline"><i>3</i>Pipeline</a><a href="#detect"><i>4</i>Algorithm</a><a href="#lit"><i>5</i>Literature</a><a href="#checks"><i>6</i>Validation</a><a href="#limits"><i>7</i>Limits</a></div></nav>
 
 <!-- 1 · why L-band, and what we count -->
 <section id="why">
@@ -298,7 +317,7 @@
   <div class="wrap">
     <div class="eyebrow">4 · Algorithm</div>
     <h2>From radar features to water</h2>
-    <p class="lead">Each pixel is compared with its own dry self (its first passes, before the flood season), not with a fixed colour scale.</p>
+    <p class="lead">Each pixel vs its own dry self, not a fixed colour scale.</p>
     <div class="card phys">
       <svg viewBox="0 0 960 360" role="img" aria-label="Algorithm diagram: radar features on the left feed five rules in the middle, which give open water, flooded vegetation or not-a-flood on the right.">
         <defs><marker id="af" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5f7f88"/></marker></defs>
@@ -335,26 +354,87 @@
       </svg>
     </div>
 
+    <div class="card eqbar">
+      <div><span class="k">Backscatter in dB</span><math display="block"><msub><mi>σ</mi><mi>dB</mi></msub><mo>=</mo><mn>10</mn><msub><mi>log</mi><mn>10</mn></msub><msup><mi>σ</mi><mn>0</mn></msup></math></div>
+      <div><span class="k">Change vs its dry self</span><math display="block"><mi>Δ</mi><msub><mi>HH</mi><mi>t</mi></msub><mo>=</mo><msub><mi>HH</mi><mi>t</mi></msub><mo>−</mo><msub><mover><mi>HH</mi><mo>‾</mo></mover><mi>dry</mi></msub><mo>−</mo><msub><mi>d</mi><mi>t</mi></msub></math></div>
+      <div><span class="k">Drift of stable land</span><math display="block"><msub><mi>d</mi><mi>t</mi></msub><mo>=</mo><munder><mi>median</mi><mtext>quiet 30%</mtext></munder><mo>(</mo><msub><mi>HH</mi><mi>t</mi></msub><mo>)</mo></math></div>
+    </div>
     <div class="rules2">
-      <div class="card rl"><h3>① Open water</h3><div class="eq">HH &lt; t<sub>HH</sub> and HV &lt; t<sub>HV</sub> (default −17 / −24 dB)</div>
-        <p>Calm water is a mirror: the wave bounces away, so both channels go dark.</p>
-        <p class="why"><b>How we pick t:</b> per site, from the data. On cloud-free days we try every pair (t<sub>HH</sub> from −21 to −11 dB in 0.5 dB steps, t<sub>HV</sub> 5–9 dB lower) and keep the one that best matches NASA's optical water map (F1). Fixed values fail: calm lake water is about −20 dB at Tonle Sap, fish ponds in Thailand about −15 dB. Used only if ≥ 2 clear days and the left-out score is ≥ 0.5; else the defaults.</p></div>
-      <div class="card rl"><h3>② Water spreads</h3><div class="eq">ΔHH and ΔHV both ≤ −2.5 dB, connected to open water within 1 km</div>
-        <p>Floods grow from rivers and lakes, so a darkening patch that touches open water is flood.</p>
-        <p class="why"><b>Why 2.5 dB:</b> about half the power gone, several times the pass-to-pass noise of stable land (~0.5 dB). Before comparing, we remove the drift of the quietest 30% of land (soil moisture, small calibration shifts).</p></div>
-      <div class="card rl"><h3>③ Flooded field</h3><div class="eq">patch ≥ 0.5 km², mean HH ≤ −12 dB, HH dropped ≥ HV drop − 1 dB</div>
-        <p>Paddies and fields never get as dark as a lake, and may not touch open water.</p>
-        <p class="why"><b>Why these:</b> 0.5 km² ignores speckle-sized patches; −12 dB is darker than any dry field; HH falling as much as HV means a smooth water surface, not leaves lost at harvest (which drops HV first).</p></div>
-      <div class="card rl"><h3>④ Water under trees</h3><div class="eq">ΔHH ≥ +3 dB and |ΔHV| &lt; 1.5 dB, within 3 km of water</div>
-        <p>Water under trunks makes a corner reflector (double bounce): HH jumps, HV hardly moves.</p>
-        <p class="why"><b>Why these:</b> +3 dB = the returned power doubles, far above noise; HV steady rules out the canopy itself changing (growth, wind, rain on leaves). Also: vegetation that loses ≥ 3 dB of HV next to water. Only near water, so a wet forest far from any flood is not flagged.</p></div>
-      <div class="card rl"><h3>⑤ Permanent water</h3><div class="eq">dark on ≥ 90% of passes → removed</div>
-        <p>Lake core, river, sea: always water, so never "flood". An optical ocean mask is added.</p>
-        <p class="why"><b>Why 90%:</b> one or two windy passes can make a lake look rough; 90% keeps those as permanent.</p></div>
+      <div class="card rl"><h3>① Open water</h3>
+        <math display="block"><msub><mi>HH</mi><mi>t</mi></msub><mo>&lt;</mo><msub><mi>t</mi><mi>HH</mi></msub><mo>∧</mo><msub><mi>HV</mi><mi>t</mi></msub><mo>&lt;</mo><msub><mi>t</mi><mi>HV</mi></msub></math>
+        <math display="block"><mo>(</mo><msubsup><mi>t</mi><mi>HH</mi><mo>*</mo></msubsup><mo>,</mo><msubsup><mi>t</mi><mi>HV</mi><mo>*</mo></msubsup><mo>)</mo><mo>=</mo><munder><mi>arg max</mi><mi>t</mi></munder><msub><mi>F</mi><mn>1</mn></msub><mo>(</mo><mtext>NISAR</mtext><mo>,</mo><mtext>DSWx clear</mtext><mo>)</mo></math>
+        <p>Mirror: both channels dark. Default −17 / −24 dB; tuned per site on cloud-free days.</p></div>
+      <div class="card rl"><h3>② Water spreads</h3>
+        <math display="block"><mi>Δ</mi><mi>HH</mi><mo>≤</mo><mo>−</mo><mn>2.5</mn><mo>∧</mo><mi>Δ</mi><mi>HV</mi><mo>≤</mo><mo>−</mo><mn>2.5</mn><mo>∧</mo><mi>dist</mi><mo>(</mo><mtext>open water</mtext><mo>)</mo><mo>≤</mo><mn>1</mn><mtext>&#xA0;km</mtext></math>
+        <p>−2.5 dB ≈ half the power, ≫ 0.5 dB noise of stable land.</p></div>
+      <div class="card rl"><h3>③ Flooded field</h3>
+        <math display="block"><mi>A</mi><mo>≥</mo><mn>0.5</mn><mtext>&#xA0;km²</mtext><mo>∧</mo><mover><mi>HH</mi><mo>‾</mo></mover><mo>≤</mo><mo>−</mo><mn>12</mn><mo>∧</mo><mi>Δ</mi><mi>HH</mi><mo>≤</mo><mi>Δ</mi><mi>HV</mi><mo>+</mo><mn>1</mn></math>
+        <p>Paddies: big, dark, mirror-like (HH falls with HV, unlike harvest).</p></div>
+      <div class="card rl"><h3>④ Water under trees</h3>
+        <math display="block"><mi>Δ</mi><mi>HH</mi><mo>≥</mo><mo>+</mo><mn>3</mn><mo>∧</mo><mo>|</mo><mi>Δ</mi><mi>HV</mi><mo>|</mo><mo>&lt;</mo><mn>1.5</mn><mo>∧</mo><mi>dist</mi><mo>(</mo><mtext>water</mtext><mo>)</mo><mo>≤</mo><mn>3</mn><mtext>&#xA0;km</mtext></math>
+        <p>Double bounce: +3 dB = power ×2; HV steady = canopy unchanged.</p></div>
+      <div class="card rl"><h3>⑤ Permanent water</h3>
+        <math display="block"><mfrac><mn>1</mn><mi>T</mi></mfrac><munderover><mo>∑</mo><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><mi>T</mi></munderover><mn>𝟙</mn><mo>[</mo><msub><mi>HH</mi><mi>t</mi></msub><mo>&lt;</mo><mo>−</mo><mn>13</mn><mo>∧</mo><msub><mi>HV</mi><mi>t</mi></msub><mo>&lt;</mo><mo>−</mo><mn>19</mn><mo>]</mo><mo>≥</mo><mn>0.9</mn></math>
+        <p>Lake core, river, sea: removed, never "flood".</p></div>
+      <div class="card rl"><h3>Area</h3>
+        <math display="block"><mtext>km²</mtext><mo>=</mo><mi>N</mi><mtext>&#xA0;pixels</mtext><mo>×</mo><mn>0.08</mn><mo>×</mo><mn>0.08</mn></math>
+        <p>80 m NISAR GCOV grid.</p></div>
     </div>
     <div class="card cal">
-      <p><b style="color:var(--text)">Optical teaches radar, at Tonle Sap.</b> 9 cloud-free days gave −13.5 / −18.5 dB. Each day is scored with thresholds learned on the other days (leave-one-out), so the score is honest.</p>
-      <div class="f1"><div><b style="color:var(--muted)">0.43</b><span>F1, default thresholds</span></div><div><b style="color:var(--accent)">0.78</b><span>F1, tuned</span></div></div>
+      <p><b style="color:var(--text)">Optical teaches radar, Tonle Sap.</b> 9 clear days → −13.5 / −18.5 dB, scored leave-one-out.</p>
+      <div class="f1"><div><b style="color:var(--muted)">0.43</b><span>F1, default</span></div><div><b style="color:var(--accent)">0.78</b><span>F1, tuned</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · literature -->
+<section id="lit">
+  <div class="wrap">
+    <div class="eyebrow">5 · From the literature</div>
+    <h2>Built on NASA's handbook and a published method</h2>
+    <div class="litg">
+      <div class="card lit">
+        <div class="src"><span class="tag">NASA · JPL</span><a href="https://doi.org/10.48577/jpl.UD4HV3" target="_blank" rel="noopener">NISAR Mission Science Users' Handbook (2025), §6.3–6.4 ↗</a></div>
+        <svg viewBox="0 0 440 190" role="img" aria-label="Handbook change classes: a not-inundated pixel becomes open water when HH drops, or inundated vegetation when HH rises with HV steady.">
+          <defs><marker id="lt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8fb0b8"/></marker></defs>
+          <rect x="20" y="70" width="110" height="50" rx="10" fill="#16323c"/><text x="75" y="101" fill="#e6f1f2" font-size="15" font-weight="800" text-anchor="middle">NI</text>
+          <rect x="310" y="10" width="110" height="50" rx="10" fill="#2882ff"/><text x="365" y="41" fill="#fff" font-size="15" font-weight="800" text-anchor="middle">OW</text>
+          <rect x="310" y="130" width="110" height="50" rx="10" fill="#ff9a2e"/><text x="365" y="161" fill="#1a1206" font-size="15" font-weight="800" text-anchor="middle">IV</text>
+          <path d="M130 86 L310 38" stroke="#8fb0b8" stroke-width="2" fill="none" marker-end="url(#lt)"/>
+          <path d="M130 104 L310 152" stroke="#8fb0b8" stroke-width="2" fill="none" marker-end="url(#lt)"/>
+          <text x="200" y="50" fill="#e6f1f2" font-size="12" text-anchor="middle">N2O: HH ↓</text>
+          <text x="200" y="152" fill="#e6f1f2" font-size="12" text-anchor="middle">N2IV: HH ↑, HV ≈</text>
+          <text x="75" y="140" fill="#8fb0b8" font-size="11" text-anchor="middle">not inundated</text>
+          <text x="250" y="105" fill="#8fb0b8" font-size="11" text-anchor="middle">vs reference σ̄</text>
+        </svg>
+        <math display="block"><msub><mi>f</mi><mi>n</mi></msub><mo>=</mo><mfrac><msub><mrow><mo>⟨</mo><mi>σ</mi><mo>(</mo><mi>A</mi><mo>)</mo><mo>⟩</mo></mrow><mi>t</mi></msub><mrow><msub><mi>σ</mi><mi>n</mi></msub><mo>(</mo><mi>A</mi><mo>)</mo></mrow></mfrac><mspace width="1em"/><msubsup><mi>σ</mi><mi>n</mi><mi>c</mi></msubsup><mo>=</mo><msub><mi>f</mi><mi>n</mi></msub><msub><mi>σ</mi><mi>n</mi></msub><mspace width="1em"/><mtext>(6.3-5, 6.3-6)</mtext></math>
+        <math display="block"><mtext>N2IV:</mtext><mspace width=".4em"/><mfrac><msub><mi>HH</mi><mi>n</mi></msub><mover><mi>HH</mi><mo>‾</mo></mover></mfrac><mo>&gt;</mo><msub><mi>T</mi><mi>iv</mi></msub><mo>,</mo><mspace width=".4em"/><mfrac><msub><mi>HV</mi><mi>n</mi></msub><mover><mi>HV</mi><mo>‾</mo></mover></mfrac><mo>&lt;</mo><msub><mi>T</mi><mi>HV</mi></msub><mspace width="1em"/><mtext>(6.4-4)</mtext></math>
+        <ul class="took"><li><b>We use:</b> change vs the pixel's own reference, stable-land calibration (our drift <i>d<sub>t</sub></i>), the double-bounce rule ④ with the same thresholds.</li><li><b>We tested</b> the full classifier as a second opinion (<code>flood_nasa.py</code>).</li></ul>
+      </div>
+      <div class="card lit">
+        <div class="src"><span class="tag">Paper</span><a href="https://doi.org/10.1016/j.isprsjprs.2014.07.014" target="_blank" rel="noopener">Martinis, Kersten &amp; Twele (2015), ISPRS J. 104:203–212 ↗</a></div>
+        <svg viewBox="0 0 440 190" role="img" aria-label="Histogram of a radar tile with two Gaussian classes, water (dark) and land (bright); the Kittler-Illingworth threshold k* sits at the minimum-error point between them.">
+          <path d="M20 170 L420 170" stroke="#23444f"/>
+          <path d="M30 170 C70 170 80 40 115 40 C150 40 160 170 200 170Z" fill="#2882ff" opacity=".8"/>
+          <path d="M170 170 C230 170 250 70 305 70 C360 70 380 170 420 170Z" fill="#5a4a36" opacity=".9"/>
+          <line x1="188" y1="22" x2="188" y2="176" stroke="#2dd4bf" stroke-width="2.5" stroke-dasharray="5 4"/>
+          <text x="196" y="30" fill="#2dd4bf" font-size="13" font-weight="800">k*</text>
+          <text x="115" y="30" fill="#9cc6ff" font-size="12" text-anchor="middle">water</text>
+          <text x="305" y="60" fill="#c9b08a" font-size="12" text-anchor="middle">land</text>
+          <text x="220" y="188" fill="#8fb0b8" font-size="11" text-anchor="middle">σ<tspan font-size="9" dy="3">dB</tspan><tspan dy="-3"> per 3.2 km tile →</tspan></text>
+        </svg>
+        <math display="block"><mi>J</mi><mo>(</mo><mi>k</mi><mo>)</mo><mo>=</mo><mn>1</mn><mo>+</mo><mn>2</mn><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>P</mi><mi>i</mi></msub><mi>ln</mi><msub><mi>σ</mi><mi>i</mi></msub><mo>−</mo><mn>2</mn><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>P</mi><mi>i</mi></msub><mi>ln</mi><msub><mi>P</mi><mi>i</mi></msub><mo>,</mo><mspace width=".6em"/><msup><mi>k</mi><mo>*</mo></msup><mo>=</mo><munder><mi>arg min</mi><mi>k</mi></munder><mi>J</mi></math>
+        <math display="block"><mi>D</mi><mo>=</mo><mfrac><mrow><msqrt><mn>2</mn></msqrt><mo>|</mo><msub><mi>μ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>μ</mi><mn>2</mn></msub><mo>|</mo></mrow><msqrt><msubsup><mi>σ</mi><mn>1</mn><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>σ</mi><mn>2</mn><mn>2</mn></msubsup></msqrt></mfrac><mo>&gt;</mo><mn>2</mn><mspace width="1em"/><mi>t</mi><mo>=</mo><munder><mi>median</mi><mtext>kept tiles</mtext></munder><msup><mi>k</mi><mo>*</mo></msup></math>
+        <ul class="took"><li><b>We use:</b> its per-tile Kittler–Illingworth threshold (1986) as the first step of detector v3, then add L-band HV, change and 12-day coherence:</li></ul>
+        <math display="block"><mi>p</mi><mo>(</mo><mtext>water</mtext><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi>e</mi><mrow><mo>−</mo><mo>(</mo><mi>b</mi><mo>+</mo><msub><mo>∑</mo><mi>i</mi></msub><msub><mi>w</mi><mi>i</mi></msub><msub><mi>z</mi><mi>i</mi></msub><mo>)</mo></mrow></msup></mrow></mfrac><mo>≥</mo><mn>0.30</mn></math>
+      </div>
+    </div>
+    <div class="card cmp">
+      <div class="k">Inner Niger Delta · held-out track 138 · truth: NASA OPERA DSWx-HLS · mean F1</div>
+      <div class="cb"><span>Our first detector</span><i style="width:1%"></i><b>0.01</b></div>
+      <div class="cb"><span>NISAR handbook classifier</span><i style="width:60%"></i><b>0.57–0.60</b></div>
+      <div class="cb"><span>Martinis et al. 2015</span><i style="width:61%"></i><b>0.61</b></div>
+      <div class="cb hi"><span>Ours, v3 (paper + L-band)</span><i style="width:70%"></i><b>0.70</b></div>
     </div>
   </div>
 </section>
@@ -362,32 +442,33 @@
 <!-- 5 · validation -->
 <section id="checks">
   <div class="wrap">
-    <div class="eyebrow">5 · Validation</div>
+    <div class="eyebrow">6 · Validation</div>
     <h2>How we checked it</h2>
-    <p class="lead">Always against data we did not detect with: optical maps on clear days, another radar the same week, and ground gauges.</p>
+    <p class="lead">Always against data we did not detect with.</p>
 
+    <div class="card eqbar">
+      <div><span class="k">Precision · recall</span><math display="block"><mi>P</mi><mo>=</mo><mfrac><mi>TP</mi><mrow><mi>TP</mi><mo>+</mo><mi>FP</mi></mrow></mfrac><mspace width=".6em"/><mi>R</mi><mo>=</mo><mfrac><mi>TP</mi><mrow><mi>TP</mi><mo>+</mo><mi>FN</mi></mrow></mfrac></math></div>
+      <div><span class="k">F1</span><math display="block"><msub><mi>F</mi><mn>1</mn></msub><mo>=</mo><mfrac><mrow><mn>2</mn><mi>P</mi><mi>R</mi></mrow><mrow><mi>P</mi><mo>+</mo><mi>R</mi></mrow></mfrac></math></div>
+      <div><span class="k">Overlap (IoU)</span><math display="block"><mi>IoU</mi><mo>=</mo><mfrac><mrow><mo>|</mo><mi>A</mi><mo>∩</mo><mi>B</mi><mo>|</mo></mrow><mrow><mo>|</mo><mi>A</mi><mo>∪</mo><mi>B</mi><mo>|</mo></mrow></mfrac></math></div>
+    </div>
     <div class="vgrid">
       <div class="card vb">
-        <div class="k">A · Clear-sky check · NASA OPERA DSWx-HLS (optical)</div>
-        <div class="vnum"><b class="ok">0.78</b><span>F1 at Tonle Sap<br>(0.43 with fixed thresholds)</span></div>
-        <p><b>What:</b> on days when Landsat or Sentinel-2 saw the site without clouds (within ±5 days of a NISAR pass), we compare NISAR water with NASA's optical water map, pixel by pixel, only where the optical view is clear.</p>
-        <p><b>How:</b> F1 = balance of precision (is our water real?) and recall (did we find it?). Leave-one-out: each day is scored with thresholds learned only on the other days.</p>
-        <p><b>Also:</b> detector v3 on a held-out track at the Inner Niger Delta: F1 0.70, vs 0.61 for the published method alone (Martinis et al. 2015).</p>
-        <p class="lim1"><b>Limit:</b> optical sees only open water. It cannot check water under trees, which is exactly NISAR's addition.</p>
+        <div class="k">A · Optical, clear days · NASA OPERA DSWx-HLS</div>
+        <div class="vnum"><b class="ok">0.78</b><span>F1, Tonle Sap<br>(0.43 fixed thresholds)</span></div>
+        <p>Pixel by pixel, clear sky only, ±5 days, leave-one-out.</p>
+        <p class="lim1"><b>Limit:</b> optical can't see water under trees.</p>
       </div>
       <div class="card vb">
-        <div class="k">B · Same-week radar · Canada's RCM (CSA, C-band)</div>
-        <div class="vnum"><b class="ok">79%</b><span>of NISAR water also water in RCM<br>(IoU 0.65, 4 pairs)</span></div>
-        <p><b>What:</b> at the Peace–Athabasca Delta (Canada) we paired 4 NISAR passes with RCM scenes taken ≤ 3 days apart and mapped water in each RCM scene from its own backscatter.</p>
-        <p><b>How:</b> overlap of the two water maps on the same grid. A different satellite, agency and wavelength, so agreement is not an artefact of our data.</p>
-        <p><b>Under vegetation:</b> where NISAR flags water under trees, RCM shows a double-bounce signal 42–45% of the time, vs 10% elsewhere (about 4×).</p>
-        <p class="lim1"><b>Limit:</b> one delta, autumn 2026; C-band sees less under dense canopy, so it confirms the edges more than the core.</p>
+        <div class="k">B · Same-week radar · CSA RCM (C-band)</div>
+        <div class="vnum"><b class="ok">79%</b><span>of NISAR water confirmed<br>IoU 0.65 · 4 pairs ≤ 3 days</span></div>
+        <p>Peace–Athabasca Delta. Under vegetation: RCM double bounce 42–45% vs 10% by chance (~4×).</p>
+        <p class="lim1"><b>Limit:</b> one delta, autumn 2026.</p>
       </div>
       <div class="card vb">
         <div class="k">C · Ground truth · USGS EDEN gauges</div>
-        <div class="vnum"><b class="ok">0.95–1.00</b><span>precision in the Everglades<br>(recall ≤ 0.35)</span></div>
-        <p><b>What:</b> the Everglades water-depth network: gauge readings interpolated to a 400 m daily grid. Water = depth &gt; 5 cm.</p>
-        <p><b>Result:</b> what NISAR calls water is water. But it misses shallow water in dense sawgrass, so our areas are lower bounds.</p>
+        <div class="vnum"><b class="ok">0.95–1.00</b><span>precision, Everglades<br>recall ≤ 0.35</span></div>
+        <p>Water = depth &gt; 5 cm, 400 m daily grid.</p>
+        <p class="lim1"><b>So:</b> our water is water; areas are lower bounds.</p>
       </div>
     </div>
     <p class="note">History: RADARSAT-1 (CSA, 1998–2007) on the same grid shows the Mekong delta's flood pulse, ~100–350 km² dry vs ~1,500–2,800 km² wet. NISAR 2026 peak: 1,854 km².</p>
@@ -397,7 +478,7 @@
 <!-- 7 · limits -->
 <section id="limits">
   <div class="wrap">
-    <div class="eyebrow">6 · Limits</div>
+    <div class="eyebrow">7 · Limits</div>
     <h2>What we don't claim</h2>
     <div class="lim">
       <div><b>Lower bounds</b><span>Shallow water in grass barely changes L-band. Read every number as "at least".</span></div>
