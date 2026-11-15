@@ -903,6 +903,41 @@
    ]
   },
   {
+   "id": "flood-in-nepal-2026",
+   "folder": "flood-in-nepal-2026",
+   "name": "Nepal floods",
+   "country": "Nepal",
+   "bbox": [
+    85.22,
+    26.9,
+    85.44,
+    27.11
+   ],
+   "floods": [
+    {
+     "id": "2026-07-flood",
+     "flood_date": "2026-07-26",
+     "title": "Nepal floods flood, Jul 2026",
+     "baseline": "gfm",
+     "improvement_pct": null,
+     "nisar_adds_km2": 1.0,
+     "baseline_flood_km2": 4.2,
+     "total": {
+      "flood_km2": 4.2,
+      "adds_km2": 1.0,
+      "pct": null,
+      "n": 1,
+      "first": "2026-07-26",
+      "last": "2026-07-26",
+      "rule": "100 × Σ NISAR addition / Σ official flood, all passes",
+      "baseline": "gfm"
+     }
+    }
+   ],
+   "history": null,
+   "validation": []
+  },
+  {
    "id": "flood-india-2026-08",
    "folder": "flood-india-2026-08",
    "name": "Tamil Nadu floods",
@@ -1030,6 +1065,41 @@
    "validation": []
   },
   {
+   "id": "likouala-flood-congo-2026",
+   "folder": "likouala-flood-congo-2026",
+   "name": "Likouala floods",
+   "country": "Rep. of Congo",
+   "bbox": [
+    17.6,
+    1.3,
+    18.2,
+    1.9
+   ],
+   "floods": [
+    {
+     "id": "2026-10-flood",
+     "flood_date": "2026-10-31",
+     "title": "Likouala floods flood, Oct 2026",
+     "baseline": "dswx",
+     "improvement_pct": null,
+     "nisar_adds_km2": 3.1,
+     "baseline_flood_km2": 0.2,
+     "total": {
+      "flood_km2": 21.0,
+      "adds_km2": 58.1,
+      "pct": 277,
+      "n": 3,
+      "first": "2026-10-07",
+      "last": "2026-10-31",
+      "rule": "100 × Σ NISAR addition / Σ official flood, all passes",
+      "baseline": "dswx"
+     }
+    }
+   ],
+   "history": null,
+   "validation": []
+  },
+  {
    "id": "mekong-delta-vietnam",
    "folder": "mekong-delta-vietnam",
    "name": "Mekong delta",
@@ -1071,6 +1141,41 @@
      "RADARSAT-1"
     ]
    },
+   "validation": []
+  },
+  {
+   "id": "pantanal-brazil",
+   "folder": "pantanal-brazil",
+   "name": "Pantanal",
+   "country": "Brazil",
+   "bbox": [
+    -57.4,
+    -18.8,
+    -56.8,
+    -18.2
+   ],
+   "floods": [
+    {
+     "id": "2026-10-flood",
+     "flood_date": "2026-10-21",
+     "title": "Pantanal flood, Oct 2026",
+     "baseline": "gfm",
+     "improvement_pct": null,
+     "nisar_adds_km2": 2.5,
+     "baseline_flood_km2": 0.1,
+     "total": {
+      "flood_km2": 0.1,
+      "adds_km2": 2.5,
+      "pct": null,
+      "n": 1,
+      "first": "2026-10-21",
+      "last": "2026-10-21",
+      "rule": "100 × Σ NISAR addition / Σ official flood, all passes",
+      "baseline": "gfm"
+     }
+    }
+   ],
+   "history": null,
    "validation": []
   },
   {

@@ -38,7 +38,8 @@
   {
    "date": "2026-06-25",
    "matched": {
-    "dswx": "2026-06-24"
+    "dswx": "2026-06-24",
+    "photo": "2026-06-25"
    },
    "baselines": {
     "dswx": {
@@ -58,7 +59,8 @@
     "dswx_classes",
     "nisar_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
     "water_km2": 100.6,
@@ -69,7 +71,8 @@
   {
    "date": "2026-07-07",
    "matched": {
-    "dswx": "2026-07-06"
+    "dswx": "2026-07-06",
+    "photo": "2026-07-07"
    },
    "baselines": {
     "dswx": {
@@ -89,7 +92,8 @@
     "dswx_classes",
     "nisar_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
     "water_km2": 98.1,
@@ -100,7 +104,8 @@
   {
    "date": "2026-07-19",
    "matched": {
-    "dswx": "2026-07-19"
+    "dswx": "2026-07-19",
+    "photo": "2026-07-19"
    },
    "baselines": {
     "dswx": {
@@ -120,7 +125,8 @@
     "dswx_classes",
     "nisar_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
     "water_km2": 95.9,
@@ -391,6 +397,33 @@
      -64.5992
     ]
    ]
+  },
+  "photo": {
+   "group": "optical",
+   "sensor": "MODIS (Terra) true colour via NASA GIBS",
+   "label": "Optical photo (true colour, same day)",
+   "legend": null,
+   "default": false,
+   "files": {
+    "2026-06-25": "layers/photo_2026-06-25.jpg",
+    "2026-07-07": "layers/photo_2026-07-07.jpg",
+    "2026-07-19": "layers/photo_2026-07-19.jpg"
+   },
+   "bounds": [
+    [
+     -3.3,
+     -65.2
+    ],
+    [
+     -2.7,
+     -64.6
+    ]
+   ],
+   "sensors": {
+    "2026-06-25": "MODIS (Terra) true colour via NASA GIBS",
+    "2026-07-07": "VIIRS (NOAA-20) true colour via NASA GIBS",
+    "2026-07-19": "VIIRS (NOAA-20) true colour via NASA GIBS"
+   }
   }
  },
  "method": {

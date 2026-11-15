@@ -54,15 +54,22 @@ async function openSite(id) {
     S.ev = Object.entries(E.layers || {}).sort((a, b) => (ORDER.indexOf(a[0]) + 1 || 99) - (ORDER.indexOf(b[0]) + 1 || 99))
       .map(([k, l]) => ({ k, l, base: `../../events/${eid}/`, ov: L.imageOverlay('data:,', L.latLngBounds(l.bounds), { pane: 'analysis', interactive: false, opacity: 0, className: k === 'gfm_excluded' ? 'excl' : '' }).addTo(map) }));
   } catch (e) { S.ev = []; }
-  S.official = S.ev.some(x => x.k === 'gfm_flood');   // official map + NISAR addition: the chart shows the same as the map
+  S.official = S.ev.some(x => x.k === 'gfm_flood');
+  if (S.official) {                         // keep only passes with all three: optical photo (± 60 d), official map and NISAR (± 6 d)
+    const fs = k => Object.keys(((S.ev.find(x => x.k === k) || {}).l || {}).files || {}), near = (L, d, g) => L.some(x => Math.abs(dn(x) - dn(d)) <= g);
+    const G = fs('gfm_flood'), Ad = fs('nisar_adds');
+    const keep = D.frames.map((f, i) => near(G, f.date, 6) && (!Ad.length || near(Ad, f.date, 6)) && (!photos.length || near(photos.map(p => p[0]), f.date, 60)) ? i : -1).filter(i => i >= 0);
+    if (keep.length && keep.length < D.frames.length) {
+      const at = D.frames[S.t].date; D.frames = keep.map(i => D.frames[i]); D.summary = keep.map(i => D.summary[i]);
+      S.t = D.frames.reduce((b, f, i) => Math.abs(dn(f.date) - dn(at)) < Math.abs(dn(D.frames[b].date) - dn(at)) ? i : b, 0);
+    }
+  }
   // the flow, as in the Story: the area → optical (clouds, canopy) → official radar map ("cannot see") → NISAR fills the blank
   const has = k => S.ev.some(x => x.k === k), E_ = ks => ks.filter(has).map(k => 'E_' + k);
   S.steps = [{ label: 'Area', b: 'none', on: [], cap: `The area${D.kind ? `: ${D.kind}` : ''}, ${fmt(D.frames[0].date, { month: 'short', year: 'numeric' })} → ${fmt(D.frames[D.frames.length - 1].date, { month: 'short', year: 'numeric' })}.` }];
   if (photos.length) S.steps.push({ label: 'Optical', b: 'photo', on: [], cap: 'Optical satellites: clouds and forest canopy hide the water.' });
-  if (has('gfm_flood')) S.steps.push({ label: 'Official', b: 'none', on: E_(['gfm_flood', 'gfm_excluded']),
-    cap: 'The official flood map (GFM) uses radar: it sees through clouds, but not under trees. Hatched = "cannot see".' });
-  if (has('both_blind')) S.steps.push({ label: 'Both blind', b: 'none', t0: '2026-09-23', on: E_(['gfm_flood', 'both_blind']),
-    cap: 'NASA’s optical flood map (DSWx-HLS) is blind under cloud. <b style="color:#d946ef">Magenta</b> = both official maps blind: GFM’s blank and cloud. Only NISAR sees here.' });
+  if (has('gfm_flood')) S.steps.push({ label: 'Official', b: 'none', on: E_(['gfm_flood', 'gfm_excluded', 'both_blind']),   // both-blind (Mekong) drawn here, not a step of its own
+    cap: OFF.gfm.cap.replace('Grey', 'Hatched') + (has('both_blind') ? ' <b style="color:#d946ef">Magenta</b> = NASA’s optical map is blind under cloud too: only NISAR sees there.' : '') });
   S.steps.push(has('nisar_adds')
     ? { label: 'NISAR', b: 'none', on: E_(['gfm_flood', 'gfm_excluded', 'nisar_adds']), cap: 'NISAR’s L-band radar sees under the canopy. <b class="o">Orange</b> = flood found in the blank.' }
     : { label: D.history ? 'Radar' : 'NISAR', b: 'nisar', on: ['pass'], cap: D.history ? 'Radar through the years: RADARSAT-1 (CSA), then NISAR. Blue = flood.' : 'NISAR’s L-band radar sees through clouds. Dark = water.' });
@@ -75,6 +82,7 @@ async function openSite(id) {
       cap: 'Canada’s RCM radar (CSA, C-band), 13 Oct vs NISAR 10 Oct: they agree on 79% of the water.' });
   } catch (e) {}
   await addChecks(id);
+  if (S.steps.some(x => x.vs === 'rcm')) S.steps = S.steps.filter(x => x.label !== 'RCM' || x.vs);   // the RCM swipe replaces the old RCM step: one row of steps
   if (S.P && D.event_date) { const k = D.frames.findIndex(f => f.date >= D.event_date); if (k >= 0) S.t = k; }
   // volcano: vent + reference ring on the map, before / during interferograms side by side
   S.extra = S.extra || [];
@@ -96,9 +104,9 @@ async function openSite(id) {
 
 // ---------- independent checks (docs/12 §11): swipe another sensor | NISAR on the map, with % agreement ----------
 // v2 flood folder of this place with "validation": left = RCM (CSA radar) or NASA DSWx (optical), right = NISAR
-const VS = { rcm: { label: 'RCM⇔', name: 'RCM (CSA)', radar: 'rcm_radar', water: 'rcm_water', c: '#ff6b6b', csa: true,
+const VS = { rcm: { label: 'RCM', name: 'RCM (CSA)', radar: 'rcm_radar', water: 'rcm_water', c: '#ff6b6b', csa: true,
                     cap: 'Canada’s RCM radar (CSA, C-band) | NISAR, days apart. Drag the line: does the water match?' },
-             dswx: { label: 'NASA⇔', name: 'NASA DSWx', radar: 'photo', water: 'dswx_water', c: '#7fd1ff',
+             dswx: { label: 'NASA', name: 'NASA DSWx', radar: 'photo', water: 'dswx_water', c: '#7fd1ff',
                      cap: 'NASA’s flood map (OPERA DSWx, optical) | NISAR. Drag the line. Grey = clouds.' } };
 async function addChecks(id) {
   try {
@@ -160,10 +168,10 @@ function renderVs(k) {                                  // one pass: other senso
   vclip(); chart();
 }
 // one pass's own numbers (not the total): official flood, NISAR addition, % for that pass (none if flood < 5 km²)
-function passLine(st, date, gdate) {
+function passLine(st, date, gdate, gname = 'GFM') {
   if (!st || st.gfm_flood == null) return '';
   const p = st.gfm_flood >= 5 && st.nisar_adds != null ? ` (<b class="o">+${Math.round(100 * st.nisar_adds / st.gfm_flood).toLocaleString('en-GB')}%</b>)` : '';
-  return `<div class="sub" style="grid-column:1/-1">This pass ${fmt(date)}${gdate ? ` (GFM ${fmt(gdate)})` : ''}: official ${km(st.gfm_flood)} km²`
+  return `<div class="sub" style="grid-column:1/-1">This pass ${fmt(date)}${gdate ? ` (${gname} ${fmt(gdate)})` : ''}: official ${km(st.gfm_flood)} km²`
     + (st.nisar_adds != null ? ` · NISAR adds <b class="o">${km(st.nisar_adds)} km²</b>${p}` : '') + '</div>';
 }
 const R_ = D => D.report || {};
@@ -173,6 +181,7 @@ function setStep(i) {
   if (S.hist && st.t != null) S.t = st.t;
   S.flick = st.label === 'Official';          // entering Official: the "cannot see" blank flickers once
   if (st.t0 && !S.hist) { const k = S.D.frames.reduce((b, f, j) => Math.abs(dn(f.date) - dn(st.t0)) < Math.abs(dn(S.D.frames[b].date) - dn(st.t0)) ? j : b, 0); S.t = k; }
+  $('spS').classList.toggle('many', S.steps.length > 4);   // 5+ steps: tighter, still one row
   $('spS').innerHTML = S.steps.map((x, k) => `<button data-k="${k}" class="${k === S.step ? 'on' : k < S.step ? 'done' : ''}${x.label === 'NISAR' || x.nisar ? ' nisar' : ''}${x.csa ? ' csa' : ''}" title="${x.cap.replace(/<[^>]+>/g, '').replace(/"/g, '&quot;')}">${x.label}</button>`).join('<span class="sparr">→</span>');
   $('spBk').style.visibility = S.step ? '' : 'hidden';
   $('spNx').textContent = S.step < n - 1 ? `Next: ${S.steps[S.step + 1].label} →` : '↺ Start over';
@@ -187,28 +196,89 @@ function blink(ov, on, again) {
 }
 // an event bundle with no Explorer site (events/<id>/event.json): same panel and steps as a site (Area → Official → NISAR),
 // the chart is the bundle's timeline (official flood + NISAR addition per pass)
+// the tag under the orange outline: what this image is, which satellite, which day ('' hides it)
+const fy = d => fmt(d, { day: 'numeric', month: 'short', year: 'numeric' });
+function setTag(txt) { const el = S && S.tag && S.tag.getElement()?.firstChild; if (el) { el.textContent = txt || ''; el.style.display = txt ? '' : 'none'; } }
+const mkTag = B => L.marker([B.getSouth(), B.getCenter().lng], { interactive: false, keyboard: false, icon: L.divIcon({ className: 'sptag', html: '<span></span>', iconSize: [0, 0] }) }).addTo(map);
+const BASEMAP = 'Basemap · Esri World Imagery';
+const NISAR_TAG = d => `NISAR · L-band radar (NASA-ISRO) · ${fy(d)}`;
+// official map per pass: Copernicus GFM (Sentinel-1 radar) where it exists, else NASA OPERA DSWx-HLS (optical)
+const OFF = { gfm: { layer: 'gfm_classes', name: 'Copernicus GFM', tag: 'Official flood map · Copernicus GFM · Sentinel-1 (ESA) radar',
+                     cap: 'The official flood map (Copernicus GFM) uses radar: it sees through clouds, but not under trees. Grey = "cannot see".' },
+              dswx: { layer: 'dswx_classes', name: 'NASA DSWx', tag: 'Official flood map · NASA OPERA DSWx-HLS · Landsat / Sentinel-2 optical',
+                      cap: 'The official flood map here is NASA’s OPERA DSWx (optical): it cannot see under clouds. White = "cannot see".' } };
 async function openBundle(eid) {
   let E; try { E = await (await fetch(`../../events/${eid}/event.json`, { cache: 'no-cache' })).json(); } catch (e) { return; }
   if (E.version === 2 && E.kind === 'validation') return openCheck(eid, E);
+  try {                                                 // a v2 flood folder of this place (docs/12): a full map set for every pass
+    const P = await (await fetch(`../../events/${eid}/place.json`, { cache: 'no-cache' })).json();
+    const f = (P.floods || []).filter(x => x.kind !== 'validation' && x.nisar_adds_km2 != null).sort((a, b) => (b.flood_date || '').localeCompare(a.flood_date || ''))[0];
+    const base = `../../events/${eid}/${f.id}/`, F = await (await fetch(base + 'event.json', { cache: 'no-cache' })).json();
+    if (openFlood(eid, F, base, E)) return;
+  } catch (e) { /* no v2 folder: the bundle's own maps */ }
   const [w, s, e, n] = E.bbox, B = L.latLngBounds([[s, w], [n, e]]), base = `../../events/${eid}/`;
-  const T = (E.timeline || []).filter(x => x.date).sort((a, b) => a.date.localeCompare(b.date));
+  const ORDER = ['photo', 'gfm_flood', 'gfm_excluded', 'nisar_adds'];
+  const files = ORDER.flatMap(k => Object.keys(((E.layers || {})[k] || {}).files || {}));
+  // only passes that have the maps (a bar with nothing to show is dropped)
+  const T = (E.timeline || []).filter(x => x.date && files.some(f => Math.abs(dn(f) - dn(x.date)) <= 6)).sort((a, b) => a.date.localeCompare(b.date));
   if (!T.length) T.push({ date: (E.headline && E.headline.date) || '', stats: {} });
   const day = (E.headline && E.headline.date) || T[T.length - 1].date;
-  const ORDER = ['gfm_flood', 'gfm_excluded', 'nisar_adds'];
   S = { bundle: true, id: 'ev-' + eid, E, T, B, t: T.reduce((b, x, i) => Math.abs(dn(x.date) - dn(day)) < Math.abs(dn(T[b].date) - dn(day)) ? i : b, 0),
-        box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, opacity: 0, interactive: false }).addTo(map),
+        box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, opacity: 0, interactive: false }).addTo(map), tag: mkTag(B),
         ev: ORDER.filter(k => E.layers && E.layers[k]).map(k => ({ k, l: E.layers[k], base,
           ov: L.imageOverlay('data:,', L.latLngBounds(E.layers[k].bounds), { pane: 'analysis', interactive: false, opacity: 0, className: k === 'gfm_excluded' ? 'excl' : '' }).addTo(map) })) };
   const has = k => S.ev.some(x => x.k === k), E_ = ks => ks.filter(has).map(k => 'E_' + k);
   S.steps = [{ label: 'Area', on: [], cap: `The area: ${E.place || E.title}.` }];
-  if (has('gfm_flood')) S.steps.push({ label: 'Official', on: E_(['gfm_flood', 'gfm_excluded']),
-    cap: 'The official flood map (GFM) uses radar: it sees through clouds, but not under trees. Hatched = "cannot see".' });
+  if (has('photo')) S.steps.push({ label: 'Optical', on: E_(['photo']), cap: 'Optical satellites: clouds and forest canopy hide the water.' });
+  if (has('gfm_flood')) S.steps.push({ label: 'Official', on: E_(['gfm_flood', 'gfm_excluded']), cap: OFF.gfm.cap.replace('Grey', 'Hatched') });
   if (has('nisar_adds')) S.steps.push({ label: 'NISAR', on: E_(['gfm_flood', 'gfm_excluded', 'nisar_adds']), cap: 'NISAR’s L-band radar sees under the canopy. <b class="o">Orange</b> = flood found in the blank.' });
   panel.hidden = false;
   map.flyToBounds(B, { paddingTopLeft: [panel.offsetWidth + 70, 30], paddingBottomRight: [30, 30], duration: 1.2 });
   const S0 = S; map.once('moveend', () => S === S0 && S.box.setStyle({ opacity: 1 }));
   setStep(0);
   window.dispatchEvent(new CustomEvent('unseen:site', { detail: S.id }));
+}
+// a v2 flood folder: one bar per pass that has all three (optical photo, official map, NISAR); Area → Optical → Official → NISAR
+function openFlood(eid, F, base, E1) {
+  const Ly = F.layers || {}, url = (k, d) => d && Ly[k] && Ly[k].files && Ly[k].files[d] ? base + Ly[k].files[d] : null;
+  const T = (F.passes || []).map(P => {
+    const k = ['gfm', 'dswx'].find(b => (P.layers || []).includes(OFF[b].layer)), od = k && P.matched[k], st = (k && P.baselines[k]) || {};
+    return { date: P.date, k, od, pd: P.matched.photo, photo: url('photo', P.matched.photo), off: k && url(OFF[k].layer, od), adds: url('nisar_adds', P.date),
+             stats: { gfm_flood: st.flood_km2, nisar_adds: st.nisar_adds_km2 } };
+  }).filter(x => x.off && x.adds && x.photo);
+  if (!T.length) return false;
+  const [w, s, e, n] = F.bbox, B = L.latLngBounds([[s, w], [n, e]]), o = { pane: 'analysis', interactive: false, opacity: 0 };
+  const day = (F.summary && F.summary.pass_date) || T[T.length - 1].date;
+  S = { bundle: true, v2: true, id: 'ev-' + eid, E: F, T, B, Ly, t: T.reduce((b, x, i) => Math.abs(dn(x.date) - dn(day)) < Math.abs(dn(T[b].date) - dn(day)) ? i : b, 0),
+        box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, opacity: 0, interactive: false }).addTo(map), tag: mkTag(B), ev: [] };
+  S.ph = L.imageOverlay('data:,', B, o).addTo(map); S.of = L.imageOverlay('data:,', B, o).addTo(map); S.ad = L.imageOverlay('data:,', B, o).addTo(map);
+  S.extra = [S.ph, S.of, S.ad];
+  const k0 = T[S.t].k;
+  S.steps = [{ label: 'Area', on: [], cap: `The area: ${(E1 && (E1.place || E1.title)) || F.place}.` },
+             { label: 'Optical', on: ['photo'], cap: 'Optical satellites: clouds and forest canopy hide the water.' },
+             { label: 'Official', on: ['off'], cap: OFF[k0].cap },
+             { label: 'NISAR', on: ['off', 'adds'], cap: 'NISAR’s L-band radar sees through clouds and under the canopy. <b class="o">Orange</b> = flood found in the blank.' }];
+  panel.hidden = false;
+  map.flyToBounds(B, { paddingTopLeft: [panel.offsetWidth + 70, 30], paddingBottomRight: [30, 30], duration: 1.2 });
+  const S0 = S; map.once('moveend', () => S === S0 && S.box.setStyle({ opacity: 1 }));
+  setStep(0);
+  window.dispatchEvent(new CustomEvent('unseen:site', { detail: S.id }));
+  return true;
+}
+function renderFlood() {
+  const x = S.T[S.t], on = S.on || new Set(), st = x.stats || {}, O = OFF[x.k], pick = (ov, u, op) => { ov.setUrl(u && op ? u : 'data:,'); ov.setOpacity(u && op ? op : 0); };
+  pick(S.ph, x.photo, on.has('photo') ? 0.95 : 0); pick(S.of, x.off, on.has('off') ? 1 : 0); pick(S.ad, x.adds, on.has('adds') ? 1 : 0);
+  $('spD').textContent = fy(x.date);
+  $('spK').innerHTML = '<i class="kb"></i>official flood <i class="ko"></i>NISAR adds';
+  const lg = l => (l && l.legend || []).map(([c, t]) => `<div><span style="background:${c}"></span>${t}</div>`).join('');
+  $('spL').innerHTML = (on.has('photo') ? `<div class="sub">Photo ${fmt(x.pd)}${x.pd === x.date ? ' (same day)' : ` (${Math.round(dn(x.pd) - dn(x.date)) > 0 ? '+' : ''}${Math.round(dn(x.pd) - dn(x.date))} d)`}. Clouds look white: that's what NISAR sees through.</div>` : '')
+    + (on.has('off') ? lg(S.Ly[O.layer]) : '') + (on.has('adds') ? lg(S.Ly.nisar_adds) : '')
+    + (on.has('off') ? passLine(on.has('adds') ? st : { gfm_flood: st.gfm_flood }, x.date, x.od, O.name) : '');
+  const lbl = (S.steps[S.step] || {}).label, ps = ((S.Ly.photo || {}).sensors || {})[x.pd] || (S.Ly.photo || {}).sensor || 'optical';
+  setTag(lbl === 'Optical' ? `Optical · ${ps.replace(' via NASA GIBS', '')} · NASA GIBS · ${fy(x.pd)}`
+       : lbl === 'Official' ? `${O.tag} · ${fy(x.od)}`
+       : lbl === 'NISAR' ? `${NISAR_TAG(x.date)} · over ${O.name} ${fmt(x.od)}` : BASEMAP);
+  bchart();
 }
 // v2 validation folder (docs/12 §11, kind "validation"): the area on the original map, NISAR's water, then each official map
 // on its own (GFM, NASA DSWx, NASA LANCE) followed by its V step = where it and NISAR agree, with the %
@@ -221,7 +291,7 @@ function openCheck(eid, E) {
   const V = E.validation || {}, refs = ['gfm', 'dswx', 'lance'].filter(k => V[k] && E.layers[`${k}_water`]);
   const ORDER = ['nisar_open', ...refs.flatMap(k => [`${k}_water`, `agreement_${k}`])];
   S = { bundle: true, check: true, rk: refs[0], id: 'ev-' + eid, E, T, B, t: Math.max(0, T.findIndex(x => x.date === day)),
-        box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, opacity: 0, interactive: false }).addTo(map),
+        box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, opacity: 0, interactive: false }).addTo(map), tag: mkTag(B),
         ev: ORDER.filter(k => E.layers && E.layers[k]).map(k => ({ k, l: E.layers[k], base,
           ov: L.imageOverlay('data:,', L.latLngBounds(E.layers[k].bounds), { pane: 'analysis', interactive: false, opacity: 0 }).addTo(map) })) };
   const pc = x => `${Math.round(x)}%`, has = k => S.ev.some(x => x.k === k), E_ = ks => ks.filter(has).map(k => 'E_' + k);
@@ -250,18 +320,21 @@ function renderCheck() {                                // one pass: this step's
       .map(([c, t]) => `<div><span style="background:${c}"></span>${t}</div>`).join('')).join('')
     + ['gfm', 'dswx', 'lance'].filter(k => v[k] && (!st.rk || k === st.rk)).map(k => `<div class="sub">${RN[k][0]} ${fmt(v[k].date)}: `
       + `<b>${pc(v[k].agreement_pct)}</b> agree · precision ${v[k].precision} · recall ${v[k].recall} · ${v[k].compared_pct}% of the box compared</div>`).join('');
+  const rv = v[S.rk];
+  setTag(st.label === 'NISAR' ? NISAR_TAG(x.date)
+       : st.rk && st.label === RN[S.rk][0] ? (rv ? `Official flood map · ${RN[S.rk][1]} · ${fy(rv.date)}` : '')
+       : st.rk ? (rv ? `NISAR ${fmt(x.date)} vs ${nm} ${fmt(rv.date)} · agreement` : '') : BASEMAP);
   cchart();
 }
 function cchart() {                                     // per pass: % agreement with this step's official map (bars)
   const c = $('spC'), g = c.getContext('2d'), W = c.clientWidth, H = 78, B = H - 12, top = 4, { T, t } = S, n = T.length;
   c.style.height = H + 'px'; c.width = W * devicePixelRatio; c.height = H * devicePixelRatio; g.scale(devicePixelRatio, devicePixelRatio); g.clearRect(0, 0, W, H);
-  const v = T.map(x => ((x.p.validation || {})[S.rk] || {}).agreement_pct || 0), bw = (W - AX) / n, Y = y => B - (B - top) * y / 100;
+  const v = T.map(x => ((x.p.validation || {})[S.rk] || {}).agreement_pct || 0), bw = colW(W, n), Y = y => B - (B - top) * y / 100;
   g.font = '10px system-ui'; g.fillStyle = '#8b95a3'; g.textAlign = 'right';
   [0, 50, 100].forEach(y => { g.fillText(y + '%', AX - 5, Y(y) + 3); g.fillStyle = '#ffffff14'; g.fillRect(AX, Y(y), W - AX, 1); g.fillStyle = '#8b95a3'; });
   T.forEach((x, i) => { g.globalAlpha = i === t ? 1 : 0.55; g.fillStyle = '#2ecc71'; g.fillRect(AX + i * bw + 1, Y(v[i]), bw - 2, B - Y(v[i])); });
   g.globalAlpha = 1; g.strokeStyle = '#fff'; g.strokeRect(AX + t * bw + 0.5, top - 2.5, bw - 1, B - top + 2);
-  g.textAlign = 'left'; g.fillText(fmt(T[0].date), AX + 1, H - 1);
-  const last = fmt(T[n - 1].date); g.fillText(last, W - g.measureText(last).width - 1, H - 1);
+  xLabels(g, T.map(x => x.date), bw, W, H);
 }
 // drape each bundle layer for this date: the file nearest it (within 6 days); returns the layers that have none
 function drawEv(date, on) {
@@ -287,24 +360,15 @@ function renderBundle() {
   $('spL').innerHTML = S.ev.filter(v => on.has('E_' + v.k)).map(v => `<div><span style="background:${v.l.legend === 'hatch' ? HATCH : v.l.legend || '#888'}"></span>${v.l.label || v.k}</div>`).join('')
     + (on.size ? passLine(st, x.date, x.gfm_date) : '')
     + (miss.length ? '<div class="sub">No map for this date: pick a bright bar</div>' : '');
+  const lbl = (S.steps[S.step] || {}).label, by = k => (S.ev.find(v => v.k === k) || {}).date, ph = ((S.E.layers || {}).photo || {}).sensor || 'optical';
+  setTag(lbl === 'Optical' ? (by('photo') ? `Optical · ${ph.replace(' via NASA GIBS', '')} · NASA GIBS · ${fy(by('photo'))}` : '')
+       : lbl === 'Official' ? (by('gfm_flood') ? `${OFF.gfm.tag} · ${fy(by('gfm_flood'))}` : '')
+       : lbl === 'NISAR' ? NISAR_TAG(by('nisar_adds') || x.date) + (by('gfm_flood') ? ` · over Copernicus GFM ${fmt(by('gfm_flood'))}` : '') : BASEMAP);
   bchart();
 }
 function bchart() {                                     // per pass: official flood (blue) + NISAR addition (orange); faint = no map that day
-  const c = $('spC'), g = c.getContext('2d'), W = c.clientWidth, H = 78, B = H - 12, top = 4, { T, t } = S, n = T.length;
-  c.style.height = H + 'px'; c.width = W * devicePixelRatio; c.height = H * devicePixelRatio; g.scale(devicePixelRatio, devicePixelRatio); g.clearRect(0, 0, W, H);
-  const v = T.map(x => (x.stats || {}).gfm_flood || 0), a = T.map(x => (x.stats || {}).nisar_adds || 0);
-  const raw = Math.max(1, ...v.map((y, i) => y + a[i])), st = 10 ** Math.floor(Math.log10(raw)), mx = Math.ceil(raw / st) * st, bw = (W - AX) / n, Y = y => B - (B - top) * y / mx;
-  const files = S.ev.flatMap(e => Object.keys(e.l.files || {})), hasMap = d => files.some(f => Math.abs(dn(f) - dn(d)) <= 6);
-  g.font = '10px system-ui'; g.fillStyle = '#8b95a3'; g.textAlign = 'right';
-  [0, mx / 2, mx].forEach(y => { g.fillText(y.toLocaleString('en-GB'), AX - 5, Y(y) + 3); g.fillStyle = '#ffffff14'; g.fillRect(AX, Y(y), W - AX, 1); g.fillStyle = '#8b95a3'; });
-  g.save(); g.translate(8, (B + top) / 2); g.rotate(-Math.PI / 2); g.textAlign = 'center'; g.fillText('km²', 0, 0); g.restore(); g.textAlign = 'left';
-  T.forEach((x, i) => { const X = AX + i * bw + 1;
-    g.globalAlpha = i === t ? 1 : hasMap(x.date) ? 0.6 : 0.2;
-    g.fillStyle = '#2b8cbe'; g.fillRect(X, Y(v[i]), bw - 2, B - Y(v[i]));
-    g.fillStyle = '#ff7828'; g.fillRect(X, Y(v[i] + a[i]), bw - 2, Y(v[i]) - Y(v[i] + a[i])); });
-  g.globalAlpha = 1; g.strokeStyle = '#fff'; g.strokeRect(AX + t * bw + 0.5, top - 2.5, bw - 1, B - top + 2);
-  g.fillStyle = '#8b95a3'; g.fillText(fmt(T[0].date), AX + 1, H - 1);
-  const last = fmt(T[n - 1].date); g.fillText(last, W - g.measureText(last).width - 1, H - 1);
+  const files = S.v2 ? [] : S.ev.flatMap(e => Object.keys(e.l.files || {})), hasMap = d => S.v2 || files.some(f => Math.abs(dn(f) - dn(d)) <= 6);
+  kmChart(S.T.map(x => ({ date: x.date, a: (x.stats || {}).gfm_flood || 0, b: (x.stats || {}).nisar_adds || 0, faint: !hasMap(x.date) })), S.t);
 }
 // ---------- multi-year view (events/<place>/history): RADARSAT-1 (CSA, 1998–2007) or Sentinel-1 (ESA, 2016–2025) then NISAR (2026), same box ----------
 // steps: Then (RADARSAT-1) → Now (NISAR) → Swipe (Then | Now on the map) → Change (flooded both / only then / only now)
@@ -396,7 +460,7 @@ function renderHist() {
   } else {
     const a = S.I[S.a], b = S.I[S.b2];
     $('spD').textContent = `${a.date.slice(0, 4)} → ${b.date.slice(0, 4)}`;
-    if (tg) tg.style.display = 'none';
+    if (tg) { tg.textContent = `${S.old} ${fmt(a.date, fy)} vs NISAR ${fmt(b.date, fy)} · change`; tg.style.display = mode === 'change' ? '' : 'none'; }
     if (mode === 'swipe') {
       show(S.hr, imgOf(a, SENS[S.old].radar), 0.9); show(S.hf, imgOf(a, SENS[S.old].flood), 1);
       show(S.nr, imgOf(b, 'nisar_rgb'), 0.9); show(S.nf, imgOf(b, 'nisar_water'), 1);
@@ -419,7 +483,7 @@ function renderHist() {
 function histChart() {                                  // one bar per image: flood km², coloured by satellite; years on the axis
   const c = $('spC'), g = c.getContext('2d'), W = c.clientWidth, H = 78, B = H - 12, top = 4, { I, t } = S, n = I.length;
   c.style.height = H + 'px'; c.width = W * devicePixelRatio; c.height = H * devicePixelRatio; g.scale(devicePixelRatio, devicePixelRatio); g.clearRect(0, 0, W, H);
-  const raw = Math.max(1, ...I.map(x => x.flood_km2 || 0)), st = 10 ** Math.floor(Math.log10(raw)), mx = Math.ceil(raw / st) * st, bw = (W - AX) / n;
+  const raw = Math.max(1, ...I.map(x => x.flood_km2 || 0)), st = 10 ** Math.floor(Math.log10(raw)), mx = Math.ceil(raw / st) * st, bw = colW(W, n);
   const Y = v => B - (B - top) * v / mx;
   g.font = '10px system-ui'; g.fillStyle = '#8b95a3'; g.textAlign = 'right';
   [0, mx / 2, mx].forEach(y => { g.fillText(y.toLocaleString('en-GB'), AX - 5, Y(y) + 3); g.fillStyle = '#ffffff14'; g.fillRect(AX, Y(y), W - AX, 1); g.fillStyle = '#8b95a3'; });
@@ -446,7 +510,7 @@ function render() {
   if (!S) return;
   if (S.hist) return renderHist();
   if (S.check) return renderCheck();
-  if (S.bundle) return renderBundle();
+  if (S.bundle) return S.v2 ? renderFlood() : renderBundle();
   const vst = (S.steps[S.step] || {}).vs;
   if (vst && S.vs) return renderVs(vst);
   if (S.vs) { ['l1', 'l2', 'r1', 'r2'].forEach(k => S.vs[k].setOpacity(0)); vclip(); }
@@ -465,9 +529,6 @@ function render() {
       : 'Radar colours: R = HH, G = HV, B = HH/HV. Dark = smooth water.'; }
   if (S.b === 'none') S.base.setUrl('data:,');            // drop the radar / photo so it can't flash under other layers
   S.base.setOpacity(S.b === 'none' ? 0 : 0.9);
-  const tg = S.tag.getElement()?.firstChild, fy = d => fmt(d, { day: 'numeric', month: 'short', year: 'numeric' });
-  if (tg) { const txt = S.on && S.on.has('rcm') ? 'RCM (CSA, C-band) 13 Oct 2026 vs NISAR 10 Oct 2026' : S.b === 'photo' && S.pd && note.startsWith('Photo') ? `Optical · NASA HLS (Landsat / Sentinel-2) · ${fy(S.pd)}` : '';
-    tg.textContent = txt; tg.style.display = txt ? '' : 'none'; }
   const on = S.on || new Set();
   if (S.rcm) S.rcm.setOpacity(on.has('rcm') ? 1 : 0);
   S.over.setUrl(on.has('pass') ? A(f.hidden) : 'data:,'); S.over.setOpacity(on.has('pass') ? 1 : 0);
@@ -497,6 +558,13 @@ function render() {
   if (D.history) note = `Flood ${Math.round(s.new_water).toLocaleString()} km² (beyond rivers). ` + note;
   const g = (S.ev || []).find(x => x.k === 'gfm_flood' && on.has('E_gfm_flood'));
   if (S.b === 'none') note = [g && g.date ? `GFM (Sentinel-1) ${fmt(g.date)}` : '', on.has('E_nisar_adds') ? `NISAR ${fmt(f.date)}` : '', !on.size ? 'Basemap: Esri World Imagery' : ''].filter(Boolean).join(' · ');
+  const lbl = (S.steps[S.step] || {}).label, gd = (S.ev || []).find(x => x.k === 'gfm_flood');   // the tag under the outline
+  setTag(on.has('rcm') ? 'RCM (CSA, C-band) 13 Oct 2026 vs NISAR 10 Oct 2026'
+    : S.b === 'photo' ? (note.startsWith('Photo') ? `Optical · HLS (Landsat / Sentinel-2) · NASA GIBS · ${fy(S.pd)}` : NISAR_TAG(f.date))
+    : S.b === 'nisar' ? (f.sensor === 'RADARSAT-1' ? `RADARSAT-1 (CSA) · C-band radar · ${fy(f.date)}` : NISAR_TAG(f.date))
+    : lbl === 'Official' ? (gd && gd.date ? `${OFF.gfm.tag} · ${fy(gd.date)}` : '')
+    : lbl === 'NISAR' ? NISAR_TAG(f.date) + (gd && gd.date ? ` · over Copernicus GFM ${fmt(gd.date)}` : '')
+    : !on.size ? BASEMAP : '');
   chart();
 }
 
@@ -521,14 +589,42 @@ function vchart() {                                   // volcano: vent motion pe
   g.fillText(fmt(P[0].ref), 2, H - 1); const l = fmt(P[P.length - 1].sec); g.fillText(l, W - g.measureText(l).width - 2, H - 1);
 }
 const AX = 36;                                          // left margin for the km² axis
+const colW = (W, n) => (S.bw = Math.min((W - AX) / Math.max(1, n), 24));   // one bar per pass, never wider than 24 px
+function xLabels(g, dates, bw, W, H) {                   // first and last date under the bars
+  g.fillStyle = '#8b95a3'; g.textAlign = 'left'; const a = fmt(dates[0]); g.fillText(a, AX + 1, H - 1);
+  if (dates.length < 2) return;
+  const l = fmt(dates[dates.length - 1]), x = Math.min(W, AX + dates.length * bw) - g.measureText(l).width - 1;
+  if (x > AX + g.measureText(a).width + 8) g.fillText(l, x, H - 1);
+}
+// the one bar chart of every flood panel: official flood (blue) + NISAR addition (orange) per pass, km²
+function kmChart(R, t, mark) {
+  const c = $('spC'), g = c.getContext('2d'), W = c.clientWidth, H = 78, B = H - 12, top = 4, n = R.length;
+  c.style.height = H + 'px'; c.width = W * devicePixelRatio; c.height = H * devicePixelRatio; g.scale(devicePixelRatio, devicePixelRatio); g.clearRect(0, 0, W, H);
+  const raw = Math.max(1, ...R.map(r => r.a + r.b)), st = 10 ** Math.floor(Math.log10(raw)), mx = Math.ceil(raw / st) * st, bw = colW(W, n), Y = y => B - (B - top) * y / mx;
+  g.font = '10px system-ui'; g.fillStyle = '#8b95a3'; g.textAlign = 'right';
+  [0, mx / 2, mx].forEach(y => { g.fillText(y.toLocaleString('en-GB'), AX - 5, Y(y) + 3); g.fillStyle = '#ffffff14'; g.fillRect(AX, Y(y), W - AX, 1); g.fillStyle = '#8b95a3'; });
+  g.save(); g.translate(8, (B + top) / 2); g.rotate(-Math.PI / 2); g.textAlign = 'center'; g.fillText('km²', 0, 0); g.restore();
+  R.forEach((r, i) => { const X = AX + i * bw + 1;
+    g.globalAlpha = i === t ? 1 : r.faint ? 0.2 : 0.6;
+    g.fillStyle = r.blue || '#2b8cbe'; g.fillRect(X, Y(r.a), bw - 2, B - Y(r.a));
+    g.fillStyle = '#ff7828'; g.fillRect(X, Y(r.a + r.b), bw - 2, Y(r.a) - Y(r.a + r.b)); });
+  g.globalAlpha = 1; g.strokeStyle = '#fff'; g.strokeRect(AX + t * bw + 0.5, top - 2.5, bw - 1, B - top + 2);
+  if (mark != null && mark >= 0) { const x = AX + (mark + 0.5) * bw; g.strokeStyle = '#f85149'; g.setLineDash([3, 3]); g.beginPath(); g.moveTo(x, 0); g.lineTo(x, B); g.stroke(); g.setLineDash([]); }
+  xLabels(g, R.map(r => r.date), bw, W, H);
+}
 function chart() {
   if (S.D.report && S.D.report.hazard === 'volcano') return vchart();
+  if (!S.D.history) {                                   // same chart as every flood panel: official flood + NISAR addition per pass
+    const T = (S.evE && S.evE.timeline) || [], ev = S.D.event_date;
+    const R = S.D.frames.map((f, i) => { const r = T.find(x => Math.abs(dn(x.date) - dn(f.date)) <= 6), st = r && r.stats;
+      if (S.official) return { date: f.date, a: (st && st.gfm_flood) || 0, b: (st && st.nisar_adds) || 0, faint: !st };
+      const w = S.nw(S.D.summary[i]), h = Math.min(S.hid(S.D.summary[i]), w); return { date: f.date, a: w - h, b: h }; });   // no official map here: water / hidden from optical
+    return kmChart(R, S.t, ev ? S.D.frames.reduce((b, f, i) => Math.abs(dn(f.date) - dn(ev)) < Math.abs(dn(S.D.frames[b].date) - dn(ev)) ? i : b, 0) : null);
+  }
   const c = $('spC'), g = c.getContext('2d'), W = c.clientWidth, H = 78, B = H - 12, { D, t } = S, n = D.frames.length;
   c.style.height = H + 'px'; c.width = W * devicePixelRatio; c.height = H * devicePixelRatio; g.scale(devicePixelRatio, devicePixelRatio); g.clearRect(0, 0, W, H);
-  // official map here: per pass official flood (blue, bottom) + NISAR addition (orange, on top), from the event timeline
-  const tl = S.official ? D.frames.map(f => ((S.evE.timeline || []).find(r => Math.abs(dn(r.date) - dn(f.date)) <= 6) || {}).stats || {}) : null;
-  const v = tl ? tl.map(x => (x.gfm_flood || 0) + (x.nisar_adds || 0)) : D.summary.map(S.nw), h = tl ? tl.map(x => x.nisar_adds || 0) : D.summary.map(S.hid), raw = Math.max(1, ...v);
-  const step = 10 ** Math.floor(Math.log10(raw)), mx = Math.ceil(raw / step) * step, bw = (W - AX) / n, top = 4;
+  const v = D.summary.map(S.nw), h = D.summary.map(S.hid), raw = Math.max(1, ...v);
+  const step = 10 ** Math.floor(Math.log10(raw)), mx = Math.ceil(raw / step) * step, bw = colW(W, n), top = 4;
   const Y = x => B - (B - top) * x / mx;
   g.font = '10px system-ui'; g.fillStyle = '#8b95a3'; g.textAlign = 'right';
   [0, mx / 2, mx].forEach(y => { g.fillText(y.toLocaleString('en-GB'), AX - 5, Y(y) + 3); g.fillStyle = '#ffffff14'; g.fillRect(AX, Y(y), W - AX, 1); g.fillStyle = '#8b95a3'; });
@@ -537,7 +633,6 @@ function chart() {
   v.forEach((x, i) => {
     const X = AX + i * bw + 1, yh = Math.min(h[i], x);
     g.globalAlpha = i === t ? 1 : 0.55;
-    if (tl) { g.fillStyle = '#2b8cbe'; g.fillRect(X, Y(x - yh), bw - 2, B - Y(x - yh)); g.fillStyle = '#ff7828'; g.fillRect(X, Y(x), bw - 2, Y(x - yh) - Y(x)); return; }
     g.fillStyle = D.frames[i].sensor === 'RADARSAT-1' ? '#8fb3d9' : '#2b8cbe'; g.fillRect(X, Y(x), bw - 2, Y(yh) - Y(x));
     g.fillStyle = '#ff7828'; g.fillRect(X, Y(yh), bw - 2, B - Y(yh));
   });
@@ -563,7 +658,7 @@ function chart() {
 }
 // the chart is the time control: click or drag across the bars
 const nOf = () => S.hist ? S.n : S.bundle ? S.T.length : S.D.frames.length;
-const pick = ev => { if (!S) return; const r = $('spC').getBoundingClientRect(); setT(Math.floor((ev.clientX - r.left - AX) / (r.width - AX) * nOf())); };
+const pick = ev => { if (!S) return; const r = $('spC').getBoundingClientRect(); setT(Math.floor((ev.clientX - r.left - AX) / (S.bw || (r.width - AX) / nOf()))); };
 let drag = false;
 $('spC').onpointerdown = ev => { drag = true; $('spC').setPointerCapture(ev.pointerId); pick(ev); };
 $('spC').onpointermove = ev => { if (drag) pick(ev); };

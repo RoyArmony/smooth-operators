@@ -1,0 +1,24 @@
+{
+ "version": 2,
+ "id": "likouala-flood-congo-2026",
+ "name": "Likouala floods",
+ "country": "Rep. of Congo",
+ "bbox": [
+  17.6,
+  1.3,
+  18.2,
+  1.9
+ ],
+ "floods": [
+  {
+   "id": "2026-10-flood",
+   "flood_date": "2026-10-31",
+   "title": "Likouala floods flood, Oct 2026",
+   "baseline": "dswx",
+   "improvement_pct": null,
+   "nisar_adds_km2": 3.1,
+   "baseline_flood_km2": 0.2
+  }
+ ],
+ "history": null
+}

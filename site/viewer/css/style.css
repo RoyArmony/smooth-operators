@@ -280,6 +280,7 @@ body.focused #listhead, body.focused #feed, body.focused aside > details.more2 {
 #sp .legend .vagree { grid-column:1 / -1; display:block; margin-top:4px; }
 .vagree b { font-size:var(--fs-xl); font-weight:800; color:#2ecc71; } .vagree em { font-style:normal; color:var(--muted); font-size:var(--fs-xs); }
 #sp .spsteps { flex-wrap:wrap; row-gap:4px; }
+#sp .spsteps.many { gap:1px; } #sp .spsteps.many button { padding:5px 5px; font-size:11px; } #sp .spsteps.many .sparr { font-size:9px; }   /* 5+ steps on one row */
 .gpct.gvhead b { color:#2ecc71; } .gpct.gvhead .garrow { color:#2ecc71 !important; } .fgain .fval { color:#2ecc71; }
 /* one pin per place (globe.js): count badge + a small chooser when the place has several views */
 .pin s { position:absolute; top:-8px; right:-10px; min-width:14px; height:14px; padding:0 3px; border-radius:7px; background:#fff; color:#0c222b;

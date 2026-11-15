@@ -1,0 +1,25 @@
+{
+ "version": 2,
+ "id": "pantanal-brazil",
+ "name": "Pantanal",
+ "country": "Brazil",
+ "bbox": [
+  -57.4,
+  -18.8,
+  -56.8,
+  -18.2
+ ],
+ "floods": [
+  {
+   "id": "2026-10-flood",
+   "flood_date": "2026-10-21",
+   "title": "Pantanal flood, Oct 2026",
+   "baseline": "gfm",
+   "improvement_pct": null,
+   "nisar_adds_km2": 2.5,
+   "baseline_flood_km2": 0.1
+  }
+ ],
+ "history": null,
+ "validation": []
+}

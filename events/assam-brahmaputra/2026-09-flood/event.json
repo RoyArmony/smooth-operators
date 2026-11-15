@@ -39,7 +39,8 @@
    "date": "2026-08-10",
    "matched": {
     "coh": "12-day GUNW pairs that include this pass",
-    "dswx": "2026-08-10"
+    "dswx": "2026-08-10",
+    "photo": "2026-08-10"
    },
    "baselines": {
     "dswx": {
@@ -62,7 +63,8 @@
     "nisar_open",
     "dswx_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
     "water_km2": 370.6,
@@ -73,7 +75,8 @@
   {
    "date": "2026-08-22",
    "matched": {
-    "dswx": "2026-08-23"
+    "dswx": "2026-08-23",
+    "photo": "2026-08-22"
    },
    "baselines": {
     "dswx": {
@@ -95,7 +98,8 @@
     "nisar_open",
     "dswx_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
     "water_km2": 65.6,
@@ -107,7 +111,8 @@
    "date": "2026-09-03",
    "matched": {
     "coh": "12-day GUNW pairs that include this pass",
-    "dswx": "2026-09-02"
+    "dswx": "2026-09-02",
+    "photo": "2026-09-03"
    },
    "baselines": {
     "dswx": {
@@ -130,7 +135,8 @@
     "nisar_open",
     "dswx_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
     "water_km2": 414.0,
@@ -141,7 +147,8 @@
   {
    "date": "2026-09-15",
    "matched": {
-    "coh": "12-day GUNW pairs that include this pass"
+    "coh": "12-day GUNW pairs that include this pass",
+    "photo": "2026-09-15"
    },
    "baselines": {},
    "layers": [
@@ -149,7 +156,8 @@
     "nisar_hh",
     "nisar_hv",
     "nisar_coh",
-    "nisar_water"
+    "nisar_water",
+    "photo"
    ],
    "nisar": {
     "water_km2": 329.9,
@@ -160,7 +168,8 @@
    "date": "2026-09-27",
    "matched": {
     "coh": "12-day GUNW pairs that include this pass",
-    "dswx": "2026-09-27"
+    "dswx": "2026-09-27",
+    "photo": "2026-09-27"
    },
    "baselines": {
     "dswx": {
@@ -183,7 +192,8 @@
     "nisar_open",
     "dswx_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
     "water_km2": 309.5,
@@ -548,6 +558,37 @@
      92.801
     ]
    ]
+  },
+  "photo": {
+   "group": "optical",
+   "sensor": "VIIRS (NOAA-20) true colour via NASA GIBS",
+   "label": "Optical photo (true colour, same day)",
+   "legend": null,
+   "default": false,
+   "files": {
+    "2026-08-10": "layers/photo_2026-08-10.jpg",
+    "2026-08-22": "layers/photo_2026-08-22.jpg",
+    "2026-09-03": "layers/photo_2026-09-03.jpg",
+    "2026-09-15": "layers/photo_2026-09-15.jpg",
+    "2026-09-27": "layers/photo_2026-09-27.jpg"
+   },
+   "bounds": [
+    [
+     26.3,
+     92.2
+    ],
+    [
+     26.9,
+     92.8
+    ]
+   ],
+   "sensors": {
+    "2026-08-10": "VIIRS (NOAA-20) true colour via NASA GIBS",
+    "2026-08-22": "VIIRS (Suomi NPP) true colour via NASA GIBS",
+    "2026-09-03": "VIIRS (NOAA-20) true colour via NASA GIBS",
+    "2026-09-15": "VIIRS (NOAA-20) true colour via NASA GIBS",
+    "2026-09-27": "VIIRS (NOAA-20) true colour via NASA GIBS"
+   }
   }
  },
  "method": {

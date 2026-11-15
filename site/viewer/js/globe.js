@@ -359,7 +359,7 @@ function showFocus(id) {
       <div class="fwhen">${when}</div>
       <div class="stags">${tags}</div>
       <div class="gainbox" id="gainbox">${g ? gainHTML({ base: g.gfm_flood_km2, adds: g.nisar_adds_km2, pct: g.pct, baseline: g.baseline || 'gfm', val: g.val, kind: g.kind, n: g.n, first: g.first, last: g.last }) : ''}</div>
-      ${s.bundle && s.kind !== 'validation' ? `<div class="legend sub blegend"><div><span style="background:#2882ff"></span>Official flood (GFM)</div>
+      ${s.bundle && s.kind !== 'validation' ? `<div class="legend sub blegend"><div><span style="background:#2882ff"></span>Official flood (${(g && g.baseline) === 'dswx' ? 'NASA DSWx' : 'GFM'})</div>
         <div><span style="background:repeating-linear-gradient(45deg,#dcdce4 0 2px,#696973 2px 6px)"></span>Official map: "cannot see"</div>
         <div><span style="background:var(--orange)"></span>NISAR adds, in the blank</div></div>` : ''}
       </div>`);

@@ -50,7 +50,8 @@
    "date": "2026-10-03",
    "matched": {
     "coh": "12-day GUNW pairs that include this pass",
-    "dswx": "2026-10-05"
+    "dswx": "2026-10-05",
+    "photo": "2026-10-02"
    },
    "baselines": {
     "dswx": {
@@ -73,7 +74,8 @@
     "nisar_open",
     "dswx_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
     "water_km2": 95.6,
@@ -96,7 +98,8 @@
    "date": "2026-10-15",
    "matched": {
     "coh": "12-day GUNW pairs that include this pass",
-    "dswx": "2026-10-13"
+    "dswx": "2026-10-13",
+    "photo": "2026-10-15"
    },
    "baselines": {
     "dswx": {
@@ -119,7 +122,8 @@
     "nisar_open",
     "dswx_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
     "water_km2": 107.4,
@@ -140,13 +144,16 @@
   },
   {
    "date": "2026-10-27",
-   "matched": {},
+   "matched": {
+    "photo": "2026-10-27"
+   },
    "baselines": {},
    "layers": [
     "nisar_rgb",
     "nisar_hh",
     "nisar_hv",
-    "nisar_water"
+    "nisar_water",
+    "photo"
    ],
    "nisar": {
     "water_km2": 112.7,
@@ -490,6 +497,33 @@
      111.47655
     ]
    ]
+  },
+  "photo": {
+   "group": "optical",
+   "sensor": "VIIRS (NOAA-20) true colour via NASA GIBS",
+   "label": "Optical photo (true colour, same day)",
+   "legend": null,
+   "default": false,
+   "files": {
+    "2026-10-15": "layers/photo_2026-10-15.jpg",
+    "2026-10-27": "layers/photo_2026-10-27.jpg",
+    "2026-10-02": "layers/photo_2026-10-02.jpg"
+   },
+   "bounds": [
+    [
+     30.428,
+     110.472
+    ],
+    [
+     31.228,
+     111.472
+    ]
+   ],
+   "sensors": {
+    "2026-10-15": "VIIRS (NOAA-20) true colour via NASA GIBS",
+    "2026-10-27": "VIIRS (NOAA-20) true colour via NASA GIBS",
+    "2026-10-02": "MODIS (Terra) true colour via NASA GIBS"
+   }
   }
  },
  "validation": {

@@ -37,13 +37,16 @@
  "passes": [
   {
    "date": "2026-09-30",
-   "matched": {},
+   "matched": {
+    "photo": "2026-09-30"
+   },
    "baselines": {},
    "layers": [
     "nisar_rgb",
     "nisar_hh",
     "nisar_hv",
-    "nisar_water"
+    "nisar_water",
+    "photo"
    ],
    "nisar": {
     "water_km2": 441.5,
@@ -52,13 +55,16 @@
   },
   {
    "date": "2026-10-12",
-   "matched": {},
+   "matched": {
+    "photo": "2026-10-12"
+   },
    "baselines": {},
    "layers": [
     "nisar_rgb",
     "nisar_hh",
     "nisar_hv",
-    "nisar_water"
+    "nisar_water",
+    "photo"
    ],
    "nisar": {
     "water_km2": 434.1,
@@ -68,7 +74,8 @@
   {
    "date": "2026-10-24",
    "matched": {
-    "gfm": "2026-10-25"
+    "gfm": "2026-10-25",
+    "photo": "2026-10-24"
    },
    "baselines": {
     "gfm": {
@@ -88,7 +95,8 @@
     "gfm_classes",
     "nisar_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
     "water_km2": 504.6,
@@ -353,6 +361,33 @@
      101.3045
     ]
    ]
+  },
+  "photo": {
+   "group": "optical",
+   "sensor": "VIIRS (NOAA-20) true colour via NASA GIBS",
+   "label": "Optical photo (true colour, same day)",
+   "legend": null,
+   "default": false,
+   "files": {
+    "2026-09-30": "layers/photo_2026-09-30.jpg",
+    "2026-10-12": "layers/photo_2026-10-12.jpg",
+    "2026-10-24": "layers/photo_2026-10-24.jpg"
+   },
+   "bounds": [
+    [
+     13.41,
+     100.7
+    ],
+    [
+     13.89,
+     101.3
+    ]
+   ],
+   "sensors": {
+    "2026-09-30": "VIIRS (NOAA-20) true colour via NASA GIBS",
+    "2026-10-12": "VIIRS (NOAA-20) true colour via NASA GIBS",
+    "2026-10-24": "VIIRS (NOAA-20) true colour via NASA GIBS"
+   }
   }
  },
  "method": {

@@ -38,7 +38,8 @@
   {
    "date": "2026-06-30",
    "matched": {
-    "dswx": "2026-06-27"
+    "dswx": "2026-06-27",
+    "photo": "2026-06-30"
    },
    "baselines": {
     "dswx": {
@@ -60,7 +61,8 @@
     "nisar_open",
     "dswx_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
     "water_km2": 833.0,
@@ -71,7 +73,8 @@
   {
    "date": "2026-07-12",
    "matched": {
-    "dswx": "2026-07-14"
+    "dswx": "2026-07-14",
+    "photo": "2026-07-12"
    },
    "baselines": {
     "dswx": {
@@ -93,7 +96,8 @@
     "nisar_open",
     "dswx_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
     "water_km2": 912.0,
@@ -104,7 +108,8 @@
   {
    "date": "2026-07-24",
    "matched": {
-    "dswx": "2026-07-24"
+    "dswx": "2026-07-24",
+    "photo": "2026-07-24"
    },
    "baselines": {
     "dswx": {
@@ -126,7 +131,8 @@
     "nisar_open",
     "dswx_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
     "water_km2": 919.9,
@@ -137,7 +143,8 @@
   {
    "date": "2026-08-17",
    "matched": {
-    "dswx": "2026-08-18"
+    "dswx": "2026-08-18",
+    "photo": "2026-08-17"
    },
    "baselines": {
     "dswx": {
@@ -159,7 +166,8 @@
     "nisar_open",
     "dswx_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
     "water_km2": 567.3,
@@ -497,6 +505,35 @@
      91.70649
     ]
    ]
+  },
+  "photo": {
+   "group": "optical",
+   "sensor": "VIIRS (NOAA-20) true colour via NASA GIBS",
+   "label": "Optical photo (true colour, same day)",
+   "legend": null,
+   "default": false,
+   "files": {
+    "2026-06-30": "layers/photo_2026-06-30.jpg",
+    "2026-07-12": "layers/photo_2026-07-12.jpg",
+    "2026-07-24": "layers/photo_2026-07-24.jpg",
+    "2026-08-17": "layers/photo_2026-08-17.jpg"
+   },
+   "bounds": [
+    [
+     24.4,
+     91.1
+    ],
+    [
+     25.0,
+     91.7
+    ]
+   ],
+   "sensors": {
+    "2026-06-30": "VIIRS (NOAA-20) true colour via NASA GIBS",
+    "2026-07-12": "VIIRS (NOAA-20) true colour via NASA GIBS",
+    "2026-07-24": "VIIRS (NOAA-20) true colour via NASA GIBS",
+    "2026-08-17": "VIIRS (Suomi NPP) true colour via NASA GIBS"
+   }
   }
  },
  "method": {

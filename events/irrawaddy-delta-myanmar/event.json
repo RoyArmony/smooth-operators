@@ -265,6 +265,26 @@
     ]
    ],
    "default": true
+  },
+  "photo": {
+   "group": "optical",
+   "sensor": "VIIRS (NOAA-20) true colour via NASA GIBS",
+   "label": "Optical photo (true colour)",
+   "legend": null,
+   "default": false,
+   "files": {
+    "2026-07-17": "layers/photo_2026-07-17.jpg"
+   },
+   "bounds": [
+    [
+     16.29342,
+     94.99385
+    ],
+    [
+     16.90674,
+     95.6079
+    ]
+   ]
   }
  },
  "validation": {},
