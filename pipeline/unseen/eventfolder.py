@@ -30,6 +30,94 @@ PLACES = {
         viewer_site="mekong-delta-vietnam-83-7",      # its Explorer site: HLS photos on the same grid
         open_hh=-13.0, open_hv=-18.0,                 # detector thresholds calibrated on clear optical days (that site)
         gfm_bundle="mekong-delta-vietnam"),           # v1 bundle: GFM fallback when the GFM server is down
+    "tonle-sap-flood-pulse-2026": dict(
+        name="Tonle Sap", country="Cambodia", bbox=(103.6, 12.3, 104.7, 13.3),
+        stack_key="tonle-sap-flood-pulse-2026-83-8",  # track 83 frame 8 ascending
+        viewer_site="tonle-sap-flood-pulse-2026-83-8",
+        open_hh=-14.0, open_hv=-19.0,                 # that site's calibration on clear optical days
+        gfm_bundle="tonle-sap-flood-pulse-2026"),
+    "inner-niger-delta-mali": dict(
+        name="Inner Niger Delta", country="Mali", bbox=(-4.6, 14.6, -4.0, 15.2),
+        stack_key="inner-niger-delta-mali-145-9",     # track 145 frame 9 ascending
+        viewer_site="inner-niger-delta-mali-145-9",
+        open_hh=-17.0, open_hv=-24.0,                 # detect.py defaults: that site's calibration was not used (too few clear days)
+        gfm_bundle="inner-niger-delta-mali"),
+    "congo-cuvette-centrale": dict(
+        name="Congo basin (Cuvette Centrale)", country="Rep. of Congo", bbox=(17.3, 0.2, 17.9, 0.8),
+        stack_key="congo-cuvette-centrale-101-2",     # track 101 frame 2 ascending
+        viewer_site="congo-cuvette-centrale-101-2",
+        open_hh=-13.5, open_hv=-18.5,                 # that site's calibration on clear optical days
+        gfm_bundle="congo-cuvette-centrale"),
+    "amazon-varzea-mamiraua": dict(
+        name="Amazon várzea (Mamirauá)", country="Brazil", bbox=(-65.2, -3.3, -64.6, -2.7),
+        stack_key="amazon-varzea-mamiraua",                    # NISAR stack: best one covering the box (searched on first run)
+        open_hh=-11.0, open_hv=-16.0,                 # v1 bundle's calibration on clear optical days
+        gfm_bundle="amazon-varzea-mamiraua"),
+    "assam-brahmaputra": dict(
+        name="Brahmaputra, Assam", country="India", bbox=(92.2, 26.3, 92.8, 26.9),
+        stack_key="assam-brahmaputra",                    # NISAR stack: best one covering the box (searched on first run)
+        open_hh=-13.0, open_hv=-18.0,                 # v1 bundle's calibration on clear optical days
+        gfm_bundle="assam-brahmaputra"),
+    "atchafalaya-basin": dict(
+        name="Atchafalaya Basin", country="USA", bbox=(-91.6, 30.0, -91.2, 30.5),
+        stack_key="atchafalaya-basin",                    # NISAR stack: best one covering the box (searched on first run)
+        open_hh=-17.0, open_hv=-24.0,                 # detect.py defaults (no calibration in the v1 bundle)
+        gfm_bundle="atchafalaya-basin"),
+    "flood-in-china-2026": dict(
+        name="Hubei floods", country="China", bbox=(110.472, 30.428, 111.472, 31.228),
+        stack_key="flood-in-china-2026",                    # NISAR stack: best one covering the box (searched on first run)
+        open_hh=-11.0, open_hv=-16.0,                 # v1 bundle's calibration on clear optical days
+        gfm_bundle="flood-in-china-2026"),
+    "flood-in-nepal-2026": dict(
+        name="Nepal floods", country="Nepal", bbox=(84.865, 26.895, 85.865, 27.695),
+        stack_key="flood-in-nepal-2026",                    # NISAR stack: best one covering the box (searched on first run)
+        open_hh=-17.0, open_hv=-24.0,                 # detect.py defaults (no calibration in the v1 bundle)
+        gfm_bundle="flood-in-nepal-2026"),
+    "flood-india-2026-08": dict(
+        name="Tamil Nadu floods", country="India", bbox=(78.11, 10.932, 79.11, 11.732),
+        stack_key="flood-india-2026-08",                    # NISAR stack: best one covering the box (searched on first run)
+        open_hh=-17.0, open_hv=-24.0,                 # detect.py defaults (no calibration in the v1 bundle)
+        gfm_bundle="flood-india-2026-08"),
+    "irrawaddy-delta-myanmar": dict(
+        name="Irrawaddy delta", country="Myanmar", bbox=(95.0, 16.3, 95.6, 16.9),
+        stack_key="irrawaddy-delta-myanmar",                    # NISAR stack: best one covering the box (searched on first run)
+        open_hh=-11.0, open_hv=-16.0,                 # v1 bundle's calibration on clear optical days
+        gfm_bundle="irrawaddy-delta-myanmar"),
+    "likouala-flood-congo-2026": dict(
+        name="Likouala floods", country="Rep. of Congo", bbox=(17.6, 1.3, 18.2, 1.9),
+        stack_key="likouala-flood-congo-2026",                    # NISAR stack: best one covering the box (searched on first run)
+        open_hh=-11.0, open_hv=-16.0,                 # v1 bundle's calibration on clear optical days
+        gfm_bundle="likouala-flood-congo-2026"),
+    "okavango-delta": dict(
+        name="Okavango Delta", country="Botswana", bbox=(22.6, -19.6, 23.2, -19.0),
+        stack_key="okavango-delta",                    # NISAR stack: best one covering the box (searched on first run)
+        open_hh=-17.0, open_hv=-24.0,                 # detect.py defaults (no calibration in the v1 bundle)
+        gfm_bundle="okavango-delta"),
+    "pantanal-brazil": dict(
+        name="Pantanal", country="Brazil", bbox=(-57.4, -18.8, -56.8, -18.2),
+        stack_key="pantanal-brazil",                    # NISAR stack: best one covering the box (searched on first run)
+        open_hh=-17.0, open_hv=-24.0,                 # detect.py defaults (no calibration in the v1 bundle)
+        gfm_bundle="pantanal-brazil"),
+    "sudd-wetland-south-sudan": dict(
+        name="Sudd wetland", country="South Sudan", bbox=(30.3, 7.0, 30.9, 7.6),
+        stack_key="sudd-wetland-south-sudan",                    # NISAR stack: best one covering the box (searched on first run)
+        open_hh=-17.0, open_hv=-24.0,                 # detect.py defaults (no calibration in the v1 bundle)
+        gfm_bundle="sudd-wetland-south-sudan"),
+    "sylhet-haor-bangladesh": dict(
+        name="Sylhet haor", country="Bangladesh", bbox=(91.1, 24.4, 91.7, 25.0),
+        stack_key="sylhet-haor-bangladesh",                    # NISAR stack: best one covering the box (searched on first run)
+        open_hh=-12.0, open_hv=-21.0,                 # v1 bundle's calibration on clear optical days
+        gfm_bundle="sylhet-haor-bangladesh"),
+    "thailand-floods-bang-pakong-2026": dict(
+        name="Bang Pakong floods", country="Thailand", bbox=(100.7, 13.41, 101.3, 13.89),
+        stack_key="thailand-floods-bang-pakong-2026",                    # NISAR stack: best one covering the box (searched on first run)
+        open_hh=-11.0, open_hv=-18.0,                 # v1 bundle's calibration on clear optical days
+        gfm_bundle="thailand-floods-bang-pakong-2026"),
+    "peace-athabasca-delta": dict(
+        name="Peace-Athabasca Delta", country="Canada", bbox=(-111.8, 58.3, -111.0, 58.9),
+        stack_key="peace-athabasca-delta-143-59",     # track 143 frame 59 descending
+        viewer_site="peace-athabasca-delta-143-59",
+        open_hh=-12.0, open_hv=-18.0),                # that site's calibration on clear optical days
     "gerd-blue-nile-ethiopia": dict(
         name="GERD reservoir, Blue Nile", country="Ethiopia", bbox=(34.9, 10.2, 35.8, 11.35),
         stack_key="gerd-blue-nile-ethiopia-129-7",    # track 129 frame 7 ascending, 11 dual-pol passes Jun-Nov 2026
@@ -142,7 +230,7 @@ def photo_for(case, date):
     site = REPO / "site" / "viewer" / "sites" / (case.get("viewer_site") or "-")
     if not (site / "site.json").exists():               # place without an Explorer site: no photos yet
         return None, None, None
-    S = json.loads((site / "site.json").read_text())
+    S = json.loads((site / "site.json").read_text(encoding="utf-8"))
     clear = {o["date"]: o["clear"] for o in S.get("timeline", {}).get("optical", [])}
     c = []
     for d, f in S.get("photos", {}).items():
@@ -183,7 +271,7 @@ def build(place, flood_date=None):
     track, frame = (st or {}).get("track"), (st or {}).get("frame")
     vs = REPO / "site/viewer/sites" / (case.get("viewer_site") or "-") / "site.json"
     if track is None and vs.exists():
-        stk = json.loads(vs.read_text()).get("stack", {})
+        stk = json.loads(vs.read_text(encoding="utf-8")).get("stack", {})
         track, frame = stk.get("track"), stk.get("frame")
     try:
         from .fused import coherence
@@ -334,8 +422,8 @@ def build(place, flood_date=None):
                  credit="NASA EOSDIS GIBS; HLS (NASA / USGS Landsat, ESA Copernicus Sentinel-2)"),
             dict(name="ESA WorldCover 2021", url="https://esa-worldcover.org", credit="© ESA WorldCover project 2021, CC BY 4.0")],
     )
-    (folder / "event.json").write_text(json.dumps(ev, indent=1, ensure_ascii=False))
-    (folder / "science.md").write_text(SCIENCE.format(**summary, title=ev["title"], start=w0, end=w1, n=len(passes)))
+    (folder / "event.json").write_text(json.dumps(ev, indent=1, ensure_ascii=False), encoding="utf-8")
+    (folder / "science.md").write_text(SCIENCE.format(**summary, title=ev["title"], start=w0, end=w1, n=len(passes)), encoding="utf-8")
     pl = dict(version=2, id=place, name=case["name"], country=case["country"], bbox=list(bbox),
               floods=[dict(id=fid, flood_date=fd, title=ev["title"], baseline=mb,
                            improvement_pct=summary["improvement_pct"], nisar_adds_km2=summary["nisar_adds_km2"],
@@ -343,10 +431,10 @@ def build(place, flood_date=None):
               history=None)
     pf = EVENTS_DIR / place / "place.json"
     if pf.exists():                                       # keep other floods / history already listed
-        old = json.loads(pf.read_text())
+        old = json.loads(pf.read_text(encoding="utf-8"))
         pl["floods"] = sorted([f for f in old.get("floods", []) if f["id"] != fid] + pl["floods"], key=lambda f: f["flood_date"])
         pl["history"] = old.get("history")
-    pf.write_text(json.dumps(pl, indent=1, ensure_ascii=False))
+    pf.write_text(json.dumps(pl, indent=1, ensure_ascii=False), encoding="utf-8")
     bundle.write_index()
     return ev
 

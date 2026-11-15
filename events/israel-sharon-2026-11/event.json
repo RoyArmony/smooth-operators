@@ -1,0 +1,157 @@
+{
+ "id": "israel-sharon-2026-11",
+ "title": "Sharon storm, Israel",
+ "place": "Sharon plain (Kedima, Even Yehuda, Kfar Saba), Israel",
+ "kind": "site",
+ "bbox": [
+  34.8,
+  32.15,
+  35.05,
+  32.4
+ ],
+ "headline": {
+  "date": "2026-11-08",
+  "badge": null,
+  "sentence": "On the afternoon of the storm (2026-11-08), Sentinel-1 radar saw 48 km² of soaked ground in the Sharon (41 km² the next morning) but 0 km² of standing water in open fields: the flash flood ran off through the streets within hours. NISAR passed on 2026-11-03 (before).",
+  "numbers": [
+   {
+    "label": "Soaked ground, storm afternoon (Sentinel-1)",
+    "value": 47.9,
+    "unit": "km²"
+   },
+   {
+    "label": "Still soaked next morning",
+    "value": 41.3,
+    "unit": "km²"
+   },
+   {
+    "label": "Standing water in open fields",
+    "value": 0.0,
+    "unit": "km²"
+   }
+  ]
+ },
+ "timeline": [
+  {
+   "date": "2026-11-03",
+   "sensor": "NISAR",
+   "track": 151,
+   "when": "before",
+   "layers": [
+    "nisar_rgb"
+   ]
+  },
+  {
+   "date": "2026-11-08",
+   "sensor": "Sentinel-1",
+   "rel_orbit": 87,
+   "before": "2026-11-02",
+   "new_water_km2": 0.0,
+   "soaked_km2": 47.9,
+   "land_change_db": 1.12,
+   "valid_pct": 100,
+   "layers": [
+    "s1_vv",
+    "s1_wet"
+   ]
+  },
+  {
+   "date": "2026-11-09",
+   "sensor": "Sentinel-1",
+   "rel_orbit": 94,
+   "before": "2026-11-03",
+   "new_water_km2": 0.0,
+   "soaked_km2": 41.3,
+   "land_change_db": 0.76,
+   "valid_pct": 100,
+   "layers": [
+    "s1_vv",
+    "s1_wet"
+   ]
+  }
+ ],
+ "layers": {
+  "nisar_rgb": {
+   "group": "radar",
+   "sensor": "NISAR L-band GCOV",
+   "label": "NISAR radar (R = HH, G = HV, B = HH/HV)",
+   "legend": null,
+   "files": {
+    "2026-11-03": "layers/nisar_rgb_2026-11-03.png"
+   },
+   "bounds": [
+    [
+     32.14646,
+     34.79497
+    ],
+    [
+     32.40398,
+     35.05559
+    ]
+   ],
+   "default": false
+  },
+  "s1_vv": {
+   "group": "radar",
+   "sensor": "Sentinel-1 C-band (VV)",
+   "label": "Sentinel-1 radar (VV)",
+   "legend": null,
+   "files": {
+    "2026-11-08": "layers/s1_vv_2026-11-08.png",
+    "2026-11-09": "layers/s1_vv_2026-11-09.png"
+   },
+   "bounds": [
+    [
+     32.14646,
+     34.79497
+    ],
+    [
+     32.40398,
+     35.05559
+    ]
+   ],
+   "default": false
+  },
+  "s1_wet": {
+   "group": "result",
+   "sensor": "Sentinel-1 C-band (change, same track)",
+   "label": "Soaked ground: radar > 3 dB brighter than 6 days before",
+   "legend": "#28c8e6",
+   "files": {
+    "2026-11-08": "layers/s1_wet_2026-11-08.png",
+    "2026-11-09": "layers/s1_wet_2026-11-09.png"
+   },
+   "bounds": [
+    [
+     32.14646,
+     34.79497
+    ],
+    [
+     32.40398,
+     35.05559
+    ]
+   ],
+   "default": true
+  }
+ },
+ "validation": {},
+ "sources": [
+  {
+   "name": "NISAR L2 GCOV",
+   "url": "https://search.asf.alaska.edu",
+   "credit": "NASA/JPL-Caltech, ISRO; data via ASF DAAC"
+  },
+  {
+   "name": "Sentinel-1 RTC (Microsoft Planetary Computer)",
+   "url": "https://planetarycomputer.microsoft.com/dataset/sentinel-1-rtc",
+   "credit": "Contains modified Copernicus Sentinel data 2026 (ESA); RTC by Microsoft / Catalyst"
+  }
+ ],
+ "nisar_passes_since_june": 34,
+ "method": {
+  "detector": "Sentinel-1 VV change on the same track: after < -15 dB, drop > 3 dB, not water before; 3x3 median filter",
+  "pixel_m": 80.0,
+  "grid": "NISAR track 151 frame 72 (EPSG:32636)",
+  "note": "Storm of 7-8 Nov 2026: Israel Meteorological Service flood warnings; very heavy rain over the Sharon."
+ }
+}

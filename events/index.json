@@ -299,6 +299,39 @@
    }
   },
   {
+   "id": "israel-sharon-2026-11",
+   "title": "Sharon storm, Israel",
+   "place": "Sharon plain (Kedima, Even Yehuda, Kfar Saba), Israel",
+   "date": "2026-11-08",
+   "bbox": [
+    34.8,
+    32.15,
+    35.05,
+    32.4
+   ],
+   "kind": "site",
+   "headline": {
+    "sentence": "On the afternoon of the storm (2026-11-08), Sentinel-1 radar saw 48 km² of soaked ground in the Sharon (41 km² the next morning) but 0 km² of standing water in open fields: the flash flood ran off through the streets within hours. NISAR passed on 2026-11-03 (before).",
+    "numbers": [
+     {
+      "label": "Soaked ground, storm afternoon (Sentinel-1)",
+      "value": 47.9,
+      "unit": "km²"
+     },
+     {
+      "label": "Still soaked next morning",
+      "value": 41.3,
+      "unit": "km²"
+     },
+     {
+      "label": "Standing water in open fields",
+      "value": 0.0,
+      "unit": "km²"
+     }
+    ]
+   }
+  },
+  {
    "id": "likouala-flood-congo-2026",
    "title": "Likouala floods, Rep. of Congo (Oct 2026)",
    "place": "Likouala floods, Rep. of Congo (Oct 2026)",

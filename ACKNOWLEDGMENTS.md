@@ -35,6 +35,7 @@ Our maps and numbers are derived products, not official NASA products, and not e
 | **USGS EDEN** | Everglades water depth (ground truth) | US Government public domain; credit USGS |
 | **USDA NASS** Crop Progress, Crop Sequence Boundaries, Cropland Data Layer | Crop and harvest checks | US Government public domain; credit USDA NASS |
 | **Open-Meteo** | Archived rain forecasts | CC BY 4.0; "Weather data by Open-Meteo.com" |
+| **Israel Meteorological Service** (event summaries, flood warnings) | Dates and rain of the Nov 2026 Sharon storm | Public website; credit IMS |
 | **Microsoft Planetary Computer** | STAC access to Sentinel, ALOS mosaics, USDA layers | Service; each dataset keeps its own licence (above) |
 
 - Video in the landing film: "Sangke - Prek Toal, Cambodge" by Pierre André Leclercq, Wikimedia Commons, **CC BY-SA 4.0** (8 s cut, re-encoded; the cut is shared under the same licence) — https://commons.wikimedia.org/wiki/File:Sangke-prek-toal-cambodge-.webm

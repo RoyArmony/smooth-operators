@@ -76,6 +76,7 @@ All 14 links from the [Resources tab](https://www.spaceappschallenge.org/2026/ch
 - **Esri World Imagery, OpenStreetMap** — basemaps — https://www.openstreetmap.org/copyright (Shai, 31.10.26)
 
 - **Wikimedia Commons: Tonlé Sap video, Pierre André Leclercq (CC BY-SA 4.0)** — opening shot of the landing film, 8 s cut — https://commons.wikimedia.org/wiki/File:Sangke-prek-toal-cambodge-.webm (Shai, 14.11.26)
+- **Israel Meteorological Service** event summaries + news reports (JPost, JNS) — dates and rain of the 7–8 Nov 2026 Sharon storm (`events/israel-sharon-2026-11`) — https://ims.gov.il · https://www.jpost.com/israel-news/article-914094 (Roy, 15.11.26)
 
 ## Tools and services
 

@@ -112,9 +112,9 @@ def write_event(ev):
     d.mkdir(parents=True, exist_ok=True)
     ev["headline"]["numbers"] = ev["headline"]["numbers"][:3]           # contract: at most 3
     if not (d / "science.md").exists():
-        (d / "science.md").write_text(SCIENCE.format(title=ev["title"]))
+        (d / "science.md").write_text(SCIENCE.format(title=ev["title"]), encoding="utf-8")
     ev["timeline"].sort(key=lambda r: r["date"])
-    (d / "event.json").write_text(json.dumps(ev, indent=1, ensure_ascii=False))
+    (d / "event.json").write_text(json.dumps(ev, indent=1, ensure_ascii=False), encoding="utf-8")
     return d / "event.json"
 
 
@@ -122,15 +122,15 @@ def write_index():
     """Rebuild events/index.json: "events" from every events/<id>/event.json (v1), "places" from events/<place>/place.json (v2)."""
     out = []
     for f in sorted(EVENTS_DIR.glob("*/event.json")):
-        e = json.loads(f.read_text())
+        e = json.loads(f.read_text(encoding="utf-8"))
         h = e.get("headline", {})
         out.append(dict(id=e["id"], title=e["title"], place=e.get("place"), date=h.get("date"), bbox=e["bbox"],
                         kind=e["kind"], headline=dict(sentence=h.get("sentence"), numbers=h.get("numbers", []))))
     places = []                                    # v2 (docs/12): events/<place>/place.json -> its floods + history
     for f in sorted(EVENTS_DIR.glob("*/place.json")):
-        p = json.loads(f.read_text())
+        p = json.loads(f.read_text(encoding="utf-8"))
         places.append(dict(id=p["id"], folder=f.parent.name, name=p["name"], country=p.get("country"), bbox=p["bbox"],
                            floods=p.get("floods", []), history=p.get("history")))
     idx = dict(version=2 if places else 1, events=out, **(dict(places=places) if places else {}))
-    (EVENTS_DIR / "index.json").write_text(json.dumps(idx, indent=1, ensure_ascii=False))
+    (EVENTS_DIR / "index.json").write_text(json.dumps(idx, indent=1, ensure_ascii=False), encoding="utf-8")
     return out
