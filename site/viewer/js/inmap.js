@@ -201,45 +201,49 @@ async function openBundle(eid) {
   setStep(0);
   window.dispatchEvent(new CustomEvent('unseen:site', { detail: S.id }));
 }
-// v2 validation folder (docs/12 §11, kind "validation"): NASA's map, NISAR's, then ✓ = where they agree, with the %
+// v2 validation folder (docs/12 §11, kind "validation"): the area on the original map, NISAR's water, then each official map
+// on its own (GFM, NASA DSWx, NASA LANCE) followed by its V step = where it and NISAR agree, with the %
+const RN = { gfm: ['GFM', 'Copernicus GFM (Sentinel-1 radar)'], dswx: ['NASA DSWx', 'NASA’s OPERA DSWx map (optical, 30 m)'],
+             lance: ['NASA LANCE', 'NASA’s LANCE flood map (VIIRS / MODIS, optical, 250 m)'] };
 function openCheck(eid, E) {
   const [w, s, e, n] = E.bbox, B = L.latLngBounds([[s, w], [n, e]]), base = `../../events/${eid}/`;
   const T = E.passes.filter(p => p.validation).map(p => ({ date: p.date, p, stats: {} }));
   const day = T.length ? T[T.length - 1].date : E.summary.pass_date;   // open on the latest pass (the headline % is all passes)
-  const V = E.validation || {}, RN = { gfm: ['GFM', 'Copernicus GFM (Sentinel-1 radar)'], dswx: ['NASA', 'NASA’s flood map (OPERA DSWx, optical, 30 m)'],
-                                        lance: ['NASA', 'NASA’s LANCE flood map (VIIRS / MODIS, optical, 250 m)'] };
-  const rk = ['gfm', 'dswx', 'lance'].find(k => V[k] && E.layers[`agreement_${k}`]) || ['gfm', 'dswx', 'lance'].find(k => V[k]);
-  const ORDER = ['photo', `${rk}_water`, 'nisar_open', `agreement_${rk}`];
-  S = { bundle: true, check: true, rk, id: 'ev-' + eid, E, T, B, t: Math.max(0, T.findIndex(x => x.date === day)),
+  const V = E.validation || {}, refs = ['gfm', 'dswx', 'lance'].filter(k => V[k] && E.layers[`${k}_water`]);
+  const ORDER = ['nisar_open', ...refs.flatMap(k => [`${k}_water`, `agreement_${k}`])];
+  S = { bundle: true, check: true, rk: refs[0], id: 'ev-' + eid, E, T, B, t: Math.max(0, T.findIndex(x => x.date === day)),
         box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, opacity: 0, interactive: false }).addTo(map),
         ev: ORDER.filter(k => E.layers && E.layers[k]).map(k => ({ k, l: E.layers[k], base,
           ov: L.imageOverlay('data:,', L.latLngBounds(E.layers[k].bounds), { pane: 'analysis', interactive: false, opacity: 0 }).addTo(map) })) };
   const pc = x => `${Math.round(x)}%`, has = k => S.ev.some(x => x.k === k), E_ = ks => ks.filter(has).map(k => 'E_' + k);
-  const others = ['gfm', 'dswx', 'lance'].filter(k => k !== rk && V[k]).map(k => `${RN[k][1].split(' (')[0]} ${pc(V[k].agreement_pct)}`);
-  S.steps = [{ label: 'Area', on: E_(['photo']), cap: `${E.place}: a test of NISAR where the official maps can see (no clouds, no "cannot see").` }];
-  if (has(`${rk}_water`)) S.steps.push({ label: RN[rk][0], on: E_([`${rk}_water`]), cap: `${RN[rk][1]}: water, same days.` });
+  S.steps = [{ label: 'Area', on: [], cap: `${E.place}: a test of NISAR where the official maps can see (no clouds, no "cannot see").` }];
   if (has('nisar_open')) S.steps.push({ label: 'NISAR', on: E_(['nisar_open']), nisar: true, cap: 'NISAR’s L-band radar: water it finds.' });
-  if (has(`agreement_${rk}`) && V[rk]) S.steps.push({ label: `V ${pc(V[rk].agreement_pct)}`, on: E_([`agreement_${rk}`]),
-    cap: `Validation: NISAR and ${RN[rk][1].split(' (')[0]} agree on <b>${pc(V[rk].agreement_pct)}</b> of pixels (precision ${V[rk].precision}, recall ${V[rk].recall})`
-       + (others.length ? `; ${others.join(', ')}` : '') + `. Green = both, blue = NISAR only, yellow = ${RN[rk][0]} only.` });
+  refs.forEach(k => {
+    const nm = RN[k][0], A = V[k];
+    S.steps.push({ label: nm, rk: k, on: E_([`${k}_water`]), cap: `${RN[k][1]}: water, same days.` });
+    S.steps.push({ label: `V ${pc(A.agreement_pct)}`, rk: k, on: has(`agreement_${k}`) ? E_([`agreement_${k}`]) : E_([`${k}_water`, 'nisar_open']),
+      cap: `Validation vs ${nm}: NISAR and ${nm} agree on <b>${pc(A.agreement_pct)}</b> of pixels (precision ${A.precision ?? '–'}, recall ${A.recall ?? '–'}, ${A.n_dates} passes).`
+         + (has(`agreement_${k}`) ? ` Green = both, blue = NISAR only, yellow = ${nm} only.` : '') });
+  });
   panel.hidden = false;
   map.flyToBounds(B, { paddingTopLeft: [panel.offsetWidth + 70, 30], paddingBottomRight: [30, 30], duration: 1.2 });
   const S0 = S; map.once('moveend', () => S === S0 && S.box.setStyle({ opacity: 1 }));
   setStep(0);
   window.dispatchEvent(new CustomEvent('unseen:site', { detail: S.id }));
 }
-function renderCheck() {                                // one pass: its layers + this pass's agreement with each NASA map
-  const x = S.T[S.t], on = S.on || new Set(), v = x.p.validation || {}, pc = y => `${Math.round(y)}%`;
+function renderCheck() {                                // one pass: this step's map + this pass's agreement with each official map
+  const st = S.steps[S.step] || {}; if (st.rk) S.rk = st.rk;
+  const x = S.T[S.t], on = S.on || new Set(), v = x.p.validation || {}, pc = y => `${Math.round(y)}%`, nm = RN[S.rk][0];
   $('spD').textContent = fmt(x.date, { day: 'numeric', month: 'short', year: 'numeric' });
-  $('spK').innerHTML = `<i style="background:#2ecc71"></i>both <i style="background:#2882ff"></i>NISAR only <i style="background:#ffd700"></i>${S.rk === 'gfm' ? 'GFM' : 'NASA'} only`;
+  $('spK').innerHTML = `<i style="background:#2ecc71"></i>both <i style="background:#2882ff"></i>NISAR only <i style="background:#ffd700"></i>${nm} only`;
   drawEv(x.date, on);
   $('spL').innerHTML = S.ev.filter(o => on.has('E_' + o.k)).map(o => (o.l.legend && o.l.legend.length ? o.l.legend : [['#888', o.l.label]])
       .map(([c, t]) => `<div><span style="background:${c}"></span>${t}</div>`).join('')).join('')
-    + ['gfm', 'dswx', 'lance'].filter(k => v[k]).map(k => `<div class="sub">${k === 'dswx' ? 'NASA DSWx' : k === 'lance' ? 'NASA LANCE' : 'GFM'} ${fmt(v[k].date)}: `
+    + ['gfm', 'dswx', 'lance'].filter(k => v[k] && (!st.rk || k === st.rk)).map(k => `<div class="sub">${RN[k][0]} ${fmt(v[k].date)}: `
       + `<b>${pc(v[k].agreement_pct)}</b> agree · precision ${v[k].precision} · recall ${v[k].recall} · ${v[k].compared_pct}% of the box compared</div>`).join('');
   cchart();
 }
-function cchart() {                                     // per pass: % agreement with the main reference (bars)
+function cchart() {                                     // per pass: % agreement with this step's official map (bars)
   const c = $('spC'), g = c.getContext('2d'), W = c.clientWidth, H = 78, B = H - 12, top = 4, { T, t } = S, n = T.length;
   c.style.height = H + 'px'; c.width = W * devicePixelRatio; c.height = H * devicePixelRatio; g.scale(devicePixelRatio, devicePixelRatio); g.clearRect(0, 0, W, H);
   const v = T.map(x => ((x.p.validation || {})[S.rk] || {}).agreement_pct || 0), bw = (W - AX) / n, Y = y => B - (B - top) * y / 100;

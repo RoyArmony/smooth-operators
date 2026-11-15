@@ -203,7 +203,8 @@ function renderFeed() {
   $('feed').innerHTML = L_.length ? '' : '<div class="sub" style="padding:10px">Nothing here for this filter / time.</div>';
   // two groups: over the years (CSA RADARSAT-1 → NISAR), then 2026 floods, biggest NISAR gain first
   const G = it => it.site && it.site.gain, rank = it => { const g = G(it); return !g ? -2 : g.pct != null ? g.pct : -1 + (g.nisar_adds_km2 || 0) / 1e6; };
-  const isVal = it => it.site && it.site.kind === 'validation';       // checks where the official maps can see (docs/12 §11)
+  // checks where the official maps can see (docs/12 §11), and the RCM check (Canada's radar, same days) of a 2026 flood
+  const isVal = it => it.site && !it.site.history && (it.site.kind === 'validation' || !!(G(it) && G(it).val && G(it).val.rcm));
   const hist = L_.filter(it => it.site && it.site.history), now = L_.filter(it => !(it.site && it.site.history) && !isVal(it)).sort((a, b) => rank(b) - rank(a) || b.date.localeCompare(a.date));
   const val = L_.filter(isVal).sort((a, b) => ((headCheck(G(b)) || {}).agreement_pct || 0) - ((headCheck(G(a)) || {}).agreement_pct || 0));
   const head = t => { const h = document.createElement('div'); h.className = 'fmonth'; h.textContent = t; $('feed').appendChild(h); };
