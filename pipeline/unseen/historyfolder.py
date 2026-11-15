@@ -83,10 +83,11 @@ def build(place):
 
     # 1. every candidate image: RADARSAT-1 scenes + NISAR passes, flood km² from our analysis
     cand = {}
-    for f in rs1_scenes(bbox):
+    mc = case.get("rs1_min_cover", 0.9)            # 0.9 unless the place sets less (few scenes there)
+    for f in rs1_scenes(bbox, min_cover=mc):
         d = f["properties"]["datetime"][:10]
         db = rs1_on_grid(f, grid, shape)
-        if np.isfinite(db).mean() < 0.8:
+        if np.isfinite(db).mean() < min(0.8, mc - 0.1):
             continue
         dy, dx = align(ref, db)
         db = shift(db, dy, dx)
@@ -126,9 +127,13 @@ def build(place):
             lo, hi = np.nanpercentile(db, 2), np.nanpercentile(db, 98)
             W.picture("rs1_radar", d, grey(db, lo, hi), dict(group="radar", sensor="RADARSAT-1 C-band HH (CSA)",
                       label="RADARSAT-1 radar (dark = water)", legend=None, default=True), half=True)   # picture 160 m
-            W.rgba("rs1_flood", d, classes_rgba([(c["flood"], "flood")]), dict(group="result", sensor="RADARSAT-1 (our analysis)",
-                   label="Flood from RADARSAT-1 (our analysis)", legend=[[HEX(C["flood"]), "flood"]], default=True))
-            I["layers"] += ["rs1_radar", "rs1_flood"]
+            I["layers"].append("rs1_radar")
+            if case.get("rs1_flood", True):      # False where the threshold rule has no river/land tiles (see rs1_note)
+                W.rgba("rs1_flood", d, classes_rgba([(c["flood"], "flood")]), dict(group="result", sensor="RADARSAT-1 (our analysis)",
+                       label="Flood from RADARSAT-1 (our analysis)", legend=[[HEX(C["flood"]), "flood"]], default=True))
+                I["layers"].append("rs1_flood")
+            else:
+                I["flood_note"] = case.get("rs1_note")
         else:
             t = c["t"]
             rgb = np.dstack([grey(hh[t], -25, 0), grey(hv[t], -32, -8), grey(hh[t] - hv[t], 0, 15)])
@@ -138,7 +143,7 @@ def build(place):
             W.rgba("nisar_water", d, classes_rgba([(c["flood"], "flood")]), dict(group="result", sensor="NISAR (our analysis)",
                    label="Flood from NISAR (our analysis)", legend=[[HEX(C["flood"]), "flood"]], default=True))
             I["layers"] += ["nisar_rgb", "nisar_water"]
-        I["flood_km2"] = round(float(c["flood"].sum() * px), 1)
+        I["flood_km2"] = round(float(c["flood"].sum() * px), 1) if "flood_note" not in I else None
         I["valid_pct"] = round(100 * float(c["ok"].mean()))
         # optical photo
         if c["sensor"] == "NISAR":
@@ -203,12 +208,20 @@ def build(place):
     years = []
     for y in sorted({i["date"][:4] for i in images}):
         yi = [i for i in images if i["date"][:4] == y]
-        top = max(yi, key=lambda i: i["flood_km2"])
+        top = max(yi, key=lambda i: i["flood_km2"] or 0)
         years.append(dict(year=int(y), sensor=top["sensor"], max_flood_km2=top["flood_km2"], date=top["date"],
                           n_images=len(yi), flood_season_seen=any(i["date"][5:7] in ("08", "09", "10", "11", "12") for i in yi)))
-    wet = [y for y in years if y["flood_season_seen"]]
-    old, new = max((y for y in wet if y["sensor"] == "RADARSAT-1"), key=lambda y: y["max_flood_km2"]), \
-        max((y for y in wet if y["sensor"] == "NISAR"), key=lambda y: y["max_flood_km2"])
+    def top(sensor):      # wettest year of that sensor, flood season preferred (GERD: only a July RADARSAT-1 scene)
+        ys = [y for y in years if y["sensor"] == sensor]
+        return max([y for y in ys if y["flood_season_seen"]] or ys, key=lambda y: y["max_flood_km2"] or 0)
+    old, new = top("RADARSAT-1"), top("NISAR")
+    area = round(float(valid.sum() * px))
+    if old["max_flood_km2"] is None:     # radar picture only (rs1_flood False)
+        sentence = (f"Same {area:,} km² box: RADARSAT-1 picture on {old['date']}; "
+                    f"flood {new['max_flood_km2']:,.0f} km² on {new['date']} (NISAR).")
+    else:
+        sentence = (f"Same {area:,} km² box: flood {old['max_flood_km2']:,.0f} km² on {old['date']} (RADARSAT-1), "
+                    f"{new['max_flood_km2']:,.0f} km² on {new['date']} (NISAR).")
     ev = dict(
         version=2, id=f"{place}/history", kind="history", place=f"{case['name']}, {case['country']}",
         title=f"{case['name']}, {images[0]['date'][:4]}–{images[-1]['date'][:4]}", bbox=list(bbox),
@@ -216,8 +229,7 @@ def build(place):
         sampling=dict(min_gap_days=MIN_GAP_DAYS, rule="each year's wettest image, then others ≥ 30 days from the kept ones",
                       candidates=len(cand), kept=len(images)),
         summary=dict(years=years,
-                     sentence=f"Same {round(float(valid.sum() * px)):,} km² of delta: flood {old['max_flood_km2']:,.0f} km² on "
-                              f"{old['date']} (RADARSAT-1), {new['max_flood_km2']:,.0f} km² on {new['date']} (NISAR).",
+                     sentence=sentence,
                      caveat="Two radars (C-band 1998–2007, L-band 2026) and two methods: compare the pattern, not exact km²."),
         images=images, layers=W.layers,
         method=dict(grid="NISAR GCOV frequency B, 80 m (native); every source resampled onto it before analysis",
@@ -240,7 +252,8 @@ def build(place):
             dict(name="OPERA DSWx-HLS", url="https://www.jpl.nasa.gov/go/opera", credit="NASA/JPL OPERA; data via PO.DAAC")],
     )
     (folder / "event.json").write_text(json.dumps(ev, indent=1, ensure_ascii=False))
-    (folder / "science.md").write_text(SCIENCE.format(title=ev["title"], sentence=ev["summary"]["sentence"], n=len(images)))
+    (folder / "science.md").write_text(SCIENCE.format(title=ev["title"], sentence=ev["summary"]["sentence"], n=len(images),
+                                                      limits=case.get("history_limits", LIMITS)))
     pf = EVENTS_DIR / place / "place.json"
     pl = json.loads(pf.read_text()) if pf.exists() else dict(version=2, id=place, name=case["name"], country=case["country"],
                                                             bbox=list(bbox), floods=[])
@@ -255,17 +268,18 @@ SCIENCE = """# {title}: flood history
 
 {sentence}
 
-**Images:** {n}, about one every month or two (each year's wettest kept). RADARSAT-1 (CSA, C-band) 1998–2007,
-NISAR (L-band) 2026. Each with our flood map, a photo near the same day (MODIS from 2000, HLS in 2026), and the
+**Images:** {n}, about one every month or two (each year's wettest kept). RADARSAT-1 (CSA, C-band),
+NISAR (L-band) 2026 (years: see the image list). Each with our flood map, a photo near the same day (MODIS from 2000, HLS in 2026), and the
 official flood maps where they exist (GFM from 2015, NASA DSWx-HLS from 2023: 2026 only).
 
 **Method:** everything on NISAR's 80 m grid. RADARSAT-1: GCP warp, edge alignment, one threshold per image.
 NISAR: our detector. Flood = water beyond permanent water.
 
-**Limits:** C-band misses some water under rice that L-band sees; one threshold per image vs a calibrated detector:
-compare the pattern (dry vs flood, then vs now), not exact km². Paddies are flooded on purpose; dikes keep some fields
-dry. MODIS is 250 m and often cloudy in the wet season. Audit: docs/10-Results.md.
+**Limits:** {limits}
 """
+LIMITS = """C-band misses some water under rice that L-band sees; one threshold per image vs a calibrated detector:
+compare the pattern (dry vs flood, then vs now), not exact km². Paddies are flooded on purpose; dikes keep some fields
+dry. MODIS is 250 m and often cloudy in the wet season. Audit: docs/10-Results.md."""
 
 
 def main(argv=None):

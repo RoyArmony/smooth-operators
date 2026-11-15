@@ -664,6 +664,39 @@
  ],
  "places": [
   {
+   "id": "gerd-blue-nile-ethiopia",
+   "folder": "gerd-blue-nile-ethiopia",
+   "name": "GERD reservoir, Blue Nile",
+   "country": "Ethiopia",
+   "bbox": [
+    34.9,
+    10.2,
+    35.8,
+    11.35
+   ],
+   "floods": [
+    {
+     "id": "2026-11-flood",
+     "flood_date": "2026-11-02",
+     "title": "GERD reservoir, Blue Nile flood, Nov 2026",
+     "baseline": "dswx",
+     "improvement_pct": 1,
+     "nisar_adds_km2": 4.1,
+     "baseline_flood_km2": 477.5
+    }
+   ],
+   "history": {
+    "id": "history",
+    "first": "1998-07-09",
+    "last": "2026-11-02",
+    "n_images": 5,
+    "sensors": [
+     "NISAR",
+     "RADARSAT-1"
+    ]
+   }
+  },
+  {
    "id": "mekong-delta-vietnam",
    "folder": "mekong-delta-vietnam",
    "name": "Mekong delta",

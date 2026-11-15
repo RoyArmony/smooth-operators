@@ -48,6 +48,7 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 | **GCP** | Ground Control Point | A point with known coordinates used to align an image to the map. |
 | **GDACS** | Global Disaster Alert and Coordination System | UN + EU disaster alert feed (quakes, floods, volcanoes, fires, cyclones) with a free API. |
 | **GDAL** | Geospatial Data Abstraction Library | Open-source tools for reading, converting and reprojecting rasters. |
+| **GERD** | Grand Ethiopian Renaissance Dam | Dam on the Blue Nile, Ethiopia (filling since 2020); one of our event places. |
 | **GFM** | Global Flood Monitoring | Copernicus EMS service: automatic Sentinel-1 flood maps worldwide. |
 | **GIBS** | Global Imagery Browse Services | NASA's ready-made map tiles (images only); Worldview shows them. |
 | **GIS** | Geographic Information System | Mapping software and methods, e.g. QGIS. |

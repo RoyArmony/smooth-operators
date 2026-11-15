@@ -30,6 +30,18 @@ PLACES = {
         viewer_site="mekong-delta-vietnam-83-7",      # its Explorer site: HLS photos on the same grid
         open_hh=-13.0, open_hv=-18.0,                 # detector thresholds calibrated on clear optical days (that site)
         gfm_bundle="mekong-delta-vietnam"),           # v1 bundle: GFM fallback when the GFM server is down
+    "gerd-blue-nile-ethiopia": dict(
+        name="GERD reservoir, Blue Nile", country="Ethiopia", bbox=(34.9, 10.2, 35.8, 11.35),
+        stack_key="gerd-blue-nile-ethiopia-129-7",    # track 129 frame 7 ascending, 11 dual-pol passes Jun-Nov 2026
+        open_hh=-13.0, open_hv=-18.0,                 # Otsu on the 2 Nov 2026 pass: HH -12.4, HV -16.9 dB
+        rs1_min_cover=0.7,                            # history: the only RADARSAT-1 scene (9 Jul 1998) covers 74 %
+        rs1_flood=False,                              # no lake in 1998: the river/land threshold has no river tiles
+        rs1_note="No flood map from RADARSAT-1 here: our threshold is set on tiles holding both permanent water and land, "
+                 "and in 1998 (before the dam) today's lake was dry valley, so the split lands on terrain shadows. Picture only.",
+        history_limits="Only one RADARSAT-1 scene reaches GERD (9 Jul 1998, ScanSAR, 74 % of the box; the dam site is just "
+                       "outside it): a before-the-dam picture, no flood km². The reservoir fills every rainy season, so "
+                       "'flood' here = water beyond the lake on ≥ 90 % of NISAR passes, i.e. how far the lake grows. "
+                       "No GFM (server down at build time). Audit: docs/10-Results.md."),
 }
 WINDOW_DAYS, PHOTO_DAYS, GFM_DAYS, DSWX_DAYS = 30, 5, 2, 3
 

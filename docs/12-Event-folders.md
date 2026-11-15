@@ -211,3 +211,11 @@ the GFM server was down); DSWx-HLS on 4; coherence on 3 (no GUNW pairs for 11 an
 `nisar_adds_km2`, `improvement_pct`), `baselines_missing`, `layers`; `summary.years[]` = per year `max_flood_km2`, its date
 and sensor, `flood_season_seen` (false = dry-season images only); `sampling`, `method`, `sources`.
 `place.json` → `"history": {"id": "history", "first", "last", "n_images", "sensors"}`.
+
+**Noa, 15.11.26 12:38:41 says:** second place: `events/gerd-blue-nile-ethiopia/` (GERD reservoir, Blue Nile).
+NISAR track 129 frame 7, 11 dual-pol passes (23 Jun → 2 Nov 2026); thresholds HH −13 / HV −18 dB (Otsu on 2 Nov: −12.4 / −16.9).
+Flood folder `2026-11-flood`: peak 2 Nov, 3 passes; "flood" = lake beyond its ≥ 90 % core = how far it grows (399 km² by 2 Nov).
+DSWx only (GFM server 502), no photos (no Explorer site). History: RADARSAT-1 has **one** scene here (9 Jul 1998,
+ScanSAR, 74 % of the box, dam just outside), so new place keys `rs1_min_cover` (0.7 here, default 0.9) and `rs1_flood`
+(False: in 1998 the lake was dry valley, the river/land threshold splits terrain shadows, 1,547 km² of false "flood"):
+1998 picture only, plus 4 NISAR images. Size 4 MB; `events/` is now 24.5 MB (over the 20 MB check before this, at 21 MB).
