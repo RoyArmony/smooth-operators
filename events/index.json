@@ -332,39 +332,6 @@
    }
   },
   {
-   "id": "mekong-delta-history",
-   "title": "Mekong delta, 1998–2026",
-   "place": "Mekong delta, Vietnam",
-   "date": "2026-09-23",
-   "bbox": [
-    105.0,
-    10.4,
-    105.6,
-    11.0
-   ],
-   "kind": "story",
-   "headline": {
-    "sentence": "Same delta, 25 years apart: RADARSAT-1 saw 2,830 km² flooded on 2001-08-30; NISAR saw 1,854 km² on 2026-09-23, the official map (GFM) 706 km².",
-    "numbers": [
-     {
-      "label": "Flood 2001 (RADARSAT-1)",
-      "value": 2830.5,
-      "unit": "km²"
-     },
-     {
-      "label": "Flood 2026 (NISAR)",
-      "value": 1854.3,
-      "unit": "km²"
-     },
-     {
-      "label": "Official map, same day (GFM)",
-      "value": 706.0,
-      "unit": "km²"
-     }
-    ]
-   }
-  },
-  {
    "id": "mekong-delta-vietnam",
    "title": "Mekong delta, Vietnam",
    "place": "Mekong delta, Vietnam",
@@ -718,7 +685,16 @@
      "baseline_flood_km2": 706.0
     }
    ],
-   "history": null
+   "history": {
+    "id": "history",
+    "first": "1998-01-10",
+    "last": "2026-10-29",
+    "n_images": 17,
+    "sensors": [
+     "NISAR",
+     "RADARSAT-1"
+    ]
+   }
   }
  ]
 }

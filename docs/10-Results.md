@@ -24,7 +24,7 @@ Flood = water beyond permanent water (dark on ≥ 90 % of NISAR passes). Area = 
 | NISAR vs GFM, same day 2026-09-23 | NISAR 1,854 · GFM 706 · both 550 · only NISAR 1,304 (170 of it in GFM's "cannot see") · only GFM 156 km² | 14.11.26 (Noa) |
 | RADARSAT-1 threshold per image | 31.4–37.1 dB (DN), Otsu on 22–24 river/land tiles; alignment shift to NISAR 0–1 px, except 1998-07-29 (−34, −15) and 2001-11-07 (+42, −4) px | 14.11.26 (Noa) |
 
-| `events/mekong-delta-history/` bundle | headline: flood 2001-08-30 2,830 km² (RADARSAT-1) · 2026-09-23 1,854 km² (NISAR) · GFM same day 706 km²; layers `rs1_water` (17 dates), `agreement` (11 NISAR dates), `rs1_rgb` (4 key dates, 160 m); 3.1 MB. GFM read back from `events/mekong-delta-vietnam` (EODC STAC down, HTTP 502): same numbers as the direct fetch | 15.11.26 (Noa) |
+| ~~`events/mekong-delta-history/` bundle~~ (replaced by `events/mekong-delta-vietnam/history/`, 15.11) | headline: flood 2001-08-30 2,830 km² (RADARSAT-1) · 2026-09-23 1,854 km² (NISAR) · GFM same day 706 km²; layers `rs1_water` (17 dates), `agreement` (11 NISAR dates), `rs1_rgb` (4 key dates, 160 m); 3.1 MB. GFM read back from `events/mekong-delta-vietnam` (EODC STAC down, HTTP 502): same numbers as the direct fetch | 15.11.26 (Noa) |
 
 Caveats: C-band (RADARSAT-1) and L-band (NISAR) see flooded rice differently, and the methods differ (one threshold per
 image vs our calibrated detector), so compare the pattern (dry ≈ 100–350 km², wet ≈ 1,500–2,800 km²), not exact km².
@@ -45,3 +45,17 @@ DSWx-HLS (± 3 d). Permanent water removed. Date (who): 15.11.26 (Noa).
 | 2026-10-17 | 345 | 142 | +41% | 1,031 (2026-10-16) | 811 | +79% |
 
 km². GFM "cannot see" on 2026-09-23: 1,050 km² (all vegetation / city). DSWx % are large because clouds hid most of the box.
+
+## Mekong delta, Vietnam: history folder v2
+
+`python -m unseen.historyfolder mekong-delta-vietnam` → `events/mekong-delta-vietnam/history/`. 17 of 28 images kept
+(each year's wettest, then ≥ 30 days apart). Same grid, detectors and flood definition as above. Date (who): 15.11.26 (Noa).
+
+| Year | Images | Most flood (date, sensor) | Optical | Official maps |
+|---|---|---|---|---|
+| 1998 | 2 | 232 km² (01-10, RADARSAT-1), dry season only | none (before MODIS) | none |
+| 2001 | 2 | 2,830 km² (08-30, RADARSAT-1) | MODIS | none |
+| 2005 | 2 | 2,592 km² (10-27, RADARSAT-1) | MODIS | none |
+| 2006 | 6 | 2,680 km² (10-22, RADARSAT-1); dry 110–343 km² | MODIS | none |
+| 2007 | 1 | 182 km² (05-04, RADARSAT-1), dry season only | MODIS | none |
+| 2026 | 4 | 1,854 km² (09-23, NISAR) | HLS | GFM 706 km², DSWx-HLS 278 km² (09-21; 3,894 km² under cloud) |

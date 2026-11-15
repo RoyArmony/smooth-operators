@@ -292,7 +292,7 @@ def build(case=CASE, use_gfm=True):
         rs1_log=log,
     )
     (out / "site.json").write_text(json.dumps(site, indent=1, ensure_ascii=False))
-    write_event(case, site, masks, grid)
+    # events/ bundle: replaced by events/<place>/history/ (historyfolder.py, docs/12); write_event() kept for reference
     return site
 
 

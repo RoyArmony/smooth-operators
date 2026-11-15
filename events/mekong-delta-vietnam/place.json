@@ -20,5 +20,14 @@
    "baseline_flood_km2": 706.0
   }
  ],
- "history": null
+ "history": {
+  "id": "history",
+  "first": "1998-01-10",
+  "last": "2026-10-29",
+  "n_images": 17,
+  "sensors": [
+   "NISAR",
+   "RADARSAT-1"
+  ]
+ }
 }

@@ -16,7 +16,7 @@ events/
       event.json                     # the metadata: results + display hints (§4)
       science.md                     # short method + limits, for the science drawer
       layers/<layer>_<YYYY-MM-DD>.png|jpg  # one picture per layer per date (§3), EPSG:4326, ≤ 2048 px
-    history/                         # over the years (RADARSAT-1 …): format later
+    history/                         # over the years: RADARSAT-1 + NISAR, one image every month or two (§10)
 ```
 
 - `<place>`: lower-case words with `-`. `<flood>`: `YYYY-MM-flood` (month of the flood peak); a second flood
@@ -186,3 +186,28 @@ Keep `nisar_hh` / `nisar_hv` at half resolution, and store only `nisar_rgb` if w
 mekong-delta-vietnam`). Flood date 23 Sep 2026, window 24 Aug → 23 Oct, 5 passes. GFM on all 5 (read from the v1 bundle:
 the GFM server was down); DSWx-HLS on 4; coherence on 3 (no GUNW pairs for 11 and 23 Sep); 4.6 MB. The Explorer card
 (Roy) already reads its `summary`. `hand` and "low confidence" for still-unknown are not built yet.
+
+## 10. `history/`: the place over the years
+
+**Noa, 15.11.26 12:24:31 says:** format of the over-the-years folder, first one built: `events/mekong-delta-vietnam/history/`
+(`python -m unseen.historyfolder mekong-delta-vietnam`).
+
+- **Images:** every RADARSAT-1 (CSA, 1996–2013) scene covering ≥ 90 % of the box, plus the NISAR passes. Kept: each year's
+  wettest image, then others ≥ 30 days from the kept ones (about one every month or two).
+- **Per image:** the radar picture, **our flood map from that radar** (RADARSAT-1 or NISAR), an optical photo near the
+  same day, and the official flood maps **where they exist**, each with km².
+
+| Layer | What | Dates |
+|---|---|---|
+| `rs1_radar` | RADARSAT-1 HH picture (160 m picture; analysis at 80 m) | RADARSAT-1 dates |
+| `rs1_flood` | flood from RADARSAT-1 (our analysis) | RADARSAT-1 dates |
+| `nisar_rgb`, `nisar_water` | NISAR picture, flood from NISAR (our analysis) | NISAR dates |
+| `photo_modis` | MODIS Terra/Aqua true colour, least cloudy within ± 3 d (250 m, NASA GIBS) | from 2000 |
+| `photo` | HLS true colour, clearest within ± 5 d | 2026 |
+| `gfm_classes`, `dswx_classes`, `nisar_adds` | official maps segmented (§3a) + NISAR addition | GFM from 2015, DSWx-HLS from 2023 |
+
+`event.json` (`"kind": "history"`): `images[]` with, per image, `date`, `sensor`, `flood_km2` (our analysis), `optical`
+(`date`, `source`, `cloud_pct` = bright cloud only, not haze), `baselines` (as in §4: `flood_km2`, `cannot_see_km2` …,
+`nisar_adds_km2`, `improvement_pct`), `baselines_missing`, `layers`; `summary.years[]` = per year `max_flood_km2`, its date
+and sensor, `flood_season_seen` (false = dry-season images only); `sampling`, `method`, `sources`.
+`place.json` → `"history": {"id": "history", "first", "last", "n_images", "sensors"}`.

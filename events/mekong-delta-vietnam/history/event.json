@@ -1,0 +1,969 @@
+{
+ "version": 2,
+ "id": "mekong-delta-vietnam/history",
+ "kind": "history",
+ "place": "Mekong delta, Vietnam",
+ "title": "Mekong delta, 1998–2026",
+ "bbox": [
+  105.0,
+  10.4,
+  105.6,
+  11.0
+ ],
+ "area_km2": 4366,
+ "sampling": {
+  "min_gap_days": 30,
+  "rule": "each year's wettest image, then others ≥ 30 days from the kept ones",
+  "candidates": 28,
+  "kept": 17
+ },
+ "summary": {
+  "years": [
+   {
+    "year": 1998,
+    "sensor": "RADARSAT-1",
+    "max_flood_km2": 232.2,
+    "date": "1998-01-10",
+    "n_images": 2,
+    "flood_season_seen": false
+   },
+   {
+    "year": 2001,
+    "sensor": "RADARSAT-1",
+    "max_flood_km2": 2830.5,
+    "date": "2001-08-30",
+    "n_images": 2,
+    "flood_season_seen": true
+   },
+   {
+    "year": 2005,
+    "sensor": "RADARSAT-1",
+    "max_flood_km2": 2592.4,
+    "date": "2005-10-27",
+    "n_images": 2,
+    "flood_season_seen": true
+   },
+   {
+    "year": 2006,
+    "sensor": "RADARSAT-1",
+    "max_flood_km2": 2680.4,
+    "date": "2006-10-22",
+    "n_images": 6,
+    "flood_season_seen": true
+   },
+   {
+    "year": 2007,
+    "sensor": "RADARSAT-1",
+    "max_flood_km2": 182.2,
+    "date": "2007-05-04",
+    "n_images": 1,
+    "flood_season_seen": false
+   },
+   {
+    "year": 2026,
+    "sensor": "NISAR",
+    "max_flood_km2": 1854.3,
+    "date": "2026-09-23",
+    "n_images": 4,
+    "flood_season_seen": true
+   }
+  ],
+  "sentence": "Same 4,366 km² of delta: flood 2,830 km² on 2001-08-30 (RADARSAT-1), 1,854 km² on 2026-09-23 (NISAR).",
+  "caveat": "Two radars (C-band 1998–2007, L-band 2026) and two methods: compare the pattern, not exact km²."
+ },
+ "images": [
+  {
+   "date": "1998-01-10",
+   "sensor": "RADARSAT-1",
+   "radar": {
+    "beam": "S7",
+    "orbit": "descending",
+    "scene": "RS1_11410_ST7_F423_19980110_223949_HH_GRF.tif",
+    "threshold_db": 31.4,
+    "split_tiles": 24,
+    "shift_px": [
+     1,
+     1
+    ]
+   },
+   "layers": [
+    "rs1_radar",
+    "rs1_flood"
+   ],
+   "optical": null,
+   "baselines": {},
+   "flood_km2": 232.2,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm",
+    "dswx"
+   ]
+  },
+  {
+   "date": "1998-07-29",
+   "sensor": "RADARSAT-1",
+   "radar": {
+    "beam": "SCWA",
+    "orbit": "descending",
+    "scene": "RS1_14262_SWA_F027_19980729_111716_HH_GRF.tif",
+    "threshold_db": 37.1,
+    "split_tiles": 24,
+    "shift_px": [
+     -34,
+     -15
+    ]
+   },
+   "layers": [
+    "rs1_radar",
+    "rs1_flood"
+   ],
+   "optical": null,
+   "baselines": {},
+   "flood_km2": 126.6,
+   "valid_pct": 94,
+   "baselines_missing": [
+    "gfm",
+    "dswx"
+   ]
+  },
+  {
+   "date": "2001-08-30",
+   "sensor": "RADARSAT-1",
+   "radar": {
+    "beam": "SCNB",
+    "orbit": "ascending",
+    "scene": "RS1_M0260985_SCNB_20010830_111621_HH_SCN.tif",
+    "threshold_db": 33.2,
+    "split_tiles": 24,
+    "shift_px": [
+     0,
+     1
+    ]
+   },
+   "layers": [
+    "rs1_radar",
+    "rs1_flood",
+    "photo_modis"
+   ],
+   "optical": {
+    "date": "2001-09-02",
+    "source": "MODIS Terra",
+    "cloud_pct": 0
+   },
+   "baselines": {},
+   "flood_km2": 2830.5,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm",
+    "dswx"
+   ]
+  },
+  {
+   "date": "2001-11-07",
+   "sensor": "RADARSAT-1",
+   "radar": {
+    "beam": "SCNA",
+    "orbit": "descending",
+    "scene": "RS1_31369_SNA_F027_20011107_110349_HH_GRF.tif",
+    "threshold_db": 34.8,
+    "split_tiles": 22,
+    "shift_px": [
+     42,
+     -4
+    ]
+   },
+   "layers": [
+    "rs1_radar",
+    "rs1_flood",
+    "photo_modis"
+   ],
+   "optical": {
+    "date": "2001-11-07",
+    "source": "MODIS Terra",
+    "cloud_pct": 0
+   },
+   "baselines": {},
+   "flood_km2": 2421.7,
+   "valid_pct": 94,
+   "baselines_missing": [
+    "gfm",
+    "dswx"
+   ]
+  },
+  {
+   "date": "2005-09-02",
+   "sensor": "RADARSAT-1",
+   "radar": {
+    "beam": "SCNB",
+    "orbit": "ascending",
+    "scene": "RS1_P0425108_SCNB_20050902_111446_HH_SCN.tif",
+    "threshold_db": 35.2,
+    "split_tiles": 24,
+    "shift_px": [
+     -1,
+     0
+    ]
+   },
+   "layers": [
+    "rs1_radar",
+    "rs1_flood",
+    "photo_modis"
+   ],
+   "optical": {
+    "date": "2005-09-02",
+    "source": "MODIS Terra",
+    "cloud_pct": 3
+   },
+   "baselines": {},
+   "flood_km2": 2491.2,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm",
+    "dswx"
+   ]
+  },
+  {
+   "date": "2005-10-27",
+   "sensor": "RADARSAT-1",
+   "radar": {
+    "beam": "SCNB",
+    "orbit": "ascending",
+    "scene": "RS1_P0430805_SCNB_20051027_110903_HH_SCN.tif",
+    "threshold_db": 34.7,
+    "split_tiles": 24,
+    "shift_px": [
+     -1,
+     1
+    ]
+   },
+   "layers": [
+    "rs1_radar",
+    "rs1_flood",
+    "photo_modis"
+   ],
+   "optical": {
+    "date": "2005-10-29",
+    "source": "MODIS Terra",
+    "cloud_pct": 1
+   },
+   "baselines": {},
+   "flood_km2": 2592.4,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm",
+    "dswx"
+   ]
+  },
+  {
+   "date": "2006-03-13",
+   "sensor": "RADARSAT-1",
+   "radar": {
+    "beam": "SCNB",
+    "orbit": "ascending",
+    "scene": "RS1_P0448573_SCNB_20060313_111256_HH_SCN.tif",
+    "threshold_db": 35.4,
+    "split_tiles": 24,
+    "shift_px": [
+     0,
+     0
+    ]
+   },
+   "layers": [
+    "rs1_radar",
+    "rs1_flood",
+    "photo_modis"
+   ],
+   "optical": {
+    "date": "2006-03-11",
+    "source": "MODIS Aqua",
+    "cloud_pct": 0
+   },
+   "baselines": {},
+   "flood_km2": 115.3,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm",
+    "dswx"
+   ]
+  },
+  {
+   "date": "2006-04-30",
+   "sensor": "RADARSAT-1",
+   "radar": {
+    "beam": "SCNB",
+    "orbit": "ascending",
+    "scene": "RS1_P0451867_SCNB_20060430_111256_HH_SCN.tif",
+    "threshold_db": 34.6,
+    "split_tiles": 24,
+    "shift_px": [
+     0,
+     0
+    ]
+   },
+   "layers": [
+    "rs1_radar",
+    "rs1_flood",
+    "photo_modis"
+   ],
+   "optical": {
+    "date": "2006-04-27",
+    "source": "MODIS Terra",
+    "cloud_pct": 0
+   },
+   "baselines": {},
+   "flood_km2": 343.2,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm",
+    "dswx"
+   ]
+  },
+  {
+   "date": "2006-06-17",
+   "sensor": "RADARSAT-1",
+   "radar": {
+    "beam": "SCNB",
+    "orbit": "ascending",
+    "scene": "RS1_P0456974_SCNB_20060617_111255_HH_SCN.tif",
+    "threshold_db": 37.0,
+    "split_tiles": 24,
+    "shift_px": [
+     0,
+     0
+    ]
+   },
+   "layers": [
+    "rs1_radar",
+    "rs1_flood",
+    "photo_modis"
+   ],
+   "optical": {
+    "date": "2006-06-14",
+    "source": "MODIS Terra",
+    "cloud_pct": 0
+   },
+   "baselines": {},
+   "flood_km2": 110.4,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm",
+    "dswx"
+   ]
+  },
+  {
+   "date": "2006-08-28",
+   "sensor": "RADARSAT-1",
+   "radar": {
+    "beam": "SCNB",
+    "orbit": "ascending",
+    "scene": "RS1_P0467456_SCNB_20060828_111249_HH_SCN.tif",
+    "threshold_db": 35.4,
+    "split_tiles": 24,
+    "shift_px": [
+     -1,
+     0
+    ]
+   },
+   "layers": [
+    "rs1_radar",
+    "rs1_flood",
+    "photo_modis"
+   ],
+   "optical": {
+    "date": "2006-08-28",
+    "source": "MODIS Aqua",
+    "cloud_pct": 6
+   },
+   "baselines": {},
+   "flood_km2": 2435.4,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm",
+    "dswx"
+   ]
+  },
+  {
+   "date": "2006-10-22",
+   "sensor": "RADARSAT-1",
+   "radar": {
+    "beam": "SCNB",
+    "orbit": "ascending",
+    "scene": "RS1_P0475489_SCNB_20061022_110839_HH_SCN.tif",
+    "threshold_db": 33.7,
+    "split_tiles": 24,
+    "shift_px": [
+     -1,
+     0
+    ]
+   },
+   "layers": [
+    "rs1_radar",
+    "rs1_flood",
+    "photo_modis"
+   ],
+   "optical": {
+    "date": "2006-10-25",
+    "source": "MODIS Terra",
+    "cloud_pct": 0
+   },
+   "baselines": {},
+   "flood_km2": 2680.4,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm",
+    "dswx"
+   ]
+  },
+  {
+   "date": "2006-12-02",
+   "sensor": "RADARSAT-1",
+   "radar": {
+    "beam": "SCNB",
+    "orbit": "ascending",
+    "scene": "RS1_P0483329_SCNB_20061202_111246_HH_SCN.tif",
+    "threshold_db": 34.7,
+    "split_tiles": 24,
+    "shift_px": [
+     -1,
+     0
+    ]
+   },
+   "layers": [
+    "rs1_radar",
+    "rs1_flood",
+    "photo_modis"
+   ],
+   "optical": {
+    "date": "2006-12-04",
+    "source": "MODIS Terra",
+    "cloud_pct": 0
+   },
+   "baselines": {},
+   "flood_km2": 1733.4,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm",
+    "dswx"
+   ]
+  },
+  {
+   "date": "2007-05-04",
+   "sensor": "RADARSAT-1",
+   "radar": {
+    "beam": "SCNB",
+    "orbit": "descending",
+    "scene": "RS1_P2508548_SCNB_20070504_224116_HH_SCN.tif",
+    "threshold_db": 34.1,
+    "split_tiles": 24,
+    "shift_px": [
+     0,
+     0
+    ]
+   },
+   "layers": [
+    "rs1_radar",
+    "rs1_flood",
+    "photo_modis"
+   ],
+   "optical": {
+    "date": "2007-05-04",
+    "source": "MODIS Aqua",
+    "cloud_pct": 1
+   },
+   "baselines": {},
+   "flood_km2": 182.2,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm",
+    "dswx"
+   ]
+  },
+  {
+   "date": "2026-06-19",
+   "sensor": "NISAR",
+   "radar": {
+    "band": "L, frequency B (80 m)"
+   },
+   "layers": [
+    "nisar_rgb",
+    "nisar_water",
+    "photo",
+    "gfm_classes",
+    "nisar_adds",
+    "dswx_classes"
+   ],
+   "optical": {
+    "date": "2026-06-15",
+    "source": "HLS",
+    "cloud_pct": 34
+   },
+   "baselines": {
+    "gfm": {
+     "date": "2026-06-18",
+     "flood_km2": 48.6,
+     "cannot_see_km2": 1060.1,
+     "cannot_see_clouds_km2": 0.0,
+     "cannot_see_vegetation_km2": 1060.1,
+     "nisar_adds_km2": 38.6,
+     "improvement_pct": 79
+    },
+    "dswx": {
+     "date": "2026-06-18",
+     "flood_km2": 57.7,
+     "cannot_see_km2": 3409.4,
+     "cannot_see_clouds_km2": 3409.4,
+     "cannot_see_vegetation_km2": 0.0,
+     "nisar_adds_km2": 286.3,
+     "improvement_pct": 496
+    }
+   },
+   "flood_km2": 351.7,
+   "valid_pct": 100,
+   "baselines_missing": []
+  },
+  {
+   "date": "2026-07-25",
+   "sensor": "NISAR",
+   "radar": {
+    "band": "L, frequency B (80 m)"
+   },
+   "layers": [
+    "nisar_rgb",
+    "nisar_water",
+    "photo",
+    "gfm_classes",
+    "nisar_adds",
+    "dswx_classes"
+   ],
+   "optical": {
+    "date": "2026-07-25",
+    "source": "HLS",
+    "cloud_pct": 61
+   },
+   "baselines": {
+    "gfm": {
+     "date": "2026-07-25",
+     "flood_km2": 7.2,
+     "cannot_see_km2": 921.6,
+     "cannot_see_clouds_km2": 0.0,
+     "cannot_see_vegetation_km2": 921.6,
+     "nisar_adds_km2": 17.1,
+     "improvement_pct": 236
+    },
+    "dswx": {
+     "date": "2026-07-25",
+     "flood_km2": 294.9,
+     "cannot_see_km2": 2814.7,
+     "cannot_see_clouds_km2": 2814.7,
+     "cannot_see_vegetation_km2": 0.0,
+     "nisar_adds_km2": 129.8,
+     "improvement_pct": 44
+    }
+   },
+   "flood_km2": 238.1,
+   "valid_pct": 100,
+   "baselines_missing": []
+  },
+  {
+   "date": "2026-09-23",
+   "sensor": "NISAR",
+   "radar": {
+    "band": "L, frequency B (80 m)"
+   },
+   "layers": [
+    "nisar_rgb",
+    "nisar_water",
+    "photo",
+    "gfm_classes",
+    "nisar_adds",
+    "dswx_classes"
+   ],
+   "optical": {
+    "date": "2026-09-18",
+    "source": "HLS",
+    "cloud_pct": 38
+   },
+   "baselines": {
+    "gfm": {
+     "date": "2026-09-23",
+     "flood_km2": 706.0,
+     "cannot_see_km2": 1049.9,
+     "cannot_see_clouds_km2": 0.0,
+     "cannot_see_vegetation_km2": 1049.9,
+     "nisar_adds_km2": 169.7,
+     "improvement_pct": 24
+    },
+    "dswx": {
+     "date": "2026-09-21",
+     "flood_km2": 278.4,
+     "cannot_see_km2": 3893.5,
+     "cannot_see_clouds_km2": 3893.5,
+     "cannot_see_vegetation_km2": 0.0,
+     "nisar_adds_km2": 1617.6,
+     "improvement_pct": 581
+    }
+   },
+   "flood_km2": 1854.3,
+   "valid_pct": 100,
+   "baselines_missing": []
+  },
+  {
+   "date": "2026-10-29",
+   "sensor": "NISAR",
+   "radar": {
+    "band": "L, frequency B (80 m)"
+   },
+   "layers": [
+    "nisar_rgb",
+    "nisar_water",
+    "photo",
+    "gfm_classes",
+    "nisar_adds",
+    "dswx_classes"
+   ],
+   "optical": {
+    "date": "2026-10-26",
+    "source": "HLS",
+    "cloud_pct": 60
+   },
+   "baselines": {
+    "gfm": {
+     "date": "2026-10-29",
+     "flood_km2": 291.3,
+     "cannot_see_km2": 1051.9,
+     "cannot_see_clouds_km2": 0.0,
+     "cannot_see_vegetation_km2": 1051.9,
+     "nisar_adds_km2": 120.3,
+     "improvement_pct": 41
+    },
+    "dswx": {
+     "date": "2026-10-29",
+     "flood_km2": 202.1,
+     "cannot_see_km2": 1986.2,
+     "cannot_see_clouds_km2": 1986.2,
+     "cannot_see_vegetation_km2": 0.0,
+     "nisar_adds_km2": 551.9,
+     "improvement_pct": 273
+    }
+   },
+   "flood_km2": 1434.2,
+   "valid_pct": 100,
+   "baselines_missing": []
+  }
+ ],
+ "layers": {
+  "rs1_radar": {
+   "group": "radar",
+   "sensor": "RADARSAT-1 C-band HH (CSA)",
+   "label": "RADARSAT-1 radar (dark = water)",
+   "legend": null,
+   "default": true,
+   "files": {
+    "1998-01-10": "layers/rs1_radar_1998-01-10.jpg",
+    "1998-07-29": "layers/rs1_radar_1998-07-29.jpg",
+    "2001-08-30": "layers/rs1_radar_2001-08-30.jpg",
+    "2001-11-07": "layers/rs1_radar_2001-11-07.jpg",
+    "2005-09-02": "layers/rs1_radar_2005-09-02.jpg",
+    "2005-10-27": "layers/rs1_radar_2005-10-27.jpg",
+    "2006-03-13": "layers/rs1_radar_2006-03-13.jpg",
+    "2006-04-30": "layers/rs1_radar_2006-04-30.jpg",
+    "2006-06-17": "layers/rs1_radar_2006-06-17.jpg",
+    "2006-08-28": "layers/rs1_radar_2006-08-28.jpg",
+    "2006-10-22": "layers/rs1_radar_2006-10-22.jpg",
+    "2006-12-02": "layers/rs1_radar_2006-12-02.jpg",
+    "2007-05-04": "layers/rs1_radar_2007-05-04.jpg"
+   },
+   "bounds": [
+    [
+     10.3989,
+     104.99963
+    ],
+    [
+     11.00127,
+     105.602
+    ]
+   ]
+  },
+  "rs1_flood": {
+   "group": "result",
+   "sensor": "RADARSAT-1 (our analysis)",
+   "label": "Flood from RADARSAT-1 (our analysis)",
+   "legend": [
+    [
+     "#2882ff",
+     "flood"
+    ]
+   ],
+   "default": true,
+   "files": {
+    "1998-01-10": "layers/rs1_flood_1998-01-10.png",
+    "1998-07-29": "layers/rs1_flood_1998-07-29.png",
+    "2001-08-30": "layers/rs1_flood_2001-08-30.png",
+    "2001-11-07": "layers/rs1_flood_2001-11-07.png",
+    "2005-09-02": "layers/rs1_flood_2005-09-02.png",
+    "2005-10-27": "layers/rs1_flood_2005-10-27.png",
+    "2006-03-13": "layers/rs1_flood_2006-03-13.png",
+    "2006-04-30": "layers/rs1_flood_2006-04-30.png",
+    "2006-06-17": "layers/rs1_flood_2006-06-17.png",
+    "2006-08-28": "layers/rs1_flood_2006-08-28.png",
+    "2006-10-22": "layers/rs1_flood_2006-10-22.png",
+    "2006-12-02": "layers/rs1_flood_2006-12-02.png",
+    "2007-05-04": "layers/rs1_flood_2007-05-04.png"
+   },
+   "bounds": [
+    [
+     10.39927,
+     105.0
+    ],
+    [
+     11.00091,
+     105.60091
+    ]
+   ]
+  },
+  "photo_modis": {
+   "group": "optical",
+   "sensor": "MODIS Terra / Aqua via NASA GIBS",
+   "label": "Optical photo (MODIS, 250 m)",
+   "legend": null,
+   "default": false,
+   "files": {
+    "2001-09-02": "layers/photo_modis_2001-09-02.jpg",
+    "2001-11-07": "layers/photo_modis_2001-11-07.jpg",
+    "2005-09-02": "layers/photo_modis_2005-09-02.jpg",
+    "2005-10-29": "layers/photo_modis_2005-10-29.jpg",
+    "2006-03-11": "layers/photo_modis_2006-03-11.jpg",
+    "2006-04-27": "layers/photo_modis_2006-04-27.jpg",
+    "2006-06-14": "layers/photo_modis_2006-06-14.jpg",
+    "2006-08-28": "layers/photo_modis_2006-08-28.jpg",
+    "2006-10-25": "layers/photo_modis_2006-10-25.jpg",
+    "2006-12-04": "layers/photo_modis_2006-12-04.jpg",
+    "2007-05-04": "layers/photo_modis_2007-05-04.jpg"
+   },
+   "bounds": [
+    [
+     10.4,
+     105.0
+    ],
+    [
+     11.0,
+     105.6
+    ]
+   ]
+  },
+  "nisar_rgb": {
+   "group": "radar",
+   "sensor": "NISAR L-band GCOV",
+   "label": "NISAR radar (R = HH, G = HV, B = HH/HV)",
+   "legend": null,
+   "default": true,
+   "files": {
+    "2026-06-19": "layers/nisar_rgb_2026-06-19.jpg",
+    "2026-07-25": "layers/nisar_rgb_2026-07-25.jpg",
+    "2026-09-23": "layers/nisar_rgb_2026-09-23.jpg",
+    "2026-10-29": "layers/nisar_rgb_2026-10-29.jpg"
+   },
+   "bounds": [
+    [
+     10.3989,
+     104.99963
+    ],
+    [
+     11.00127,
+     105.602
+    ]
+   ]
+  },
+  "nisar_water": {
+   "group": "result",
+   "sensor": "NISAR (our analysis)",
+   "label": "Flood from NISAR (our analysis)",
+   "legend": [
+    [
+     "#2882ff",
+     "flood"
+    ]
+   ],
+   "default": true,
+   "files": {
+    "2026-06-19": "layers/nisar_water_2026-06-19.png",
+    "2026-07-25": "layers/nisar_water_2026-07-25.png",
+    "2026-09-23": "layers/nisar_water_2026-09-23.png",
+    "2026-10-29": "layers/nisar_water_2026-10-29.png"
+   },
+   "bounds": [
+    [
+     10.39927,
+     105.0
+    ],
+    [
+     11.00091,
+     105.60091
+    ]
+   ]
+  },
+  "photo": {
+   "group": "optical",
+   "sensor": "HLS (Landsat / Sentinel-2) via NASA GIBS",
+   "label": "Optical photo (HLS, 30 m)",
+   "legend": null,
+   "default": false,
+   "files": {
+    "2026-06-15": "layers/photo_2026-06-15.jpg",
+    "2026-07-25": "layers/photo_2026-07-25.jpg",
+    "2026-09-18": "layers/photo_2026-09-18.jpg",
+    "2026-10-26": "layers/photo_2026-10-26.jpg"
+   },
+   "bounds": [
+    [
+     10.3989,
+     104.99963
+    ],
+    [
+     11.00127,
+     105.602
+    ]
+   ]
+  },
+  "gfm_classes": {
+   "group": "baseline",
+   "sensor": "Sentinel-1 (Copernicus GFM)",
+   "label": "Official flood map (GFM)",
+   "legend": [
+    [
+     "#2882ff",
+     "flood"
+    ],
+    [
+     "#0a3a8c",
+     "permanent water"
+    ],
+    [
+     "#8c8c96",
+     "cannot see here"
+    ]
+   ],
+   "default": true,
+   "files": {
+    "2026-06-18": "layers/gfm_classes_2026-06-18.png",
+    "2026-07-25": "layers/gfm_classes_2026-07-25.png",
+    "2026-09-23": "layers/gfm_classes_2026-09-23.png",
+    "2026-10-29": "layers/gfm_classes_2026-10-29.png"
+   },
+   "bounds": [
+    [
+     10.39927,
+     105.0
+    ],
+    [
+     11.00091,
+     105.60091
+    ]
+   ]
+  },
+  "nisar_adds": {
+   "group": "result",
+   "sensor": "NISAR L-band",
+   "label": "NISAR addition: water in the blank",
+   "legend": [
+    [
+     "#ff9a2e",
+     "NISAR addition"
+    ]
+   ],
+   "default": true,
+   "files": {
+    "2026-06-19": "layers/nisar_adds_2026-06-19.png",
+    "2026-07-25": "layers/nisar_adds_2026-07-25.png",
+    "2026-09-23": "layers/nisar_adds_2026-09-23.png",
+    "2026-10-29": "layers/nisar_adds_2026-10-29.png"
+   },
+   "bounds": [
+    [
+     10.39927,
+     105.0
+    ],
+    [
+     11.00091,
+     105.60091
+    ]
+   ]
+  },
+  "dswx_classes": {
+   "group": "baseline",
+   "sensor": "OPERA DSWx-HLS (NASA)",
+   "label": "NASA flood map (OPERA DSWx-HLS)",
+   "legend": [
+    [
+     "#2882ff",
+     "flood"
+    ],
+    [
+     "#0a3a8c",
+     "permanent water"
+    ],
+    [
+     "#ebebf0",
+     "cannot see here"
+    ]
+   ],
+   "default": false,
+   "files": {
+    "2026-06-18": "layers/dswx_classes_2026-06-18.png",
+    "2026-07-25": "layers/dswx_classes_2026-07-25.png",
+    "2026-09-21": "layers/dswx_classes_2026-09-21.png",
+    "2026-10-29": "layers/dswx_classes_2026-10-29.png"
+   },
+   "bounds": [
+    [
+     10.39927,
+     105.0
+    ],
+    [
+     11.00091,
+     105.60091
+    ]
+   ]
+  }
+ },
+ "method": {
+  "grid": "NISAR GCOV frequency B, 80 m (native); every source resampled onto it before analysis",
+  "rs1": "RADARSAT-1 HH warped with its GCPs, aligned to NISAR by edges, one threshold per image (Otsu on tiles with both river and land)",
+  "nisar": "detect.py v2, thresholds HH -13.0 / HV -18.0 dB (calibrated on clear optical days)",
+  "flood": "water beyond permanent water (dark on ≥ 90 % of NISAR passes); area = pixels × 80 m × 80 m",
+  "optical": "MODIS (250 m) least cloudy day within ± 3 d for 2000–2013; HLS (30 m) clearest within ± 5 d for 2026; none before 2000",
+  "baselines": "GFM (Sentinel-1) exists from 2015, NASA OPERA DSWx-HLS from 2023: only on NISAR dates"
+ },
+ "sources": [
+  {
+   "name": "RADARSAT-1 L1 (EODMS / AWS)",
+   "url": "https://registry.opendata.aws/radarsat-1/",
+   "credit": "RADARSAT-1 data © Canadian Space Agency; Open Government Licence – Canada"
+  },
+  {
+   "name": "NISAR L2 GCOV",
+   "url": "https://search.asf.alaska.edu",
+   "credit": "NASA/JPL-Caltech, ISRO; data via ASF DAAC"
+  },
+  {
+   "name": "MODIS Terra / Aqua Corrected Reflectance via NASA GIBS",
+   "url": "https://earthdata.nasa.gov/gibs",
+   "credit": "NASA EOSDIS GIBS / LANCE"
+  },
+  {
+   "name": "HLS true colour via NASA GIBS",
+   "url": "https://earthdata.nasa.gov/gibs",
+   "credit": "NASA EOSDIS GIBS; HLS (NASA / USGS Landsat, ESA Copernicus Sentinel-2)"
+  },
+  {
+   "name": "Copernicus EMS Global Flood Monitoring",
+   "url": "https://global-flood.emergency.copernicus.eu",
+   "credit": "© European Union, Copernicus Emergency Management Service"
+  },
+  {
+   "name": "OPERA DSWx-HLS",
+   "url": "https://www.jpl.nasa.gov/go/opera",
+   "credit": "NASA/JPL OPERA; data via PO.DAAC"
+  }
+ ]
+}
