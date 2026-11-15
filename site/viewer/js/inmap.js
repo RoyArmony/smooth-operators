@@ -33,8 +33,8 @@ async function openSite(id) {
   const nw = x => x.new_water ?? x.nisar_water ?? 0, hid = x => x.hidden_new ?? x.hidden_clouds ?? 0;
   const peak = D.summary.reduce((b, x, i) => nw(x) > nw(D.summary[b]) ? i : b, 0);
   S = { id, D, A, B, photos, nw, hid, t: D.hazard && ['WF', 'VO', 'EQ'].includes(D.hazard) ? D.frames.length - 1 : peak, b: 'nisar',
-        base: L.imageOverlay(A(D.frames[0].nisar), B, { pane: 'analysis', interactive: false }).addTo(map),
-        over: L.imageOverlay(A(D.frames[0].hidden), B, { pane: 'analysis', interactive: false }).addTo(map),
+        base: L.imageOverlay('data:,', B, { pane: 'analysis', interactive: false, opacity: 0 }).addTo(map),   // hidden until a step uses it (no raw-radar flash while loading)
+        over: L.imageOverlay('data:,', B, { pane: 'analysis', interactive: false, opacity: 0 }).addTo(map),
         box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, opacity: 0, interactive: false }).addTo(map),
         tag: L.marker([B.getSouth(), B.getCenter().lng], { interactive: false, keyboard: false, icon: L.divIcon({ className: 'sptag', html: '<span></span>', iconSize: [0, 0] }) }).addTo(map) };   // which satellite, under the outline
   const N = D.frames.length, cal = D.calibration && D.calibration.used ? D.calibration : null;
@@ -397,13 +397,14 @@ function render() {
   } else if (S.b === 'nisar') { S.base.setUrl(A(f.nisar)); note = f.sensor === 'RADARSAT-1'
       ? `RADARSAT-1 (CSA), C-band HH, beam ${f.beam}. Dark = smooth water.`
       : 'Radar colours: R = HH, G = HV, B = HH/HV. Dark = smooth water.'; }
+  if (S.b === 'none') S.base.setUrl('data:,');            // drop the radar / photo so it can't flash under other layers
   S.base.setOpacity(S.b === 'none' ? 0 : 0.9);
   const tg = S.tag.getElement()?.firstChild, fy = d => fmt(d, { day: 'numeric', month: 'short', year: 'numeric' });
   if (tg) { const txt = S.on && S.on.has('rcm') ? 'RCM (CSA, C-band) 13 Oct 2026 vs NISAR 10 Oct 2026' : S.b === 'photo' && S.pd && note.startsWith('Photo') ? `Optical · NASA HLS (Landsat / Sentinel-2) · ${fy(S.pd)}` : '';
     tg.textContent = txt; tg.style.display = txt ? '' : 'none'; }
   const on = S.on || new Set();
   if (S.rcm) S.rcm.setOpacity(on.has('rcm') ? 1 : 0);
-  S.over.setUrl(A(f.hidden)); S.over.setOpacity(on.has('pass') ? 1 : 0);
+  S.over.setUrl(on.has('pass') ? A(f.hidden) : 'data:,'); S.over.setOpacity(on.has('pass') ? 1 : 0);
   (S.layers || []).forEach((l, i) => l.ov.setOpacity(on.has(`L${i}`) ? 1 : 0));
   const evNote = drawEv(f.date, on);
   let pr = null;
