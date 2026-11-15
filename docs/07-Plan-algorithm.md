@@ -155,7 +155,8 @@ Same passes, same truth (OPERA DSWx-HLS, clear days), same quality check. Mean F
 |---|---|---|
 | One **fixed date** per story (not best pass) | Noa + story owners | P0 |
 | Combined-map layer | Noa | P1 |
-| Fused detector v3 into the pipeline (§2b) + QA check; re-run gap numbers | Noa | P0 |
+| ~~Fused detector v3 into the pipeline (§2b) + QA check~~ done: `pipeline/unseen/fused.py`, default in `unseen site/build` | Noa | P0 |
+| Re-run gap numbers for all sites with v3 (blocked: GFM catalogue down, 15 Nov night) | Noa | P0 |
 | Test v3 on a second site (Everglades EDEN or Mekong) | Noa | P1 |
 | Export to bundle (`bundle.py`) | Shai | P0 |
 | RCM agreement layer (agree / NISAR only / RCM only) | Roy | P1 |

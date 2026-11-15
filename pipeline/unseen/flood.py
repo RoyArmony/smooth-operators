@@ -17,7 +17,9 @@ def load(bbox, sid, refresh=False):
     hit = sorted((DATA_DIR / "stacks").glob(f"{sid}-*.npz"))
     if hit and not refresh:
         z = np.load(hit[0], allow_pickle=True)
-        return z["stack"], [str(d) for d in z["dates"]], z["grid"].item(), None
+        tr, fr = hit[0].stem.rsplit("-", 2)[-2:]                     # cache name <sid>-<track>-<frame>.npz
+        st = dict(track=int(tr), frame=int(fr) if fr.isdigit() else None, direction=None, cached=True)
+        return z["stack"], [str(d) for d in z["dates"]], z["grid"].item(), st
     lon0, lat0, lon1, lat1 = bbox
     if not (lon0 < lon1 and lat0 < lat1) or max(lon1 - lon0, lat1 - lat0) > MAX_DEG:
         raise ValueError(f"bbox must be lon0,lat0,lon1,lat1, at most {MAX_DEG} deg per side")
@@ -37,10 +39,25 @@ def load(bbox, sid, refresh=False):
     return stack, dates, grid, st
 
 
-def water(stack, dates, grid, bbox, use_optical=True):
-    """Water layers per pass (detect.detect) with thresholds calibrated on clear optical days when available,
-    and the optical ocean mask added to permanent water. Returns (L, calibration or None)."""
+def water(stack, dates, grid, bbox, use_optical=True, detector="v3", st=None, dry_dates=None):
+    """Water layers per pass. detector="v3" (default): fused.detect_fused (docs/07 §2b: per-scene threshold, change
+    from the dry season, HV, GUNW coherence). detector="v2": detect.detect with thresholds calibrated on clear optical
+    days. Both add the optical ocean mask to permanent water. Returns (L, calibration or None)."""
     cal, files = None, []
+    if detector == "v3":
+        from .fused import detect_fused
+        L = detect_fused(stack, dates, grid, bbox, track=(st or {}).get("track"), frame=(st or {}).get("frame"), dry_dates=dry_dates)
+        if use_optical:
+            try:
+                d0 = (dt.date.fromisoformat(dates[0]) - dt.timedelta(days=6)).isoformat()
+                d1 = (dt.date.fromisoformat(dates[-1]) + dt.timedelta(days=6)).isoformat()
+                og = optical.search(bbox, d0, d1)
+                files = optical.download(og, earthdata_session()) if og else []
+                if files:
+                    L["permanent"] = L["permanent"] | optical.ocean_mask(files, grid)
+            except Exception as e:  # noqa: BLE001
+                print(f"[warn] ocean mask skipped: {e}")
+        return L, None
     if use_optical:
         d0 = (dt.date.fromisoformat(dates[0]) - dt.timedelta(days=6)).isoformat()
         d1 = (dt.date.fromisoformat(dates[-1]) + dt.timedelta(days=6)).isoformat()

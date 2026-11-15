@@ -19,7 +19,7 @@ def _load_dotenv():
 _load_dotenv()
 
 DATA_DIR = Path(os.environ.get("UNSEEN_DATA_DIR", REPO / "data"))   # caches (git-ignored)
-EVENTS_DIR = REPO / "events"                                       # site bundles (committed, served by Vercel)
+EVENTS_DIR = Path(os.environ.get("UNSEEN_EVENTS_DIR", REPO / "events"))  # site bundles (committed, served by Vercel)
 
 # NISAR
 PROVISIONAL_START = "2026-06-17"     # first calibrated (PROVISIONAL) L-band acquisitions

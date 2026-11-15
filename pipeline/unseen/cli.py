@@ -11,9 +11,13 @@ import argparse, json
 from . import bundle, flood, landcover
 
 
-def site(eid, title, bbox, kind="site", passes="all", place=None, use_optical=True, refresh=False):
+def site(eid, title, bbox, kind="site", passes="all", place=None, use_optical=True, refresh=False, detector="v3", dry_dates=None):
+    from .fused import qa
     stack, dates, grid, st = flood.load(bbox, eid, refresh=refresh)
-    L, cal = flood.water(stack, dates, grid, bbox, use_optical=use_optical)
+    stack, dates, dropped = qa(stack, dates)                 # corrupt passes out (both detectors)
+    if dropped:
+        print(f"[qa] {eid}: dropped corrupt passes {dropped}")
+    L, cal = flood.water(stack, dates, grid, bbox, use_optical=use_optical, detector=detector, st=st, dry_dates=dry_dates)
     try:
         lc = landcover.on_grid(grid, bbox, key=eid)
     except Exception as e:  # noqa: BLE001
@@ -50,12 +54,16 @@ def site(eid, title, bbox, kind="site", passes="all", place=None, use_optical=Tr
                 + ([dict(label="more than the official map", value=pct, unit="%")] if pct is not None else
                    [dict(label="of it in forest (ESA WorldCover)", value=k["nisar_adds_forest"], unit="km²")] if "nisar_adds_forest" in k else []),
         badge=dict(text="Wettest NISAR pass", ref="timeline"))
-    ev["method"] = dict(detector="detect.py (open water + water under vegetation, HH/HV)",
+    ev["method"] = dict(detector=("fused v3 (fused.py: per-scene threshold, change from dry season, HV, GUNW coherence; "
+                                  "water under vegetation from detect.py)") if detector == "v3"
+                        else "detect.py v2 (open water + water under vegetation, HH/HV)",
+                        detector_info=L.get("info"), qa_dropped=dropped,
                         calibration=cal if cal and cal.get("used") else None, pixel_m=grid["dx"],
                         gap="NISAR water inside GFM exclusion mask, both valid, permanent water removed",
                         stack=None if st is None else dict(track=st["track"], frame=st["frame"], direction=st["direction"]))
     ev["sources"] = [
         dict(name="NISAR L2 GCOV", url="https://search.asf.alaska.edu", credit="NASA/JPL-Caltech, ISRO; data via ASF DAAC"),
+        dict(name="NISAR L2 GUNW (coherence)", url="https://search.asf.alaska.edu", credit="NASA/JPL-Caltech, ISRO; data via ASF DAAC"),
         dict(name="Copernicus EMS Global Flood Monitoring", url="https://global-flood.emergency.copernicus.eu",
              credit="© European Union, Copernicus Emergency Management Service"),
         dict(name="OPERA DSWx-HLS", url="https://www.jpl.nasa.gov/go/opera", credit="NASA/JPL OPERA; data via PO.DAAC")]
@@ -112,7 +120,9 @@ def main(argv=None):
     s.add_argument("--kind", default="site", choices=["story", "site", "live"])
     s.add_argument("--passes", default="all", choices=["all", "best"])
     s.add_argument("--place"); s.add_argument("--no-optical", action="store_true")
+    s.add_argument("--detector", default="v3", choices=["v3", "v2"], help="v3 = fused (default), v2 = old detect.py")
     b = sub.add_parser("build"); b.add_argument("--only"); b.add_argument("--refresh", action="store_true", help="search for new NISAR passes")
+    b.add_argument("--detector", default="v3", choices=["v3", "v2"])
     sub.add_parser("world")
     sub.add_parser("index")
     a = ap.parse_args(argv)
@@ -121,7 +131,8 @@ def main(argv=None):
         r = session().get("https://urs.earthdata.nasa.gov/profile", allow_redirects=False, timeout=30)
         print("Earthdata login:", "ok" if r.status_code in (200, 302) else f"HTTP {r.status_code}")
     elif a.cmd == "site":
-        ev = site(a.id, a.title, [float(v) for v in a.bbox.split(",")], a.kind, a.passes, a.place, not a.no_optical)
+        ev = site(a.id, a.title, [float(v) for v in a.bbox.split(",")], a.kind, a.passes, a.place, not a.no_optical,
+                  detector=a.detector)
         print(json.dumps(ev["headline"], indent=1, ensure_ascii=False))
         bundle.write_index()
     elif a.cmd == "build":
@@ -129,7 +140,8 @@ def main(argv=None):
             if a.only and s["id"] != a.only:
                 continue
             try:
-                ev = site(s["id"], s["title"], s["bbox"], s["kind"], "all" if s["kind"] == "story" else "best", refresh=a.refresh)
+                ev = site(s["id"], s["title"], s["bbox"], s["kind"], "all" if s["kind"] == "story" else "best",
+                          refresh=a.refresh, detector=a.detector, dry_dates=s.get("dry_dates"))
                 print(s["id"], ev["headline"]["numbers"][:2], flush=True)
             except Exception as e:  # noqa: BLE001
                 print(s["id"], "FAILED", repr(e)[:200], flush=True)
