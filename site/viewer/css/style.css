@@ -261,3 +261,13 @@ body.focused #listhead, body.focused #feed, body.focused aside > details.more2 {
 .fsum:empty { display:none; }
 .fitem.hl { background:var(--surface-2); border-color:#ff9a2e; }
 .fgain small { font-size:var(--fs-sm); font-weight:700; margin-left:1px; }
+/* history Swipe: Then | Now line on the map (js/inmap.js) */
+.swbar { position:absolute; top:0; bottom:0; width:0; z-index:650; cursor:ew-resize; touch-action:none; }
+.swbar::before { content:''; position:absolute; top:0; bottom:0; left:-1px; width:2px; background:#fff; box-shadow:0 0 6px #000a; }
+.swbar::after { content:''; position:absolute; top:0; bottom:0; left:-12px; width:24px; }
+.swbar[hidden] { display:none; }
+.swbar b { position:absolute; top:50%; left:0; transform:translate(-50%,-50%); width:30px; height:30px; border-radius:50%; background:#fff; color:#0c222b;
+           display:grid; place-items:center; font-size:16px; box-shadow:0 2px 8px #0008; z-index:1; }
+.swbar span { position:absolute; bottom:44px; white-space:nowrap; font-size:12px; font-weight:600; color:#fff; background:rgba(12,34,43,.85);
+              border-radius:4px; padding:2px 7px; }
+.swbar .swl { right:10px; border-left:3px solid #ff6b6b; } .swbar .swr { left:10px; border-left:3px solid #ff9a2e; }
