@@ -56,6 +56,13 @@ async function loadAll() {
     if (own) { if (!own.gain) own.gain = g; return; }
     S.push({ id: 'ev-' + e.id, bundle: e.id, title: e.title, bbox: e.bbox, kind: 'flood', hazard: 'FL', event_date: e.date, last: e.date, gain: g });
   });
+  // multi-year histories (events/<place>/history, RADARSAT-1 → NISAR): their own items; they replace the old site-based one
+  (V2.places || []).filter(p => p.history && p.bbox).forEach(p => {
+    const h = p.history, [w, so, ea, n] = p.bbox;
+    S = S.filter(s => !(s.history && !s.v2 && inBox(p.bbox, (s.bbox[1] + s.bbox[3]) / 2, (s.bbox[0] + s.bbox[2]) / 2)));
+    S.push({ id: 'hist-' + (p.folder || p.id), v2: true, history: true, title: p.name, bbox: p.bbox,
+             kind: 'flood history', hazard: 'FL', first: h.first, last: h.last, event_date: h.last, sensors: h.sensors, n_images: h.n_images });
+  });
   window.UNSEEN_SITES = S; window.dispatchEvent(new Event('unseen:sites'));
   const sites = window.UNSEEN_SITES, wa = (W && W.areas) || [], used = new Set();
   ITEMS = [];
@@ -183,7 +190,8 @@ function renderFeed() {
     const day = new Date(it.date + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
     const g = it.site && it.site.gain;
     const gain = g && g.pct != null ? (g.pct > 0 ? '↑' : '') + `${g.pct.toLocaleString('en-GB')}%` : '';   // blank = no % in the event folder yet
-    c.innerHTML = `<div class="fbody"><div class="ftitle">${it.title}</div><div class="fdate">${day}</div></div>`
+    const when = it.site && it.site.history ? `${it.site.first.slice(0, 4)}–${it.site.last.slice(0, 4)}` : day;
+    c.innerHTML = `<div class="fbody"><div class="ftitle">${it.title}</div><div class="fdate">${when}${it.site ? sensorTags(it.site) : ''}</div></div>`
       + (gain ? `<div class="fgain" title="More flood water NISAR found than the official flood map showed">${gain}</div>` : '');
     c.onclick = ev => {
       if (ev.target.classList.contains('fsel')) { PICK.has(key(it)) ? PICK.delete(key(it)) : PICK.add(key(it)); c.classList.toggle('picked'); batchBar(); return; }
@@ -242,6 +250,14 @@ function gainOf(e) {
   if (b == null || a == null || (!b && !a)) return null;
   return { gfm_flood_km2: b, nisar_adds_km2: a, pct: b >= 5 ? Math.round(100 * a / b) : null, date: e.date };
 }
+// which satellites an event uses: NISAR, plus the Canadian Space Agency's RADARSAT-1 (1995–2013) or RCM (2019–)
+const CSA_RCM = ['peace-athabasca'];                       // real NISAR vs RCM comparison (site/story/canada)
+function sensorsOf(s) {
+  const x = s.sensors ? [...s.sensors] : s.history ? ['RADARSAT-1', 'NISAR'] : ['NISAR'];
+  if (CSA_RCM.some(k => s.id.startsWith(k))) x.push('RCM');
+  return ['NISAR', ...x.filter(v => v !== 'NISAR')];
+}
+const sensorTags = s => `<span class="fsens">${sensorsOf(s).map(x => `<i class="${x === 'NISAR' ? 'n' : 'c'}">${x}</i>`).join('')}</span>`;
 const BASE_NAME = { gfm: 'Official map (GFM)', dswx: 'NASA OPERA DSWx' };
 function gainHTML(m) {
   if (m.base == null || m.adds == null) return '';
@@ -267,7 +283,7 @@ function showFocus(id) {
   if (!FOCUS) return;
   const yr = d => d.slice(0, 4), g = s && s.gain;
   const when = !s ? '' : s.history ? `${yr(s.first)}–${yr(s.last)}` : fmtDate((g && g.date) || s.event_date || s.last);
-  const tags = !s ? '' : (s.history ? '<span class="stag">RADARSAT-1</span>' : '') + '<span class="stag nisar">NISAR</span>';
+  const tags = !s ? '' : sensorsOf(s).map(x => `<span class="stag ${x === 'NISAR' ? 'nisar' : 'csa'}"${x === 'NISAR' ? '' : ' title="Canadian Space Agency"'}>${x}</span>`).join('');
   focusBox.innerHTML = `<button class="fback" type="button">← All events</button>`
     + (!s ? '<div class="sub">Loading…</div>' : `<div class="fcard">
       <h2>${s.title}</h2>
@@ -279,6 +295,13 @@ function showFocus(id) {
         <div><span style="background:var(--orange)"></span>NISAR adds, in the blank</div></div>` : ''}
       </div>`);
   // v2 metadata (docs/12): events/<place>/<flood>/event.json, summary = wettest pass vs the main baseline
+  if (s && s.v2) getJSON(`../../events/${s.id.slice(5)}/history/event.json`).then(H => {   // then (RADARSAT-1) vs now (NISAR): wettest year each
+    const box = $('gainbox'), Y = ((H && H.summary && H.summary.years) || []).filter(y => y.max_flood_km2 != null);
+    const best = sn => Y.filter(y => y.sensor === sn).sort((a, b) => b.max_flood_km2 - a.max_flood_km2)[0];
+    const a = best('RADARSAT-1'), b = best('NISAR'); if (!box || FOCUS !== s.id || !(a || b)) return;
+    const col = (y, cl) => y ? `<div class="gcol"><b class="${cl}">${Math.round(y.max_flood_km2).toLocaleString('en-GB')}<small> km²</small></b><span>flood ${y.year} · ${y.sensor}</span></div>` : '';
+    box.innerHTML = col(a, 'gcsa') + col(b, 'gadd') + (H.summary.caveat ? `<div class="gnote">${H.summary.caveat}</div>` : '');
+  });
   if (s && !s.history && !s.bundle) loadSummary(s).then(m => { const box = $('gainbox'); if (m && box && FOCUS === s.id) box.innerHTML = gainHTML(m); });
   focusBox.querySelector('.fback').onclick = () => {
     window.closeSite && window.closeSite();

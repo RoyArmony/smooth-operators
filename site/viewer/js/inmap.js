@@ -14,7 +14,7 @@ panel.innerHTML = `
   <div class="sph"><div class="spsteps" id="spS"></div><button id="spX" title="Minimize">–</button></div>
   <div class="spbody">
     <div class="legend sub" id="spL"></div>
-    <div class="spch"><span id="spD"></span><span class="spkey"><i class="kb"></i>water <i class="ko"></i>hidden from optical</span></div>
+    <div class="spch"><span id="spD"></span><span class="spkey" id="spK"></span></div>
     <canvas id="spC" title="Water per pass. Click or drag to change the date (← → keys too)."></canvas>
     <div class="spnav"><button id="spBk">← Back</button><button id="spNx" class="primary"></button></div>
   </div>`;
@@ -24,6 +24,7 @@ L.DomEvent.disableClickPropagation(panel); L.DomEvent.disableScrollPropagation(p
 async function openSite(id) {
   closeSite('swap');
   if (id.startsWith('ev-')) return openBundle(id.slice(3));
+  if (id.startsWith('hist-')) return openHistory(id.slice(5));
   const base = `sites/${encodeURIComponent(id)}/`;
   let D; try { D = await (await fetch(base + 'site.json', { cache: 'no-cache' })).json(); } catch (e) { return; }
   const A = n => (D.assets && D.assets[n]) || base + n;
@@ -62,9 +63,16 @@ async function openSite(id) {
     ? { label: 'NISAR', b: 'none', on: E_(['gfm_flood', 'gfm_excluded', 'nisar_adds']), cap: 'NISAR’s L-band radar sees under the canopy. <b class="o">Orange</b> = flood found in the blank.' }
     : { label: D.history ? 'Radar' : 'NISAR', b: 'nisar', on: ['pass'], cap: D.history ? 'Radar through the years: RADARSAT-1 (CSA), then NISAR. Blue = flood.' : 'NISAR’s L-band radar sees through clouds. Dark = water.' });
   S.step = 0;
+  if (id.startsWith('peace-athabasca')) try {       // Canada: NISAR vs the CSA's RCM radar, 3 days apart (same layers as the Story)
+    const P = await (await fetch('../story/canada/pad.json')).json(), [[pw, pn], [pe, ps]] = P.corners;
+    S.rcm = L.imageOverlay('../story/canada/agree.png', L.latLngBounds([[ps, pw], [pn, pe]]), { pane: 'analysis', interactive: false, opacity: 0 }).addTo(map);
+    S.extra = [...(S.extra || []), S.rcm];
+    S.steps.push({ label: 'RCM', b: 'none', on: ['rcm'], t0: '2026-10-10', csa: true,
+      cap: 'Canada’s RCM radar (CSA, C-band), 13 Oct vs NISAR 10 Oct: they agree on 79% of the water.' });
+  } catch (e) {}
   if (S.P && D.event_date) { const k = D.frames.findIndex(f => f.date >= D.event_date); if (k >= 0) S.t = k; }
   // volcano: vent + reference ring on the map, before / during interferograms side by side
-  S.extra = [];
+  S.extra = S.extra || [];
   const V = R.volcano;
   if (V && V.vent) {
     const c = L.latLng(V.vent[0], V.vent[1]);
@@ -84,8 +92,10 @@ async function openSite(id) {
 const R_ = D => D.report || {};
 function setStep(i) {
   if (!S) return; S.step = Math.max(0, Math.min(S.steps.length - 1, i));
-  const st = S.steps[S.step], n = S.steps.length; S.b = st.b; S.on = new Set(st.on);
-  $('spS').innerHTML = S.steps.map((x, k) => `<button data-k="${k}" class="${k === S.step ? 'on' : k < S.step ? 'done' : ''}${x.label === 'NISAR' ? ' nisar' : ''}" title="${x.cap.replace(/<[^>]+>/g, '').replace(/"/g, '&quot;')}">${x.label}</button>`).join('<span class="sparr">→</span>');
+  const st = S.steps[S.step], n = S.steps.length; S.b = st.b; S.on = new Set(st.on || []);
+  if (S.hist) S.t = st.t;
+  if (st.t0 && !S.hist) { const k = S.D.frames.reduce((b, f, j) => Math.abs(dn(f.date) - dn(st.t0)) < Math.abs(dn(S.D.frames[b].date) - dn(st.t0)) ? j : b, 0); S.t = k; }
+  $('spS').innerHTML = S.steps.map((x, k) => `<button data-k="${k}" class="${k === S.step ? 'on' : k < S.step ? 'done' : ''}${x.label === 'NISAR' || x.nisar ? ' nisar' : ''}${x.csa ? ' csa' : ''}" title="${x.cap.replace(/<[^>]+>/g, '').replace(/"/g, '&quot;')}">${x.label}</button>`).join('<span class="sparr">→</span>');
   $('spBk').style.visibility = S.step ? '' : 'hidden';
   $('spNx').textContent = S.step < n - 1 ? `Next: ${S.steps[S.step + 1].label} →` : '↺ Start over';
   render();
@@ -113,7 +123,61 @@ async function openBundle(eid) {
   const S0 = S; map.once('moveend', () => S === S0 && S.ev.forEach(x => x.k === 'gfm_excluded' && blink(x.ov, true)));
   window.dispatchEvent(new CustomEvent('unseen:site', { detail: S.id }));
 }
+// ---------- multi-year view (events/<place>/history): RADARSAT-1 (CSA, 1998–2007) then NISAR (2026), same box ----------
+const SENS = { 'RADARSAT-1': { c: '#ff6b6b', radar: 'rs1_radar', flood: 'rs1_flood', note: 'RADARSAT-1 · CSA · C-band' },
+               NISAR: { c: '#ff9a2e', radar: 'nisar_rgb', flood: 'nisar_water', note: 'NISAR · L-band' } };
+async function openHistory(place) {
+  let E; try { E = await (await fetch(`../../events/${place}/history/event.json`, { cache: 'no-cache' })).json(); } catch (e) { return; }
+  const [w, so, e, n] = E.bbox, B = L.latLngBounds([[so, w], [n, e]]), base = `../../events/${place}/history/`;
+  const I = (E.images || []).slice().sort((a, b) => a.date.localeCompare(b.date));
+  const wettest = sn => I.reduce((b, x, i) => x.sensor === sn && (b < 0 || (x.flood_km2 ?? -1) > (I[b].flood_km2 ?? -1)) ? i : b, -1);
+  const o = { pane: 'analysis', interactive: false, opacity: 0 };
+  S = { hist: true, id: 'hist-' + place, E, I, B, hbase: base, n: I.length, t: 0,
+        hr: L.imageOverlay('data:,', B, o).addTo(map), hf: L.imageOverlay('data:,', B, o).addTo(map),
+        box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, opacity: 0, interactive: false }).addTo(map),
+        tag: L.marker([so, (w + e) / 2], { interactive: false, keyboard: false, icon: L.divIcon({ className: 'sptag', html: '<span></span>', iconSize: [0, 0] }) }).addTo(map) };
+  S.extra = [S.hr, S.hf];
+  const th = wettest('RADARSAT-1'), nw = wettest('NISAR');
+  S.steps = [th >= 0 && { label: `Then ${I[th].date.slice(0, 4)}`, t: th, cap: 'RADARSAT-1 (Canadian Space Agency), its wettest image here.', csa: true },
+             nw >= 0 && { label: `Now ${I[nw].date.slice(0, 4)}`, t: nw, cap: 'NISAR, its wettest pass here.', nisar: true }].filter(Boolean);
+  panel.hidden = false; panel.classList.add('hist');
+  map.flyToBounds(B, { paddingTopLeft: [panel.offsetWidth + 70, 30], paddingBottomRight: [30, 30], duration: 1.2 });
+  const S0 = S; map.once('moveend', () => S === S0 && S.box.setStyle({ opacity: 1 }));
+  $('spC').title = (E.summary && E.summary.caveat) || '';
+  setStep(0);
+  window.dispatchEvent(new CustomEvent('unseen:site', { detail: S.id }));
+}
+function renderHist() {
+  const x = S.I[S.t], k = SENS[x.sensor] || SENS.NISAR, L_ = S.E.layers || {};
+  const file = name => L_[name] && L_[name].files && L_[name].files[x.date];
+  const r = file(k.radar), f = file(k.flood);
+  S.hr.setUrl(r ? S.hbase + r : 'data:,'); S.hr.setOpacity(r ? 0.9 : 0);
+  S.hf.setUrl(f ? S.hbase + f : 'data:,'); S.hf.setOpacity(f ? 1 : 0);
+  const fy = { day: 'numeric', month: 'short', year: 'numeric' };
+  $('spD').textContent = fmt(x.date, fy);
+  $('spK').innerHTML = Object.entries(SENS).map(([n, v]) => `<i style="background:${v.c}"></i>${n === 'RADARSAT-1' ? 'RADARSAT-1 (CSA)' : n}`).join(' ');
+  $('spL').innerHTML = `<div><span style="background:#2882ff"></span>flood${x.flood_km2 != null ? ` · <b>${Math.round(x.flood_km2).toLocaleString('en-GB')} km²</b>` : ' · not measured'}</div>`;
+  const tg = S.tag.getElement()?.firstChild; if (tg) { tg.textContent = `${k.note} · ${fmt(x.date, fy)}`; tg.style.display = ''; }
+  histChart();
+}
+function histChart() {                                  // one bar per image: flood km², coloured by satellite; years on the axis
+  const c = $('spC'), g = c.getContext('2d'), W = c.clientWidth, H = 78, B = H - 12, top = 4, { I, t } = S, n = I.length;
+  c.style.height = H + 'px'; c.width = W * devicePixelRatio; c.height = H * devicePixelRatio; g.scale(devicePixelRatio, devicePixelRatio); g.clearRect(0, 0, W, H);
+  const raw = Math.max(1, ...I.map(x => x.flood_km2 || 0)), st = 10 ** Math.floor(Math.log10(raw)), mx = Math.ceil(raw / st) * st, bw = (W - AX) / n;
+  const Y = v => B - (B - top) * v / mx;
+  g.font = '10px system-ui'; g.fillStyle = '#8b95a3'; g.textAlign = 'right';
+  [0, mx / 2, mx].forEach(y => { g.fillText(y.toLocaleString('en-GB'), AX - 5, Y(y) + 3); g.fillStyle = '#ffffff14'; g.fillRect(AX, Y(y), W - AX, 1); g.fillStyle = '#8b95a3'; });
+  g.save(); g.translate(8, (B + top) / 2); g.rotate(-Math.PI / 2); g.textAlign = 'center'; g.fillText('km²', 0, 0); g.restore(); g.textAlign = 'left';
+  I.forEach((x, i) => { const X = AX + i * bw + 1;
+    g.globalAlpha = i === t ? 1 : 0.6; g.fillStyle = (SENS[x.sensor] || SENS.NISAR).c;
+    if (x.flood_km2 != null) g.fillRect(X, Y(x.flood_km2), bw - 2, B - Y(x.flood_km2)); else { g.fillRect(X, B - 2, bw - 2, 2); } });
+  g.globalAlpha = 1; g.strokeStyle = '#fff'; g.strokeRect(AX + t * bw + 0.5, top - 2.5, bw - 1, B - top + 2);
+  g.fillStyle = '#8b95a3'; let lx = -99;
+  I.forEach((x, i) => { const y = x.date.slice(0, 4); if (i && y === I[i - 1].date.slice(0, 4)) return;
+    const txt = y, X = AX + i * bw + 1; if (X < lx + 4) return; g.fillText(txt, X, H - 1); lx = X + g.measureText(txt).width; });
+}
 function closeSite(keepHash) {
+  panel.classList.remove('hist');
   if (S) { ['base', 'over', 'box', 'tag', 'mo', 'fr'].forEach(k => S[k] && map.removeLayer(S[k])); (S.layers || []).forEach(l => map.removeLayer(l.ov)); (S.ev || []).forEach(x => map.removeLayer(x.ov)); (S.extra || []).forEach(x => map.removeLayer(x)); }
   const was = !!S; S = null; panel.hidden = true;
   if (was && keepHash !== 'swap') window.dispatchEvent(new CustomEvent('unseen:site', { detail: null }));
@@ -122,6 +186,8 @@ function closeSite(keepHash) {
 
 function render() {
   if (!S) return;
+  if (S.hist) return renderHist();
+  $('spK').innerHTML = '<i class="kb"></i>water <i class="ko"></i>hidden from optical';
   const { D, A, t } = S, f = D.frames[t], s = D.summary[t];
   $('spD').textContent = `${fmt(f.date, { day: 'numeric', month: 'short', year: 'numeric' })}${f.sensor && D.history ? ' · ' + f.sensor : ''}`;
   let note = '';
@@ -136,9 +202,10 @@ function render() {
       : 'Radar colours: R = HH, G = HV, B = HH/HV. Dark = smooth water.'; }
   S.base.setOpacity(S.b === 'none' ? 0 : 0.9);
   const tg = S.tag.getElement()?.firstChild, fy = d => fmt(d, { day: 'numeric', month: 'short', year: 'numeric' });
-  if (tg) { const txt = S.b === 'photo' && S.pd && note.startsWith('Photo') ? `Optical · NASA HLS (Landsat / Sentinel-2) · ${fy(S.pd)}` : '';
+  if (tg) { const txt = S.on && S.on.has('rcm') ? 'RCM (CSA, C-band) 13 Oct 2026 vs NISAR 10 Oct 2026' : S.b === 'photo' && S.pd && note.startsWith('Photo') ? `Optical · NASA HLS (Landsat / Sentinel-2) · ${fy(S.pd)}` : '';
     tg.textContent = txt; tg.style.display = txt ? '' : 'none'; }
   const on = S.on || new Set();
+  if (S.rcm) S.rcm.setOpacity(on.has('rcm') ? 1 : 0);
   S.over.setUrl(A(f.hidden)); S.over.setOpacity(on.has('pass') ? 1 : 0);
   (S.layers || []).forEach((l, i) => l.ov.setOpacity(on.has(`L${i}`) ? 1 : 0));
   const evNote = [];
@@ -159,7 +226,7 @@ function render() {
   }
   const seen = new Set();                                         // one legend per distinct scale
   const HATCH = 'repeating-linear-gradient(45deg,#dcdce4 0 2px,#696973 2px 6px)';
-  $('spL').innerHTML = (S.ev || []).filter(x => on.has('E_' + x.k)).map(x => `<div><span style="background:${x.l.legend === 'hatch' ? HATCH : x.l.legend || '#888'}"></span>${x.l.label || x.k}</div>`).join('')
+  $('spL').innerHTML = (on.has('rcm') ? '<div><span style="background:#f5f5f5"></span>both see water</div><div><span style="background:#2882ff"></span>only NISAR</div><div><span style="background:#ff5050"></span>only RCM</div><div class="sub">Agree on <b>79%</b> of the water</div>' : '') + (S.ev || []).filter(x => on.has('E_' + x.k)).map(x => `<div><span style="background:${x.l.legend === 'hatch' ? HATCH : x.l.legend || '#888'}"></span>${x.l.label || x.k}</div>`).join('')
     + (evNote.length ? `<div class="sub">Not on this date: ${evNote.join(', ')}</div>` : '') + (pr && (on.has('motion') || on.has('fringes')) ? `<div class="pair${pr.event ? ' ev' : ''}">Pair ${fmt(pr.ref)} → ${fmt(pr.sec)}${pr.event ? ' · spans the event' : ''}</div>` : '')
     + [...(on.has('motion') && S.P ? [S.P.motion_legend] : []), ...(on.has('fringes') && S.P ? [S.P.fringe_legend] : [])]
       .map(lg => lg.map(([c, t]) => `<div><span style="background:${c}${c.startsWith('linear') ? ';width:60px' : ''}"></span>${t}</div>`).join('')).join('')
@@ -235,13 +302,14 @@ function chart() {
   }
 }
 // the chart is the time control: click or drag across the bars
-const pick = ev => { if (!S) return; const r = $('spC').getBoundingClientRect(); setT(Math.floor((ev.clientX - r.left - AX) / (r.width - AX) * S.D.frames.length)); };
+const nOf = () => S.hist ? S.n : S.D.frames.length;
+const pick = ev => { if (!S || S.bundle) return; const r = $('spC').getBoundingClientRect(); setT(Math.floor((ev.clientX - r.left - AX) / (r.width - AX) * nOf())); };
 let drag = false;
 $('spC').onpointerdown = ev => { drag = true; $('spC').setPointerCapture(ev.pointerId); pick(ev); };
 $('spC').onpointermove = ev => { if (drag) pick(ev); };
 $('spC').onpointerup = $('spC').onpointercancel = () => { drag = false; };
 
-function setT(i) { if (!S) return; S.t = Math.max(0, Math.min(S.D.frames.length - 1, i)); render(); }
+function setT(i) { if (!S || S.bundle) return; S.t = Math.max(0, Math.min(nOf() - 1, i)); render(); }
 $('spX').onclick = () => { const m = panel.classList.toggle('min'); $('spX').textContent = m ? '+' : '–'; $('spX').title = m ? 'Expand' : 'Minimize'; };
 $('spS').onclick = ev => { const b = ev.target.closest('button'); if (b && S) { setStep(+b.dataset.k); if (panel.classList.contains('min')) $('spX').click(); } };
 $('spBk').onclick = () => setStep(S.step - 1);
