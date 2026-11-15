@@ -125,3 +125,11 @@ relative orbit 50, the pass nearest 1 Oct each year, on the NISAR 80 m grid. Wat
 | 2023-09-28 | 1,113 km² | 71 km² |
 | 2024-10-04 (95 % covered) | 1,398 km² | 370 km² |
 | 2025-09-29 | 1,518 km² | 468 km² |
+
+## Explorer list clean-up (15.11.26, Noa)
+
+- Hidden (`"hidden": true` in event.json, kept on disk; `bundle.write_index()` skips them): Tamil Nadu floods,
+  Atchafalaya Basin, Okavango Delta.
+- Nepal floods: box cut from [84.865, 26.895, 85.865, 27.695] to the flooded plain [85.22, 26.90, 85.44, 27.11]
+  (`scripts/crop_bundle.py`, same pixels). 26 Jul 2026: GFM flood 7.4 → 4.6 km² (62 % of it inside), NISAR adds
+  1.2 → 0.8 km² (68 %), in 1/18 of the area. Other dates had no maps, so their km² were dropped.

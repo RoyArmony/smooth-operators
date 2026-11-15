@@ -68,39 +68,6 @@
    }
   },
   {
-   "id": "atchafalaya-basin",
-   "title": "Atchafalaya Basin, USA",
-   "place": "Atchafalaya Basin, USA",
-   "date": "2026-06-20",
-   "bbox": [
-    -91.6,
-    30.0,
-    -91.2,
-    30.5
-   ],
-   "kind": "site",
-   "headline": {
-    "sentence": "On 2026-06-20, NISAR found 0 km² of water where the official flood map (Copernicus GFM, 2026-06-21) says it cannot see.",
-    "numbers": [
-     {
-      "label": "Official map: flood",
-      "value": 0.6,
-      "unit": "km²"
-     },
-     {
-      "label": "NISAR adds, in the blank",
-      "value": 0.0,
-      "unit": "km²"
-     },
-     {
-      "label": "of it in forest (ESA WorldCover)",
-      "value": 0.0,
-      "unit": "km²"
-     }
-    ]
-   }
-  },
-  {
    "id": "congo-cuvette-centrale",
    "title": "Congo basin (Cuvette Centrale), Rep. of Congo",
    "place": "Congo basin (Cuvette Centrale), Rep. of Congo",
@@ -172,61 +139,23 @@
    "place": "Nepal floods",
    "date": "2026-07-26",
    "bbox": [
-    84.865,
-    26.895,
-    85.865,
-    27.695
+    85.22,
+    26.9,
+    85.44,
+    27.11
    ],
    "kind": "site",
    "headline": {
-    "sentence": "On 2026-07-26, NISAR found 1 km² of water where the official flood map (Copernicus GFM, 2026-07-26) says it cannot see.",
+    "sentence": "On 2026-07-26, NISAR found 0.8 km² of water where the official flood map (Copernicus GFM) says it cannot see, in the flooded plain.",
     "numbers": [
      {
       "label": "Official map: flood",
-      "value": 7.4,
+      "value": 4.6,
       "unit": "km²"
      },
      {
       "label": "NISAR adds, in the blank",
-      "value": 1.2,
-      "unit": "km²"
-     },
-     {
-      "label": "of it in forest (ESA WorldCover)",
-      "value": 0.1,
-      "unit": "km²"
-     }
-    ]
-   }
-  },
-  {
-   "id": "flood-india-2026-08",
-   "title": "Tamil Nadu floods, India",
-   "place": "Tamil Nadu floods, India",
-   "date": "2026-06-24",
-   "bbox": [
-    78.11,
-    10.932,
-    79.11,
-    11.732
-   ],
-   "kind": "site",
-   "headline": {
-    "sentence": "On 2026-06-24, NISAR found 0 km² of water where the official flood map (Copernicus GFM, 2026-06-23) says it cannot see.",
-    "numbers": [
-     {
-      "label": "Official map: flood",
-      "value": 3.9,
-      "unit": "km²"
-     },
-     {
-      "label": "NISAR adds, in the blank",
-      "value": 0.1,
-      "unit": "km²"
-     },
-     {
-      "label": "of it in forest (ESA WorldCover)",
-      "value": 0.0,
+      "value": 0.8,
       "unit": "km²"
      }
     ]
@@ -392,39 +321,6 @@
      {
       "label": "of it in forest (ESA WorldCover)",
       "value": 13.6,
-      "unit": "km²"
-     }
-    ]
-   }
-  },
-  {
-   "id": "okavango-delta",
-   "title": "Okavango Delta, Botswana",
-   "place": "Okavango Delta, Botswana",
-   "date": "2026-06-26",
-   "bbox": [
-    22.6,
-    -19.6,
-    23.2,
-    -19.0
-   ],
-   "kind": "site",
-   "headline": {
-    "sentence": "On 2026-06-26, NISAR found 0 km² of water where the official flood map (Copernicus GFM, 2026-06-24) says it cannot see.",
-    "numbers": [
-     {
-      "label": "Official map: flood",
-      "value": 22.7,
-      "unit": "km²"
-     },
-     {
-      "label": "NISAR adds, in the blank",
-      "value": 0.0,
-      "unit": "km²"
-     },
-     {
-      "label": "of it in forest (ESA WorldCover)",
-      "value": 0.0,
       "unit": "km²"
      }
     ]

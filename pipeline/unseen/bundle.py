@@ -123,6 +123,8 @@ def write_index():
     out = []
     for f in sorted(EVENTS_DIR.glob("*/event.json")):
         e = json.loads(f.read_text(encoding="utf-8"))
+        if e.get("hidden"):                         # kept on disk, left out of the Explorer list
+            continue
         h = e.get("headline", {})
         out.append(dict(id=e["id"], title=e["title"], place=e.get("place"), date=h.get("date"), bbox=e["bbox"],
                         kind=e["kind"], headline=dict(sentence=h.get("sentence"), numbers=h.get("numbers", []))))

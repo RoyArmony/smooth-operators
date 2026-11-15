@@ -69,8 +69,8 @@ PLACES = {
         open_hh=-11.0, open_hv=-16.0,                 # v1 bundle's calibration on clear optical days
         gfm_bundle="flood-in-china-2026"),
     "flood-in-nepal-2026": dict(
-        name="Nepal floods", country="Nepal", bbox=(84.865, 26.895, 85.865, 27.695),
-        stack_key="flood-in-nepal-2026",                    # NISAR stack: best one covering the box (searched on first run)
+        name="Nepal floods", country="Nepal", bbox=(85.22, 26.9, 85.44, 27.11),     # 15.11: cut to the flooded plain (was 84.865, 26.895, 85.865, 27.695)
+        stack_key="flood-in-nepal-2026-plain",              # new key: the old box's cached stack must not be reused
         open_hh=-17.0, open_hv=-24.0,                 # detect.py defaults (no calibration in the v1 bundle)
         gfm_bundle="flood-in-nepal-2026"),
     "flood-india-2026-08": dict(

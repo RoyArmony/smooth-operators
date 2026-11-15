@@ -4,28 +4,23 @@
  "place": "Nepal floods",
  "kind": "site",
  "bbox": [
-  84.865,
-  26.895,
-  85.865,
-  27.695
+  85.22,
+  26.9,
+  85.44,
+  27.11
  ],
  "headline": {
   "date": "2026-07-26",
-  "sentence": "On 2026-07-26, NISAR found 1 km² of water where the official flood map (Copernicus GFM, 2026-07-26) says it cannot see.",
+  "sentence": "On 2026-07-26, NISAR found 0.8 km² of water where the official flood map (Copernicus GFM) says it cannot see, in the flooded plain.",
   "numbers": [
    {
     "label": "Official map: flood",
-    "value": 7.4,
+    "value": 4.6,
     "unit": "km²"
    },
    {
     "label": "NISAR adds, in the blank",
-    "value": 1.2,
-    "unit": "km²"
-   },
-   {
-    "label": "of it in forest (ESA WorldCover)",
-    "value": 0.1,
+    "value": 0.8,
     "unit": "km²"
    }
   ],
@@ -38,60 +33,28 @@
   {
    "date": "2026-06-20",
    "gfm_date": "2026-06-22",
-   "stats": {
-    "gfm_flood": 2.8,
-    "gfm_excluded": 6389.5,
-    "nisar_wet": 0.0,
-    "nisar_adds": 0.0,
-    "nisar_adds_canopy": 0.0,
-    "nisar_adds_forest": 0.0,
-    "nisar_adds_wetland": 0.0,
-    "nisar_adds_cropland": 0.0
-   },
+   "stats": {},
    "layers": []
   },
   {
    "date": "2026-07-02",
    "gfm_date": "2026-07-02",
-   "stats": {
-    "gfm_flood": 3.3,
-    "gfm_excluded": 3972.8,
-    "nisar_wet": 0.0,
-    "nisar_adds": 0.0,
-    "nisar_adds_canopy": 0.0,
-    "nisar_adds_forest": 0.0,
-    "nisar_adds_wetland": 0.0,
-    "nisar_adds_cropland": 0.0
-   },
+   "stats": {},
    "layers": []
   },
   {
    "date": "2026-07-14",
    "gfm_date": "2026-07-14",
-   "stats": {
-    "gfm_flood": 41.3,
-    "gfm_excluded": 4048.2,
-    "nisar_wet": 3.8,
-    "nisar_adds": 0.2,
-    "nisar_adds_canopy": 0.1,
-    "nisar_adds_forest": 0.0,
-    "nisar_adds_wetland": 0.0,
-    "nisar_adds_cropland": 0.2
-   },
+   "stats": {},
    "layers": []
   },
   {
    "date": "2026-07-26",
    "gfm_date": "2026-07-26",
    "stats": {
-    "gfm_flood": 7.4,
-    "gfm_excluded": 4048.1,
-    "nisar_wet": 37.1,
-    "nisar_adds": 1.2,
-    "nisar_adds_canopy": 0.2,
-    "nisar_adds_forest": 0.1,
-    "nisar_adds_wetland": 0.0,
-    "nisar_adds_cropland": 1.1
+    "gfm_flood": 4.6,
+    "gfm_excluded": 118.9,
+    "nisar_adds": 0.8
    },
    "layers": [
     "gfm_flood",
@@ -102,106 +65,43 @@
   {
    "date": "2026-08-19",
    "gfm_date": "2026-08-19",
-   "stats": {
-    "gfm_flood": 3.9,
-    "gfm_excluded": 4041.3,
-    "nisar_wet": 10.5,
-    "nisar_adds": 0.4,
-    "nisar_adds_canopy": 0.2,
-    "nisar_adds_forest": 0.0,
-    "nisar_adds_wetland": 0.0,
-    "nisar_adds_cropland": 0.4
-   },
+   "stats": {},
    "layers": []
   },
   {
    "date": "2026-08-31",
    "gfm_date": "2026-08-31",
-   "stats": {
-    "gfm_flood": 3.8,
-    "gfm_excluded": 4042.5,
-    "nisar_wet": 9.4,
-    "nisar_adds": 0.3,
-    "nisar_adds_canopy": 0.2,
-    "nisar_adds_forest": 0.0,
-    "nisar_adds_wetland": 0.0,
-    "nisar_adds_cropland": 0.3
-   },
+   "stats": {},
    "layers": []
   },
   {
    "date": "2026-09-12",
    "gfm_date": "2026-09-12",
-   "stats": {
-    "gfm_flood": 4.3,
-    "gfm_excluded": 4047.1,
-    "nisar_wet": 0.0,
-    "nisar_adds": 0.0,
-    "nisar_adds_canopy": 0.0,
-    "nisar_adds_forest": 0.0,
-    "nisar_adds_wetland": 0.0,
-    "nisar_adds_cropland": 0.0
-   },
+   "stats": {},
    "layers": []
   },
   {
    "date": "2026-09-24",
    "gfm_date": "2026-09-24",
-   "stats": {
-    "gfm_flood": 3.2,
-    "gfm_excluded": 4047.5,
-    "nisar_wet": 0.0,
-    "nisar_adds": 0.0,
-    "nisar_adds_canopy": 0.0,
-    "nisar_adds_forest": 0.0,
-    "nisar_adds_wetland": 0.0,
-    "nisar_adds_cropland": 0.0
-   },
+   "stats": {},
    "layers": []
   },
   {
    "date": "2026-10-06",
    "gfm_date": "2026-10-06",
-   "stats": {
-    "gfm_flood": 3.3,
-    "gfm_excluded": 4045.9,
-    "nisar_wet": 0.0,
-    "nisar_adds": 0.0,
-    "nisar_adds_canopy": 0.0,
-    "nisar_adds_forest": 0.0,
-    "nisar_adds_wetland": 0.0,
-    "nisar_adds_cropland": 0.0
-   },
+   "stats": {},
    "layers": []
   },
   {
    "date": "2026-10-18",
    "gfm_date": "2026-10-18",
-   "stats": {
-    "gfm_flood": 2.2,
-    "gfm_excluded": 4046.2,
-    "nisar_wet": 0.0,
-    "nisar_adds": 0.0,
-    "nisar_adds_canopy": 0.0,
-    "nisar_adds_forest": 0.0,
-    "nisar_adds_wetland": 0.0,
-    "nisar_adds_cropland": 0.0
-   },
+   "stats": {},
    "layers": []
   },
   {
    "date": "2026-10-30",
    "gfm_date": "2026-10-30",
-   "stats": {
-    "gfm_flood": 1.8,
-    "gfm_excluded": 4044.2,
-    "nisar_wet": 0.0,
-    "nisar_adds": 0.0,
-    "nisar_adds_canopy": 0.0,
-    "nisar_adds_forest": 0.0,
-    "nisar_adds_wetland": 0.0,
-    "nisar_adds_cropland": 0.0
-   },
+   "stats": {},
    "layers": []
   }
  ],
@@ -216,12 +116,12 @@
    },
    "bounds": [
     [
-     26.88344,
-     84.84933
+     26.8996521180881,
+     85.2198892760181
     ],
     [
-     27.70717,
-     85.873
+     27.10963764761012,
+     85.43990884615384
     ]
    ],
    "default": true
@@ -236,12 +136,12 @@
    },
    "bounds": [
     [
-     26.88344,
-     84.84933
+     26.8996521180881,
+     85.2198892760181
     ],
     [
-     27.70717,
-     85.873
+     27.10963764761012,
+     85.43990884615384
     ]
    ],
    "default": true
@@ -256,12 +156,12 @@
    },
    "bounds": [
     [
-     26.88344,
-     84.84933
+     26.8996521180881,
+     85.2198892760181
     ],
     [
-     27.70717,
-     85.873
+     27.10963764761012,
+     85.43990884615384
     ]
    ],
    "default": true
@@ -291,5 +191,20 @@
   "pixel_m": 80.0,
   "gap": "NISAR water inside GFM exclusion mask, both valid, permanent water removed",
   "stack": null
+ },
+ "crop": {
+  "from_bbox": [
+   84.865,
+   26.895,
+   85.865,
+   27.695
+  ],
+  "to_bbox": [
+   85.22,
+   26.9,
+   85.44,
+   27.11
+  ],
+  "how": "layer PNGs cut to the box; km² = full-box km² × share of the layer's pixels inside it"
  }
 }
