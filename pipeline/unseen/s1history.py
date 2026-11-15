@@ -95,10 +95,12 @@ def smooth(db):
 def build(place):
     case, cfg = PLACES[place], S1[place]
     bbox = case["bbox"]
-    stack, ndates, grid, _ = load(bbox, case["stack_key"])
+    stack, ndates, grid, st = load(bbox, case["stack_key"])
     shape = stack.shape[-2:]
     px = (grid["dx"] / 1000) ** 2
-    L = detect(stack, pixel_m=grid["dx"], open_hh=case["open_hh"], open_hv=case["open_hv"])
+    from .fused import detect_fused, qa                  # NISAR permanent water / valid from detector v3, as historyfolder
+    stack, ndates, _ = qa(stack, ndates)
+    L = detect_fused(stack, ndates, grid, bbox, track=(st or {}).get("track"), frame=(st or {}).get("frame"))
     perm, valid = L["permanent"], L["valid"]
 
     years = [r for y in cfg["years"] if (r := year_db(place, bbox, cfg, y, grid, shape))]
