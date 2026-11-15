@@ -431,11 +431,12 @@
       </div>
     </div>
     <div class="card cmp">
-      <div class="k">Truth: NASA OPERA DSWx-HLS, clear days · mean F1 · scored on data not used for tuning</div>
-      <div class="cb"><span>Shai's detector v2, tuned per site<small>10 sites · 74 passes · leave-one-out · 0.63–0.91 per site</small></span><i style="width:70%"></i><b>0.70</b></div>
-      <div class="cb"><span>NISAR handbook classifier<small>Inner Niger, held-out track</small></span><i style="width:60%"></i><b>0.57–0.60</b></div>
-      <div class="cb"><span>Martinis et al. 2015<small>Inner Niger, held-out track</small></span><i style="width:61%"></i><b>0.61</b></div>
-      <div class="cb hi"><span>Ours, v3 (paper + L-band)<small>Inner Niger, held-out track</small></span><i style="width:70%"></i><b>0.70</b></div>
+      <div class="k">Inner Niger Delta, Mali · flood season · truth: NASA OPERA DSWx-HLS, clear days · mean F1</div>
+      <div class="cb"><span>Shai's detector v2<small>fixed thresholds, tuned from optical</small></span><i style="width:28%"></i><b>0.22–0.33</b></div>
+      <div class="cb"><span>NISAR handbook classifier<small>held-out track</small></span><i style="width:60%"></i><b>0.57–0.60</b></div>
+      <div class="cb"><span>Martinis et al. 2015<small>held-out track</small></span><i style="width:61%"></i><b>0.61</b></div>
+      <div class="cb hi"><span>Ours, v3 (paper + L-band)<small>held-out track</small></span><i style="width:70%"></i><b>0.70</b></div>
+      <p class="note">Why v2 drops here: dry Sahel soil is as dark as water at L-band. Where water is clearly dark, v2 holds up (mean F1 0.70, 10 other sites).</p>
     </div>
   </div>
 </section>

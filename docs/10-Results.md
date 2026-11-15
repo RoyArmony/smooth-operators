@@ -71,7 +71,10 @@ Read from each bundle's `method.calibration.loo` in `events/*/event.json`. Date 
 | Mean F1 per site | Likouala 0.91 · Amazon várzea 0.86 · Sylhet 0.72 · Thailand 0.70 · Congo 0.68 · China 0.64 · Tonle Sap 0.64 · Assam 0.63 · Irrawaddy 0.63 · Mekong 0.63 |
 | Tonle Sap, all 9 days fitted (no leave-out) | 0.78 (default thresholds −17 / −24 dB: 0.43) |
 
-Not the same test as the Inner Niger held-out track (docs/07 §2b), where v2 scored 0.01 because a corrupt pass broke its baseline.
+Not the same test as Inner Niger. There (flood season, both tracks, same truth) v2's tuned fixed thresholds score
+F1 **0.22–0.33** vs 0.64–0.75 for a per-scene threshold (prep repo docs/34, option 2d; Noa, 14.11.26): dry Sahel soil is as
+dark as water at L-band. The Science page's F1 chart uses 0.22–0.33 so all its rows share one test. The earlier 0.01
+(docs/07 §2b) was v2 broken by a corrupt pass, not the detector itself.
 
 ## Peace–Athabasca Delta, Canada: flood Jun 2026 + history (event folder v2, RCM check)
 
