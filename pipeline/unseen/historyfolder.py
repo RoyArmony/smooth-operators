@@ -26,6 +26,7 @@ from .eventfolder import C, HEX, PLACES, Writer, classes_rgba, dswx_classes, gfm
 from .flood import load
 from .history import align, rs1_on_grid, rs1_scenes, shift, split_threshold
 
+MIN_J = 0.5               # quality: RADARSAT-1 threshold must split known water from land (Youden J >= 0.5)
 MIN_GAP_DAYS = 30          # "every month or two": keep an image only if >= 30 days from the ones kept
 MODIS_DAYS = 3             # optical photo for old dates: least cloudy MODIS day within +-3 days
 GIBS = "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi"
@@ -82,11 +83,16 @@ def build(place):
     W = Writer(folder, grid)
 
     # 1. every candidate image: RADARSAT-1 scenes + NISAR passes, flood km² from our analysis
-    cand = {}
+    cand, rejected = {}, []
     mc = case.get("rs1_min_cover", 0.9)            # 0.9 unless the place sets less (few scenes there)
     for f in rs1_scenes(bbox, min_cover=mc):
         d = f["properties"]["datetime"][:10]
-        db = rs1_on_grid(f, grid, shape)
+        if int(d[5:7]) not in case.get("rs1_months", range(1, 13)):   # e.g. ice-free months only
+            continue
+        try:
+            db = rs1_on_grid(f, grid, shape)
+        except Exception as e:  # noqa: BLE001  (one unreadable scene must not stop the whole history)
+            print(f"[warn] RADARSAT-1 {d} skipped: {e!r}"[:120]); continue
         if np.isfinite(db).mean() < min(0.8, mc - 0.1):
             continue
         dy, dx = align(ref, db)
@@ -94,10 +100,17 @@ def build(place):
         db = median_filter(np.nan_to_num(db, nan=np.nanmedian(db)), 3) * np.where(np.isfinite(db), 1, np.nan)
         thr, ntiles = split_threshold(db, perm)
         ok = np.isfinite(db) & valid
+        # quality check with permanent water as the known reference: share of it below the threshold minus the
+        # share of the rest below it (Youden J). Low = water and land not separable (wind, wet snow, low contrast)
+        J = float((db < thr)[perm & ok].mean() - (db < thr)[~perm & ok].mean())
+        if J < MIN_J and case.get("rs1_flood", True):     # picture-only places (rs1_flood False) keep their scene
+            rejected.append(dict(date=d, youden_j=round(J, 2)))
+            print(f"  RADARSAT-1 {d} dropped: water/land not separable (J {J:.2f})"); continue
         flood = (db < thr) & ~perm & ok
         cand[d] = dict(sensor="RADARSAT-1", db=db, flood=flood, ok=ok, info=dict(
             beam=f["properties"]["beam_mnemonic"], orbit=f["properties"]["sat:orbit_state"],
             scene=f["assets"]["cog"]["href"].rsplit("/", 1)[-1], threshold_db=round(thr, 1), split_tiles=ntiles,
+            youden_j=round(J, 2),
             shift_px=[dy, dx]))
     hh = 10 * np.log10(np.where(stack[:, 0] > 0, stack[:, 0], np.nan))
     hv = 10 * np.log10(np.where(stack[:, 1] > 0, stack[:, 1], np.nan))
@@ -210,7 +223,7 @@ def build(place):
         yi = [i for i in images if i["date"][:4] == y]
         top = max(yi, key=lambda i: i["flood_km2"] or 0)
         years.append(dict(year=int(y), sensor=top["sensor"], max_flood_km2=top["flood_km2"], date=top["date"],
-                          n_images=len(yi), flood_season_seen=any(i["date"][5:7] in ("08", "09", "10", "11", "12") for i in yi)))
+                          n_images=len(yi), flood_season_seen=any(int(i["date"][5:7]) in case.get("flood_months", range(8, 13)) for i in yi)))
     def top(sensor):      # wettest year of that sensor, flood season preferred (GERD: only a July RADARSAT-1 scene)
         ys = [y for y in years if y["sensor"] == sensor]
         return max([y for y in ys if y["flood_season_seen"]] or ys, key=lambda y: y["max_flood_km2"] or 0)
@@ -222,19 +235,24 @@ def build(place):
     else:
         sentence = (f"Same {area:,} km² box: flood {old['max_flood_km2']:,.0f} km² on {old['date']} (RADARSAT-1), "
                     f"{new['max_flood_km2']:,.0f} km² on {new['date']} (NISAR).")
+    rs = [i["date"][:4] for i in images if i["sensor"] == "RADARSAT-1"]
+    rs1_years = f"{rs[0]}–{rs[-1]}" if rs else "none"
     ev = dict(
         version=2, id=f"{place}/history", kind="history", place=f"{case['name']}, {case['country']}",
         title=f"{case['name']}, {images[0]['date'][:4]}–{images[-1]['date'][:4]}", bbox=list(bbox),
         area_km2=round(float(valid.sum() * px)),
         sampling=dict(min_gap_days=MIN_GAP_DAYS, rule="each year's wettest image, then others ≥ 30 days from the kept ones",
-                      candidates=len(cand), kept=len(images)),
+                      candidates=len(cand), kept=len(images),
+                      rs1_rejected=dict(rule=f"Youden J < {MIN_J}: permanent water and land not separable by the image's "
+                                             "threshold", n=len(rejected), dates=rejected)),
         summary=dict(years=years,
                      sentence=sentence,
-                     caveat="Two radars (C-band 1998–2007, L-band 2026) and two methods: compare the pattern, not exact km²."),
+                     caveat=f"Two radars (C-band {rs1_years}, L-band 2026) and two methods: compare the pattern, not exact km²."),
         images=images, layers=W.layers,
         method=dict(grid="NISAR GCOV frequency B, 80 m (native); every source resampled onto it before analysis",
                     rs1="RADARSAT-1 HH warped with its GCPs, aligned to NISAR by edges, one threshold per image "
-                        "(Otsu on tiles with both river and land)",
+                        "(Otsu on tiles with both river and land); image dropped if that threshold does not separate "
+                        f"permanent water from land (Youden J < {MIN_J})",
                     nisar=f"detect.py v2, thresholds HH {case['open_hh']} / HV {case['open_hv']} dB (calibrated on clear optical days)",
                     flood="water beyond permanent water (dark on ≥ 90 % of NISAR passes); area = pixels × 80 m × 80 m",
                     optical=f"MODIS (250 m) least cloudy day within ± {MODIS_DAYS} d for 2000–2013; HLS (30 m) clearest within ± 5 d for 2026; none before 2000",
@@ -273,7 +291,8 @@ NISAR (L-band) 2026 (years: see the image list). Each with our flood map, a phot
 official flood maps where they exist (GFM from 2015, NASA DSWx-HLS from 2023: 2026 only).
 
 **Method:** everything on NISAR's 80 m grid. RADARSAT-1: GCP warp, edge alignment, one threshold per image.
-NISAR: our detector. Flood = water beyond permanent water.
+An image is dropped when its threshold does not separate the known permanent water from land
+(Youden J < 0.5: wind on the lakes, wet snow, low contrast). NISAR: our detector. Flood = water beyond permanent water.
 
 **Limits:** {limits}
 """

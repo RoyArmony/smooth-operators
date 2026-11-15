@@ -727,7 +727,8 @@
      "NISAR",
      "RADARSAT-1"
     ]
-   }
+   },
+   "validation": []
   },
   {
    "id": "mekong-delta-vietnam",
@@ -760,7 +761,50 @@
      "NISAR",
      "RADARSAT-1"
     ]
-   }
+   },
+   "validation": []
+  },
+  {
+   "id": "peace-athabasca-delta",
+   "folder": "peace-athabasca-delta",
+   "name": "Peace-Athabasca Delta",
+   "country": "Canada",
+   "bbox": [
+    -111.8,
+    58.3,
+    -111.0,
+    58.9
+   ],
+   "floods": [
+    {
+     "id": "2026-06-flood",
+     "flood_date": "2026-06-24",
+     "title": "Peace-Athabasca Delta flood, Jun 2026",
+     "baseline": "dswx",
+     "improvement_pct": 0,
+     "nisar_adds_km2": 2.6,
+     "baseline_flood_km2": 974.3,
+     "validation": {
+      "source": "rcm",
+      "agreement_pct": 89.5,
+      "iou": 0.6,
+      "n_dates": 2
+     }
+    }
+   ],
+   "history": {
+    "id": "history",
+    "first": "1997-06-22",
+    "last": "2026-10-22",
+    "n_images": 26,
+    "sensors": [
+     "NISAR",
+     "RADARSAT-1"
+    ]
+   },
+   "validation": [
+    "rcm"
+   ]
   }
  ]
 }

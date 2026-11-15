@@ -130,7 +130,7 @@ def write_index():
     for f in sorted(EVENTS_DIR.glob("*/place.json")):
         p = json.loads(f.read_text(encoding="utf-8"))
         places.append(dict(id=p["id"], folder=f.parent.name, name=p["name"], country=p.get("country"), bbox=p["bbox"],
-                           floods=p.get("floods", []), history=p.get("history")))
+                           floods=p.get("floods", []), history=p.get("history"), validation=p.get("validation") or []))
     idx = dict(version=2 if places else 1, events=out, **(dict(places=places) if places else {}))
     (EVENTS_DIR / "index.json").write_text(json.dumps(idx, indent=1, ensure_ascii=False), encoding="utf-8")
     return out

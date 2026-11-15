@@ -219,3 +219,18 @@ DSWx only (GFM server 502), no photos (no Explorer site). History: RADARSAT-1 ha
 ScanSAR, 74 % of the box, dam just outside), so new place keys `rs1_min_cover` (0.7 here, default 0.9) and `rs1_flood`
 (False: in 1998 the lake was dry valley, the river/land threshold splits terrain shadows, 1,547 km² of false "flood"):
 1998 picture only, plus 4 NISAR images. Size 4 MB; `events/` is now 24.5 MB (over the 20 MB check before this, at 21 MB).
+
+## 11. Validation flag: an independent radar check
+
+**Noa, 15.11.26 14:27:03 says:** a place can set `validation="rcm"` in `PLACES`. Then each pass gets Canada's RCM (CSA, C-band)
+from the day within ± 3 d that covers most of the box (≥ 30 %). RCM water = one Otsu threshold per image on RL (as for
+RADARSAT-1), compared with NISAR **open** water where both see (C-band can't see under trees).
+
+- Layers (group `validation`): `rcm_water`, `agreement` (green both, blue NISAR only, yellow RCM only).
+- `passes[].validation.rcm`: `agreement_pct`, `iou`, `f1`, km² each; `event.json` → `validation.rcm` (means + sentence);
+  `summary.validation`; `place.json` and `index.json` places → `"validation": ["rcm"]` (the flag), floods[] → `validation`.
+- First place: `events/peace-athabasca-delta/` (Alberta). Flood `2026-06-flood` (24 Jun, DSWx baseline: GFM server 502):
+  RCM on 2 of 3 passes, **agreement 89.5 %, IoU 0.60, F1 0.76**. History: RADARSAT-1 1997–2012 + NISAR 2026, 26 images.
+- History quality check (all places): a RADARSAT-1 image is dropped when its threshold doesn't separate the known
+  permanent water from land (Youden J < 0.5; here 68 of 176 dropped: wind on lakes, low contrast). New place keys:
+  `rs1_months` (here May–Sep: ice), `flood_months` (flood season, default Aug–Dec), `flood_limits`.

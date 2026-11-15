@@ -69,6 +69,7 @@ Each owner runs the shared method (Noa) through `bundle.py` (Shai) and checks it
 - [x] [Noa] Event folders v2 spec: place / flood / history, ±30-day window, layers, `event.json` metadata ([docs/12](docs/12-Event-folders.md))
 - [x] [Noa] Event folders v2: first flood folder `events/mekong-delta-vietnam/2026-09-flood/` (`python -m unseen.eventfolder`)
 - [x] [Noa] Event folders v2: history/ folder (docs/12 §10), Mekong built: RADARSAT-1 1998–2007 + NISAR 2026, MODIS/HLS photos, GFM/DSWx where they exist
+- [x] [Noa] Event folders v2: Peace–Athabasca Delta (Canada) with validation flag: flood Jun 2026 + RCM check (89.5 %, IoU 0.60), history RADARSAT-1 1997–2012 + NISAR ([docs/12 §11](docs/12-Event-folders.md))
 - [ ] [Shai] Event folders v2: pipeline writes `events/<place>/<flood>/` (docs/12) · [Roy] site reads it
 - [x] [Noa] ~~Mekong history bundle in `events/mekong-delta-history/`~~ replaced by `events/mekong-delta-vietnam/history/` (v2)
 - [ ] [Shai] **Tonle Sap, Cambodia**: P0 Sun 01:00 GFM flood, "cannot see", NISAR adds, DSWx-S1, photo; passes Jun–Oct · `science.md`

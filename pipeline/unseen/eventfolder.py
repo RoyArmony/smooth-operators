@@ -117,7 +117,15 @@ PLACES = {
         name="Peace-Athabasca Delta", country="Canada", bbox=(-111.8, 58.3, -111.0, 58.9),
         stack_key="peace-athabasca-delta-143-59",     # track 143 frame 59 descending
         viewer_site="peace-athabasca-delta-143-59",
-        open_hh=-12.0, open_hv=-18.0),                # that site's calibration on clear optical days
+        open_hh=-12.0, open_hv=-18.0,                 # that site's calibration on 6 clear optical days (F1 0.80)
+        validation="rcm",                             # independent check: Canada's RCM radar (CSA) near each pass
+        flood_limits="shallow delta lakes roughened by wind are not dark on ≥ 90 % of passes, so part of them counts as "
+                     "flood here (in NISAR and in the baseline alike);",
+        flood_months=range(5, 9),                     # flood season: spring ice-jam + summer high water (May–Aug)
+        rs1_months=range(5, 10),                      # history: May–Sep only (ice, snow, freeze-up fool a dark-water threshold)
+        history_limits="C-band misses water under willow and sedge that L-band sees; one threshold per image vs a "
+                       "calibrated detector: compare the pattern, not exact km². RADARSAT-1 May–Sep only (ice and freeze-up "
+                       "from Oct). MODIS is 250 m. Audit: docs/10-Results.md."),
     "gerd-blue-nile-ethiopia": dict(
         name="GERD reservoir, Blue Nile", country="Ethiopia", bbox=(34.9, 10.2, 35.8, 11.35),
         stack_key="gerd-blue-nile-ethiopia-129-7",    # track 129 frame 7 ascending, 11 dual-pol passes Jun-Nov 2026
@@ -131,11 +139,12 @@ PLACES = {
                        "'flood' here = water beyond the lake on ≥ 90 % of NISAR passes, i.e. how far the lake grows. "
                        "No GFM (server down at build time). Audit: docs/10-Results.md."),
 }
-WINDOW_DAYS, PHOTO_DAYS, GFM_DAYS, DSWX_DAYS = 30, 5, 2, 3
+WINDOW_DAYS, PHOTO_DAYS, GFM_DAYS, DSWX_DAYS, RCM_DAYS = 30, 5, 2, 3, 3
 
 # exact class colours (docs/12 §3a): the site shows them as is, code counts pixels by colour
 C = dict(flood=(40, 130, 255, 230), permanent=(10, 58, 140, 200), clouds=(235, 235, 240, 200),
-         blank=(140, 140, 150, 170), adds=(255, 154, 46, 245), unknown=(60, 60, 70, 200))
+         blank=(140, 140, 150, 170), adds=(255, 154, 46, 245), unknown=(60, 60, 70, 200),
+         rcm=(58, 160, 255, 230), both=(46, 204, 113, 235), nisar_only=(40, 130, 255, 235), rcm_only=(255, 215, 0, 235))
 # "cannot see" and "still unknown" are solid greys, not hatched: hatch patterns make PNGs ~3x bigger (20 MB budget)
 HEX = lambda c: "#%02x%02x%02x" % c[:3]
 D = dt.date.fromisoformat
@@ -244,6 +253,39 @@ def photo_for(case, date):
     return d, im, cl
 
 
+# ---------- independent check: RCM (Canada's C-band radar) ----------
+def rcm_check(feats, date, grid, shape, perm, valid, nisar_open):
+    """RCM day within ± RCM_DAYS of the pass that covers most of the box (ties: closest; ≥ 30 % needed): open water
+    from its RL band (one Otsu threshold per image, tiles with both water and land, as for RADARSAT-1), compared with
+    NISAR open water (incl. permanent water) where both see. C-band can't see water under trees, so NISAR's
+    water-under-vegetation is left out of the comparison."""
+    from scipy.ndimage import median_filter
+    from . import rcm
+    from .history import split_threshold
+    day = lambda f: f["properties"]["datetime"][:10]
+    best = None
+    for d in sorted({day(f) for f in feats if abs((D(day(f)) - D(date)).days) <= RCM_DAYS}, key=lambda d: abs((D(d) - D(date)).days)):
+        b = rcm.on_grid([f for f in feats if day(f) == d], grid, shape, bands=("rl",))["rl"]
+        cover = float((np.isfinite(b) & valid).mean())
+        if cover >= 0.3 and (best is None or cover > best[0] + 0.05):
+            best = (cover, d, b)
+    if best is None:
+        return None
+    _, rd, b = best
+    db = 10 * np.log10(np.where(b > 0, b, np.nan))
+    ok = np.isfinite(db) & valid
+    db = median_filter(np.nan_to_num(db, nan=np.nanmedian(db)), 3) * np.where(np.isfinite(db), 1, np.nan)
+    thr, ntiles = split_threshold(db, perm)
+    rw, nw = (db < thr) & ok, nisar_open & ok
+    both, n_only, r_only = rw & nw, nw & ~rw, rw & ~nw
+    u = float((rw | nw).sum())
+    tp, fp, fn = float(both.sum()), float(n_only.sum()), float(r_only.sum())
+    return dict(date=rd, water=rw, both=both, n_only=n_only, r_only=r_only, stats=dict(
+        threshold_db=round(float(thr), 1), split_tiles=ntiles, compared_pct=round(100 * float(ok.mean())),
+        agreement_pct=round(100 * float((rw == nw)[ok].mean()), 1), iou=round(tp / u, 2) if u else None,
+        f1=round(2 * tp / (2 * tp + fp + fn), 2) if tp + fp + fn else None))
+
+
 # ---------- main ----------
 def build(place, flood_date=None):
     case = PLACES[place]
@@ -278,6 +320,14 @@ def build(place, flood_date=None):
         coh = coherence(bbox, grid, track, frame, [dates[t] for t in idx])
     except Exception as e:  # noqa: BLE001
         print(f"[warn] coherence: {e!r}"[:120]); coh = [None] * len(idx)
+
+    rfeats = []
+    if case.get("validation") == "rcm":
+        try:
+            from . import rcm
+            rfeats = rcm.search(bbox, (w0 - dt.timedelta(days=RCM_DAYS)).isoformat(), (w1 + dt.timedelta(days=RCM_DAYS)).isoformat())
+        except Exception as e:  # noqa: BLE001
+            print(f"[warn] RCM: {e!r}"[:120])
 
     hh = 10 * np.log10(np.where(stack[:, 0] > 0, stack[:, 0], np.nan))
     hv = 10 * np.log10(np.where(stack[:, 1] > 0, stack[:, 1], np.nan))
@@ -368,6 +418,25 @@ def build(place, flood_date=None):
                label="NISAR flood (our detector)", legend=[[HEX(C["flood"]), "flood seen by NISAR"]], default=False))
         P["layers"].append("nisar_water")
         P["nisar"] = dict(water_km2=round(float(w.sum() * px), 1), valid_pct=round(100 * float(valid.mean())))
+        # independent check (RCM): open water, same grid, near the same day
+        R = None
+        if rfeats:
+            try:
+                R = rcm_check(rfeats, d, grid, shape, perm, valid, L["water"][t] & valid)
+            except Exception as e:  # noqa: BLE001
+                print(f"[warn] RCM {d}: {e!r}"[:120])
+        if R:
+            W.rgba("rcm_water", R["date"], classes_rgba([(R["water"], "rcm")]), dict(group="validation",
+                   sensor="RCM C-band compact-pol (CSA)", label="Water seen by Canada's RCM radar (our analysis)",
+                   legend=[[HEX(C["rcm"]), "open water (RCM)"]], default=False))
+            W.rgba("agreement", d, classes_rgba([(R["both"], "both"), (R["n_only"], "nisar_only"), (R["r_only"], "rcm_only")]),
+                   dict(group="validation", sensor="NISAR + RCM", label="NISAR vs RCM: open water",
+                        legend=[[HEX(C["both"]), "both see water"], [HEX(C["nisar_only"]), "NISAR only"],
+                                [HEX(C["rcm_only"]), "RCM only"]], default=False))
+            P["matched"]["rcm"] = R["date"]
+            P["validation"] = dict(rcm=dict(R["stats"], nisar_open_km2=round(float((R["both"] | R["n_only"]).sum() * px), 1),
+                                            rcm_water_km2=round(float(R["water"].sum() * px), 1)))
+            P["layers"] += ["rcm_water", "agreement"]
         main = "gfm" if "gfm" in base else next(iter(base), None)
         if main:
             B = base[main]
@@ -400,12 +469,25 @@ def build(place, flood_date=None):
                    nisar_water_km2=sp["nisar"]["water_km2"],
                    sentence=f"On {sp['date']}, NISAR adds {s['nisar_adds_km2']:,.0f} km² of flood "
                             f"(+{s['improvement_pct']}%) where {nice} cannot see.")
+    vp = [p for p in passes if "validation" in p]
+    validation = None
+    if vp:
+        V = [p["validation"]["rcm"] for p in vp]
+        mean = lambda k: round(sum(v[k] for v in V if v[k] is not None) / max(1, sum(v[k] is not None for v in V)), 2)
+        validation = dict(rcm=dict(
+            sensor="RCM C-band compact-pol (CSA), CEOS-ARD", compared="open water (C-band can't see water under trees)",
+            match_days=RCM_DAYS, n_dates=len(vp), dates=[[p["date"], p["matched"]["rcm"]] for p in vp],
+            agreement_pct=round(sum(v["agreement_pct"] for v in V) / len(V), 1), iou=mean("iou"), f1=mean("f1"),
+            sentence=f"Canada's RCM radar, within {RCM_DAYS} days of {len(vp)} NISAR passes, agrees on "
+                     f"{sum(v['agreement_pct'] for v in V) / len(V):.0f}% of pixels (open water IoU {mean('iou')})."))
+        summary["validation"] = dict(source="rcm", agreement_pct=validation["rcm"]["agreement_pct"],
+                                     iou=validation["rcm"]["iou"], n_dates=len(vp))
     ev = dict(
         version=2, id=f"{place}/{fid}", place=f"{case['name']}, {case['country']}",
         title=f"{case['name']} flood, {D(fd).strftime('%b %Y')}", flood_date=fd,
         window=dict(start=w0.isoformat(), end=w1.isoformat(), days_before=WINDOW_DAYS, days_after=WINDOW_DAYS),
         bbox=list(bbox), area_km2=round(float(valid.sum() * px)), baselines=sorted({k for p in passes for k in p["baselines"]}),
-        summary=summary, passes=passes, layers=W.layers,
+        summary=summary, passes=passes, layers=W.layers, **(dict(validation=validation) if validation else {}),
         method=dict(detector="detect.py v2 (open water + water under vegetation, HH/HV), thresholds calibrated on clear "
                              f"optical days: HH {case['open_hh']} / HV {case['open_hv']} dB",
                     pixel_m=grid["dx"], permanent_water="dark on ≥ 90 % of NISAR passes",
@@ -420,20 +502,26 @@ def build(place, flood_date=None):
             dict(name="OPERA DSWx-HLS", url="https://www.jpl.nasa.gov/go/opera", credit="NASA/JPL OPERA; data via PO.DAAC"),
             dict(name="HLS true colour via NASA GIBS", url="https://earthdata.nasa.gov/gibs",
                  credit="NASA EOSDIS GIBS; HLS (NASA / USGS Landsat, ESA Copernicus Sentinel-2)"),
-            dict(name="ESA WorldCover 2021", url="https://esa-worldcover.org", credit="© ESA WorldCover project 2021, CC BY 4.0")],
+            dict(name="ESA WorldCover 2021", url="https://esa-worldcover.org", credit="© ESA WorldCover project 2021, CC BY 4.0")]
+        + ([dict(name="RADARSAT Constellation Mission (RCM) CEOS-ARD", url="https://registry.opendata.aws/rcm-ceos-ard/",
+                 credit="RCM data © Government of Canada (Canadian Space Agency); RCM Public User Licence")] if validation else []),
     )
     (folder / "event.json").write_text(json.dumps(ev, indent=1, ensure_ascii=False), encoding="utf-8")
-    (folder / "science.md").write_text(SCIENCE.format(**summary, title=ev["title"], start=w0, end=w1, n=len(passes)), encoding="utf-8")
+    (folder / "science.md").write_text(SCIENCE.format(**summary, title=ev["title"], start=w0, end=w1, n=len(passes),
+                                                      limits=case.get("flood_limits", "paddies are flooded on purpose in season;"))
+                                       + (VALIDATION.format(**validation["rcm"]) if validation else ""), encoding="utf-8")
     pl = dict(version=2, id=place, name=case["name"], country=case["country"], bbox=list(bbox),
               floods=[dict(id=fid, flood_date=fd, title=ev["title"], baseline=mb,
                            improvement_pct=summary["improvement_pct"], nisar_adds_km2=summary["nisar_adds_km2"],
-                           baseline_flood_km2=summary["baseline_flood_km2"])],
+                           baseline_flood_km2=summary["baseline_flood_km2"],
+                           **(dict(validation=summary["validation"]) if validation else {}))],
               history=None)
     pf = EVENTS_DIR / place / "place.json"
     if pf.exists():                                       # keep other floods / history already listed
         old = json.loads(pf.read_text(encoding="utf-8"))
         pl["floods"] = sorted([f for f in old.get("floods", []) if f["id"] != fid] + pl["floods"], key=lambda f: f["flood_date"])
         pl["history"] = old.get("history")
+    pl["validation"] = sorted({k for f in pl["floods"] for k in ([f["validation"]["source"]] if f.get("validation") else [])})
     pf.write_text(json.dumps(pl, indent=1, ensure_ascii=False), encoding="utf-8")
     bundle.write_index()
     return ev
@@ -452,8 +540,15 @@ and NASA OPERA DSWx-HLS (optical; "cannot see" = clouds). Matched to each pass: 
 (`pipeline/unseen/detect.py`). NISAR addition = NISAR water inside the baseline's "cannot see". Improvement % =
 NISAR addition / baseline flood. Area = pixels × 80 m × 80 m.
 
-**Limits:** a NISAR addition is a candidate, not proven flood; paddies are flooded on purpose in season; numbers are
+**Limits:** a NISAR addition is a candidate, not proven flood; {limits} numbers are
 from one detector with thresholds fitted on clear days. Audit: docs/10-Results.md.
+"""
+
+
+VALIDATION = """
+**Independent check (RCM):** {sentence} RCM (Canadian Space Agency, C-band, compact-pol) is a different radar,
+band and orbit. Its water = one Otsu threshold per image on the RL band (tiles with both water and land), on our 80 m
+grid; compared with NISAR open water only, where both see. Layers `rcm_water` and `agreement`.
 """
 
 

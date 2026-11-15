@@ -73,3 +73,22 @@ Read from each bundle's `method.calibration.loo` in `events/*/event.json`. Date 
 
 Not the same test as the Inner Niger held-out track (docs/07 §2b), where v2 scored 0.01 because a corrupt pass broke its baseline.
 
+## Peace–Athabasca Delta, Canada: flood Jun 2026 + history (event folder v2, RCM check)
+
+`python -m unseen.eventfolder peace-athabasca-delta` and `python -m unseen.historyfolder peace-athabasca-delta` →
+`events/peace-athabasca-delta/`. Box [-111.8, 58.3, -111.0, 58.9], NISAR track 143 frame 59 descending, detect.py v2
+(HH −12 / HV −18 dB). Window 2026-05-25 → 2026-07-24. GFM server 502 → DSWx-HLS only. Date (who): 15.11.26 (Noa).
+
+| Pass | DSWx flood (date) | DSWx cannot see (clouds) | NISAR adds | NISAR water | RCM day | Agreement / IoU / F1 |
+|---|---|---|---|---|---|---|
+| **2026-06-24** | 974 (06-24) | 10 | 3 | 440 | none ± 3 d | – |
+| 2026-07-06 | 835 (07-07) | 292 | 9 | 311 | 07-03 (79 % of box) | 88.9 % / 0.58 / 0.74 |
+| 2026-07-18 | 12 (07-18) | 2,578 | 371 | 373 | 07-18 (41 %) | 90.1 % / 0.63 / 0.77 |
+
+km². RCM = open water (RL band, Otsu per image) vs NISAR open water incl. permanent water. DSWx counts more "flood" than
+NISAR on clear days: wind-roughened shallow lakes are not dark on ≥ 90 % of NISAR passes, so they are not "permanent".
+
+History: RADARSAT-1 May–Sep scenes ≥ 90 % cover (1 unreadable: EODMS host blocked), 68 dropped by the Youden check
+(J < 0.5, checked by eye against MODIS: 2011-07-08, 2011-09-02, 2012-08-12, 2012-09-12 were false floods over dry land).
+Kept 26: per-year maxima 1997 253, 1998 180, 1999 146, 2002 68, 2003 178, 2004 106, 2006 344, 2010 263, 2011 581,
+2012 595 km² (RADARSAT-1); 2026 440 km² (NISAR, 06-24).
