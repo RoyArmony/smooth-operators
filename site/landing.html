@@ -60,6 +60,8 @@
   #sd { display: flex; gap: 5px; align-items: center; margin-left: 6px; } #sd i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; }
   #sd i.on { background: var(--o); } #sd i.done { background: rgba(255,154,46,.5); }
   #bar { position: fixed; left: 0; bottom: var(--foot-h); height: 3px; background: var(--o); width: 0; }
+  #txt ul.bul { margin: 14px 0 0; padding: 0; list-style: none; font-size: clamp(17px, 1.6vw, 24px); font-weight: 500; line-height: 1.5; }
+  #txt ul.bul li { padding-left: 22px; position: relative; } #txt ul.bul li::before { content: ''; position: absolute; left: 2px; top: .6em; width: 8px; height: 8px; border-radius: 50%; background: var(--o); }
   #ctl .opt { display: flex; align-items: center; gap: 5px; font: 600 12px Inter, system-ui, sans-serif; color: #cfd6df; background: rgba(0,0,0,.45); padding: 0 10px; border-radius: 999px; cursor: pointer; user-select: none; }
   #ctl .opt input { accent-color: #ff9a2e; margin: 0; }
   #ctl { align-items: center; }
@@ -243,7 +245,7 @@ const scenes = [
   [6.5, () => { document.body.classList.remove('wv'); map.fitBounds(B, { animate: false, paddingTopLeft: [innerWidth * .38, 20], paddingBottomRight: [20, 20] }); vidCard(false); vid(true);
               say('Flooded forests', H('Every rainy season, rivers spill into forests and wetlands. The water spreads under the trees, where satellites struggle to see it.')); }],
   [6.5, () => { vid(true); vidCard(true);
-              say('Tonle Sap, Cambodia', H('Knowing where the water is matters. Rice farmers and fishers plan their season around it, insurers pay flood claims by it, and relief teams decide where to send boats.')); }],
+              say('Tonle Sap, Cambodia', H('Knowing where the water is matters:') + '<ul class="bul"><li>Farmers and fishers plan their season by it</li><li>Insurers pay flood claims by it</li><li>Relief teams send boats by it</li></ul>'); }],
   [7, () => { vid(false); document.body.classList.remove('dim'); show([]); P.photo.setUrl(A + 'photo_2026-10-19.jpg'); later(() => { flash(box); show(['photo']); }, 900); legend([]);
               say('Optical satellites · 19 Oct 2026', H('Optical satellites can\'t see it: clouds, and the forest canopy over the water.'), '', 'Optical · NASA HLS (Landsat + Sentinel-2)'); }],
   [7.5, () => { show(['gfm']); legend(['gfm']);
