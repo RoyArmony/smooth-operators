@@ -146,6 +146,29 @@ HAND = Height Above Nearest Drainage, from ASF's GLO-30 HAND (Copernicus DEM, 30
 help the fill a little, but the delta is too flat: median HAND 0.2 m, 90 % of pixels < 1.1 m; water 0.15 m vs land 0.27 m.
 HAND as a filter (drop water above h): h = 1 m keeps F1 (0.700) and cuts dry-season false water ~10 %; h = 0.5 m ~25 %, F1 0.694.
 
+**Can HAND remove the false water? (tested, Inner Niger)** Tuned on track 145, scored on track 138 (held out); mean over
+flood-season passes with coherence.
+
+| Option | Track 145 F1 | Track 138 F1 | Track 138 precision / recall | False water per pass (138) |
+|---|---|---|---|---|
+| v3 as is (cut 0.30) | 0.706 | 0.698 | 0.59 / 0.89 | 468 km² |
+| Fixed HAND filter (best: drop water above 1.5 m) | 0.705 | 0.698 | 0.59 / 0.88 | 458 km² |
+| Adaptive HAND filter (98th pct of HAND under confident water + 0.25 m, per pass) | 0.705 | 0.699 | 0.59 / 0.88 | 452 km² |
+| HAND as a 9th feature in the score (weight −0.34) | 0.71 | 0.70 | | |
+
+**No.** The false water lies on the same low ground as the real water (both under ~0.3 m HAND), so height cannot
+separate them here. The lever is the probability cut (precision ↔ recall):
+
+| Cut | Track 145 F1 · P · R | Track 138 F1 · P · R | False water per pass (138) |
+|---|---|---|---|
+| 0.30 (default) | 0.706 · 0.64 · 0.80 | 0.698 · 0.59 · 0.89 | 468 km² |
+| 0.40 | 0.690 · 0.70 · 0.69 | 0.704 · 0.65 · 0.79 | 312 km² |
+| 0.50 | 0.645 · 0.75 · 0.58 | 0.675 · 0.71 · 0.66 | 197 km² |
+| 0.60 | 0.575 · 0.79 · 0.47 | 0.606 · 0.76 · 0.51 | 112 km² |
+
+Keep 0.30 (best F1 on the tuning track). For a "confident water" layer use 0.50 (precision 0.71–0.75).
+Part of the "false" water may be real flooded grass that optical cannot see.
+
 **Next:** test where there is relief (Tonle Sap edge, Peace–Athabasca). Limits: HAND is from a surface model (treetops
 count as ground, so it under-fills flooded forest); ±2–4 m vertical error is larger than shallow flood depth.
 
