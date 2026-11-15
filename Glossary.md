@@ -10,6 +10,7 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 |---|---|---|
 | **AI** | Artificial Intelligence | Must be disclosed in the submission (see SI). |
 | **ALOS** | Advanced Land Observing Satellite | Japanese (JAXA) L-band radar; its PALSAR (2006–11) is our optional L-band "then" layer. |
+| **AOI** | Area Of Interest | The box we analyse for one flood. |
 | **API** | Application Programming Interface | A way for programs to request data, e.g. the ASF search API. |
 | **ARD** | Analysis Ready Data | Data already corrected and gridded so you can analyze it directly (NISAR L2 is close to ARD). |
 | **ARIA** | Advanced Rapid Imaging and Analysis (JPL) | JPL project that makes damage proxy and flood proxy maps from SAR after disasters. |
@@ -66,6 +67,7 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 | **IoU** | Intersection over Union | Overlap between two maps (0–1): shared area ÷ combined area. A standard mask-accuracy measure. |
 | **IP** | Internet Protocol (address) | The numeric server address our domain's A record points to. |
 | **ISRO** | Indian Space Research Organisation | NASA's partner in NISAR; built the S-band radar. |
+| **IV** | Inundated Vegetation | Water under trees or tall plants; L-band sees it by double bounce (NISAR handbook class). |
 | **JAXA** | Japan Aerospace Exploration Agency | Runs ALOS / ALOS-2 (L-band SAR). |
 | **JJ-FAST** | JICA-JAXA Forest Early Warning System in the Tropics | Operational L-band deforestation alerts through clouds. |
 | **JPL** | Jet Propulsion Laboratory | NASA center that built NISAR's L-band radar and processes its products. |
@@ -84,12 +86,15 @@ All abbreviations and initials used in this repo, in **A–Z order**.
 | **MVP** | Minimum Viable Product | The smallest demoable version of our app. |
 | **NASA** | National Aeronautics and Space Administration | US space agency; NISAR partner; runs Space Apps. |
 | **NASS** | National Agricultural Statistics Service (USDA) | Publishes US crop progress and field boundaries. |
+| **NC** | Not Classified | NISAR handbook class between water and dry land. |
 | **NHESS** | Natural Hazards and Earth System Sciences | Open-access EGU journal (landslides, floods). |
+| **NI** | Not Inundated | NISAR handbook class: dry land. |
 | **NISAR** | NASA-ISRO Synthetic Aperture Radar | The satellite of our challenge: L-band + S-band radar, launched 2025, repeats every 12 days. |
 | **OCHA** | UN Office for the Coordination of Humanitarian Affairs | Co-runs GDACS. |
 | **OMNI** | (NASA) OMNI solar-wind and geomagnetic data set | Hourly space-weather indices (Kp, Dst) from NASA SPDF. |
 | **OPERA** | Observational Products for End-Users from Remote Sensing Analysis | JPL project making ready-made products (water, disturbance, displacement). |
 | **OSCAR** | Observing Systems Capability Analysis and Review tool | WMO's online database of satellites and instruments. |
+| **OW** | Open Water | NISAR handbook class: open, mirror-like water. |
 | **P0 / P1 / P2** | Priority 0 / 1 / 2 | Task priority in `tasks.md`: must / should / nice to have. |
 | **PALSAR** | Phased Array type L-band SAR | The L-band radar on JAXA's ALOS (2006–2011, free at ASF). |
 | **PNG** | Portable Network Graphics | Image format of our map layers (with transparency). |
