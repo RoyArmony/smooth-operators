@@ -25,7 +25,7 @@ import requests
 from PIL import Image
 from scipy.ndimage import median_filter, sobel
 
-from . import gfm
+from . import bundle, gfm
 from .config import DATA_DIR, REPO
 from .detect import detect
 from .flood import load
@@ -39,6 +39,7 @@ CASE = dict(
     title="Mekong delta, 1998–2026",
     bbox=(105.0, 10.4, 105.6, 11.0),
     nisar_site="mekong-delta-vietnam-83-7",      # 2026 site of the same box: its NISAR images and calibration
+    gfm_bundle="mekong-delta-vietnam",           # its events/ bundle: GFM fallback when the GFM STAC is down
     open_hh=-13.0, open_hv=-18.0,                # calibrated on clear optical days (that site's calibration)
     kind="flood history (RADARSAT-1 + NISAR)",
 )
@@ -144,6 +145,35 @@ def split_threshold(db, permanent, tile=32):
     return otsu(v), n
 
 
+def gfm_from_bundle(eid, date, grid, shape):
+    """GFM flood + exclusion mask for one NISAR date, read back from a committed events/<eid> bundle (PNG, EPSG:4326)
+    onto our grid. Used when the GFM STAC is unreachable; same data our pipeline fetched (gfm.on_grid, +-2 d)."""
+    import rasterio
+    from rasterio.transform import from_bounds, from_origin
+    from rasterio.warp import Resampling, reproject
+    if not eid:
+        return None
+    root = REPO / "events" / eid
+    E = json.loads((root / "event.json").read_text())
+    row = next((r for r in E["timeline"] if r["date"] == date and "gfm_flood" in r["layers"]), None)
+    if row is None:
+        return None
+    x, y, dx = grid["x"], grid["y"], grid["dx"]
+    out = {}
+    for k in ("gfm_flood", "gfm_excluded"):
+        lay = E["layers"][k]
+        a = np.array(Image.open(root / lay["files"][date]).convert("RGBA"))[..., 3]
+        (s_, w_), (n_, e_) = lay["bounds"]
+        m = np.zeros(shape, np.uint8)
+        reproject((a > 0).astype(np.uint8), m, src_transform=from_bounds(w_, s_, e_, n_, a.shape[1], a.shape[0]),
+                  src_crs="EPSG:4326", dst_transform=from_origin(x[0] - dx / 2, y[0] + dx / 2, dx, dx),
+                  dst_crs=f"EPSG:{grid['epsg']}", resampling=Resampling.nearest)
+        out[k] = m.astype(bool)
+    print(f"  GFM {date}: from events/{eid} (GFM {row.get('gfm_date')})")
+    return dict(date=row.get("gfm_date", date), flood=out["gfm_flood"], excluded=out["gfm_excluded"],
+                seen=np.ones(shape, bool), n=0)
+
+
 # ---------- outputs ----------
 def gray_jpg(db, path):
     v = db[np.isfinite(db)]
@@ -173,7 +203,7 @@ def build(case=CASE, use_gfm=True):
     ref = np.nanmedian(L["hh"], 0)                          # NISAR HH median: reference for alignment
     assert list(src["size"]) == [shape[1], shape[0]], "NISAR grid differs from the 2026 site"
 
-    frames, summary, assets, log = [], [], {}, []
+    frames, summary, assets, log, masks = [], [], {}, [], {}
     for f in rs1_scenes(bbox):
         p, d = f["properties"], f["properties"]["datetime"][:10]
         db = rs1_on_grid(f, grid, shape)
@@ -191,6 +221,7 @@ def build(case=CASE, use_gfm=True):
                            beam=p["beam_mnemonic"], orbit=p["sat:orbit_state"], scene=f["assets"]["cog"]["href"].rsplit("/", 1)[-1]))
         summary.append(dict(date=d, new_water=round(float(flood.sum() * px), 1), hidden_new=0, valid=round(float(ok.mean()), 3)))
         log.append(dict(date=d, beam=p["beam_mnemonic"], threshold_db=round(thr, 1), tiles=ntiles, shift_px=[dy, dx]))
+        masks[d] = dict(rs1_water=flood, rs1_db=db)
         print(d, p["beam_mnemonic"], f"thr {thr:.1f} dB ({ntiles} tiles)", f"shift {dy},{dx}", f"flood {summary[-1]['new_water']} km²", flush=True)
 
     for t, d in enumerate(ndates):
@@ -201,6 +232,8 @@ def build(case=CASE, use_gfm=True):
                 G = gfm.on_grid(bbox, d, grid, shape, days=3)
             except Exception as e:  # noqa: BLE001
                 print(f"[warn] GFM {d}: {e!r}"[:120])
+            if G is None:                                   # GFM server down: same GFM, from our 2026 bundle
+                G = gfm_from_bundle(case.get("gfm_bundle"), d, grid, shape)
         s = dict(date=d, new_water=round(float(wet.sum() * px), 1), hidden_new=0, valid=round(float(valid.mean()), 3))
         if G:
             seen = G["seen"] & valid
@@ -212,8 +245,10 @@ def build(case=CASE, use_gfm=True):
                      gfm_only_km2=round(float((gf & ~wet).sum() * px), 1),
                      nisar_only_in_gfm_blank_km2=round(float((wet & G["excluded"] & seen).sum() * px), 1))
             s["hidden_new"] = s["nisar_only_km2"]
+            masks[d] = dict(nisar_water=wet, gfm_flood=gf, gfm_excluded=G["excluded"] & seen, gfm_date=G["date"])
         else:
             cls = dict(flood=wet)
+            masks[d] = dict(nisar_water=wet)
         overlay_png(cls, out / f"flood_{d}.png")
         name = f"nisar_{d}.jpg"
         assets[name] = f"sites/{case['nisar_site']}/{name}"
@@ -257,7 +292,96 @@ def build(case=CASE, use_gfm=True):
         rs1_log=log,
     )
     (out / "site.json").write_text(json.dumps(site, indent=1, ensure_ascii=False))
+    write_event(case, site, masks, grid)
     return site
+
+
+# ---------- events/ bundle (contract v1, docs/08 §3) ----------
+EVENT_ID = "mekong-delta-history"     # = Explorer id minus its "-1998-2026" suffix (inmap.js finds bundles that way)
+RS1_PICTURES = ("2001-08-30", "2005-10-27", "2006-03-13", "2006-10-22")   # then/now swipe: dry vs each flood year
+
+
+def write_event(case, site, masks, grid):
+    """events/<EVENT_ID>/: rs1_water (RADARSAT-1 dates), agreement vs GFM (NISAR dates; nisar_water if no GFM),
+    rs1_rgb pictures for a few key dates (kept few: events/ must stay < 20 MB)."""
+    ev = bundle.new_event(EVENT_ID, case["title"], "story", case["bbox"], "Mekong delta, Vietnam")
+    for fr, sm in zip(site["frames"], site["summary"]):
+        d, m, st, lay = fr["date"], masks[fr["date"]], dict(flood_km2=sm["new_water"]), []
+        if fr["sensor"] == "RADARSAT-1":
+            bundle.add_mask_layer(ev, "rs1_water", d, m["rs1_water"], grid, "RADARSAT-1 C-band (CSA)",
+                                  label="Flood (RADARSAT-1)", default=True)
+            lay.append("rs1_water")
+            if d in RS1_PICTURES:
+                db = m["rs1_db"]
+                lo, hi = np.nanpercentile(db, 2), np.nanpercentile(db, 98)
+                g = np.clip((np.nan_to_num(db, nan=lo) - lo) / (hi - lo) * 254 + 1, 1, 255).astype(np.uint8)
+                g, b = bundle.to_wgs84(g[::2, ::2], dict(grid, x=grid["x"][::2], y=grid["y"][::2], dx=grid["dx"] * 2))   # 160 m: size
+                rgba = np.dstack([g, g, g, np.where(g > 0, 255, 0).astype(np.uint8)])
+                bundle.add_image_layer(ev, "rs1_rgb", d, Image.fromarray(rgba, "RGBA"), b, "radar",
+                                       "RADARSAT-1 C-band (CSA)", label="RADARSAT-1 radar (dark = water)")
+                lay.append("rs1_rgb")
+        else:
+            if "gfm_flood" not in m:                       # no GFM that week: NISAR flood alone
+                bundle.add_mask_layer(ev, "nisar_water", d, m["nisar_water"], grid, "NISAR L-band",
+                                      label="Flood (NISAR)", default=True)
+                lay.append("nisar_water")
+            else:                                          # agreement already holds NISAR's flood (blue + orange)
+                w, gf = m["nisar_water"], m["gfm_flood"]
+                cls = np.zeros(w.shape, np.uint8)
+                cls[w & gf], cls[w & ~gf], cls[gf & ~w] = 1, 2, 3
+                c, b = bundle.to_wgs84(cls, grid)
+                rgba = np.zeros(c.shape + (4,), np.uint8)
+                for k, key in ((1, "both"), (2, "nisar_only"), (3, "gfm_only")):
+                    rgba[c == k] = COL[key]
+                bundle.add_image_layer(ev, "agreement", d, Image.fromarray(rgba, "RGBA"), b, "validation",
+                                       "NISAR L-band vs Sentinel-1 (Copernicus GFM)",
+                                       label="NISAR vs official map (GFM)", default=True)
+                ev["layers"]["agreement"]["legend"] = "#2882ff both · #ff9628 only NISAR · #e63cc8 only GFM"
+                lay.append("agreement")                   # GFM "cannot see": in events/mekong-delta-vietnam
+                st.update({k: sm[k] for k in ("gfm_date", "gfm_km2", "both_km2", "nisar_only_km2", "gfm_only_km2",
+                                              "nisar_only_in_gfm_blank_km2")})
+        ev["timeline"].append(dict(date=d, sensor=fr["sensor"], stats=st, layers=lay))
+    rs1 = [r for r in ev["timeline"] if r["sensor"] == "RADARSAT-1"]
+    old = max(rs1, key=lambda r: r["stats"]["flood_km2"])
+    new = max((r for r in ev["timeline"] if "gfm_km2" in r["stats"]), key=lambda r: r["stats"]["flood_km2"])
+    o, n = old["stats"], new["stats"]
+    ev["headline"] = dict(
+        date=new["date"],
+        sentence=f"Same delta, 25 years apart: RADARSAT-1 saw {o['flood_km2']:,.0f} km² flooded on {old['date']}; "
+                 f"NISAR saw {n['flood_km2']:,.0f} km² on {new['date']}, the official map (GFM) {n['gfm_km2']:,.0f} km².",
+        numbers=[dict(label=f"Flood {old['date'][:4]} (RADARSAT-1)", value=o["flood_km2"], unit="km²"),
+                 dict(label=f"Flood {new['date'][:4]} (NISAR)", value=n["flood_km2"], unit="km²"),
+                 dict(label="Official map, same day (GFM)", value=n["gfm_km2"], unit="km²")],
+        badge=dict(text="RADARSAT-1 (CSA) + NISAR · different radars: compare the pattern", ref="method"))
+    ev["method"] = dict(module="pipeline/unseen/history.py", notes=site["report"]["notes"], rs1=site["rs1_log"],
+                        flood="water beyond permanent water (dark on >= 90 % of NISAR passes); area = pixels x 80 m x 80 m")
+    ev["sources"] = [
+        dict(name="RADARSAT-1 L1 (EODMS / AWS)", url="https://registry.opendata.aws/radarsat-1/",
+             credit="RADARSAT-1 data © Canadian Space Agency; Open Government Licence – Canada"),
+        dict(name="NISAR L2 GCOV", url="https://search.asf.alaska.edu", credit="NASA/JPL-Caltech, ISRO; data via ASF DAAC"),
+        dict(name="Copernicus EMS Global Flood Monitoring", url="https://global-flood.emergency.copernicus.eu",
+             credit="© European Union, Copernicus Emergency Management Service")]
+    d = bundle.write_event(ev)
+    (d.parent / "science.md").write_text(SCIENCE.format(**ev["headline"]))
+    bundle.write_index()
+    return d
+
+
+SCIENCE = """# Mekong delta, 1998–2026: flood history
+
+**What:** the same 66 × 66 km of the Mekong delta (Dong Thap / An Giang), flooded every year Aug–Dec.
+{sentence}
+
+**Data:** RADARSAT-1 (CSA, C-band HH; 1998, 2001, 2005, 2006 Mar–Dec, 2007) and NISAR (L-band HH+HV, Jun–Oct 2026),
+on one 80 m grid. On NISAR dates, Copernicus GFM (Sentinel-1) the same day ± 3 d.
+
+**Method** (`pipeline/unseen/history.py`): RADARSAT-1 warped with its GCPs and aligned to NISAR by edges; one water
+threshold per image (Otsu on tiles holding both river and land). NISAR: our detector, thresholds calibrated on clear
+optical days. Flood = water beyond permanent water. `agreement`: both / only NISAR / only GFM.
+
+**Limits:** two radars (C vs L band) and two methods: compare the pattern (dry ≈ 100–350 km², flood ≈ 1,500–2,800 km²),
+not exact km². Paddies are flooded on purpose; dikes keep some fields dry. Numbers: docs/10-Results.md.
+"""
 
 
 def card(site):

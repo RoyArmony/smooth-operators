@@ -22,6 +22,7 @@ STYLE = {
     "nisar_floodveg": ("result", (40, 200, 120, 235)),
     "nisar_adds": ("result", (255, 150, 40, 245)),
     "rcm_water": ("validation", (255, 80, 80, 235)),
+    "rs1_water": ("result", (40, 130, 255, 235)),          # RADARSAT-1 flood (history bundles)
 }
 HEX = lambda c: "#%02x%02x%02x" % c[:3]
 

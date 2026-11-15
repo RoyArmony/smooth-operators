@@ -24,6 +24,8 @@ Flood = water beyond permanent water (dark on ≥ 90 % of NISAR passes). Area = 
 | NISAR vs GFM, same day 2026-09-23 | NISAR 1,854 · GFM 706 · both 550 · only NISAR 1,304 (170 of it in GFM's "cannot see") · only GFM 156 km² | 14.11.26 (Noa) |
 | RADARSAT-1 threshold per image | 31.4–37.1 dB (DN), Otsu on 22–24 river/land tiles; alignment shift to NISAR 0–1 px, except 1998-07-29 (−34, −15) and 2001-11-07 (+42, −4) px | 14.11.26 (Noa) |
 
+| `events/mekong-delta-history/` bundle | headline: flood 2001-08-30 2,830 km² (RADARSAT-1) · 2026-09-23 1,854 km² (NISAR) · GFM same day 706 km²; layers `rs1_water` (17 dates), `agreement` (11 NISAR dates), `rs1_rgb` (4 key dates, 160 m); 3.1 MB. GFM read back from `events/mekong-delta-vietnam` (EODC STAC down, HTTP 502): same numbers as the direct fetch | 15.11.26 (Noa) |
+
 Caveats: C-band (RADARSAT-1) and L-band (NISAR) see flooded rice differently, and the methods differ (one threshold per
 image vs our calibrated detector), so compare the pattern (dry ≈ 100–350 km², wet ≈ 1,500–2,800 km²), not exact km².
 1998 and 2007 have dry-season images only.

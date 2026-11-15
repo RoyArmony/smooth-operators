@@ -62,7 +62,7 @@ async function openSite(id) {
     const pb = S.P.corners, PB = L.latLngBounds([[pb[1][1], pb[0][0]], [pb[0][1], pb[1][0]]]), o = { pane: 'analysis', interactive: false, opacity: 0 };
     S.mo = L.imageOverlay(A(S.P.list[0].motion), PB, o).addTo(map); S.fr = L.imageOverlay(A(S.P.list[0].fringes), PB, o).addTo(map);
   }
-  S.ev = []; try {
+  S.ev = []; if (!D.history) try {          // history cases draw their own per-image overlay (site.json)
     const eid = id.replace(/-\d+-\d+$/, ''), E = await (await fetch(`../../events/${eid}/event.json`, { cache: 'no-cache' })).json();
     const ORDER = ['gfm_flood', 'gfm_excluded', 'nisar_water', 'nisar_adds'];
     S.ev = Object.entries(E.layers || {}).sort((a, b) => (ORDER.indexOf(a[0]) + 1 || 99) - (ORDER.indexOf(b[0]) + 1 || 99))
