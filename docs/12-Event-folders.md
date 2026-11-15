@@ -259,3 +259,9 @@ where each map sees): **NASA DSWx agreement 74 %, precision 0.99, recall 0.46; N
 site: own list item (opens `events/<place>/<flood>/` directly), card and list headline **✓ agreement %** (DSWx, then LANCE row),
 steps Area → NASA → NISAR → **V xx%** (agreement map `agreement_dswx`: green both, blue NISAR only, yellow NASA only; per-pass %
 in the panel, chart = % agreement per pass). The summary of a validation folder is its clearest pass (most of the box compared).
+
+**Noa, 15.11.26 15:46:28 says:** second validation place `events/sylhet-haor-validation/` (Bangladesh, NISAR track 69 frame 14, 6 passes
+10 Sep → 9 Nov 2026): GFM "cannot see" ~3 % of the box, NASA LANCE cloud-free on most passes. GFM from tiles cached on 14 Nov
+(`gfm.py` falls back to `data/gfm/` when the STAC server is down). Mask without cropland (`no_map=(50, 60)`): the haor is
+flooded farmland. **GFM agreement 79 %, precision 0.78, recall 0.84 (5 passes); NASA DSWx 77 % (4); NASA LANCE 80 % (6).**
+Explorer: validation places always get their own item; steps use the first reference present (GFM, then DSWx, then LANCE).

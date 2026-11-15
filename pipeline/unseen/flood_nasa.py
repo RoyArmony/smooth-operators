@@ -160,19 +160,19 @@ NO_MAP_LC = (40, 50, 60) # ESA WorldCover cropland, built-up, bare / sparse: not
 PERMANENT = 0.9          # inundated on >= 90 % of passes = permanent water, never a flood
 
 
-def handbook_mask(lc, z, pixel_m):
+def handbook_mask(lc, z, pixel_m, no_map=NO_MAP_LC):
     """True where inundation is mapped: not cropland / city / desert (WorldCover) and slope <= 5 deg (DEM).
     lc or z may be None (that test is then skipped)."""
     ok = np.ones((lc if lc is not None else z).shape, bool)
     if lc is not None:
-        ok &= ~np.isin(lc, NO_MAP_LC)
+        ok &= ~np.isin(lc, no_map)
     if z is not None:
         gy, gx = np.gradient(z.astype(float), pixel_m)
         ok &= np.degrees(np.arctan(np.hypot(gx, gy))) <= SLOPE_MAX
     return ok
 
 
-def final(stack, dates, lc=None, z=None, pixel_m=80.0, open_hh=None):
+def final(stack, dates, lc=None, z=None, pixel_m=80.0, open_hh=None, no_map=NO_MAP_LC):
     """The validated configuration (validated in the shadow repo, docs/32 §8–9) + the flood rule:
       inundated = handbook §6.4 class OW or IV, P(correct) >= 0.8, inside the handbook mask, valid pixel
       permanent = inundated on >= 90 % of passes
@@ -182,7 +182,7 @@ def final(stack, dates, lc=None, z=None, pixel_m=80.0, open_hh=None):
     wm, ni = masks_from_landcover(lc)
     H = classify(stack, dates, wet_mask=wm, no_iv=ni, thresholds={"HH_ow": open_hh} if open_hh is not None else None)
     _, _, valid = _db(stack)                      # same validity as classify(): HV gaps are filled from the nearest pass
-    mask = handbook_mask(lc, z, pixel_m) & valid
+    mask = handbook_mask(lc, z, pixel_m, no_map) & valid   # no_map: land covers left out (default cropland, city, bare)
     inund = H["flooded"] & (H["conf"] >= CONF_MIN) & mask[None]
     perm = inund.mean(0) >= PERMANENT
     flood = inund & ~inund[0][None] & ~perm[None]

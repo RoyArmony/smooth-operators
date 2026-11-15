@@ -45,11 +45,46 @@ def _warp(path, grid, out):
     out[ok] = np.where(out[ok] == 255, tmp[ok], np.maximum(out[ok], tmp[ok]))
 
 
+def _cached_feats(bbox, date, days):
+    """Offline fallback when the GFM STAC is down: STAC-like items built from tiles already in data/gfm
+    (ENSEMBLE_FLOOD / _EXCLAYER / _OBSWATER_<YYYYMMDDTHHMMSS>_..._<tile>.tif), kept if the tile overlaps the bbox."""
+    import glob, os, re
+    import rasterio
+    from rasterio.warp import transform_bounds
+    d0 = dt.date.fromisoformat(str(date))
+    out = []
+    for f in glob.glob(str(CACHE / "ENSEMBLE_FLOOD_*.tif")):
+        m = re.match(r"ENSEMBLE_FLOOD_(\d{8})T(\d{6})_(.*)\.tif$", os.path.basename(f))
+        if not m:
+            continue
+        day = dt.date(int(m[1][:4]), int(m[1][4:6]), int(m[1][6:]))
+        if abs((day - d0).days) > days:
+            continue
+        with rasterio.open(f) as s:
+            w, so, e, n = transform_bounds(s.crs, "EPSG:4326", *s.bounds)
+        if e < bbox[0] or w > bbox[2] or n < bbox[1] or so > bbox[3]:
+            continue
+        rest = f"{m[1]}T{m[2]}_{m[3]}"
+        assets = {"ensemble_flood_extent": {"href": f}}
+        for key, pre in (("exclusion_mask", "ENSEMBLE_EXCLAYER_"), ("ensemble_water_extent", "ENSEMBLE_OBSWATER_")):
+            g = CACHE / f"{pre}{rest}.tif"
+            if g.exists():
+                assets[key] = {"href": str(g)}
+        out.append({"properties": {"datetime": f"{day.isoformat()}T{m[2][:2]}:{m[2][2:4]}:{m[2][4:]}Z"}, "assets": assets})
+    return out
+
+
 def on_grid(bbox, date, grid, shape, days=3, min_cover=0.3):
     """GFM flood extent and exclusion mask nearest to `date`, on our grid. Returns dict or None.
     Takes the closest day whose scenes cover >= min_cover of our grid AND carry an exclusion mask
     (some GFM items lack it; without it the gap can't be measured)."""
-    feats = search(bbox, date, days)
+    try:
+        feats = search(bbox, date, days)
+    except Exception as e:  # noqa: BLE001
+        feats = _cached_feats(bbox, date, days)          # server down: use the tiles we already have
+        if not feats:
+            raise
+        print(f"[gfm] server down ({e.__class__.__name__}): {len(feats)} cached GFM tiles near {date}")
     d0 = dt.date.fromisoformat(str(date))
     day = lambda f: f["properties"]["datetime"][:10]
     by_day = {}

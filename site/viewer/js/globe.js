@@ -59,9 +59,10 @@ async function loadAll() {
   // v2 event folders (events/<place>/<YYYY-MM>-flood, docs/12): their summary wins; place.json gives the clean name
   (V2.places || []).filter(p => p.bbox).forEach(p => {
     const nm = p.country ? `${p.name}, ${p.country}` : p.name, [w, so, ea, n] = p.bbox, lat = (so + n) / 2, lon = (w + ea) / 2;
-    let own = S.find(s => !s.history && (s.id.startsWith(p.id) || s.bundle === p.id || inBox(s.bbox, lat, lon)));
     const f = (p.floods || []).filter(x => x.nisar_adds_km2 != null).sort((a, b) => (b.flood_date || '').localeCompare(a.flood_date || ''))[0];
-    if (!own && f && f.kind === 'validation') {        // a v2 validation folder with no Explorer site: its own item (opens the folder)
+    let own = f && f.kind === 'validation' ? null       // a validation place never takes over a flood site's card
+      : S.find(s => !s.history && (s.id.startsWith(p.id) || s.bundle === p.id || inBox(s.bbox, lat, lon)));
+    if (!own && f && f.kind === 'validation') {        // a v2 validation folder: its own item (opens the folder)
       own = { id: `ev-${p.folder || p.id}/${f.id}`, bundle: `${p.folder || p.id}/${f.id}`, title: p.name, bbox: p.bbox,
               kind: 'validation', hazard: 'FL', event_date: f.flood_date, last: f.flood_date };
       S.push(own);
@@ -301,13 +302,13 @@ function gainHTML(m) {
 const VNAME = { rcm: 'Canada’s RCM radar (CSA)', dswx: 'NASA’s DSWx map', lance: 'NASA’s LANCE flood map', gfm: 'Copernicus GFM' };
 function headCheck(g) {                                 // validation places always lead with the check
   const v = g && g.val; if (!v || (g.kind !== 'validation' && g.pct != null && g.pct >= 5)) return null;
-  const k = ['rcm', 'dswx', 'lance', 'gfm'].find(x => v[x]); return k ? { k, ...v[k] } : null;
+  const k = ['rcm', 'gfm', 'dswx', 'lance'].find(x => v[x]); return k ? { k, ...v[k] } : null;
 }
 // independent checks of NISAR's water (docs/12 §11): % of pixels where the other sensor agrees, same days
 function valHTML(v, skip) {
   if (!v) return '';
   const row = (k, name) => v[k] ? `<div class="gval"><b>${Math.round(v[k].agreement_pct)}%</b><span>agree with ${name} · IoU ${v[k].iou} · ${v[k].n_dates} pass${v[k].n_dates > 1 ? 'es' : ''}</span></div>` : '';
-  return ['rcm', 'dswx', 'lance', 'gfm'].filter(k => k !== skip).map(k => row(k, VNAME[k])).join('');
+  return ['rcm', 'gfm', 'dswx', 'lance'].filter(k => k !== skip).map(k => row(k, VNAME[k])).join('');
 }
 let V2 = null;
 async function loadSummary(s) {

@@ -135,6 +135,15 @@ PLACES = {
         validation=["lance", "gfm"],                  # + DSWx (always when present): NISAR water vs each map where it can see
         flood_limits="validation site, not a flood: desert valley floor (open water, salt ponds, bare shore), no "
                      "vegetation, almost always cloud-free;"),
+    "sylhet-haor-validation": dict(
+        name="Sylhet haor (validation)", country="Bangladesh", bbox=(91.1, 24.4, 91.7, 25.0),
+        stack_key="sylhet-haor-validation",           # NISAR track 69 frame 14 (same stack as the Sylhet flood site)
+        open_hh=-12.0, open_hv=-21.0,                 # that site's calibration on clear optical days
+        detector="doc33", no_map=(50, 60),            # handbook mask without cropland: the haor is flooded farmland (paddies)
+        kind="validation",                            # a check: GFM "cannot see" ~3 % of the box, NASA LANCE cloud-free
+        validation=["gfm", "lance"],                  # + DSWx when it downloads
+        flood_limits="validation site: seasonal haor wetland, mostly flooded farmland, little tree cover; GFM covers about "
+                     "half the box (its Sentinel-1 scene), so scores are where GFM sees;"),
     "gerd-blue-nile-ethiopia": dict(
         name="GERD reservoir, Blue Nile", country="Ethiopia", bbox=(34.9, 10.2, 35.8, 11.35),
         stack_key="gerd-blue-nile-ethiopia-129-7",    # track 129 frame 7 ascending, 11 dual-pol passes Jun-Nov 2026
@@ -354,7 +363,7 @@ def build(place, flood_date=None):
             z0 = dem.on_grid(grid, bbox, key=case["stack_key"])
         except Exception as e:  # noqa: BLE001
             print(f"[warn] DEM: {e!r}"[:120]); z0 = None
-        F = final(stack, dates, lc0, z0, grid["dx"], case["open_hh"])
+        F = final(stack, dates, lc0, z0, grid["dx"], case["open_hh"], **(dict(no_map=case["no_map"]) if "no_map" in case else {}))
         _, _, valid = _db(stack)
         perm = F["permanent"]
         nopen_all = [F["inundated"][t] & valid for t in range(len(dates))]
@@ -555,6 +564,13 @@ def build(place, flood_date=None):
             P["matched"][k] = X["date"]
             if ok.mean() >= 0.3:
                 P.setdefault("validation", {})[k] = dict(compare(nopen, X["water"], ok), date=X["date"])
+                if case.get("kind") == "validation":       # agreement map: green both, blue NISAR only, yellow map only
+                    W.rgba(f"agreement_{k}", d, classes_rgba([(nopen & X["water"] & ok, "both"), (nopen & ~X["water"] & ok, "nisar_only"),
+                                                              (~nopen & X["water"] & ok, "rcm_only")]),
+                           dict(group="validation", sensor=f"NISAR + {REF[k][1]}", label=f"NISAR vs {REF[k][1]}: water",
+                                legend=[[HEX(C["both"]), "both see water"], [HEX(C["nisar_only"]), "NISAR only"],
+                                        [HEX(C["rcm_only"]), f"{REF[k][1]} only"]], default=False))
+                    P["layers"].append(f"agreement_{k}")
         main = "gfm" if "gfm" in base else next(iter(base), None)
         if main:
             B = base[main]
@@ -577,9 +593,10 @@ def build(place, flood_date=None):
     sp = next(p for p in withb if p["date"] == fd) if any(p["date"] == fd for p in withb) else \
         max(withb, key=lambda p: p["nisar"]["water_km2"])
     if case.get("kind") == "validation":                  # a check: summarise the clearest pass, not the "flood" date
-        vv = [p for p in withb if "dswx" in p.get("validation", {})]
+        rk = next((k for k in ("gfm", "dswx", "lance") if any(k in p.get("validation", {}) for p in withb)), None)
+        vv = [p for p in withb if rk in p.get("validation", {})]
         if vv:
-            sp = max(vv, key=lambda p: (p["validation"]["dswx"]["compared_pct"], p["date"]))
+            sp = max(vv, key=lambda p: (p["validation"][rk]["compared_pct"], p["date"]))
     mb = "gfm" if "gfm" in sp["baselines"] else next(iter(sp["baselines"]))
     s = sp["baselines"][mb]
     nice = dict(gfm="the official flood map (Copernicus GFM)", dswx="NASA's flood map (OPERA DSWx-HLS)")[mb]
@@ -619,16 +636,16 @@ def build(place, flood_date=None):
         validation[k]["sentence"] = (f"{who} {'agree' if k == 'rcm_vs_dswx' else 'and NISAR agree'} on {ag:.0f}% of pixels "
                                      f"(open water IoU {mean('iou')}, {len(vp)} pass{'es' if len(vp) > 1 else ''}).")
     if validation:
-        summary["validation"] = dict(source=next(k for k in ("rcm", "dswx", "lance", "gfm") if k in validation) if
-                                     any(k in validation for k in ("rcm", "dswx", "lance", "gfm")) else None,
+        summary["validation"] = dict(source=next(k for k in ("rcm", "gfm", "dswx", "lance") if k in validation) if
+                                     any(k in validation for k in ("rcm", "gfm", "dswx", "lance")) else None,
                                      **{k: dict(agreement_pct=v["agreement_pct"], iou=v["iou"], n_dates=v["n_dates"])
                                         for k, v in validation.items()})
         summary["validation"]["agreement_pct"] = validation[summary["validation"]["source"]]["agreement_pct"]
         summary["validation"]["iou"] = validation[summary["validation"]["source"]]["iou"]
         summary["validation"]["n_dates"] = validation[summary["validation"]["source"]]["n_dates"]
     if validation and case.get("kind") == "validation":      # a check, not a flood story: lead with the agreement
-        summary["sentence"] = "Clear sky, no vegetation: " + " ".join(
-            validation[k]["sentence"] for k in ("dswx", "lance", "gfm") if k in validation)
+        summary["sentence"] = ("Where the official maps can see: " if "no_map" in case else "Clear sky, no vegetation: ") + " ".join(
+            validation[k]["sentence"] for k in ("gfm", "dswx", "lance") if k in validation)
     validation = validation or None
     ev = dict(
         version=2, id=f"{place}/{fid}", place=f"{case['name']}, {case['country']}",
@@ -639,7 +656,9 @@ def build(place, flood_date=None):
         bbox=list(bbox), area_km2=round(float(valid.sum() * px)), baselines=sorted({k for p in passes for k in p["baselines"]}),
         summary=summary, passes=passes, layers=W.layers, **(dict(validation=validation) if validation else {}),
         method=dict(detector=("flood_nasa.final(): NISAR handbook §6.4 classes + transitions, confidence >= 0.8, handbook mask "
-                              f"(no cropland, city, bare land, slope > 5°); open-water HH threshold {case['open_hh']} dB")
+                              + ("(no city, bare land, slope > 5°; cropland kept here: the haor is flooded farmland)" if "no_map" in case
+                                 else "(no cropland, city, bare land, slope > 5°)")
+                              + f"; open-water HH threshold {case['open_hh']} dB")
                              if case.get("detector") == "doc33" else
                              "detect.py v2 (open water + water under vegetation, HH/HV), thresholds calibrated on clear "
                              f"optical days: HH {case['open_hh']} / HV {case['open_hv']} dB",
