@@ -50,7 +50,7 @@ async function openSite(id) {
     const eid = id.replace(/-\d+-\d+$/, ''), E = await (await fetch(`../../events/${eid}/event.json`, { cache: 'no-cache' })).json();
     const ORDER = ['gfm_flood', 'gfm_excluded', 'nisar_water', 'nisar_adds'];
     S.ev = Object.entries(E.layers || {}).sort((a, b) => (ORDER.indexOf(a[0]) + 1 || 99) - (ORDER.indexOf(b[0]) + 1 || 99))
-      .map(([k, l]) => ({ k, l, base: `../../events/${eid}/`, ov: L.imageOverlay('data:,', L.latLngBounds(l.bounds), { pane: 'analysis', interactive: false, opacity: 0 }).addTo(map) }));
+      .map(([k, l]) => ({ k, l, base: `../../events/${eid}/`, ov: L.imageOverlay('data:,', L.latLngBounds(l.bounds), { pane: 'analysis', interactive: false, opacity: 0, className: k === 'gfm_excluded' ? 'excl' : '' }).addTo(map) }));
   } catch (e) { S.ev = []; }
   // the flow, as in the Story: the area → optical (clouds, canopy) → official radar map ("cannot see") → NISAR fills the blank
   const has = k => S.ev.some(x => x.k === k), E_ = ks => ks.filter(has).map(k => 'E_' + k);
@@ -90,6 +90,13 @@ function setStep(i) {
   $('spNx').textContent = S.step < n - 1 ? `Next: ${S.steps[S.step + 1].label} →` : '↺ Start over';
   render();
 }
+// the official map's "cannot see" blank: grey, flickers when it appears, then a soft glow (as on Home)
+function blink(ov, on) {
+  const el = ov.getElement(); if (!el) return;
+  if (!on) { el.classList.remove('blink'); return; }
+  if (el.classList.contains('blink')) return;
+  void el.offsetWidth; el.classList.add('blink');
+}
 // an event bundle with no Explorer site (events/<id>/event.json): official flood, "cannot see" and NISAR adds draped on the map
 async function openBundle(eid) {
   let E; try { E = await (await fetch(`../../events/${eid}/event.json`, { cache: 'no-cache' })).json(); } catch (e) { return; }
@@ -100,9 +107,10 @@ async function openBundle(eid) {
         box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, interactive: false }).addTo(map),
         ev: ['gfm_flood', 'gfm_excluded', 'nisar_adds'].filter(k => E.layers && E.layers[k]).map(k => {
           const l = E.layers[k], d = near(l.files);
-          return { k, l, ov: L.imageOverlay(d ? base + l.files[d] : 'data:,', L.latLngBounds(l.bounds), { pane: 'analysis', interactive: false, opacity: d ? 1 : 0 }).addTo(map) };
+          return { k, l, ov: L.imageOverlay(d ? base + l.files[d] : 'data:,', L.latLngBounds(l.bounds), { pane: 'analysis', interactive: false, opacity: d ? 1 : 0, className: k === 'gfm_excluded' ? 'excl' : '' }).addTo(map) };
         }) };
   map.flyToBounds(B, { padding: [40, 40], duration: 1.2 });
+  const S0 = S; map.once('moveend', () => S === S0 && S.ev.forEach(x => x.k === 'gfm_excluded' && blink(x.ov, true)));
   window.dispatchEvent(new CustomEvent('unseen:site', { detail: S.id }));
 }
 function closeSite(keepHash) {
@@ -139,6 +147,7 @@ function render() {
     ds.forEach(d => { if (Math.abs(dn(d) - dn(f.date)) <= 6 && (!best || Math.abs(dn(d) - dn(f.date)) < Math.abs(dn(best) - dn(f.date)))) best = d; });
     if (best) x.ov.setUrl(x.base + x.l.files[best]); x.date = best;
     x.ov.setOpacity(best && on.has('E_' + x.k) ? 1 : 0);
+    if (x.k === 'gfm_excluded') blink(x.ov, !!(best && on.has('E_' + x.k)));
     if (on.has('E_' + x.k) && !best) evNote.push(x.l.label || x.k);
   });
   let pr = null;
@@ -149,7 +158,7 @@ function render() {
     S.mo.setOpacity(on.has('motion') ? 1 : 0); S.fr.setOpacity(on.has('fringes') ? 1 : 0);
   }
   const seen = new Set();                                         // one legend per distinct scale
-  const HATCH = 'repeating-linear-gradient(45deg,#c8c8d2 0 2px,#3c3c46 2px 6px)';
+  const HATCH = 'repeating-linear-gradient(45deg,#dcdce4 0 2px,#696973 2px 6px)';
   $('spL').innerHTML = (S.ev || []).filter(x => on.has('E_' + x.k)).map(x => `<div><span style="background:${x.l.legend === 'hatch' ? HATCH : x.l.legend || '#888'}"></span>${x.l.label || x.k}</div>`).join('')
     + (evNote.length ? `<div class="sub">Not on this date: ${evNote.join(', ')}</div>` : '') + (pr && (on.has('motion') || on.has('fringes')) ? `<div class="pair${pr.event ? ' ev' : ''}">Pair ${fmt(pr.ref)} → ${fmt(pr.sec)}${pr.event ? ' · spans the event' : ''}</div>` : '')
     + [...(on.has('motion') && S.P ? [S.P.motion_legend] : []), ...(on.has('fringes') && S.P ? [S.P.fringe_legend] : [])]

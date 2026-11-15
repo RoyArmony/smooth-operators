@@ -275,7 +275,7 @@ function showFocus(id) {
       <div class="stags">${tags}</div>
       <div class="gainbox" id="gainbox">${g ? gainHTML({ base: g.gfm_flood_km2, adds: g.nisar_adds_km2, pct: g.pct, baseline: 'gfm' }) : ''}</div>
       ${s.bundle ? `<div class="legend sub blegend"><div><span style="background:#2882ff"></span>Official flood (GFM)</div>
-        <div><span style="background:repeating-linear-gradient(45deg,#c8c8d2 0 2px,#3c3c46 2px 6px)"></span>Official map: "cannot see"</div>
+        <div><span style="background:repeating-linear-gradient(45deg,#dcdce4 0 2px,#696973 2px 6px)"></span>Official map: "cannot see"</div>
         <div><span style="background:var(--orange)"></span>NISAR adds, in the blank</div></div>` : ''}
       </div>`);
   // v2 metadata (docs/12): events/<place>/<flood>/event.json, summary = wettest pass vs the main baseline
