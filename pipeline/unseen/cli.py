@@ -96,6 +96,9 @@ def world():
         if not f.exists():
             continue
         e = json.loads(f.read_text())
+        if not str((e.get("method") or {}).get("detector", "")).startswith("fused v3"):   # not rebuilt with v3: left out
+            rows.append(dict(id=s["id"], title=s["title"], bbox=s["bbox"], compared=False,
+                             why="no v3 comparison (no usable GFM map for a v3 pass)")); continue
         best = next((t for t in e["timeline"] if t["date"] == e["headline"]["date"]), None)
         if best is None:
             rows.append(dict(id=s["id"], title=s["title"], bbox=s["bbox"], compared=False)); continue
@@ -109,7 +112,7 @@ def world():
     pct = round(100 * tot_add / tot_gfm) if tot_gfm else None
     ev["headline"] = dict(
         date=max(r["date"] for r in rows if r.get("compared")),
-        sentence=f"Across {len(rows)} flood sites we chose, on each site's wettest NISAR pass, NISAR found "
+        sentence=f"Across {sum(1 for r in rows if r.get('compared'))} flood sites we chose, on each site's wettest NISAR pass, NISAR found "
                  f"{tot_add:,.0f} km² of water inside the official flood maps' blanks: {pct}% more than the "
                  f"{tot_gfm:,.0f} km² they showed. A sample, not a global total.",
         numbers=[dict(label="NISAR adds, in the blanks", value=round(tot_add, 1), unit="km²"),

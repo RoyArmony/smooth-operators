@@ -126,6 +126,8 @@ PLACES = {
         flood_limits="shallow delta lakes roughened by wind are not dark on ≥ 90 % of passes, so part of them counts as "
                      "flood here (in NISAR and in the baseline alike);",
         flood_months=range(5, 9),                     # flood season: spring ice-jam + summer high water (May–Aug)
+        dry_dates=["2026-09-04", "2026-09-16"],       # v3 dry reference: first passes after the flood season (the default,
+                                                      # the first two passes, falls in June-July high water here)
         rs1_months=range(5, 10),                      # history: May–Sep only (ice, snow, freeze-up fool a dark-water threshold)
         history_limits="C-band misses water under willow and sedge that L-band sees; one threshold per image vs a "
                        "calibrated detector: compare the pattern, not exact km². RADARSAT-1 May–Sep only (ice and freeze-up "
