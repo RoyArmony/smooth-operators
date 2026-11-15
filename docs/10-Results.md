@@ -199,7 +199,7 @@ Every NISAR pass has HH, HV, the RGB picture and our water map. **⚠** = only o
 
 | Place (flood) | NISAR passes | Optical photo (source) | GFM | NASA DSWx | NISAR coherence | NISAR valid | Checks | Pooled % |
 |---|---|---|---|---|---|---|---|---|
-| Amazon várzea (Jun) **⚠** | 3 | 3 (MODIS) | 0 | 3 | 0 | 100 % | – | 18 % |
+| Amazon várzea (Jun, hidden 15.11: GFM flood < 2 km², pictures missing) **⚠** | 3 | 3 (MODIS) | 0 | 3 | 0 | 100 % | – | 18 % |
 | Assam (Sep) **⚠** | 5 | 5 (VIIRS) | 0 | 4 | 4 | 100 % | – | 370 % |
 | Congo Cuvette (Oct), *numbers only* | 3 | 2 (HLS) | 3 | 3 | 2 | 100 % | – | – (flood < 5 km²) |
 | Dead Sea (Oct) **⚠** | 5 | 5 (VIIRS) | 0 | 5 | 3 | 100 % | DSWx, LANCE | 7 % |

@@ -2,48 +2,6 @@
  "version": 2,
  "events": [
   {
-   "id": "amazon-varzea-mamiraua",
-   "title": "Amazon várzea (Mamirauá), Brazil",
-   "place": "Amazon várzea (Mamirauá), Brazil",
-   "date": "2026-09-05",
-   "bbox": [
-    -65.2,
-    -3.3,
-    -64.6,
-    -2.7
-   ],
-   "kind": "site",
-   "headline": {
-    "sentence": "On 2026-09-05, NISAR found 9 km² of water where the official flood map (Copernicus GFM, 2026-09-07) says it cannot see.",
-    "numbers": [
-     {
-      "label": "Official map: flood",
-      "value": 1.1,
-      "unit": "km²"
-     },
-     {
-      "label": "NISAR adds, in the blank",
-      "value": 9.0,
-      "unit": "km²"
-     },
-     {
-      "label": "of it in forest (ESA WorldCover)",
-      "value": 3.4,
-      "unit": "km²"
-     }
-    ]
-   },
-   "total": {
-    "flood_km2": 10.4,
-    "adds_km2": 63.2,
-    "pct": 608,
-    "n": 9,
-    "first": "2026-06-25",
-    "last": "2026-10-23",
-    "rule": "100 × Σ NISAR addition / Σ official flood, all passes"
-   }
-  },
-  {
    "id": "assam-brahmaputra",
    "title": "Brahmaputra, Assam, India",
    "place": "Brahmaputra, Assam, India",
@@ -592,63 +550,6 @@
   }
  ],
  "places": [
-  {
-   "id": "amazon-varzea-mamiraua",
-   "folder": "amazon-varzea-mamiraua",
-   "name": "Amazon várzea (Mamirauá)",
-   "country": "Brazil",
-   "bbox": [
-    -65.2,
-    -3.3,
-    -64.6,
-    -2.7
-   ],
-   "floods": [
-    {
-     "id": "2026-06-flood",
-     "flood_date": "2026-06-25",
-     "title": "Amazon várzea (Mamirauá) flood, Jun 2026",
-     "baseline": "gfm",
-     "improvement_pct": null,
-     "nisar_adds_km2": 8.9,
-     "baseline_flood_km2": 1.3,
-     "validation": {
-      "source": "dswx",
-      "dswx": {
-       "agreement_pct": 91.5,
-       "iou": 0.74,
-       "n_dates": 1
-      },
-      "agreement_pct": 91.5,
-      "iou": 0.74,
-      "n_dates": 1
-     },
-     "total": {
-      "flood_km2": 4.1,
-      "adds_km2": 24.6,
-      "pct": null,
-      "n": 3,
-      "first": "2026-06-25",
-      "last": "2026-07-19",
-      "rule": "100 × Σ NISAR addition / Σ official flood, all passes",
-      "baseline": "gfm"
-     }
-    }
-   ],
-   "history": {
-    "id": "history",
-    "first": "1999-01-17",
-    "last": "2026-09-29",
-    "n_images": 5,
-    "sensors": [
-     "NISAR",
-     "RADARSAT-1"
-    ]
-   },
-   "validation": [
-    "dswx"
-   ]
-  },
   {
    "id": "assam-brahmaputra",
    "folder": "assam-brahmaputra",
