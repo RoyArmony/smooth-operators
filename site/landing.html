@@ -32,7 +32,7 @@
   #txt p { font-size: clamp(14px, 1.2vw, 18px); color: var(--d); margin: 14px 0 0; }
   .fade { opacity: 0; transition: opacity .3s ease; }
   .fade.in { opacity: 1; }
-  #lg { position: fixed; right: 3vw; bottom: calc(var(--foot-h) + 64px); font-size: 13px; color: var(--d); display: flex; gap: 14px; align-items: center; }
+  #lg { position: fixed; right: 3vw; bottom: calc(var(--foot-h) + 64px); font-size: 17px; color: var(--d); display: flex; gap: 14px; align-items: center; }
   #lg span { display: inline-block; width: 90px; height: 10px; border-radius: 5px; background: linear-gradient(90deg, #2020ff, #fff, #ff2020); vertical-align: middle; margin: 0 6px; }
   #tag { position: fixed; right: 3vw; top: calc(var(--bar-h) + 16px); font-size: 13px; color: var(--d); background: rgba(0,0,0,.45); padding: 6px 10px; border-radius: 6px; }
   .lab { color: #fff; font: 700 15px/1 Inter, system-ui, sans-serif; text-shadow: 0 1px 4px #000; white-space: nowrap; }
@@ -72,7 +72,7 @@
   #vid.card { border: 2px solid #fff; border-radius: 8px; box-shadow: 0 6px 30px rgba(0,0,0,.6); }
   body.vid #vid.ok.card { opacity: 1; }
   body.vid #vid.ok { opacity: .85; }
-  #wm { position: fixed; right: 14px; bottom: calc(var(--foot-h) + 62px); z-index: 3; font: 600 11px Inter, system-ui, sans-serif; color: #fff; background: rgba(0,0,0,.55); padding: 3px 8px; border-radius: 4px; opacity: 0; transition: opacity 1s; }
+  #wm { position: fixed; right: 14px; bottom: calc(var(--foot-h) + 62px); z-index: 3; font: 600 15px Inter, system-ui, sans-serif; color: #fff; background: rgba(0,0,0,.55); padding: 3px 8px; border-radius: 4px; opacity: 0; transition: opacity 1s; }
   body.vid #vid.ok ~ #wm { opacity: .9; }
   #map { z-index: 0; } #veil { z-index: 2; } #txt, #tag, #lg, #ctl, #bar, #end { z-index: 3; }
   #skip { position: fixed; top: calc(var(--bar-h) + 16px); left: 50%; transform: translateX(-50%); z-index: 5; font: 700 17px Inter, system-ui, sans-serif; color: var(--on-accent); text-decoration: none; background: var(--accent); padding: 12px 26px; border-radius: 999px; box-shadow: 0 4px 22px rgba(0,0,0,.5); letter-spacing: .2px; }
@@ -100,7 +100,7 @@
 <a id="skip" href="viewer/index.html">Skip intro · open the Explorer →</a>
 <style>
   #lg { flex-direction: column; align-items: flex-start; gap: 6px; background: rgba(0,0,0,.45); padding: 10px 12px; border-radius: 8px; }
-  #lg div { display: flex; align-items: center; gap: 8px; } #lg i { width: 16px; height: 12px; border-radius: 3px; display: inline-block; }
+  #lg div { display: flex; align-items: center; gap: 8px; } #lg i { width: 24px; height: 17px; border-radius: 3px; display: inline-block; }
   #txt .big.o { color: #ff9a2e; } #txt .big.b { color: #4aa3ff; }
   .gq { color: #fff; font: 600 12px/1.25 Inter, system-ui, sans-serif; text-shadow: 0 1px 3px #000; white-space: nowrap; transform: translate(-6px, -6px); }
   .gq i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #ff9a2e; margin-right: 5px; box-shadow: 0 0 0 4px rgba(255,154,46,.25); }
@@ -120,14 +120,16 @@ const A = 'story/tonlesap/', B = L.latLngBounds([[12.3005, 103.5949], [13.2994, 
 const img = f => L.imageOverlay(A + f, B, { opacity: 0, interactive: false }).addTo(map);
 const PH = ['2026-06-18', '2026-06-21', '2026-07-01', '2026-07-11', '2026-07-18', '2026-07-21', '2026-07-25', '2026-08-16', '2026-08-17',
             '2026-08-25', '2026-08-27', '2026-09-09', '2026-09-16', '2026-09-18', '2026-10-04', '2026-10-16', '2026-10-19'];   // every HLS photo of the lake
+const PHS = PH.filter((d, k) => (PH.length - 1 - k) % 2 === 0);                   // every other look, ending on 19 Oct
 const PHP = d => `viewer/sites/tonle-sap-flood-pulse-2026-83-8/photo_${d}.jpg`;
 PH.forEach(d => { const im = new Image(); im.src = PHP(d); });                       // preload, so the flick is smooth
 const fmtD = d => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 function flick() {                               // step fast through every optical look, end on 19 Oct
   if (fast) { P.photo.setUrl(PHP(PH[PH.length - 1])); return; }
-  const g = sg; PH.forEach((d, k) => setTimeout(() => { if (g !== sg) return; P.photo.setUrl(PHP(d)); $('tag').textContent = 'Optical · ' + fmtD(d); $('tag').classList.add('in'); }, k * 330));
+  const g = sg; PHS.forEach((d, k) => setTimeout(() => { if (g !== sg) return; P.photo.setUrl(PHP(d)); $('tag').textContent = 'Optical · ' + fmtD(d); $('tag').classList.add('in'); }, k * 600));
 }
 const P = { photo: img('photo_2026-10-19.jpg'), excl: img('gfm_excluded.png'), gfm: img('gfm_flood.png'), add: img('nisar_added.png') };
+const EDGE = L.imageOverlay(A + 'gfm_excluded_edge.png', B, { opacity: 0, interactive: false }).addTo(map);   // outline of the blank, flashed once
 const box = L.rectangle(B, { color: '#ffffff', weight: 2.5, dashArray: '6 5', fill: false, opacity: 0, interactive: false }).addTo(map);
 let fast = false, mgen = 0;
 const many = (os, v, step = 0) => { const g = mgen; os.forEach((o, k) => (fast || !step) ? vis(o, v) : setTimeout(() => g === mgen && vis(o, v), k * step)); };
@@ -218,8 +220,8 @@ function lead(on) {                              // dashed line from the card to
   if (!on) { LD.classList.remove('in'); return; }
   const p = map.latLngToContainerPoint(TS), r = V.getBoundingClientRect();
   LD.innerHTML = `<line x1="${r.left}" y1="${r.top}" x2="${p.x}" y2="${p.y}" stroke="#fff" stroke-width="1.6" stroke-dasharray="5 5"/>`
-    + `<circle cx="${p.x}" cy="${p.y}" r="6" fill="#ff9a2e" stroke="#fff" stroke-width="2"/>`
-    + `<text x="${p.x - 10}" y="${p.y + 22}" text-anchor="end" fill="#fff" font-size="13" font-weight="600" style="paint-order:stroke;stroke:#000;stroke-width:3px">Filmed here · Prek Toal</text>`;
+    + `<circle cx="${p.x}" cy="${p.y}" r="9" fill="#ff9a2e" stroke="#fff" stroke-width="2.5"/>`
+    + `<text x="${p.x - 14}" y="${p.y + 30}" text-anchor="end" fill="#fff" font-size="22" font-weight="700" style="paint-order:stroke;stroke:#000;stroke-width:4px">Filmed here · Prek Toal</text>`;
   LD.classList.add('in');
 }
 function vidCard(on) {                          // full screen <-> a framed card pinned on Tonle Sap
@@ -237,10 +239,10 @@ const scenes = [
   [6.5, () => { vid(true); vidCard(true);
               say('', H('1.8 billion people live where floods like this can reach them.'), '', 'World Bank · Rentschler et al., Nature Comms 2022'); }],
   [8, () => { vid(false); document.body.classList.remove('dim'); show([]); later(() => { flash(box); show(['photo']); flick(); }, 900); legend([]);
-              say('Optical satellites · Jun–Oct 2026', H('Optical satellites can\'t see it. 17 looks since June: clouds, or the forest canopy over the water.'), '', 'Optical · NASA HLS (Landsat + Sentinel-2)'); }],
+              say('Optical satellites · Jun–Oct 2026', H('Optical satellites can\'t see it. Look after look since June: clouds, or the forest canopy over the water.'), '', 'Optical · NASA HLS (Landsat + Sentinel-2)'); }],
   [7.5, () => { show(['gfm']); legend(['gfm']);
               say('Official flood map · 17 Oct 2026', H('Official flood maps use radar, which sees through clouds. On 17 October, the map showed <b class="bl">554 km²</b> of flooding around the lake.'), '', 'Copernicus EMS · GFM (Sentinel-1 radar)'); }],
-  [7, () => { show(['gfm', 'excl']); legend(['gfm', 'excl']); say('', H('But a quarter of the area is marked <b class="gy">"cannot see"</b>. Under the trees, this radar can\'t see the water.'), '', 'GFM exclusion mask'); }],
+  [7, () => { show(['gfm', 'excl']); legend(['gfm', 'excl']); later(() => { vis(EDGE, 1); later(() => vis(EDGE, 0), 1700); }, 400); say('', H('But a quarter of the area is marked <b class="gy">"cannot see"</b>. Under the trees, this radar can\'t see the water.'), '', 'GFM exclusion mask'); }],
   [7.5, () => { show(['gfm', 'excl', 'add']); legend(['gfm', 'excl', 'add']);
               say('NISAR to the rescue', H('On 17 October, inside <b class="gy">that blank</b>, NISAR measured <b>561 km²</b> of water, 362 km² of it under the trees. That is one lake, on one day.'), '', 'NISAR L-band'); }],
   [8, () => { show([]); vis(box, 0); legend([]); $('tag').classList.remove('in'); world(); many(dots, 1, 60);
@@ -256,7 +258,7 @@ let i = -1, tm = null, paused = false, t0 = 0, left = 0;
 function next() { clearTimeout(tm); sg++; i++; if (i >= scenes.length) return; const [d, f] = scenes[i]; try { map.invalidateSize(); f(); } catch (e) { console.warn('scene', i, e); } if (d) { left = d * 1000; run(); }
   $('bar').style.width = (100 * (i + 1) / scenes.length) + '%'; dotsUI(); }
 function run() { t0 = Date.now(); if (!paused && $('au').checked) tm = setTimeout(next, left); }
-function reset() { try { sg++; vid(false); show([]); legend([]); ca([]); TL.forEach(o => map.removeLayer(o)); TL = []; many(dots, 0); many(plain, 0); many(thumbs, 0); vis(box, 0); document.body.classList.remove('wv'); document.body.classList.add('dim'); document.body.classList.remove('out'); } catch (e) {} }
+function reset() { try { sg++; vid(false); vis(EDGE, 0); show([]); legend([]); ca([]); TL.forEach(o => map.removeLayer(o)); TL = []; many(dots, 0); many(plain, 0); many(thumbs, 0); vis(box, 0); document.body.classList.remove('wv'); document.body.classList.add('dim'); document.body.classList.remove('out'); } catch (e) {} }
 function goTo(k) {
   k = Math.max(0, Math.min(scenes.length - 1, k)); clearTimeout(tm); reset();
   mgen++; fast = true;
