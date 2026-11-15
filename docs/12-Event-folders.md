@@ -254,3 +254,8 @@ New layers `lance_water`, `gfm_water`; `compare()` now also gives precision and 
 where each map sees): **NASA DSWx agreement 74 %, precision 0.99, recall 0.46; NASA LANCE 73 %, precision 0.68, recall
 0.45**. NISAR almost never calls dry land water; it misses about half of the brine ponds when wind roughens them
 (28 Sep: recall 0.18). GFM server down (502) at build time: rebuild to add it.
+
+**Noa, 15.11.26 15:11:51 says:** Explorer shows validation folders (`kind: "validation"` in the flood's `place.json` entry) without an Explorer
+site: own list item (opens `events/<place>/<flood>/` directly), card and list headline **✓ agreement %** (DSWx, then LANCE row),
+steps Area → NASA → NISAR → **V xx%** (agreement map `agreement_dswx`: green both, blue NISAR only, yellow NASA only; per-pass %
+in the panel, chart = % agreement per pass). The summary of a validation folder is its clearest pass (most of the box compared).

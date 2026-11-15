@@ -609,9 +609,10 @@
      "flood_date": "2026-10-10",
      "title": "Dead Sea (validation), Oct 2026",
      "baseline": "dswx",
-     "improvement_pct": 50,
-     "nisar_adds_km2": 56.1,
-     "baseline_flood_km2": 112.0,
+     "kind": "validation",
+     "improvement_pct": 0,
+     "nisar_adds_km2": 0.0,
+     "baseline_flood_km2": 253.0,
      "validation": {
       "source": "dswx",
       "dswx": {

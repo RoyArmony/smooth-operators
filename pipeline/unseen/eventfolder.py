@@ -535,6 +535,13 @@ def build(place, flood_date=None):
             ok = B["clear"] & valid
             if ok.mean() >= 0.3:
                 P.setdefault("validation", {})["dswx"] = dict(compare(nopen, B["water"], ok), date=B["date"])
+                if case.get("kind") == "validation":       # agreement map: green both, blue NISAR only, yellow NASA only
+                    W.rgba("agreement_dswx", d, classes_rgba([(nopen & B["water"] & ok, "both"), (nopen & ~B["water"] & ok, "nisar_only"),
+                                                              (~nopen & B["water"] & ok, "rcm_only")]),
+                           dict(group="validation", sensor="NISAR + OPERA DSWx-HLS", label="NISAR vs NASA DSWx: water",
+                                legend=[[HEX(C["both"]), "both see water"], [HEX(C["nisar_only"]), "NISAR only"],
+                                        [HEX(C["rcm_only"]), "NASA only"]], default=False))
+                    P["layers"].append("agreement_dswx")
                 if R:
                     P["validation"]["rcm_vs_dswx"] = compare(R["water"], B["water"], ok & R["ok"])
         for k, X in (("lance", lw), ("gfm", gw)):
@@ -569,6 +576,10 @@ def build(place, flood_date=None):
     withb = [p for p in passes if p["baselines"]]
     sp = next(p for p in withb if p["date"] == fd) if any(p["date"] == fd for p in withb) else \
         max(withb, key=lambda p: p["nisar"]["water_km2"])
+    if case.get("kind") == "validation":                  # a check: summarise the clearest pass, not the "flood" date
+        vv = [p for p in withb if "dswx" in p.get("validation", {})]
+        if vv:
+            sp = max(vv, key=lambda p: (p["validation"]["dswx"]["compared_pct"], p["date"]))
     mb = "gfm" if "gfm" in sp["baselines"] else next(iter(sp["baselines"]))
     s = sp["baselines"][mb]
     nice = dict(gfm="the official flood map (Copernicus GFM)", dswx="NASA's flood map (OPERA DSWx-HLS)")[mb]
@@ -665,7 +676,7 @@ def build(place, flood_date=None):
                                                                             if k in validation))
                                           if validation and any(k in validation for k in ("lance", "gfm")) else ""), encoding="utf-8")
     pl = dict(version=2, id=place, name=case["name"], country=case["country"], bbox=list(bbox),
-              floods=[dict(id=fid, flood_date=fd, title=ev["title"], baseline=mb,
+              floods=[dict(id=fid, flood_date=fd, title=ev["title"], baseline=mb, **(dict(kind=case["kind"]) if case.get("kind") else {}),
                            improvement_pct=summary["improvement_pct"], nisar_adds_km2=summary["nisar_adds_km2"],
                            baseline_flood_km2=summary["baseline_flood_km2"],
                            **(dict(validation=summary["validation"]) if validation else {}))],

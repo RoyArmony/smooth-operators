@@ -178,6 +178,7 @@ function blink(ov, on, again) {
 // the chart is the bundle's timeline (official flood + NISAR addition per pass)
 async function openBundle(eid) {
   let E; try { E = await (await fetch(`../../events/${eid}/event.json`, { cache: 'no-cache' })).json(); } catch (e) { return; }
+  if (E.version === 2 && E.kind === 'validation') return openCheck(eid, E);
   const [w, s, e, n] = E.bbox, B = L.latLngBounds([[s, w], [n, e]]), base = `../../events/${eid}/`;
   const T = (E.timeline || []).filter(x => x.date).sort((a, b) => a.date.localeCompare(b.date));
   if (!T.length) T.push({ date: (E.headline && E.headline.date) || '', stats: {} });
@@ -197,6 +198,51 @@ async function openBundle(eid) {
   const S0 = S; map.once('moveend', () => S === S0 && S.box.setStyle({ opacity: 1 }));
   setStep(0);
   window.dispatchEvent(new CustomEvent('unseen:site', { detail: S.id }));
+}
+// v2 validation folder (docs/12 §11, kind "validation"): NASA's map, NISAR's, then ✓ = where they agree, with the %
+function openCheck(eid, E) {
+  const [w, s, e, n] = E.bbox, B = L.latLngBounds([[s, w], [n, e]]), base = `../../events/${eid}/`;
+  const T = E.passes.filter(p => p.validation).map(p => ({ date: p.date, p, stats: {} }));
+  const day = T.length ? T[T.length - 1].date : E.summary.pass_date;   // open on the latest pass (the headline % is all passes)
+  const ORDER = ['photo', 'dswx_water', 'lance_water', 'nisar_open', 'agreement_dswx'];
+  S = { bundle: true, check: true, id: 'ev-' + eid, E, T, B, t: Math.max(0, T.findIndex(x => x.date === day)),
+        box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, opacity: 0, interactive: false }).addTo(map),
+        ev: ORDER.filter(k => E.layers && E.layers[k]).map(k => ({ k, l: E.layers[k], base,
+          ov: L.imageOverlay('data:,', L.latLngBounds(E.layers[k].bounds), { pane: 'analysis', interactive: false, opacity: 0 }).addTo(map) })) };
+  const V = E.validation || {}, pc = x => `${Math.round(x)}%`, has = k => S.ev.some(x => x.k === k), E_ = ks => ks.filter(has).map(k => 'E_' + k);
+  S.steps = [{ label: 'Area', on: E_(['photo']), cap: `${E.place}: clear sky, no vegetation. A test of NISAR where the official maps can see everything.` }];
+  if (has('dswx_water')) S.steps.push({ label: 'NASA', on: E_(['dswx_water']), cap: 'NASA’s flood map (OPERA DSWx, optical, 30 m): water on a clear day.' });
+  if (has('nisar_open')) S.steps.push({ label: 'NISAR', on: E_(['nisar_open']), nisar: true, cap: 'NISAR’s L-band radar: water it finds (same days).' });
+  if (has('agreement_dswx') && V.dswx) S.steps.push({ label: `V ${pc(V.dswx.agreement_pct)}`, on: E_(['agreement_dswx']),
+    cap: `Validation: NISAR and NASA DSWx agree on <b>${pc(V.dswx.agreement_pct)}</b> of pixels (precision ${V.dswx.precision}, recall ${V.dswx.recall})`
+       + (V.lance ? `; NASA LANCE ${pc(V.lance.agreement_pct)}` : '') + '. Green = both, blue = NISAR only, yellow = NASA only.' });
+  panel.hidden = false;
+  map.flyToBounds(B, { paddingTopLeft: [panel.offsetWidth + 70, 30], paddingBottomRight: [30, 30], duration: 1.2 });
+  const S0 = S; map.once('moveend', () => S === S0 && S.box.setStyle({ opacity: 1 }));
+  setStep(0);
+  window.dispatchEvent(new CustomEvent('unseen:site', { detail: S.id }));
+}
+function renderCheck() {                                // one pass: its layers + this pass's agreement with each NASA map
+  const x = S.T[S.t], on = S.on || new Set(), v = x.p.validation || {}, pc = y => `${Math.round(y)}%`;
+  $('spD').textContent = fmt(x.date, { day: 'numeric', month: 'short', year: 'numeric' });
+  $('spK').innerHTML = '<i style="background:#2ecc71"></i>both <i style="background:#2882ff"></i>NISAR only <i style="background:#ffd700"></i>NASA only';
+  drawEv(x.date, on);
+  $('spL').innerHTML = S.ev.filter(o => on.has('E_' + o.k)).map(o => (o.l.legend && o.l.legend.length ? o.l.legend : [['#888', o.l.label]])
+      .map(([c, t]) => `<div><span style="background:${c}"></span>${t}</div>`).join('')).join('')
+    + ['dswx', 'lance', 'gfm'].filter(k => v[k]).map(k => `<div class="sub">${k === 'dswx' ? 'NASA DSWx' : k === 'lance' ? 'NASA LANCE' : 'GFM'} ${fmt(v[k].date)}: `
+      + `<b>${pc(v[k].agreement_pct)}</b> agree · precision ${v[k].precision} · recall ${v[k].recall} · ${v[k].compared_pct}% of the box compared</div>`).join('');
+  cchart();
+}
+function cchart() {                                     // per pass: % agreement with NASA DSWx (bars)
+  const c = $('spC'), g = c.getContext('2d'), W = c.clientWidth, H = 78, B = H - 12, top = 4, { T, t } = S, n = T.length;
+  c.style.height = H + 'px'; c.width = W * devicePixelRatio; c.height = H * devicePixelRatio; g.scale(devicePixelRatio, devicePixelRatio); g.clearRect(0, 0, W, H);
+  const v = T.map(x => ((x.p.validation || {}).dswx || {}).agreement_pct || 0), bw = (W - AX) / n, Y = y => B - (B - top) * y / 100;
+  g.font = '10px system-ui'; g.fillStyle = '#8b95a3'; g.textAlign = 'right';
+  [0, 50, 100].forEach(y => { g.fillText(y + '%', AX - 5, Y(y) + 3); g.fillStyle = '#ffffff14'; g.fillRect(AX, Y(y), W - AX, 1); g.fillStyle = '#8b95a3'; });
+  T.forEach((x, i) => { g.globalAlpha = i === t ? 1 : 0.55; g.fillStyle = '#2ecc71'; g.fillRect(AX + i * bw + 1, Y(v[i]), bw - 2, B - Y(v[i])); });
+  g.globalAlpha = 1; g.strokeStyle = '#fff'; g.strokeRect(AX + t * bw + 0.5, top - 2.5, bw - 1, B - top + 2);
+  g.textAlign = 'left'; g.fillText(fmt(T[0].date), AX + 1, H - 1);
+  const last = fmt(T[n - 1].date); g.fillText(last, W - g.measureText(last).width - 1, H - 1);
 }
 // drape each bundle layer for this date: the file nearest it (within 6 days); returns the layers that have none
 function drawEv(date, on) {
@@ -380,6 +426,7 @@ function closeSite(keepHash) {
 function render() {
   if (!S) return;
   if (S.hist) return renderHist();
+  if (S.check) return renderCheck();
   if (S.bundle) return renderBundle();
   const vst = (S.steps[S.step] || {}).vs;
   if (vst && S.vs) return renderVs(vst);

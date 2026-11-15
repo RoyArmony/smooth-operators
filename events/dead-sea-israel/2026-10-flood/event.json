@@ -22,17 +22,17 @@
   "dswx"
  ],
  "summary": {
-  "pass_date": "2026-10-10",
+  "pass_date": "2026-09-28",
   "baseline": "dswx",
-  "baseline_date": "2026-10-11",
-  "baseline_flood_km2": 112.0,
-  "nisar_adds_km2": 56.1,
-  "improvement_pct": 50,
-  "cannot_see_km2": 349.5,
-  "cannot_see_clouds_km2": 349.5,
+  "baseline_date": "2026-09-26",
+  "baseline_flood_km2": 253.0,
+  "nisar_adds_km2": 0.0,
+  "improvement_pct": 0,
+  "cannot_see_km2": 0.0,
+  "cannot_see_clouds_km2": 0.0,
   "cannot_see_vegetation_km2": 0.0,
   "still_unknown_km2": 0.0,
-  "nisar_water_km2": 106.3,
+  "nisar_water_km2": 40.9,
   "sentence": "Clear sky, no vegetation: NASA's DSWx map and NISAR agree on 74% of pixels (open water IoU 0.46, 5 passes). NASA's LANCE flood map and NISAR agree on 73% of pixels (open water IoU 0.36, 5 passes).",
   "validation": {
    "source": "dswx",
@@ -81,6 +81,7 @@
     "nisar_water",
     "nisar_open",
     "dswx_water",
+    "agreement_dswx",
     "lance_water",
     "nisar_adds",
     "combined"
@@ -140,6 +141,7 @@
     "nisar_water",
     "nisar_open",
     "dswx_water",
+    "agreement_dswx",
     "lance_water",
     "nisar_adds",
     "combined"
@@ -199,6 +201,7 @@
     "nisar_water",
     "nisar_open",
     "dswx_water",
+    "agreement_dswx",
     "lance_water",
     "nisar_adds",
     "combined"
@@ -256,6 +259,7 @@
     "nisar_water",
     "nisar_open",
     "dswx_water",
+    "agreement_dswx",
     "lance_water",
     "nisar_adds",
     "combined"
@@ -313,6 +317,7 @@
     "nisar_water",
     "nisar_open",
     "dswx_water",
+    "agreement_dswx",
     "lance_water",
     "nisar_adds",
     "combined"
@@ -647,6 +652,43 @@
     "2026-10-11": "layers/dswx_water_2026-10-11.png",
     "2026-10-23": "layers/dswx_water_2026-10-23.png",
     "2026-11-02": "layers/dswx_water_2026-11-02.png"
+   },
+   "bounds": [
+    [
+     30.96736,
+     35.3621
+    ],
+    [
+     31.30293,
+     35.52877
+    ]
+   ]
+  },
+  "agreement_dswx": {
+   "group": "validation",
+   "sensor": "NISAR + OPERA DSWx-HLS",
+   "label": "NISAR vs NASA DSWx: water",
+   "legend": [
+    [
+     "#2ecc71",
+     "both see water"
+    ],
+    [
+     "#2882ff",
+     "NISAR only"
+    ],
+    [
+     "#ffd700",
+     "NASA only"
+    ]
+   ],
+   "default": false,
+   "files": {
+    "2026-09-16": "layers/agreement_dswx_2026-09-16.png",
+    "2026-09-28": "layers/agreement_dswx_2026-09-28.png",
+    "2026-10-10": "layers/agreement_dswx_2026-10-10.png",
+    "2026-10-22": "layers/agreement_dswx_2026-10-22.png",
+    "2026-11-03": "layers/agreement_dswx_2026-11-03.png"
    },
    "bounds": [
     [
