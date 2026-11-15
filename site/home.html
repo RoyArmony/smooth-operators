@@ -7,6 +7,8 @@
 <meta name="description" content="Flood maps leave the forest blank. NISAR's L-band radar fills it, Canada's radars check it.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="stylesheet" href="css/design.css">
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<script src="vendor/leaflet/leaflet.js"></script>
 <script src="js/topbar.js" defer></script>
 <style>
   /* Welcome page. Tokens: css/design.css · rules: docs/11-Design.md */
@@ -46,18 +48,21 @@
   .viz { background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-lg); box-shadow: var(--shadow); overflow: hidden; }
   .viz .stage { position: relative; aspect-ratio: 749 / 694; background: #0b1016; }
   .viz .lyr { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .viz .photo { filter: grayscale(.6) brightness(.55); transition: filter .6s var(--ease); }
-  .viz.f0 .photo { filter: none; }
+  .viz .photo { filter: grayscale(.6) brightness(.55); transition: filter .6s var(--ease), opacity .7s var(--ease); }
+  .viz.f0 .photo { opacity: 0; }
+  .viz.f1 .photo { filter: none; }
+  #hmap { background: #0b1016; z-index: 0; } #hmap .leaflet-control-attribution { font-size: 9px; background: rgba(0,0,0,.5); color: #bbb; }
   .viz .L { opacity: 0; transition: opacity .7s var(--ease); }
-  .viz.f1 .gfm, .viz.f2 .gfm, .viz.f3 .gfm, .viz.f2 .excl, .viz.f3 .excl, .viz.f3 .add { opacity: 1; }
-  .viz.f2 .excl { animation: flick 1.6s steps(1, end) both; }            /* blink the blank like the Story does, with a glow, so the no-data area is clear */
-  .viz.f2 .excl + .excl { animation: flick 1.6s steps(1, end) both, glow 2.4s ease-in-out .2s; }
+  .viz.f2 .gfm, .viz.f4 .gfm, .viz.f3 .excl, .viz.f4 .excl, .viz.f4 .add { opacity: 1; }
+  .viz.f3 .gfm { opacity: .35; }                                        /* step 4: dim what it found, light up what it misses */
+  .viz.f3 .excl { animation: flick 1.6s steps(1, end) both; }            /* blink the blank like the Story does, with a glow, so the no-data area is clear */
+  .viz.f3 .excl + .excl { animation: flick 1.6s steps(1, end) both, glow 2.4s ease-in-out .2s infinite; }
   @keyframes flick { 0%,30%,60% { opacity: .15; } 15%,45%,75%,100% { opacity: 1; } }
-  @keyframes glow { 0%,100% { filter: none; } 40% { filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px rgba(220,220,235,.9)); } }
-  @media (prefers-reduced-motion: reduce) { .viz.f2 .excl { animation: none; } }
+  @keyframes glow { 0%,100% { filter: none; } 50% { filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px rgba(220,220,235,.9)); } }
+  @media (prefers-reduced-motion: reduce) { .viz.f3 .excl, .viz.f3 .excl + .excl { animation: none; } }
   .viz .tag { position: absolute; left: 12px; top: 12px; font-size: var(--fs-xs); font-weight: 600; padding: 4px 10px; border-radius: var(--r-pill); background: rgba(0,0,0,.6); }
-  .viz .seg { display: grid; grid-template-columns: repeat(3, 1fr); padding: var(--s2); gap: var(--s2); border-bottom: 1px solid var(--line); }
-  .viz .seg button { height: 36px; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); font: 600 var(--fs-sm) var(--font); cursor: pointer; }
+  .viz .seg { display: grid; grid-template-columns: repeat(5, 1fr); padding: var(--s2); gap: 6px; border-bottom: 1px solid var(--line); }
+  .viz .seg button { height: 36px; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); font: 600 var(--fs-xs) var(--font); cursor: pointer; padding: 0 4px; white-space: nowrap; }
   .viz .seg button.on { background: var(--surface-3); border-color: var(--accent); color: var(--text); }
   .viz .cap { padding: var(--s3) var(--s4) var(--s4); }
   .viz .cap p { margin: 0 0 var(--s3); font-size: var(--fs-sm); color: var(--muted); min-height: 3em; }
@@ -144,11 +149,14 @@
 
     <figure class="viz" style="margin:0">
       <div class="seg" role="tablist">
-        <button data-v="0" class="on" role="tab">Optical</button>
-        <button data-v="1" role="tab">Official flood map</button>
-        <button data-v="3" role="tab">+ NISAR</button>
+        <button data-v="0" class="on" role="tab">Map</button>
+        <button data-v="1" role="tab">Optical</button>
+        <button data-v="2" role="tab">Official</button>
+        <button data-v="3" role="tab">Can't see</button>
+        <button data-v="4" role="tab">+ NISAR</button>
       </div>
       <div class="stage">
+        <div class="lyr" id="hmap"></div>
         <img class="lyr photo" id="hph" src="story/tonlesap/photo_2026-10-19.jpg" alt="Tonle Sap lake, Cambodia, from orbit">
         <img class="lyr L excl" src="story/tonlesap/gfm_excluded.png" alt=""><img class="lyr L excl" src="story/tonlesap/gfm_excluded_edge.png" alt="">
         <img class="lyr L gfm" src="story/tonlesap/gfm_flood.png" alt=""><img class="lyr L gfm" src="story/tonlesap/gfm_flood_edge.png" alt="">
@@ -158,9 +166,9 @@
       <figcaption class="cap">
         <p id="say"></p>
         <div class="key">
-          <span data-f="1"><i style="background:#2882ff"></i>Flood in the official map (GFM)</span>
-          <span data-f="2"><i style="background:repeating-linear-gradient(45deg,#dcdce4 0 2px,#696973 2px 6px);outline:1px solid #d7d7e1"></i>Official map: "cannot see here"</span>
-          <span data-f="3"><i style="background:#ff9a2e"></i>NISAR addition: water in the blank</span>
+          <span data-f="2"><i style="background:#2882ff"></i>Flood in the official map (GFM)</span>
+          <span data-f="3"><i style="background:repeating-linear-gradient(45deg,#dcdce4 0 2px,#696973 2px 6px);outline:1px solid #d7d7e1"></i>Official map: "cannot see here"</span>
+          <span data-f="4"><i style="background:#ff9a2e"></i>NISAR addition: water in the blank</span>
         </div>
       </figcaption>
     </figure>
@@ -254,29 +262,39 @@
 
 
 <script>
-// hero card: a short loop, optical → official map → its "cannot see" blank → + NISAR; stops when the visitor picks a step
+// hero card: a short loop, map → optical (clouds) → official flood map → what it can't see → + NISAR; stops when the visitor picks a step
 (() => {
   const $ = id => document.getElementById(id), fig = document.querySelector('.viz'), say = $('say'), ph = $('hph'), tag = $('htag');
   const bs = document.querySelectorAll('.viz .seg button'), ks = document.querySelectorAll('.key span');
+  try {                                                    // step 1: the place, on a plain map (same frame as the layers)
+    const m = L.map('hmap', { zoomControl: false, zoomSnap: 0, dragging: false, scrollWheelZoom: false, doubleClickZoom: false, touchZoom: false, boxZoom: false, keyboard: false });
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { attribution: 'Esri, Maxar, Earthstar Geographics' }).addTo(m);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { opacity: .9 }).addTo(m);
+    m.attributionControl.setPrefix('');
+    const fit = () => { m.invalidateSize(); m.fitBounds([[12.3005, 103.5949], [13.2994, 104.7009]], { padding: [0, 0], animate: false }); };
+    fit(); addEventListener('resize', fit);
+  } catch (e) {}
   const PH = ['2026-06-18', '2026-07-01', '2026-07-18', '2026-08-27', '2026-09-16', '2026-10-04', '2026-10-19'];   // full-frame optical looks (as in the Story)
   const url = d => d === '2026-10-19' ? 'story/tonlesap/photo_2026-10-19.jpg' : `viewer/sites/tonle-sap-flood-pulse-2026-83-8/photo_${d}.jpg`;
   PH.forEach(d => { new Image().src = url(d); });
   const fmt = d => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
-  const T = ['Optical photos of Tonle Sap through the season. Water under the trees stays hidden.',
-             'The official flood map shows <b>554 km²</b> of flooding.',
-             'But it marks the flooded forest <b>"cannot see"</b>.',
+  const T = ['<b>Tonle Sap</b>, Cambodia: the lake and its flooded forest.',
+             'Optical photos through the season: <b>clouds</b> and trees hide the water.',
+             'The official flood map (Sentinel-1 radar) finds <b>554 km²</b> of flooding.',
+             'But it marks a quarter of the area <b>"cannot see"</b>: the flooded forest is <b>missing</b>.',
              'Inside that blank, NISAR measured <b>561 km²</b> of water, 362 km² of it under the trees.'];
-  const MS = [2800, 2000, 2400, 3400];
+  const TAG = ['Tonle Sap, Cambodia', null, 'Official flood map · 17 Oct 2026', 'Official map: no data', 'NISAR L-band · 17 Oct 2026'];
+  const MS = [2200, 2800, 2200, 3200, 3600];
   let f = 0, run = true, tm, fl;
   function set(n) {
     f = n; clearInterval(fl); fig.className = 'viz f' + n; say.innerHTML = T[n];
-    bs.forEach(b => b.classList.toggle('on', +b.dataset.v === (n === 2 ? 1 : n)));
+    bs.forEach(b => b.classList.toggle('on', +b.dataset.v === n));
     ks.forEach(k => k.classList.toggle('on', +k.dataset.f <= n));
-    if (n === 0 && run) { let k = 0; const step = () => { const d = PH[k++]; ph.src = url(d); tag.textContent = 'Optical · ' + fmt(d); if (k >= PH.length) clearInterval(fl); }; step(); fl = setInterval(step, MS[0] / PH.length); }
-    else { ph.src = url('2026-10-19'); tag.textContent = n ? 'Tonle Sap, Cambodia · 17 Oct 2026' : 'Optical · 19 Oct 2026'; }
-    if (run) tm = setTimeout(() => set((f + 1) % 4), MS[n]);
+    if (n === 1 && run) { let k = 0; const step = () => { const d = PH[k++]; ph.src = url(d); tag.textContent = 'Optical · ' + fmt(d); if (k >= PH.length) clearInterval(fl); }; step(); fl = setInterval(step, MS[1] / PH.length); }
+    else { ph.src = url('2026-10-19'); tag.textContent = TAG[n] || 'Optical · 19 Oct 2026'; }
+    if (run) tm = setTimeout(() => set((f + 1) % 5), MS[n]);
   }
-  bs.forEach(b => b.onclick = () => { run = false; clearTimeout(tm); set(+b.dataset.v === 1 ? 2 : +b.dataset.v); });
+  bs.forEach(b => b.onclick = () => { run = false; clearTimeout(tm); set(+b.dataset.v); });
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) { run = false; set(3); } else set(0);
 })();
 </script>
