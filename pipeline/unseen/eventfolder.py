@@ -253,6 +253,15 @@ def photo_for(case, date):
     return d, im, cl
 
 
+def compare(a, b, ok):
+    """Two water masks where both see: agreement % (all pixels), IoU and F1 (water), km² of each."""
+    a, b = a & ok, b & ok
+    tp, fp, fn = float((a & b).sum()), float((a & ~b).sum()), float((~a & b).sum())
+    return dict(compared_pct=round(100 * float(ok.mean())), agreement_pct=round(100 * float((a == b)[ok].mean()), 1),
+                iou=round(tp / (tp + fp + fn), 2) if tp + fp + fn else None,
+                f1=round(2 * tp / (2 * tp + fp + fn), 2) if tp + fp + fn else None)
+
+
 # ---------- independent check: RCM (Canada's C-band radar) ----------
 def rcm_check(feats, date, grid, shape, perm, valid, nisar_open):
     """RCM day within ± RCM_DAYS of the pass that covers most of the box (ties: closest; ≥ 30 % needed): open water
@@ -280,7 +289,7 @@ def rcm_check(feats, date, grid, shape, perm, valid, nisar_open):
     both, n_only, r_only = rw & nw, nw & ~rw, rw & ~nw
     u = float((rw | nw).sum())
     tp, fp, fn = float(both.sum()), float(n_only.sum()), float(r_only.sum())
-    return dict(date=rd, water=rw, both=both, n_only=n_only, r_only=r_only, stats=dict(
+    return dict(date=rd, db=db, ok=ok, water=rw, both=both, n_only=n_only, r_only=r_only, stats=dict(
         threshold_db=round(float(thr), 1), split_tiles=ntiles, compared_pct=round(100 * float(ok.mean())),
         agreement_pct=round(100 * float((rw == nw)[ok].mean()), 1), iou=round(tp / u, 2) if u else None,
         f1=round(2 * tp / (2 * tp + fp + fn), 2) if tp + fp + fn else None))
@@ -388,7 +397,10 @@ def build(place, flood_date=None):
             seen = (cls != 255) & valid
             ocean = cls == 254
             base["dswx"] = dict(date=dd, seen=seen & ~ocean, flood=np.isin(cls, (1, 2)) & ~perm & seen & ~ocean,
-                                clouds=np.isin(cls, (252, 253)) & ~perm & seen, veg=np.zeros(shape, bool))
+                                clouds=np.isin(cls, (252, 253)) & ~perm & seen, veg=np.zeros(shape, bool),
+                                water=np.isin(cls, (1, 2)) & seen & ~ocean,                      # incl. permanent water
+                                clear=seen & ~ocean & ~np.isin(cls, (252, 253)))                 # DSWx sees: no cloud
+        nopen = L["water"][t] & valid                      # NISAR open water incl. permanent (what C-band / optical also see)
         for k, B in base.items():
             lid = f"{k}_classes"
             blank = B["clouds"] | B["veg"]
@@ -422,7 +434,7 @@ def build(place, flood_date=None):
         R = None
         if rfeats:
             try:
-                R = rcm_check(rfeats, d, grid, shape, perm, valid, L["water"][t] & valid)
+                R = rcm_check(rfeats, d, grid, shape, perm, valid, nopen)
             except Exception as e:  # noqa: BLE001
                 print(f"[warn] RCM {d}: {e!r}"[:120])
         if R:
@@ -436,7 +448,25 @@ def build(place, flood_date=None):
             P["matched"]["rcm"] = R["date"]
             P["validation"] = dict(rcm=dict(R["stats"], nisar_open_km2=round(float((R["both"] | R["n_only"]).sum() * px), 1),
                                             rcm_water_km2=round(float(R["water"].sum() * px), 1)))
-            P["layers"] += ["rcm_water", "agreement"]
+            W.picture("rcm_radar", R["date"], grey(R["db"], -25, -5), dict(group="validation", sensor="RCM C-band compact-pol (CSA)",
+                      label="RCM radar (RL, −25…−5 dB; dark = water)", legend=None, default=False), half=True)
+            P["layers"] += ["rcm_water", "agreement", "rcm_radar"]
+        # NISAR open water (the mask every check uses) + NASA DSWx water, for the swipe and the agreement numbers
+        if R or "dswx" in base:
+            W.rgba("nisar_open", d, classes_rgba([(nopen, "nisar_only")]), dict(group="validation", sensor="NISAR L-band",
+                   label="NISAR open water (incl. permanent)", legend=[[HEX(C["nisar_only"]), "open water (NISAR)"]], default=False))
+            P["layers"].append("nisar_open")
+        if "dswx" in base:
+            B = base["dswx"]
+            W.rgba("dswx_water", B["date"], classes_rgba([(B["clouds"], "clouds"), (B["water"], "rcm")]), dict(group="validation",
+                   sensor="OPERA DSWx-HLS (NASA)", label="Water in NASA's map (DSWx, incl. permanent)",
+                   legend=[[HEX(C["rcm"]), "open water (NASA DSWx)"], [HEX(C["clouds"]), "clouds"]], default=False))
+            P["layers"].append("dswx_water")
+            ok = B["clear"] & valid
+            if ok.mean() >= 0.3:
+                P.setdefault("validation", {})["dswx"] = dict(compare(nopen, B["water"], ok), date=B["date"])
+                if R:
+                    P["validation"]["rcm_vs_dswx"] = compare(R["water"], B["water"], ok & R["ok"])
         main = "gfm" if "gfm" in base else next(iter(base), None)
         if main:
             B = base[main]
@@ -469,19 +499,36 @@ def build(place, flood_date=None):
                    nisar_water_km2=sp["nisar"]["water_km2"],
                    sentence=f"On {sp['date']}, NISAR adds {s['nisar_adds_km2']:,.0f} km² of flood "
                             f"(+{s['improvement_pct']}%) where {nice} cannot see.")
-    vp = [p for p in passes if "validation" in p]
-    validation = None
-    if vp:
-        V = [p["validation"]["rcm"] for p in vp]
-        mean = lambda k: round(sum(v[k] for v in V if v[k] is not None) / max(1, sum(v[k] is not None for v in V)), 2)
-        validation = dict(rcm=dict(
-            sensor="RCM C-band compact-pol (CSA), CEOS-ARD", compared="open water (C-band can't see water under trees)",
-            match_days=RCM_DAYS, n_dates=len(vp), dates=[[p["date"], p["matched"]["rcm"]] for p in vp],
-            agreement_pct=round(sum(v["agreement_pct"] for v in V) / len(V), 1), iou=mean("iou"), f1=mean("f1"),
-            sentence=f"Canada's RCM radar, within {RCM_DAYS} days of {len(vp)} NISAR passes, agrees on "
-                     f"{sum(v['agreement_pct'] for v in V) / len(V):.0f}% of pixels (open water IoU {mean('iou')})."))
-        summary["validation"] = dict(source="rcm", agreement_pct=validation["rcm"]["agreement_pct"],
-                                     iou=validation["rcm"]["iou"], n_dates=len(vp))
+    validation = {}
+    NAMES = dict(rcm="Canada's RCM radar (CSA, C-band)", dswx="NASA's flood map (OPERA DSWx-HLS, optical)",
+                 rcm_vs_dswx="RCM vs NASA DSWx (no NISAR: how well two other sensors agree)")
+    for k in ("rcm", "dswx", "rcm_vs_dswx"):
+        vp = [p for p in passes if k in p.get("validation", {})]
+        if not vp:
+            continue
+        V = [p["validation"][k] for p in vp]
+        mean = lambda q: round(sum(v[q] for v in V if v[q] is not None) / max(1, sum(v[q] is not None for v in V)), 2)
+        ag = round(sum(v["agreement_pct"] for v in V) / len(V), 1)
+        validation[k] = dict(source=NAMES[k], n_dates=len(vp), dates=[p["date"] for p in vp],
+                             agreement_pct=ag, iou=mean("iou"), f1=mean("f1"))
+        if k == "rcm":
+            validation[k].update(sensor="RCM C-band compact-pol (CSA), CEOS-ARD", match_days=RCM_DAYS,
+                                 compared="open water incl. permanent (C-band can't see water under trees)",
+                                 dates=[[p["date"], p["matched"]["rcm"]] for p in vp])
+        if k == "dswx":
+            validation[k].update(compared="open water incl. permanent, where DSWx has no cloud")
+        who = dict(rcm="Canada's RCM radar", dswx="NASA's DSWx map", rcm_vs_dswx="RCM and NASA's DSWx")[k]
+        validation[k]["sentence"] = (f"{who} {'agree' if k == 'rcm_vs_dswx' else 'and NISAR agree'} on {ag:.0f}% of pixels "
+                                     f"(open water IoU {mean('iou')}, {len(vp)} pass{'es' if len(vp) > 1 else ''}).")
+    if validation:
+        summary["validation"] = dict(source=next(k for k in ("rcm", "dswx") if k in validation) if
+                                     any(k in validation for k in ("rcm", "dswx")) else None,
+                                     **{k: dict(agreement_pct=v["agreement_pct"], iou=v["iou"], n_dates=v["n_dates"])
+                                        for k, v in validation.items()})
+        summary["validation"]["agreement_pct"] = validation[summary["validation"]["source"]]["agreement_pct"]
+        summary["validation"]["iou"] = validation[summary["validation"]["source"]]["iou"]
+        summary["validation"]["n_dates"] = validation[summary["validation"]["source"]]["n_dates"]
+    validation = validation or None
     ev = dict(
         version=2, id=f"{place}/{fid}", place=f"{case['name']}, {case['country']}",
         title=f"{case['name']} flood, {D(fd).strftime('%b %Y')}", flood_date=fd,
@@ -504,12 +551,15 @@ def build(place, flood_date=None):
                  credit="NASA EOSDIS GIBS; HLS (NASA / USGS Landsat, ESA Copernicus Sentinel-2)"),
             dict(name="ESA WorldCover 2021", url="https://esa-worldcover.org", credit="© ESA WorldCover project 2021, CC BY 4.0")]
         + ([dict(name="RADARSAT Constellation Mission (RCM) CEOS-ARD", url="https://registry.opendata.aws/rcm-ceos-ard/",
-                 credit="RCM data © Government of Canada (Canadian Space Agency); RCM Public User Licence")] if validation else []),
+                 credit="RCM data © Government of Canada (Canadian Space Agency); RCM Public User Licence")]
+           if validation and "rcm" in validation else []),
     )
     (folder / "event.json").write_text(json.dumps(ev, indent=1, ensure_ascii=False), encoding="utf-8")
     (folder / "science.md").write_text(SCIENCE.format(**summary, title=ev["title"], start=w0, end=w1, n=len(passes),
                                                       limits=case.get("flood_limits", "paddies are flooded on purpose in season;"))
-                                       + (VALIDATION.format(**validation["rcm"]) if validation else ""), encoding="utf-8")
+                                       + (VALIDATION.format(**validation["rcm"]) if validation and "rcm" in validation else "")
+                                       + (VALID_DSWX.format(d=validation["dswx"]["sentence"], r=validation.get("rcm_vs_dswx", {}).get("sentence", ""))
+                                          if validation and "dswx" in validation else ""), encoding="utf-8")
     pl = dict(version=2, id=place, name=case["name"], country=case["country"], bbox=list(bbox),
               floods=[dict(id=fid, flood_date=fd, title=ev["title"], baseline=mb,
                            improvement_pct=summary["improvement_pct"], nisar_adds_km2=summary["nisar_adds_km2"],
@@ -521,7 +571,7 @@ def build(place, flood_date=None):
         old = json.loads(pf.read_text(encoding="utf-8"))
         pl["floods"] = sorted([f for f in old.get("floods", []) if f["id"] != fid] + pl["floods"], key=lambda f: f["flood_date"])
         pl["history"] = old.get("history")
-    pl["validation"] = sorted({k for f in pl["floods"] for k in ([f["validation"]["source"]] if f.get("validation") else [])})
+    pl["validation"] = sorted({k for f in pl["floods"] for k in ("rcm", "dswx") if k in (f.get("validation") or {})})
     pf.write_text(json.dumps(pl, indent=1, ensure_ascii=False), encoding="utf-8")
     bundle.write_index()
     return ev
@@ -548,7 +598,11 @@ from one detector with thresholds fitted on clear days. Audit: docs/10-Results.m
 VALIDATION = """
 **Independent check (RCM):** {sentence} RCM (Canadian Space Agency, C-band, compact-pol) is a different radar,
 band and orbit. Its water = one Otsu threshold per image on the RL band (tiles with both water and land), on our 80 m
-grid; compared with NISAR open water only, where both see. Layers `rcm_water` and `agreement`.
+grid; compared with NISAR open water only, where both see. Layers `rcm_water`, `rcm_radar`, `nisar_open`, `agreement`.
+"""
+VALID_DSWX = """
+**Check against NASA's map (DSWx-HLS):** {d} {r} Same open-water masks, only where DSWx has no cloud.
+Layer `dswx_water`.
 """
 
 

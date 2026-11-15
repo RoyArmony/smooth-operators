@@ -272,3 +272,11 @@ body.focused #listhead, body.focused #feed, body.focused aside > details.more2 {
 .swbar span { position:absolute; bottom:44px; white-space:nowrap; font-size:12px; font-weight:600; color:#fff; background:rgba(12,34,43,.85);
               border-radius:4px; padding:2px 7px; }
 .swbar .swl { right:10px; border-left:3px solid #ff6b6b; } .swbar .swr { left:10px; border-left:3px solid #ff9a2e; }
+
+/* independent checks: % of pixels where RCM / NASA DSWx agree with NISAR (globe.js side card, inmap.js swipe) */
+.gval { grid-column:1 / -1; display:flex; align-items:baseline; gap:8px; padding-top:var(--s2); border-top:1px solid var(--line); }
+.gval b { font-size:var(--fs-xl); font-weight:800; color:#2ecc71; font-variant-numeric:tabular-nums; }
+.gval span { font-size:var(--fs-xs); color:var(--muted); }
+#sp .legend .vagree { grid-column:1 / -1; display:block; margin-top:4px; }
+.vagree b { font-size:var(--fs-xl); font-weight:800; color:#2ecc71; } .vagree em { font-style:normal; color:var(--muted); font-size:var(--fs-xs); }
+#sp .spsteps { flex-wrap:wrap; row-gap:4px; }

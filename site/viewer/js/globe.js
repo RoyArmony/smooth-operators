@@ -63,7 +63,7 @@ async function loadAll() {
     if (!own) return;
     own.place = nm;
     const f = (p.floods || []).filter(x => x.nisar_adds_km2 != null).sort((a, b) => (b.flood_date || '').localeCompare(a.flood_date || ''))[0];
-    if (f) own.gain = { gfm_flood_km2: f.baseline_flood_km2, nisar_adds_km2: f.nisar_adds_km2, pct: f.improvement_pct ?? null, date: f.flood_date, baseline: f.baseline };
+    if (f) own.gain = { gfm_flood_km2: f.baseline_flood_km2, nisar_adds_km2: f.nisar_adds_km2, pct: f.improvement_pct ?? null, date: f.flood_date, baseline: f.baseline, val: f.validation };
   });
   // multi-year histories (events/<place>/history, RADARSAT-1 → NISAR): their own items; they replace the old site-based one
   (V2.places || []).filter(p => p.history && p.bbox).forEach(p => {
@@ -286,7 +286,14 @@ function gainHTML(m) {
   const km = v => `${(v < 10 ? Math.round(v * 10) / 10 : Math.round(v)).toLocaleString('en-GB')}<small> km²</small>`;
   return `<div class="gcol"><b class="gbase">${km(m.base)}</b><span>${BASE_NAME[m.baseline] || 'Official map'}</span></div>`
     + `<div class="gcol"><b class="gadd">+${km(m.adds)}</b><span>NISAR addition</span></div>`
-    + (m.pct != null ? `<div class="gpct"><span class="garrow">↑</span><b>${m.pct.toLocaleString('en-GB')}%</b><span>more flood seen with NISAR</span></div>` : '');
+    + (m.pct != null ? `<div class="gpct"><span class="garrow">↑</span><b>${m.pct.toLocaleString('en-GB')}%</b><span>more flood seen with NISAR</span></div>` : '')
+    + valHTML(m.val);
+}
+// independent checks of NISAR's water (docs/12 §11): % of pixels where the other sensor agrees, same days
+function valHTML(v) {
+  if (!v) return '';
+  const row = (k, name) => v[k] ? `<div class="gval"><b>${Math.round(v[k].agreement_pct)}%</b><span>agree with ${name} · IoU ${v[k].iou} · ${v[k].n_dates} pass${v[k].n_dates > 1 ? 'es' : ''}</span></div>` : '';
+  return row('rcm', 'Canada’s RCM radar (CSA)') + row('dswx', 'NASA’s DSWx map');
 }
 let V2 = null;
 async function loadSummary(s) {
@@ -295,7 +302,7 @@ async function loadSummary(s) {
   const fl = pl && pl.floods && pl.floods.length && [...pl.floods].sort((a, b) => (b.flood_date || '').localeCompare(a.flood_date || ''))[0];
   if (!fl) return null;
   const ev = await getJSON(`../../events/${pl.folder || pl.id}/${fl.id}/event.json`), m = ev && ev.summary;
-  return m ? { base: m.baseline_flood_km2, adds: m.nisar_adds_km2, pct: m.improvement_pct, baseline: m.baseline } : null;
+  return m ? { base: m.baseline_flood_km2, adds: m.nisar_adds_km2, pct: m.improvement_pct, baseline: m.baseline, val: m.validation } : null;
 }
 function showFocus(id) {
   FOCUS = id || null;
@@ -311,7 +318,7 @@ function showFocus(id) {
       <h2>${s.title}</h2>
       <div class="fwhen">${when}</div>
       <div class="stags">${tags}</div>
-      <div class="gainbox" id="gainbox">${g ? gainHTML({ base: g.gfm_flood_km2, adds: g.nisar_adds_km2, pct: g.pct, baseline: 'gfm' }) : ''}</div>
+      <div class="gainbox" id="gainbox">${g ? gainHTML({ base: g.gfm_flood_km2, adds: g.nisar_adds_km2, pct: g.pct, baseline: g.baseline || 'gfm', val: g.val }) : ''}</div>
       ${s.bundle ? `<div class="legend sub blegend"><div><span style="background:#2882ff"></span>Official flood (GFM)</div>
         <div><span style="background:repeating-linear-gradient(45deg,#dcdce4 0 2px,#696973 2px 6px)"></span>Official map: "cannot see"</div>
         <div><span style="background:var(--orange)"></span>NISAR adds, in the blank</div></div>` : ''}

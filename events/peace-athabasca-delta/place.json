@@ -20,6 +20,21 @@
    "baseline_flood_km2": 974.3,
    "validation": {
     "source": "rcm",
+    "rcm": {
+     "agreement_pct": 89.5,
+     "iou": 0.6,
+     "n_dates": 2
+    },
+    "dswx": {
+     "agreement_pct": 80.5,
+     "iou": 0.59,
+     "n_dates": 2
+    },
+    "rcm_vs_dswx": {
+     "agreement_pct": 73.8,
+     "iou": 0.43,
+     "n_dates": 1
+    },
     "agreement_pct": 89.5,
     "iou": 0.6,
     "n_dates": 2
@@ -37,6 +52,7 @@
   ]
  },
  "validation": [
+  "dswx",
   "rcm"
  ]
 }

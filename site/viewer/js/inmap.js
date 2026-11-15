@@ -70,6 +70,7 @@ async function openSite(id) {
     S.steps.push({ label: 'RCM', b: 'none', on: ['rcm'], t0: '2026-10-10', csa: true,
       cap: 'Canada’s RCM radar (CSA, C-band), 13 Oct vs NISAR 10 Oct: they agree on 79% of the water.' });
   } catch (e) {}
+  await addChecks(id);
   if (S.P && D.event_date) { const k = D.frames.findIndex(f => f.date >= D.event_date); if (k >= 0) S.t = k; }
   // volcano: vent + reference ring on the map, before / during interferograms side by side
   S.extra = S.extra || [];
@@ -89,6 +90,71 @@ async function openSite(id) {
   window.dispatchEvent(new CustomEvent('unseen:site', { detail: id }));   // sidebar shows only this event (globe.js)
 }
 
+// ---------- independent checks (docs/12 §11): swipe another sensor | NISAR on the map, with % agreement ----------
+// v2 flood folder of this place with "validation": left = RCM (CSA radar) or NASA DSWx (optical), right = NISAR
+const VS = { rcm: { label: 'RCM⇔', name: 'RCM (CSA)', radar: 'rcm_radar', water: 'rcm_water', c: '#ff6b6b', csa: true,
+                    cap: 'Canada’s RCM radar (CSA, C-band) | NISAR, days apart. Drag the line: does the water match?' },
+             dswx: { label: 'NASA⇔', name: 'NASA DSWx', radar: 'photo', water: 'dswx_water', c: '#7fd1ff',
+                     cap: 'NASA’s flood map (OPERA DSWx, optical) | NISAR. Drag the line. Grey = clouds.' } };
+async function addChecks(id) {
+  try {
+    const IX = await (await fetch('../../events/index.json', { cache: 'no-cache' })).json();
+    const pl = (IX.places || []).find(p => id.startsWith(p.id) && (p.validation || []).length);
+    const fl = pl && [...(pl.floods || [])].filter(f => f.validation).sort((a, b) => b.flood_date.localeCompare(a.flood_date))[0];
+    if (!fl) return;
+    const base = `../../events/${pl.folder || pl.id}/${fl.id}/`, E = await (await fetch(base + 'event.json', { cache: 'no-cache' })).json();
+    const o = { pane: 'analysis', interactive: false, opacity: 0 }, ov = () => L.imageOverlay('data:,', S.B, o).addTo(map);
+    S.vs = { E, base, l1: ov(), l2: ov(), r1: ov(), r2: ov() };
+    S.extra = [...(S.extra || []), S.vs.l1, S.vs.l2, S.vs.r1, S.vs.r2];
+    Object.keys(VS).filter(k => E.validation && E.validation[k]).forEach(k => {
+      const P = E.passes.filter(p => p.validation && p.validation[k]);
+      const best = P.reduce((a, b) => (b.validation[k].compared_pct > a.validation[k].compared_pct ? b : a));
+      S.steps.push({ label: VS[k].label, b: 'none', on: [], vs: k, t0: best.date, csa: VS[k].csa, cap: VS[k].cap });
+    });
+    const bar = S.vbar = document.createElement('div'); bar.className = 'swbar'; bar.hidden = true;
+    bar.innerHTML = '<span class="swl"></span><b>⇔</b><span class="swr"></span>';
+    map.getContainer().appendChild(bar); L.DomEvent.disableClickPropagation(bar);
+    let drag = false;
+    bar.onpointerdown = ev => { drag = true; bar.setPointerCapture(ev.pointerId); ev.preventDefault(); };
+    bar.onpointermove = ev => { if (!drag) return; const r = map.getContainer().getBoundingClientRect(); S.vx = Math.max(0, Math.min(r.width, ev.clientX - r.left)); vclip(); };
+    bar.onpointerup = bar.onpointercancel = () => { drag = false; };
+    S.vclipEv = () => vclip(); map.on('move zoom zoomend moveend resize', S.vclipEv);
+  } catch (e) { /* no v2 checks for this place */ }
+}
+function vclip() {                                      // left sensor keeps the left of the line, NISAR the right
+  if (!S || !S.vs) return;
+  const st = S.steps[S.step] || {}, on = !!st.vs, r = map.getContainer().getBoundingClientRect();
+  if (!on) { S.vbar.hidden = true; [S.vs.l1, S.vs.l2, S.vs.r1, S.vs.r2].forEach(o => { const el = o.getElement(); if (el) el.style.clipPath = ''; }); return; }
+  if (S.vx == null) S.vx = map.latLngToContainerPoint(S.B.getCenter()).x;   // start in the middle of the box
+  S.vbar.hidden = !on; S.vbar.style.left = S.vx + 'px';
+  const x = r.left + S.vx, cut = (o, keepLeft) => { const el = o.getElement(); if (!el) return;
+    if (!on) { el.style.clipPath = ''; return; }
+    const b = el.getBoundingClientRect(), p = Math.max(0, Math.min(100, (x - b.left) / Math.max(1, b.width) * 100));
+    el.style.clipPath = keepLeft ? `inset(0 ${100 - p}% 0 0)` : `inset(0 0 0 ${p}%)`; };
+  cut(S.vs.l1, true); cut(S.vs.l2, true); cut(S.vs.r1, false); cut(S.vs.r2, false);
+}
+function renderVs(k) {                                  // one pass: other sensor | NISAR, open water both sides, agreement %
+  const V = S.vs, E = V.E, f = S.D.frames[S.t], fy = d => fmt(d, { day: 'numeric', month: 'short', year: 'numeric' });
+  const P = E.passes.filter(p => p.validation && p.validation[k]);
+  const p = P.reduce((a, b) => Math.abs(dn(b.date) - dn(f.date)) < Math.abs(dn(a.date) - dn(f.date)) ? b : a), v = p.validation[k];
+  const put = (o, lid, date, op) => { const l = E.layers[lid], file = l && date && l.files[date];
+    if (file) { o.setBounds(L.latLngBounds(l.bounds)); o.setUrl(V.base + file); } o.setOpacity(file ? op : 0); };
+  const od = p.matched[k] || v.date;
+  put(V.l1, VS[k].radar, k === 'rcm' ? od : p.matched.photo, 0.9); put(V.l2, VS[k].water, od, 1);
+  put(V.r1, 'nisar_rgb', p.date, 0.9); put(V.r2, 'nisar_open', p.date, 1);
+  [S.base, S.over, S.rcm, S.mo, S.fr].forEach(o => o && o.setOpacity(0)); (S.layers || []).forEach(l => l.ov.setOpacity(0)); drawEv(f.date, new Set());
+  const tg = S.tag.getElement()?.firstChild; if (tg) tg.style.display = 'none';
+  $('spD').textContent = `${VS[k].name} ${fmt(od)} | NISAR ${fy(p.date)}`;
+  $('spK').innerHTML = `<i style="background:${VS[k].c}"></i>${VS[k].name} <i style="background:#ff9a2e"></i>NISAR`;
+  S.vbar.querySelector('.swl').textContent = `${VS[k].name} · ${fy(od)}`;
+  S.vbar.querySelector('.swr').textContent = `NISAR · ${fy(p.date)}`;
+  const A = E.validation[k], X = E.validation.rcm_vs_dswx, pc = x => `${Math.round(x)}%`;
+  $('spL').innerHTML = `<div><span style="background:#3aa0ff"></span>open water, ${VS[k].name}</div><div><span style="background:#2882ff"></span>open water, NISAR</div>`
+    + `<div class="vagree"><b>${pc(v.agreement_pct)}</b> <em>agree with NISAR · IoU ${v.iou} · this pass, ${v.compared_pct}% of the box compared</em></div>`
+    + `<div class="sub" style="grid-column:1/-1">All passes: ${pc(A.agreement_pct)} agree, IoU ${A.iou} (${A.n_dates})${k === 'dswx' && X ? `. RCM vs NASA, without NISAR: ${pc(X.agreement_pct)}, IoU ${X.iou}` : ''}.`
+    + `${P.length > 1 ? ' Click a bar near another pass.' : ''}</div>`;
+  vclip(); chart();
+}
 const R_ = D => D.report || {};
 function setStep(i) {
   if (!S) return; S.step = Math.max(0, Math.min(S.steps.length - 1, i));
@@ -304,6 +370,7 @@ function histChart() {                                  // one bar per image: fl
 function closeSite(keepHash) {
   panel.classList.remove('hist');
   if (S && S.bar) { S.bar.remove(); map.off('move zoom zoomend moveend resize', S.clipEv); }
+  if (S && S.vbar) { S.vbar.remove(); map.off('move zoom zoomend moveend resize', S.vclipEv); }
   if (S) { ['base', 'over', 'box', 'tag', 'mo', 'fr'].forEach(k => S[k] && map.removeLayer(S[k])); (S.layers || []).forEach(l => map.removeLayer(l.ov)); (S.ev || []).forEach(x => map.removeLayer(x.ov)); (S.extra || []).forEach(x => map.removeLayer(x)); }
   const was = !!S; S = null; panel.hidden = true;
   if (was && keepHash !== 'swap') window.dispatchEvent(new CustomEvent('unseen:site', { detail: null }));
@@ -314,6 +381,9 @@ function render() {
   if (!S) return;
   if (S.hist) return renderHist();
   if (S.bundle) return renderBundle();
+  const vst = (S.steps[S.step] || {}).vs;
+  if (vst && S.vs) return renderVs(vst);
+  if (S.vs) { ['l1', 'l2', 'r1', 'r2'].forEach(k => S.vs[k].setOpacity(0)); vclip(); }
   $('spK').innerHTML = '<i class="kb"></i>water <i class="ko"></i>hidden from optical';
   const { D, A, t } = S, f = D.frames[t], s = D.summary[t];
   $('spD').textContent = `${fmt(f.date, { day: 'numeric', month: 'short', year: 'numeric' })}${f.sensor && D.history ? ' · ' + f.sensor : ''}`;

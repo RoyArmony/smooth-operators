@@ -5,7 +5,7 @@ Run before every push that touches events/:
     python scripts/check_bundle.py path/to/events
 
 Checks: index.json shape, each event.json against events/schema.json, every layer file exists,
-PNGs are <= 2048 px, total size of events/ < 20 MB. Exit code 1 if anything fails.
+PNGs are <= 2048 px, total size of events/ < 50 MB. Exit code 1 if anything fails.
 Uses the `jsonschema` package if installed, otherwise a small built-in validator (enough for our schema).
 """
 import json
@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 MAX_PX = 2048
-MAX_TOTAL_MB = 20
+MAX_TOTAL_MB = 50                # raised from 20 (Noa, 15.11): many places + history folders
 INDEX_REQUIRED = ["id", "title", "date", "bbox", "kind", "headline"]
 
 

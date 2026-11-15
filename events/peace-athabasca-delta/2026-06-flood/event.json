@@ -35,6 +35,21 @@
   "sentence": "On 2026-06-24, NISAR adds 3 km² of flood (+0%) where NASA's flood map (OPERA DSWx-HLS) cannot see.",
   "validation": {
    "source": "rcm",
+   "rcm": {
+    "agreement_pct": 89.5,
+    "iou": 0.6,
+    "n_dates": 2
+   },
+   "dswx": {
+    "agreement_pct": 80.5,
+    "iou": 0.59,
+    "n_dates": 2
+   },
+   "rcm_vs_dswx": {
+    "agreement_pct": 73.8,
+    "iou": 0.43,
+    "n_dates": 1
+   },
    "agreement_pct": 89.5,
    "iou": 0.6,
    "n_dates": 2
@@ -65,6 +80,8 @@
     "nisar_hv",
     "dswx_classes",
     "nisar_water",
+    "nisar_open",
+    "dswx_water",
     "nisar_adds",
     "combined"
    ],
@@ -72,6 +89,15 @@
    "nisar": {
     "water_km2": 439.6,
     "valid_pct": 100
+   },
+   "validation": {
+    "dswx": {
+     "compared_pct": 99,
+     "agreement_pct": 81.2,
+     "iou": 0.61,
+     "f1": 0.76,
+     "date": "2026-06-24"
+    }
    },
    "main_baseline": "dswx"
   },
@@ -102,6 +128,9 @@
     "nisar_water",
     "rcm_water",
     "agreement",
+    "rcm_radar",
+    "nisar_open",
+    "dswx_water",
     "nisar_adds",
     "combined"
    ],
@@ -120,6 +149,19 @@
      "f1": 0.74,
      "nisar_open_km2": 576.4,
      "rcm_water_km2": 467.8
+    },
+    "dswx": {
+     "compared_pct": 90,
+     "agreement_pct": 79.7,
+     "iou": 0.57,
+     "f1": 0.73,
+     "date": "2026-07-07"
+    },
+    "rcm_vs_dswx": {
+     "compared_pct": 73,
+     "agreement_pct": 73.8,
+     "iou": 0.43,
+     "f1": 0.6
     }
    },
    "main_baseline": "dswx"
@@ -153,6 +195,9 @@
     "nisar_water",
     "rcm_water",
     "agreement",
+    "rcm_radar",
+    "nisar_open",
+    "dswx_water",
     "nisar_adds",
     "combined"
    ],
@@ -395,6 +440,64 @@
     ]
    ]
   },
+  "nisar_open": {
+   "group": "validation",
+   "sensor": "NISAR L-band",
+   "label": "NISAR open water (incl. permanent)",
+   "legend": [
+    [
+     "#2882ff",
+     "open water (NISAR)"
+    ]
+   ],
+   "default": false,
+   "files": {
+    "2026-06-24": "layers/nisar_open_2026-06-24.png",
+    "2026-07-06": "layers/nisar_open_2026-07-06.png",
+    "2026-07-18": "layers/nisar_open_2026-07-18.png"
+   },
+   "bounds": [
+    [
+     58.2969,
+     -111.81364
+    ],
+    [
+     58.90254,
+     -110.99953
+    ]
+   ]
+  },
+  "dswx_water": {
+   "group": "validation",
+   "sensor": "OPERA DSWx-HLS (NASA)",
+   "label": "Water in NASA's map (DSWx, incl. permanent)",
+   "legend": [
+    [
+     "#3aa0ff",
+     "open water (NASA DSWx)"
+    ],
+    [
+     "#ebebf0",
+     "clouds"
+    ]
+   ],
+   "default": false,
+   "files": {
+    "2026-06-24": "layers/dswx_water_2026-06-24.png",
+    "2026-07-07": "layers/dswx_water_2026-07-07.png",
+    "2026-07-18": "layers/dswx_water_2026-07-18.png"
+   },
+   "bounds": [
+    [
+     58.2969,
+     -111.81364
+    ],
+    [
+     58.90254,
+     -110.99953
+    ]
+   ]
+  },
   "nisar_adds": {
    "group": "result",
    "sensor": "NISAR L-band",
@@ -521,6 +624,27 @@
     ]
    ]
   },
+  "rcm_radar": {
+   "group": "validation",
+   "sensor": "RCM C-band compact-pol (CSA)",
+   "label": "RCM radar (RL, −25…−5 dB; dark = water)",
+   "legend": null,
+   "default": false,
+   "files": {
+    "2026-07-03": "layers/rcm_radar_2026-07-03.jpg",
+    "2026-07-18": "layers/rcm_radar_2026-07-18.jpg"
+   },
+   "bounds": [
+    [
+     58.2965,
+     -111.81434
+    ],
+    [
+     58.9029,
+     -111.00053
+    ]
+   ]
+  },
   "nisar_coh": {
    "group": "radar",
    "sensor": "NISAR L-band GUNW",
@@ -544,9 +668,7 @@
  },
  "validation": {
   "rcm": {
-   "sensor": "RCM C-band compact-pol (CSA), CEOS-ARD",
-   "compared": "open water (C-band can't see water under trees)",
-   "match_days": 3,
+   "source": "Canada's RCM radar (CSA, C-band)",
    "n_dates": 2,
    "dates": [
     [
@@ -561,7 +683,34 @@
    "agreement_pct": 89.5,
    "iou": 0.6,
    "f1": 0.76,
-   "sentence": "Canada's RCM radar, within 3 days of 2 NISAR passes, agrees on 90% of pixels (open water IoU 0.6)."
+   "sensor": "RCM C-band compact-pol (CSA), CEOS-ARD",
+   "match_days": 3,
+   "compared": "open water incl. permanent (C-band can't see water under trees)",
+   "sentence": "Canada's RCM radar and NISAR agree on 90% of pixels (open water IoU 0.6, 2 passes)."
+  },
+  "dswx": {
+   "source": "NASA's flood map (OPERA DSWx-HLS, optical)",
+   "n_dates": 2,
+   "dates": [
+    "2026-06-24",
+    "2026-07-06"
+   ],
+   "agreement_pct": 80.5,
+   "iou": 0.59,
+   "f1": 0.74,
+   "compared": "open water incl. permanent, where DSWx has no cloud",
+   "sentence": "NASA's DSWx map and NISAR agree on 80% of pixels (open water IoU 0.59, 2 passes)."
+  },
+  "rcm_vs_dswx": {
+   "source": "RCM vs NASA DSWx (no NISAR: how well two other sensors agree)",
+   "n_dates": 1,
+   "dates": [
+    "2026-07-06"
+   ],
+   "agreement_pct": 73.8,
+   "iou": 0.43,
+   "f1": 0.6,
+   "sentence": "RCM and NASA's DSWx agree on 74% of pixels (open water IoU 0.43, 1 pass)."
   }
  },
  "method": {

@@ -14,6 +14,9 @@ NISAR addition / baseline flood. Area = pixels × 80 m × 80 m.
 **Limits:** a NISAR addition is a candidate, not proven flood; shallow delta lakes roughened by wind are not dark on ≥ 90 % of passes, so part of them counts as flood here (in NISAR and in the baseline alike); numbers are
 from one detector with thresholds fitted on clear days. Audit: docs/10-Results.md.
 
-**Independent check (RCM):** Canada's RCM radar, within 3 days of 2 NISAR passes, agrees on 90% of pixels (open water IoU 0.6). RCM (Canadian Space Agency, C-band, compact-pol) is a different radar,
+**Independent check (RCM):** Canada's RCM radar and NISAR agree on 90% of pixels (open water IoU 0.6, 2 passes). RCM (Canadian Space Agency, C-band, compact-pol) is a different radar,
 band and orbit. Its water = one Otsu threshold per image on the RL band (tiles with both water and land), on our 80 m
-grid; compared with NISAR open water only, where both see. Layers `rcm_water` and `agreement`.
+grid; compared with NISAR open water only, where both see. Layers `rcm_water`, `rcm_radar`, `nisar_open`, `agreement`.
+
+**Check against NASA's map (DSWx-HLS):** NASA's DSWx map and NISAR agree on 80% of pixels (open water IoU 0.59, 2 passes). RCM and NASA's DSWx agree on 74% of pixels (open water IoU 0.43, 1 pass). Same open-water masks, only where DSWx has no cloud.
+Layer `dswx_water`.

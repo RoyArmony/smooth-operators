@@ -96,6 +96,17 @@ History: RADARSAT-1 May–Sep scenes ≥ 90 % cover (1 unreadable: EODMS host bl
 Kept 26: per-year maxima 1997 253, 1998 180, 1999 146, 2002 68, 2003 178, 2004 106, 2006 344, 2010 263, 2011 581,
 2012 595 km² (RADARSAT-1); 2026 440 km² (NISAR, 06-24).
 
+Agreement of open water (incl. permanent), same 80 m grid, where both see. Date (who): 15.11.26 (Noa).
+
+| Pass | NISAR vs RCM (RCM day) | NISAR vs NASA DSWx (DSWx day, compared) | RCM vs DSWx (no NISAR) |
+|---|---|---|---|
+| 2026-06-24 | – | 81.2 %, IoU 0.61 (06-24, 99 %) | – |
+| 2026-07-06 | 88.9 %, IoU 0.58 (07-03) | 79.7 %, IoU 0.57 (07-07, 90 %) | 73.8 %, IoU 0.43 |
+| 2026-07-18 | 90.1 %, IoU 0.63 (07-18) | – (clouds) | – |
+| **mean** | **89.5 %, IoU 0.60** | **80.5 %, IoU 0.59** | 73.8 %, IoU 0.43 |
+
+Agreement % counts dry land too (most of the box); IoU is the water-only score.
+
 ## GERD reservoir, Blue Nile: Sentinel-1 years (replaces the 1998 RADARSAT-1 picture)
 
 Script `python -m unseen.s1history gerd-blue-nile-ethiopia` (15.11.26). Input: Sentinel-1 RTC (Planetary Computer), descending

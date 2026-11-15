@@ -169,7 +169,7 @@ All areas are pixels × 80 m × 80 m, counted only where both NISAR and the base
 
 ## 7. Size
 
-5 passes × ~10 layers × ~150 KB ≈ 7.5 MB per flood: too much for the 20 MB budget with many places.
+5 passes × ~10 layers × ~150 KB ≈ 7.5 MB per flood: too much for the 50 MB budget with many places (budget raised from 20 MB on 15.11).
 Keep `nisar_hh` / `nisar_hv` at half resolution, and store only `nisar_rgb` if we must cut. Run `scripts/check_bundle.py`.
 
 ## 8. Moving from v1, and drawbacks
@@ -234,3 +234,14 @@ RADARSAT-1), compared with NISAR **open** water where both see (C-band can't see
 - History quality check (all places): a RADARSAT-1 image is dropped when its threshold doesn't separate the known
   permanent water from land (Youden J < 0.5; here 68 of 176 dropped: wind on lakes, low contrast). New place keys:
   `rs1_months` (here May–Sep: ice), `flood_months` (flood season, default Aug–Dec), `flood_limits`.
+
+**Noa, 15.11.26 14:34:51 says:** checks now also against NASA's map, and a swipe in the Explorer.
+- Per pass, `validation` holds `rcm` (vs NISAR), `dswx` (NASA DSWx-HLS vs NISAR, where DSWx has no cloud, ≥ 30 % of the box)
+  and `rcm_vs_dswx` (the two other sensors, without NISAR). Same open-water masks (incl. permanent water).
+- New layers: `nisar_open` (the NISAR mask every check uses), `rcm_radar` (RL, −25…−5 dB), `dswx_water` (water + clouds).
+- Explorer (`site/viewer/js/inmap.js`, any place whose v2 flood has `validation`): steps **RCM⇔** and **NASA⇔** = swipe
+  line on the map (left: RCM radar + water, or the HLS photo + DSWx water; right: NISAR radar + water) with this pass's % agreement
+  and IoU; side card (`globe.js`) shows the agreement per source.
+- Peace–Athabasca: NISAR–RCM **90 %** (IoU 0.60), NISAR–DSWx **81 %** (IoU 0.59), RCM–DSWx without NISAR **74 %** (IoU 0.43):
+  NISAR agrees with each independent sensor better than they agree with each other.
+- Size budget raised to 50 MB (`scripts/check_bundle.py`).

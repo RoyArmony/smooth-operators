@@ -90,7 +90,7 @@ Rules:
 ## 4. Drawbacks
 
 - **PNG layers are pictures, not data.** No pixel values, no reprojection in the browser, fixed resolution. A COG / tile service would be better but needs a server or a bigger storage plan.
-- **Repo and Vercel size limits.** 3–5 stories × ~10 passes × 6 layers adds up fast. Budget: ≤ 20 MB total; fewer passes in play if needed.
+- **Repo and Vercel size limits.** 3–5 stories × ~10 passes × 6 layers adds up fast. Budget: ≤ 50 MB total (raised from 20 MB on 15.11); fewer passes in play if needed.
 - **Licences differ per source.** RCM / RADARSAT-1 credit lines are still to verify against the CSA licence; GFM, WorldPop, WorldCover each have their own. All must be in `ACKNOWLEDGMENTS.md` before the site is public.
 - **Mixed dates.** "Same week" pairs are ±2–3 days apart; floods move. Each layer shows its own date.
 - **Earthdata login needed** for NISAR and DSWx downloads; only people with `.netrc` can re-run the pipeline. The site needs no login.
