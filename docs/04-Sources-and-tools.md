@@ -87,6 +87,9 @@ All 14 links from the [Resources tab](https://www.spaceappschallenge.org/2026/ch
 - **asf_search** (Python, ASF) — NISAR / ALOS / Sentinel-1 search — https://docs.asf.alaska.edu/asf_search/basics/ (Roy, 31.10.26)
 - **NASA Worldview** — view NISAR layers in the browser — https://worldview.earthdata.nasa.gov/ (Roy, 31.10.26)
 - **Python: h5py, numpy, scipy, rasterio, pyproj, shapely, Pillow, matplotlib, requests** — read HDF5 / GeoTIFF, reproject, process, plot, call STAC APIs — https://www.h5py.org (Roy, 31.10.26)
+- **Python: pystac-client, planetary-computer, jsonschema, affine** — STAC search, bundle schema check, raster transforms (Shai, 15.11.26)
+- **Playwright + headless Chrome** — screenshots and recordings to check the film and pages (Shai, 15.11.26)
+- **FFmpeg** — cut and re-encode the film's video clip (Shai, 15.11.26)
 
 - **Leaflet** (BSD-2) — web map in the landing film — https://leafletjs.com (Shai, 14.11.26)
 - **Inter font via Google Fonts** (SIL OFL 1.1) — site typeface, loaded in `site/css/design.css` — https://fonts.google.com/specimen/Inter (Roy, 14.11.26)
@@ -104,3 +107,4 @@ All 14 links from the [Resources tab](https://www.spaceappschallenge.org/2026/ch
 - **Martinis, Kersten & Twele 2015, ISPRS J. Photogramm. Remote Sens. 104:203–212** — fully automated TerraSAR-X flood service: tile-based KI threshold + fuzzy refinement; basis of our fused detector (docs/07 §2b) — https://doi.org/10.1016/j.isprsjprs.2014.07.014 (Noa, 14.11.26)
 - **Kittler & Illingworth 1986, Pattern Recognition 19(1):41–47** — minimum-error thresholding (KI) — https://doi.org/10.1016/0031-3203(86)90030-0 (Noa, 14.11.26)
 - **NISAR mission requirements** — https://science.nasa.gov/mission/nisar/mission-requirements (Shai, 09.11.26)
+- **NISAR L-band data release (NASA Earthdata, Jul 2026)** — public release from 20 Jul 2026, acquisitions from 17 Jun 2026; earlier year by end 2026 — https://www.earthdata.nasa.gov/news/nisar-l-band-data-released-expanding-record-surface-changes (Shai, 15.11.26)

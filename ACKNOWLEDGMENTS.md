@@ -60,10 +60,36 @@ Our maps and numbers are derived products, not official NASA products, and not e
 | Pillow | MIT-CMU |
 | matplotlib | PSF-based |
 | requests | Apache-2.0 |
+| pystac-client | Apache-2.0 |
+| planetary-computer | MIT |
+| jsonschema (`scripts/check_bundle.py`) | MIT |
+| affine | BSD-3-Clause |
+| Playwright (headless Chrome screenshots to check pages) | Apache-2.0 |
+| FFmpeg (cutting and re-encoding the film's video clip) | LGPL-2.1+ |
+
+## Services and tools
+
+| Service | Used for | Credit / terms |
+|---|---|---|
+| **NASA Earthdata Search, CMR, Earthdata Login** | Finding and downloading NASA data (HLS, OPERA, NISAR) | NASA EOSDIS; free |
+| **ASF Vertex, SearchAPI** (ASF DAAC) | NISAR / Sentinel-1 / ALOS search and download | Alaska Satellite Facility DAAC; free |
+| **NASA Worldview** | Browsing NISAR and MODIS layers | NASA EOSDIS; free |
+| **EODC STAC** (Earth Observation Data Centre, Vienna) | Access to Copernicus GFM flood maps | Open catalogue; data keep the GFM credit above |
+| **EODMS STAC** (Natural Resources Canada) | Finding RCM and RADARSAT-1 scenes | Government of Canada; data keep their CSA licence above |
+| **GitHub, GitHub Actions** | Code hosting, deploys | GitHub terms |
+| **Vercel** | Static site hosting | Vercel terms |
+| **GoDaddy, Porkbun** | Domain and DNS | Their terms |
+| **Google Fonts** | Serving the Inter typeface | Google Fonts terms; font under SIL OFL 1.1 (above) |
 
 ## Research we built on
 
 - NISAR Data User Guide (ASF) — https://nisar-docs.asf.alaska.edu
+- NASA Earthdata (2026). NISAR L-band data released (public release from 20 Jul 2026, acquisitions from 17 Jun 2026) — https://www.earthdata.nasa.gov/news/nisar-l-band-data-released-expanding-record-surface-changes
+- NASA Space Apps 2026 challenge statement: Dancing with the SARs — https://www.spaceappschallenge.org/2026/challenges/dancing-with-the-sars/
+- NASA Earthdata, Intro to SAR (frequency, polarization, scattering) — https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/sar
+- NASA Earth science data policy and NISAR data use & citation guidance — https://www.earthdata.nasa.gov/data-and-information-policy · https://nisar-docs.asf.alaska.edu/data-use-citation-guidance/
+- NISAR mission requirements (NASA) — https://science.nasa.gov/mission/nisar/mission-requirements
+- UAVSAR Postcards (NASA/JPL): airborne L-band examples and colour keys — https://uavsar.jpl.nasa.gov
 - Rentschler, J., Salhab, M., Jafino, B. A. (2022). Flood exposure and poverty in 188 countries. *Nature Communications* 13, 3527 (1.81 billion people exposed to 1-in-100-year floods; landing film) — https://doi.org/10.1038/s41467-022-30727-4
 - Martinis, S., Kersten, J., Twele, A. (2015). A fully automated TerraSAR-X based flood service. *ISPRS Journal of Photogrammetry and Remote Sensing* 104, 203–212 (tile-based thresholding + fuzzy refinement; our fused detector) — https://doi.org/10.1016/j.isprsjprs.2014.07.014
 - Kittler, J., Illingworth, J. (1986). Minimum error thresholding. *Pattern Recognition* 19(1), 41–47 — https://doi.org/10.1016/0031-3203(86)90030-0
