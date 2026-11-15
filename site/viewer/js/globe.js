@@ -182,7 +182,7 @@ function renderFeed() {
     c.className = 'fitem' + (PICK.has(key(it)) ? ' picked' : '');
     const day = new Date(it.date + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
     const g = it.site && it.site.gain;
-    const gain = g && g.pct != null ? `+${g.pct.toLocaleString()}%` : g && g.nisar_adds_km2 >= 1 ? `+${Math.round(g.nisar_adds_km2).toLocaleString()} km²` : '';
+    const gain = g && g.pct != null ? (g.pct > 0 ? '↑' : '') + `${g.pct.toLocaleString('en-GB')}%` : '';   // blank = no % in the event folder yet
     c.innerHTML = `<div class="fbody"><div class="ftitle">${it.title}</div><div class="fdate">${day}</div></div>`
       + (gain ? `<div class="fgain" title="More flood water NISAR found than the official flood map showed">${gain}</div>` : '');
     c.onclick = ev => {
@@ -235,6 +235,9 @@ const num = v => typeof v === 'number' ? v.toLocaleString('en-GB') : v;
 // v1 bundle headline → { official flood, NISAR adds, % more } (pct only when the official flood is ≥ 5 km², as in the pipeline)
 const hnum = (e, re) => { const x = ((e.headline || {}).numbers || []).find(k => re.test(k.label)); return x ? x.value : null; };
 function gainOf(e) {
+  const m = e.summary;                                     // v2 (docs/12): the folder states it
+  if (m && m.baseline_flood_km2 != null && m.nisar_adds_km2 != null)
+    return { gfm_flood_km2: m.baseline_flood_km2, nisar_adds_km2: m.nisar_adds_km2, pct: m.improvement_pct ?? null, date: e.flood_date || e.date };
   const b = hnum(e, /^Official map: flood/), a = hnum(e, /^NISAR adds/);
   if (b == null || a == null || (!b && !a)) return null;
   return { gfm_flood_km2: b, nisar_adds_km2: a, pct: b >= 5 ? Math.round(100 * a / b) : null, date: e.date };
