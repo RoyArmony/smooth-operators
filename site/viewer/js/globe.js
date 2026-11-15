@@ -201,7 +201,7 @@ function renderFeed() {
   const head = t => { const h = document.createElement('div'); h.className = 'fmonth'; h.textContent = t; $('feed').appendChild(h); };
   const adds = now.reduce((t, it) => t + ((G(it) && G(it).nisar_adds_km2) || 0), 0);
   $('fsum').innerHTML = adds ? `NISAR found <b>${Math.round(adds).toLocaleString('en-GB')} km²</b> of flood the official maps couldn't see, across ${now.filter(G).length} floods.` : '';
-  [[hist, 'Over the years · RADARSAT-1 → NISAR'], [now, '2026 floods · biggest gain first']].forEach(([list, title]) => { if (!list.length) return; head(title);
+  [[hist, 'Over the years · older radars → NISAR'], [now, '2026 floods · biggest gain first']].forEach(([list, title]) => { if (!list.length) return; head(title);
   list.forEach(it => {
     const c = document.createElement('div'); it.card = c;
     c.className = 'fitem' + (PICK.has(key(it)) ? ' picked' : '');
@@ -278,7 +278,8 @@ function sensorsOf(s) {
   if (CSA_RCM.some(k => s.id.startsWith(k))) x.push('RCM');
   return ['NISAR', ...x.filter(v => v !== 'NISAR')];
 }
-const sensorTags = s => `<span class="fsens">${sensorsOf(s).map(x => `<i class="${x === 'NISAR' ? 'n' : 'c'}">${x}</i>`).join('')}</span>`;
+const SCLS = x => x === 'NISAR' ? 'n' : x === 'Sentinel-1' ? 's' : 'c';      // n = NISAR, c = CSA, s = ESA
+const sensorTags = s => `<span class="fsens">${sensorsOf(s).map(x => `<i class="${SCLS(x)}">${x}</i>`).join('')}</span>`;
 const BASE_NAME = { gfm: 'Official map (GFM)', dswx: 'NASA OPERA DSWx' };
 function gainHTML(m) {
   if (m.base == null || m.adds == null) return '';
@@ -304,7 +305,7 @@ function showFocus(id) {
   if (!FOCUS) return;
   const yr = d => d.slice(0, 4), g = s && s.gain;
   const when = !s ? '' : s.history ? `${yr(s.first)}–${yr(s.last)}` : fmtDate((g && g.date) || s.event_date || s.last);
-  const tags = !s ? '' : sensorsOf(s).map(x => `<span class="stag ${x === 'NISAR' ? 'nisar' : 'csa'}"${x === 'NISAR' ? '' : ' title="Canadian Space Agency"'}>${x}</span>`).join('');
+  const tags = !s ? '' : sensorsOf(s).map(x => `<span class="stag ${{ n: 'nisar', c: 'csa', s: 'esa' }[SCLS(x)]}"${SCLS(x) === 'c' ? ' title="Canadian Space Agency"' : SCLS(x) === 's' ? ' title="ESA Copernicus"' : ''}>${x}</span>`).join('');
   focusBox.innerHTML = `<button class="fback" type="button">← All events</button>`
     + (!s ? '<div class="sub">Loading…</div>' : `<div class="fcard">
       <h2>${s.title}</h2>
@@ -319,9 +320,9 @@ function showFocus(id) {
   if (s && s.v2) getJSON(`../../events/${s.id.slice(5)}/history/event.json`).then(H => {   // then (RADARSAT-1) vs now (NISAR): wettest year each
     const box = $('gainbox'), Y = ((H && H.summary && H.summary.years) || []).filter(y => y.max_flood_km2 != null);
     const best = sn => Y.filter(y => y.sensor === sn).sort((a, b) => b.max_flood_km2 - a.max_flood_km2)[0];
-    const a = best('RADARSAT-1'), b = best('NISAR'); if (!box || FOCUS !== s.id || !(a || b)) return;
+    const a = best('RADARSAT-1') || best('Sentinel-1'), b = best('NISAR'); if (!box || FOCUS !== s.id || !(a || b)) return;
     const col = (y, cl) => y ? `<div class="gcol"><b class="${cl}">${Math.round(y.max_flood_km2).toLocaleString('en-GB')}<small> km²</small></b><span>flood ${y.year} · ${y.sensor}</span></div>` : '';
-    box.innerHTML = col(a, 'gcsa') + col(b, 'gadd') + (H.summary.caveat ? `<div class="gnote">${H.summary.caveat}</div>` : '');
+    box.innerHTML = col(a, a && a.sensor === 'Sentinel-1' ? 'gesa' : 'gcsa') + col(b, 'gadd') + (H.summary.caveat ? `<div class="gnote">${H.summary.caveat}</div>` : '');
   });
   if (s && !s.history && !s.bundle) loadSummary(s).then(m => { const box = $('gainbox'); if (m && box && FOCUS === s.id) box.innerHTML = gainHTML(m); });
   focusBox.querySelector('.fback').onclick = () => {

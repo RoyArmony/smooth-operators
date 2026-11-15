@@ -95,3 +95,22 @@ History: RADARSAT-1 May–Sep scenes ≥ 90 % cover (1 unreadable: EODMS host bl
 (J < 0.5, checked by eye against MODIS: 2011-07-08, 2011-09-02, 2012-08-12, 2012-09-12 were false floods over dry land).
 Kept 26: per-year maxima 1997 253, 1998 180, 1999 146, 2002 68, 2003 178, 2004 106, 2006 344, 2010 263, 2011 581,
 2012 595 km² (RADARSAT-1); 2026 440 km² (NISAR, 06-24).
+
+## GERD reservoir, Blue Nile: Sentinel-1 years (replaces the 1998 RADARSAT-1 picture)
+
+Script `python -m unseen.s1history gerd-blue-nile-ethiopia` (15.11.26). Input: Sentinel-1 RTC (Planetary Computer), descending
+relative orbit 50, the pass nearest 1 Oct each year, on the NISAR 80 m grid. Water = VV < -13.2 dB and VH < -18.9 dB
+(Otsu on 2025-09-29, same for all years). Flood = water beyond the lake NISAR sees on ≥ 90 % of 2026 passes. Box 12,866 km².
+
+| Date | Open water (lake + river) | Flood beyond the 2026 lake |
+|---|---|---|
+| 2016-09-28 | 31 km² | 5 km² |
+| 2017-10-05 | 50 km² | 5 km² |
+| 2018-10-12 | 38 km² | 5 km² |
+| 2019-09-25 | 51 km² | 6 km² |
+| 2020-10-01 | 214 km² | 6 km² |
+| 2021-09-26 | 373 km² | 6 km² |
+| 2022-10-03 | 725 km² | 12 km² |
+| 2023-09-28 | 1,113 km² | 71 km² |
+| 2024-10-04 (95 % covered) | 1,398 km² | 370 km² |
+| 2025-09-29 | 1,518 km² | 468 km² |

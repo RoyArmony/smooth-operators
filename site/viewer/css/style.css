@@ -249,10 +249,12 @@ body.focused #listhead, body.focused #feed, body.focused aside > details.more2 {
 .fsens i { font-style:normal; font-size:10px; font-weight:700; letter-spacing:.04em; padding:0 6px; line-height:16px; border-radius:999px; }
 .fsens i.n { color:#ff9a2e; background:#ff9a2e1a; border:1px solid #ff9a2e55; }
 .fsens i.c { color:#ff6b6b; background:#ff5a5a1a; border:1px solid #ff5a5a55; }
+.stag.esa { color:#a78bfa; border-color:#a78bfa66; background:#a78bfa14; }
+.fsens i.s { color:#a78bfa; background:#a78bfa1a; border:1px solid #a78bfa55; }
 .stag.csa { color:#ff6b6b; border-color:#ff5a5a66; background:#ff5a5a14; }
 #sp .spsteps button.csa.on { background:#ff5a5a; border-color:#ff5a5a; color:#fff; }
 #sp .spsteps button.csa:not(.on) { color:#ff8a8a; }
-.gcsa { color:#ff6b6b; }
+.gcsa { color:#ff6b6b; } .gesa { color:#a78bfa; }
 .gnote { grid-column:1 / -1; font-size:var(--fs-xs); color:var(--faint); padding-top:var(--s2); border-top:1px solid var(--line); }
 
 /* main list: headline total, group headings, card highlight from the map dot */

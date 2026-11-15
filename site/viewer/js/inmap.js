@@ -175,11 +175,14 @@ function bchart() {                                     // per pass: official fl
   g.fillStyle = '#8b95a3'; g.fillText(fmt(T[0].date), AX + 1, H - 1);
   const last = fmt(T[n - 1].date); g.fillText(last, W - g.measureText(last).width - 1, H - 1);
 }
-// ---------- multi-year view (events/<place>/history): RADARSAT-1 (CSA, 1998–2007) then NISAR (2026), same box ----------
+// ---------- multi-year view (events/<place>/history): RADARSAT-1 (CSA, 1998–2007) or Sentinel-1 (ESA, 2016–2025) then NISAR (2026), same box ----------
 // steps: Then (RADARSAT-1) → Now (NISAR) → Swipe (Then | Now on the map) → Change (flooded both / only then / only now)
 const SENS = { 'RADARSAT-1': { c: '#ff6b6b', radar: 'rs1_radar', flood: 'rs1_flood', note: 'RADARSAT-1 · CSA · C-band' },
+               'Sentinel-1': { c: '#a78bfa', radar: 's1_radar', flood: 's1_water', note: 'Sentinel-1 · ESA Copernicus · C-band' },
                NISAR: { c: '#ff9a2e', radar: 'nisar_rgb', flood: 'nisar_water', note: 'NISAR · L-band' } };
-const CHG = { both: ['#e8eef5', 'flood, then and now'], then: ['#ff6b6b', 'only then (RADARSAT-1)'], now: ['#ff9a2e', 'only now (NISAR)'] };
+const OLD_CAP = { 'RADARSAT-1': 'RADARSAT-1 (Canadian Space Agency), its wettest image here.',
+                  'Sentinel-1': 'Sentinel-1 (ESA Copernicus), its first year here: before the dam.' };
+const CHG = { both: ['#e8eef5', 'flood, then and now'], then: ['#ff6b6b', 'only then'], now: ['#ff9a2e', 'only now (NISAR)'] };
 async function openHistory(place) {
   let E; try { E = await (await fetch(`../../events/${place}/history/event.json`, { cache: 'no-cache' })).json(); } catch (e) { return; }
   const [w, so, e, n] = E.bbox, B = L.latLngBounds([[so, w], [n, e]]), base = `../../events/${place}/history/`;
@@ -192,12 +195,13 @@ async function openHistory(place) {
         box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, opacity: 0, interactive: false }).addTo(map),
         tag: L.marker([so, (w + e) / 2], { interactive: false, keyboard: false, icon: L.divIcon({ className: 'sptag', html: '<span></span>', iconSize: [0, 0] }) }).addTo(map) };
   S.extra = [S.hr, S.hf, S.nr, S.nf, S.chg];
-  S.a = wettest('RADARSAT-1'); S.b2 = wettest('NISAR');                   // the pair compared in Swipe / Change (click a bar to change it)
+  const old = S.old = (I.find(x => x.sensor !== 'NISAR') || {}).sensor || 'RADARSAT-1';   // RADARSAT-1 (CSA) or Sentinel-1 (ESA)
+  S.a = old === 'Sentinel-1' ? I.findIndex(x => x.sensor === old) : wettest(old); S.b2 = wettest('NISAR');                   // the pair compared in Swipe / Change (click a bar to change it)
   const th = S.a, nw = S.b2, fl = (x, sn) => { const l = (E.layers || {})[SENS[sn].flood]; return !!(l && l.files && x && l.files[x.date]); };
-  S.steps = [th >= 0 && { label: `Then ${I[th].date.slice(0, 4)}`, t: th, cap: 'RADARSAT-1 (Canadian Space Agency), its wettest image here.', csa: true },
+  S.steps = [th >= 0 && { label: `Then ${I[th].date.slice(0, 4)}`, t: th, cap: OLD_CAP[old] || '', csa: old === 'RADARSAT-1' },
              nw >= 0 && { label: `Now ${I[nw].date.slice(0, 4)}`, t: nw, cap: 'NISAR, its wettest pass here.', nisar: true },
              th >= 0 && nw >= 0 && { label: 'Swipe', mode: 'swipe', cap: 'Then | Now on the map. Drag the line.' },
-             th >= 0 && nw >= 0 && fl(I[th], 'RADARSAT-1') && fl(I[nw], 'NISAR') && { label: 'Change', mode: 'change', cap: 'Where the flood was then, now, or both.' }].filter(Boolean);
+             th >= 0 && nw >= 0 && fl(I[th], old) && fl(I[nw], 'NISAR') && { label: 'Change', mode: 'change', cap: 'Where the flood was then, now, or both.' }].filter(Boolean);
   // the swipe line: drag it across the map; each side clips its own images
   const bar = S.bar = document.createElement('div'); bar.className = 'swbar'; bar.hidden = true;
   bar.innerHTML = '<span class="swl"></span><b>⇔</b><span class="swr"></span>';
@@ -231,7 +235,7 @@ const loadImg = src => new Promise((ok, no) => { const im = new Image(); im.onlo
 async function changeMap(a, b) {                        // pixel by pixel on the shared grid: flooded both / only then / only now
   const key = a.date + '|' + b.date; S.cmap = S.cmap || {};
   if (S.cmap[key]) return S.cmap[key];
-  const [A, Bm] = await Promise.all([loadImg(imgOf(a, 'rs1_flood')), loadImg(imgOf(b, 'nisar_water'))]);
+  const [A, Bm] = await Promise.all([loadImg(imgOf(a, SENS[S.old].flood)), loadImg(imgOf(b, 'nisar_water'))]);
   const w = A.naturalWidth, h = A.naturalHeight, cv = document.createElement('canvas'); cv.width = w; cv.height = h;
   const g = cv.getContext('2d'); g.drawImage(A, 0, 0); const da = g.getImageData(0, 0, w, h).data;
   g.clearRect(0, 0, w, h); g.drawImage(Bm, 0, 0, w, h); const db = g.getImageData(0, 0, w, h).data;
@@ -250,21 +254,22 @@ function renderHist() {
   const st = S.steps[S.step] || {}, mode = S.mode = st.mode || 'single', fy = { day: 'numeric', month: 'short', year: 'numeric' };
   const tg = S.tag.getElement()?.firstChild;
   [S.hr, S.hf, S.nr, S.nf, S.chg].forEach(o => o.setOpacity(0));
-  $('spK').innerHTML = Object.entries(SENS).map(([n, v]) => `<i style="background:${v.c}"></i>${n === 'RADARSAT-1' ? 'RADARSAT-1 (CSA)' : n}`).join(' ');
+  $('spK').innerHTML = Object.entries(SENS).filter(([n]) => S.I.some(i => i.sensor === n)).map(([n, v]) => `<i style="background:${v.c}"></i>${n === 'RADARSAT-1' ? 'RADARSAT-1 (CSA)' : n}`).join(' ');
   if (mode === 'single') {
     const x = S.I[S.t], k = SENS[x.sensor] || SENS.NISAR;
     show(S.hr, imgOf(x, k.radar), 0.9); show(S.hf, imgOf(x, k.flood), 1);
     $('spD').textContent = fmt(x.date, fy);
-    $('spL').innerHTML = `<div><span style="background:#2882ff"></span>flood${x.flood_km2 != null ? ` · <b>${km(x.flood_km2)} km²</b>` : ' · not measured'}</div>`;
+    $('spL').innerHTML = `<div><span style="background:#2882ff"></span>flood${x.flood_km2 != null ? ` · <b>${km(x.flood_km2)} km²</b>` : ' · not measured'}</div>`
+      + (x.open_water_km2 != null ? `<div><span style="background:#0a3a8c"></span>all open water (lake + river) · <b>${km(x.open_water_km2)} km²</b></div>` : '');
     if (tg) { tg.textContent = `${k.note} · ${fmt(x.date, fy)}`; tg.style.display = ''; }
   } else {
     const a = S.I[S.a], b = S.I[S.b2];
     $('spD').textContent = `${a.date.slice(0, 4)} → ${b.date.slice(0, 4)}`;
     if (tg) tg.style.display = 'none';
     if (mode === 'swipe') {
-      show(S.hr, imgOf(a, 'rs1_radar'), 0.9); show(S.hf, imgOf(a, 'rs1_flood'), 1);
+      show(S.hr, imgOf(a, SENS[S.old].radar), 0.9); show(S.hf, imgOf(a, SENS[S.old].flood), 1);
       show(S.nr, imgOf(b, 'nisar_rgb'), 0.9); show(S.nf, imgOf(b, 'nisar_water'), 1);
-      S.bar.querySelector('.swl').textContent = `RADARSAT-1 · ${fmt(a.date, fy)}`;
+      S.bar.querySelector('.swl').textContent = `${S.old} · ${fmt(a.date, fy)}`;
       S.bar.querySelector('.swr').textContent = `NISAR · ${fmt(b.date, fy)}`;
       $('spL').innerHTML = `<div><span style="background:#2882ff"></span>flood</div><div class="sub">${a.flood_km2 != null ? km(a.flood_km2) : '–'} → ${b.flood_km2 != null ? km(b.flood_km2) : '–'} km²</div>`
         + '<div class="sub" style="grid-column:1/-1">Click a bar to pick the years.</div>';
@@ -424,7 +429,7 @@ $('spC').onpointerup = $('spC').onpointercancel = () => { drag = false; };
 
 function setT(i) {
   if (!S) return; S.t = Math.max(0, Math.min(nOf() - 1, i));
-  if (S.hist && S.mode && S.mode !== 'single') { if (S.I[S.t].sensor === 'RADARSAT-1') S.a = S.t; else S.b2 = S.t; }
+  if (S.hist && S.mode && S.mode !== 'single') { if (S.I[S.t].sensor !== 'NISAR') S.a = S.t; else S.b2 = S.t; }
   render();
 }
 $('spX').onclick = () => { const m = panel.classList.toggle('min'); $('spX').textContent = m ? '+' : '–'; $('spX').title = m ? 'Expand' : 'Minimize'; };

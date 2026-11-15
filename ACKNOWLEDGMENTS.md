@@ -23,7 +23,7 @@ Our maps and numbers are derived products, not official NASA products, and not e
 | **RCM CEOS-ARD** (CSA / Natural Resources Canada; EODMS / AWS) | C-band compact-pol comparison | RCM public user licence (CSA); use the credit line in the licence |
 | **ALOS PALSAR RTC** (JAXA/METI; RTC by ASF DAAC) | L-band 2006–2011 "then" layer | "ALOS PALSAR © JAXA/METI [year], accessed through ASF DAAC; includes material © JAXA/METI [year]" |
 | **ALOS-2 PALSAR-2 ScanSAR / mosaics** (JAXA) | L-band 2014 → | JAXA open-and-free terms; "© JAXA" |
-| **Sentinel-1, Sentinel-2** (ESA Copernicus; ASF, Planetary Computer) | C-band radar, optical checks | Free and open; "Contains modified Copernicus Sentinel data [year]" |
+| **Sentinel-1, Sentinel-2** (ESA Copernicus; ASF, Planetary Computer) | C-band radar (GERD history 2016–2025: Sentinel-1 RTC, Planetary Computer), optical checks | Free and open; "Contains modified Copernicus Sentinel data [year]" |
 | **Global Seasonal Sentinel-1 Coherence** (Kellndorfer et al. 2022, AWS) | C-band coherence reference | CC BY 4.0; cite Kellndorfer et al. 2022, *Sci. Data* 9:73 |
 | **Copernicus DEM GLO-30** (ESA / EU, AWS) | Elevation, shadow/layover, troposphere | "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA" |
 | **GLO-30 HAND** (ASF / Alaska Satellite Facility, from Copernicus DEM GLO-30; AWS open data) | Height above nearest drainage: smart fill of flood maps | Derived from Copernicus DEM: "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA"; HAND dataset by ASF (licence: see https://registry.opendata.aws/glo-30-hand/, to verify before submission) |

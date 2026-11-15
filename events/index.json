@@ -697,6 +697,62 @@
  ],
  "places": [
   {
+   "id": "amazon-varzea-mamiraua",
+   "folder": "amazon-varzea-mamiraua",
+   "name": "Amazon várzea (Mamirauá)",
+   "country": "Brazil",
+   "bbox": [
+    -65.2,
+    -3.3,
+    -64.6,
+    -2.7
+   ],
+   "floods": [
+    {
+     "id": "2026-06-flood",
+     "flood_date": "2026-06-25",
+     "title": "Amazon várzea (Mamirauá) flood, Jun 2026",
+     "baseline": "dswx",
+     "improvement_pct": 82,
+     "nisar_adds_km2": 20.5,
+     "baseline_flood_km2": 25.0
+    }
+   ],
+   "history": {
+    "id": "history",
+    "first": "1999-01-17",
+    "last": "2026-09-29",
+    "n_images": 5,
+    "sensors": [
+     "NISAR",
+     "RADARSAT-1"
+    ]
+   }
+  },
+  {
+   "id": "assam-brahmaputra",
+   "folder": "assam-brahmaputra",
+   "name": "Brahmaputra, Assam",
+   "country": "India",
+   "bbox": [
+    92.2,
+    26.3,
+    92.8,
+    26.9
+   ],
+   "floods": [],
+   "history": {
+    "id": "history",
+    "first": "1998-07-29",
+    "last": "2026-10-09",
+    "n_images": 9,
+    "sensors": [
+     "NISAR",
+     "RADARSAT-1"
+    ]
+   }
+  },
+  {
    "id": "gerd-blue-nile-ethiopia",
    "folder": "gerd-blue-nile-ethiopia",
    "name": "GERD reservoir, Blue Nile",
@@ -720,15 +776,62 @@
    ],
    "history": {
     "id": "history",
-    "first": "1998-07-09",
+    "first": "2016-09-28",
     "last": "2026-11-02",
-    "n_images": 5,
+    "n_images": 14,
     "sensors": [
      "NISAR",
-     "RADARSAT-1"
+     "Sentinel-1"
     ]
-   },
-   "validation": []
+   }
+  },
+  {
+   "id": "inner-niger-delta-mali",
+   "folder": "inner-niger-delta-mali",
+   "name": "Inner Niger Delta",
+   "country": "Mali",
+   "bbox": [
+    -4.6,
+    14.6,
+    -4.0,
+    15.2
+   ],
+   "floods": [
+    {
+     "id": "2026-07-flood",
+     "flood_date": "2026-07-18",
+     "title": "Inner Niger Delta flood, Jul 2026",
+     "baseline": "gfm",
+     "improvement_pct": 404,
+     "nisar_adds_km2": 223.1,
+     "baseline_flood_km2": 55.2
+    }
+   ],
+   "history": null
+  },
+  {
+   "id": "likouala-flood-congo-2026",
+   "folder": "likouala-flood-congo-2026",
+   "name": "Likouala floods",
+   "country": "Rep. of Congo",
+   "bbox": [
+    17.6,
+    1.3,
+    18.2,
+    1.9
+   ],
+   "floods": [
+    {
+     "id": "2026-10-flood",
+     "flood_date": "2026-10-31",
+     "title": "Likouala floods flood, Oct 2026",
+     "baseline": "dswx",
+     "improvement_pct": null,
+     "nisar_adds_km2": 3.1,
+     "baseline_flood_km2": 0.2
+    }
+   ],
+   "history": null
   },
   {
    "id": "mekong-delta-vietnam",
@@ -761,8 +864,40 @@
      "NISAR",
      "RADARSAT-1"
     ]
-   },
-   "validation": []
+   }
+  },
+  {
+   "id": "okavango-delta",
+   "folder": "okavango-delta",
+   "name": "Okavango Delta",
+   "country": "Botswana",
+   "bbox": [
+    22.6,
+    -19.6,
+    23.2,
+    -19.0
+   ],
+   "floods": [
+    {
+     "id": "2026-07-flood",
+     "flood_date": "2026-07-08",
+     "title": "Okavango Delta flood, Jul 2026",
+     "baseline": "dswx",
+     "improvement_pct": 0,
+     "nisar_adds_km2": 0.0,
+     "baseline_flood_km2": 1217.2
+    }
+   ],
+   "history": {
+    "id": "history",
+    "first": "2006-11-03",
+    "last": "2026-10-24",
+    "n_images": 12,
+    "sensors": [
+     "NISAR",
+     "RADARSAT-1"
+    ]
+   }
   },
   {
    "id": "peace-athabasca-delta",
@@ -801,10 +936,7 @@
      "NISAR",
      "RADARSAT-1"
     ]
-   },
-   "validation": [
-    "rcm"
-   ]
+   }
   }
  ]
 }

@@ -22,12 +22,12 @@
  ],
  "history": {
   "id": "history",
-  "first": "1998-07-09",
+  "first": "2016-09-28",
   "last": "2026-11-02",
-  "n_images": 5,
+  "n_images": 14,
   "sensors": [
    "NISAR",
-   "RADARSAT-1"
+   "Sentinel-1"
   ]
  }
 }
