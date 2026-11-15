@@ -19,8 +19,6 @@ const imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/service
   { maxZoom: 18, noWrap: true, bounds: WORLD, attribution: 'Esri, Maxar, Earthstar Geographics' }).addTo(map);
 const labels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
   { maxZoom: 18, opacity: .8, noWrap: true, bounds: WORLD }).addTo(map);
-const osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, noWrap: true, bounds: WORLD, attribution: '© OpenStreetMap' });
-L.control.layers({ 'Satellite': imagery, 'Streets': osm }, { 'Labels': labels }).addTo(map);
 const siteLayer = L.layerGroup().addTo(map), covLayer = L.layerGroup().addTo(map), watchLayer = L.layerGroup().addTo(map), eventLayer = L.layerGroup().addTo(map);
 const fmtDate = d => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 

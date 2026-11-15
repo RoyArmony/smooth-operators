@@ -83,6 +83,7 @@ details.more[open] { display:block; margin-top:4px; }
 .fitem.red { border-color:#f8514955; } .fitem:hover { background:var(--surface-2); border-color:var(--accent); }
 .fic { font-size:20px; width:26px; text-align:center; } .fbody { flex:1; min-width:0; } .ftitle { font-weight:600; font-size:var(--fs-md); }
 .fbars { display:flex; gap:12px; font-size:11.5px; color:var(--dim); margin-top:2px; } .fbars b { color:var(--txt); }
+#tbar { display:none !important; } /* global time bar off for now; time comes back per event */
 #tbar { display:flex; gap:8px; align-items:center; padding:6px 12px; background:var(--panel); border-top:1px solid var(--line); }
 #tlabel { min-width:240px; text-align:right; }
 #trange { position:relative; flex:1; height:30px; }
