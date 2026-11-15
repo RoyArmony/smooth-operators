@@ -252,7 +252,7 @@ const scenes = [
               say('Official flood map · 17 Oct 2026', H('Official flood maps use radar, which sees through clouds. On 17 October, the map showed <b class="bl">554 km²</b> of flooding around the lake.'), '', 'Copernicus EMS · GFM (Sentinel-1 radar)'); }],
   [7, () => { show(['gfm', 'excl']); legend(['gfm', 'excl']); say('', H('But a quarter of the area is marked <b class="gy">"cannot see"</b>. Under the trees, this radar can\'t see the water.'), '', 'GFM exclusion mask'); }],
   [7.5, () => { show(['gfm', 'excl', 'add']); legend(['gfm', 'excl', 'add']);
-              say('NISAR to the rescue', H('On 17 October, inside <b class="gy">that blank</b>, NISAR measured <b>542 km²</b> of water, 344 km² of it in forest.'), '', 'NISAR L-band'); }],
+              say('NISAR to the rescue', H('The official map showed <b class="bl">554 km²</b>. Inside <b class="gy">its blank</b>, NISAR found <b>542 km²</b> more, 344 km² of it in forest.'), '', 'NISAR L-band'); }],
   [10, () => { show([]); vis(box, 0); legend([]); $('tag').classList.remove('in'); world(); many(dots, 1, 60);
       say('17 flood sites · June–October 2026',
         '<div style="display:flex;gap:44px;align-items:flex-end">'
