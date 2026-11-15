@@ -72,6 +72,7 @@ PLACES = {
         name="Nepal floods", country="Nepal", bbox=(85.22, 26.9, 85.44, 27.11),     # 15.11: cut to the flooded plain (was 84.865, 26.895, 85.865, 27.695)
         stack_key="flood-in-nepal-2026-plain",              # new key: the old box's cached stack must not be reused
         open_hh=-17.0, open_hv=-24.0,                 # detect.py defaults (no calibration in the v1 bundle)
+        flood_months=range(6, 11),                    # history: monsoon flood season Jun–Oct
         gfm_bundle="flood-in-nepal-2026"),
     "flood-india-2026-08": dict(
         name="Tamil Nadu floods", country="India", bbox=(78.11, 10.932, 79.11, 11.732),
@@ -107,6 +108,7 @@ PLACES = {
         name="Sylhet haor", country="Bangladesh", bbox=(91.1, 24.4, 91.7, 25.0),
         stack_key="sylhet-haor-bangladesh",                    # NISAR stack: best one covering the box (searched on first run)
         open_hh=-12.0, open_hv=-21.0,                 # v1 bundle's calibration on clear optical days
+        flood_months=range(5, 11),                    # history: flash floods (May) + monsoon (Jun–Oct)
         gfm_bundle="sylhet-haor-bangladesh"),
     "thailand-floods-bang-pakong-2026": dict(
         name="Bang Pakong floods", country="Thailand", bbox=(100.7, 13.41, 101.3, 13.89),
