@@ -252,15 +252,11 @@ const scenes = [
   [7.5, () => { show(['gfm', 'excl', 'add']); legend(['gfm', 'excl', 'add']);
               say('NISAR to the rescue', H('On 17 October, inside <b class="gy">that blank</b>, NISAR measured <b>542 km²</b> of water, 344 km² of it in forest.'), '', 'NISAR L-band'); }],
   [10, () => { show([]); vis(box, 0); legend([]); $('tag').classList.remove('in'); world(); many(dots, 1, 60);
-<<<<<<< Updated upstream
       say('17 flood sites · June–October 2026', BIG('2,177 km²', '', 'o')
         + '<h1 style="font-size:22px;font-weight:500;line-height:1.35;margin-top:8px">of water NISAR found where the official maps can\'t see.</h1>'
         + '<div style="display:flex;gap:28px;margin-top:14px"><div><div style="font:800 40px/1 Inter,system-ui;color:#fff">+30%</div><div style="font-size:14px;color:#cfd6df">of each site mapped<br>that the official map can\'t see</div></div>'
         + '<div><div style="font:800 40px/1 Inter,system-ui;color:#ff9a2e">+20%</div><div style="font-size:14px;color:#cfd6df">more flood water than<br>the official map showed</div></div></div>'
         + '<p style="font-size:13px;color:#9aa4b2;margin:12px 0 0">Medians over the sites; each site\'s wettest NISAR pass. A sample we chose, not a global total; candidate water, not yet checked on the ground.</p>'); }],
-=======
-      say('17 flood sites · June–October 2026', BIG('2,177 km²', '', 'o') + '<h1 style="font-size:22px;font-weight:500;line-height:1.35;margin-top:10px">of water NISAR found inside the official maps\' "cannot see" areas, on each site\'s wettest pass. At the median site, that is about a fifth more than the map showed.</h1><p style="font-size:14px;color:#9aa4b2;margin:10px 0 0">A sample we chose, not a global total. Candidate water, not yet checked on the ground.</p>'); }],
->>>>>>> Stashed changes
   [0, () => { if ($('lp').checked) { setTimeout(() => goTo(0), 0); return; } say(''); document.body.classList.add('out');  setTimeout(() => location.href = 'viewer/index.html', 1200); }],
 ];
 let i = -1, tm = null, paused = false, t0 = 0, left = 0;
