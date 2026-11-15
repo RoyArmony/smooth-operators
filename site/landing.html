@@ -243,9 +243,9 @@ const scenes = [
   [6.5, () => { document.body.classList.remove('wv'); map.fitBounds(B, { animate: false, paddingTopLeft: [innerWidth * .38, 20], paddingBottomRight: [20, 20] }); vidCard(false); vid(true);
               say('Tonle Sap, Cambodia', H('Every rainy season, this lake grows about six times bigger and floods the forest around it.')); }],
   [6.5, () => { vid(true); vidCard(true);
-              say('', H('1.8 billion people live where floods like this can reach them.'), '', 'World Bank · Rentschler et al., Nature Comms 2022'); }],
-  [10.5, () => { vid(false); document.body.classList.remove('dim'); show([]); later(() => { flash(box); show(['photo']); flick(); }, 900); legend([]);
-              say('Optical satellites · Jun–Oct 2026', H('Optical satellites can\'t see it. Look after look since June: clouds, or the forest canopy over the water.'), '', 'Optical · NASA HLS (Landsat + Sentinel-2)'); }],
+              say('Why map the water', H('Knowing where the water is matters. Rice farmers and fishers plan their season around it, insurers pay flood claims by it, and relief teams decide where to send boats.')); }],
+  [7, () => { vid(false); document.body.classList.remove('dim'); show([]); P.photo.setUrl(A + 'photo_2026-10-19.jpg'); later(() => { flash(box); show(['photo']); }, 900); legend([]);
+              say('Optical satellites · 19 Oct 2026', H('Optical satellites can\'t see it: clouds, and the forest canopy over the water.'), '', 'Optical · NASA HLS (Landsat + Sentinel-2)'); }],
   [7.5, () => { show(['gfm']); legend(['gfm']);
               say('Official flood map · 17 Oct 2026', H('Official flood maps use radar, which sees through clouds. On 17 October, the map showed <b class="bl">554 km²</b> of flooding around the lake.'), '', 'Copernicus EMS · GFM (Sentinel-1 radar)'); }],
   [7, () => { show(['gfm', 'excl']); legend(['gfm', 'excl']); say('', H('But a quarter of the area is marked <b class="gy">"cannot see"</b>. Under the trees, this radar can\'t see the water.'), '', 'GFM exclusion mask'); }],
