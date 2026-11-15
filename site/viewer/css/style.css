@@ -74,7 +74,10 @@ details.more[open] { display:block; margin-top:4px; }
 #chips { display:flex; flex-wrap:wrap; gap:4px; align-items:center; }
 #chips button { padding:3px 8px; font-size:12px; border-radius:12px; }
 #chips .sep { width:8px; } #fcount { margin-left:auto; }
-#feed { flex:1 1 0; overflow:auto; min-height:120px; border-top:1px solid var(--line); padding-top:var(--s1); }
+#feed { flex:1 1 0; overflow:auto; min-height:120px; padding-top:var(--s1); scrollbar-width:none; -ms-overflow-style:none; }
+#feed::-webkit-scrollbar { display:none; }
+.fitem { align-items:center; } .fdate { font-size:var(--fs-xs); color:var(--dim); margin-top:2px; }
+.fgain { flex:none; font-weight:700; font-size:var(--fs-md); color:var(--accent); font-variant-numeric:tabular-nums; }
 .fmonth { position:sticky; top:0; background:var(--bg); color:var(--dim); font-size:11px; text-transform:uppercase; letter-spacing:.06em; padding:6px 2px 3px; z-index:1; }
 .fitem { display:flex; gap:var(--s3); padding:var(--s3); border-radius:var(--r-md); cursor:pointer; border:1px solid var(--line); margin:var(--s2) 0; background:var(--surface); transition:border-color .15s, background .15s; }
 .fitem.red { border-color:#f8514955; } .fitem:hover { background:var(--surface-2); border-color:var(--accent); }

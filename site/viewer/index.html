@@ -20,8 +20,7 @@
     <div id="tbar"><button id="tplay" title="Play through time">▶</button><div id="trange" title="Drag the two handles to set the time range"><canvas id="thist"></canvas><div id="ttrack"></div><div id="tfill"></div><input id="tlo" type="range" min="0" value="0" aria-label="Start date"><input id="thi" type="range" min="0" value="0" aria-label="End date"></div><span id="tlabel" class="sub"></span><button id="tall">All time</button></div>
   </div>
   <aside>
-    <div id="listhead"><div class="eyebrow">Explorer</div><h1>Flood events</h1>
-    <div class="sub">Flood water NISAR's L-band radar sees where other satellites can't. Pick one.</div></div>
+    <div id="listhead"><h1>Explore Flood Events</h1></div>
     <div class="sub" hidden>
       <span id="mode" class="badge" hidden>checking server…</span></div>
 
@@ -34,7 +33,6 @@
     </div>
     <div id="batch" hidden><button id="bgo"></button><span id="bask" hidden> <button id="byes" class="primary">Yes, queue</button> <button id="bno">Cancel</button></span><button id="bclr" hidden>Clear selection</button></div>
     <div id="feed"></div>
-    <details class="more2"><summary>How to read this</summary><div class="sub">Each site: NISAR radar passes (every 12 days, Jun–Oct 2026). Pick a site, then Map / Photo / Radar as the base, tick overlays, and play the dates. Blue = water NISAR found.</div></details>
     <div id="analyze" style="display:none">
       <div class="panel">
         <h3>1 · Pick an area</h3>
@@ -60,7 +58,6 @@
     <div id="static" class="panel sub" style="display:none!important">
       Gallery mode: flood sites analysed offline by our pipeline.
     </div>
-    <div class="sub" style="margin-top:12px">Data: NISAR L2 GCOV (NASA/ISRO, ASF DAAC) · OPERA DSWx-HLS (NASA). Basemap: Esri World Imagery.</div>
   </aside>
 </div>
 <script src="js/globe.js"></script>

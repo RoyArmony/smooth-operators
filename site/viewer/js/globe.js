@@ -43,8 +43,10 @@ getJSON('img/base/index.json').then(P => (P || []).forEach(p => L.imageOverlay(p
 const baseLayer = L.layerGroup().addTo(map); baseLayer.setZIndex?.(1);
 
 async function loadAll() {
-  let [S, E, W] = await Promise.all([getJSON('sites/index.json'), getJSON('sites/events.json'), getJSON('sites/watch.json')]);
+  let [S, E, W, WD] = await Promise.all([getJSON('sites/index.json'), getJSON('sites/events.json'), getJSON('sites/watch.json'), getJSON('../../events/world/event.json')]);
   if (!S) S = await getJSON('sites/samples.json');      // fresh clone / static hosting: only the committed samples
+  // NISAR gain per site (water in the official map's blank vs the official flood area), from the world bundle
+  (S || []).forEach(s => { const w = !s.history && ((WD && WD.sites) || []).find(x => s.id.startsWith(x.id)); if (w) s.gain = w; });
   window.UNSEEN_SITES = S || []; window.dispatchEvent(new Event('unseen:sites'));
   const sites = window.UNSEEN_SITES, wa = (W && W.areas) || [], used = new Set();
   ITEMS = [];
@@ -159,19 +161,14 @@ function renderFeed() {
   const L_ = ITEMS.filter(it => visible(it) && (!q || it.qs > 0)).sort((a, b) => q ? b.qs - a.qs || b.date.localeCompare(a.date)
     : sortBy === 'score' ? b.score - a.score : b.date.localeCompare(a.date));
   $('feed').innerHTML = L_.length ? '' : '<div class="sub" style="padding:10px">Nothing here for this filter / time.</div>';
-  let lastMonth = '';
   L_.forEach(it => {
-    const m = new Date(it.date + 'T00:00:00Z').toLocaleDateString('en-GB', { month: 'long', year: 'numeric', timeZone: 'UTC' });
-    if (sortBy === 'new' && m !== lastMonth) { lastMonth = m; const h = document.createElement('div'); h.className = 'fmonth'; h.textContent = m; $('feed').appendChild(h); }
-    const r = it.e && it.e.rating, n = it.e && it.e.nisar, c = document.createElement('div');
-    c.className = 'fitem' + (it.alert === 'Red' ? ' red' : '') + (PICK.has(key(it)) ? ' picked' : '');
-    const day = new Date(it.date + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
-    c.innerHTML = (canRun(it) ? `<input type="checkbox" class="fsel" title="Select for batch analysis" ${PICK.has(key(it)) ? 'checked' : ''}>` : '') + `<div class="fic">${ICON[it.type] || '•'}</div><div class="fbody"><div class="ftitle">${it.title}${it.isNew ? '<span class="fnew">NEW</span>' : ''}</div>`
-      + `<div class="sub">${day}${it.e && it.e.charter ? ' · Charter' : ''}`
-      + (it.site ? ` · <a href="#site=${encodeURIComponent(it.site.id)}">analysed</a>` : n && n.status === 'ok' ? ` · NISAR ${n.n_before} before / ${n.n_after} after` : '') + anLink(it)
-      + `</div>` + (it.site && it.site.headline ? `<div class="fhead">${it.site.headline[0]}: <b>${typeof it.site.headline[1] === 'number' ? it.site.headline[1].toLocaleString() : it.site.headline[1]} ${it.site.headline[2]}</b></div>` : '')
-      + (r ? `<div class="fbars"><span title="optical was blind">radar needed <b>${r.radar_needed ?? '–'}</b></span><span title="NISAR vs Sentinel-1">NISAR edge <b>${r.nisar_edge ?? '–'}</b></span></div>` : '')
-      + `</div>`;
+    const c = document.createElement('div');
+    c.className = 'fitem' + (PICK.has(key(it)) ? ' picked' : '');
+    const day = new Date(it.date + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+    const g = it.site && it.site.gain;
+    const gain = g && g.pct != null ? `+${g.pct.toLocaleString()}%` : g && g.nisar_adds_km2 >= 1 ? `+${Math.round(g.nisar_adds_km2).toLocaleString()} km²` : '';
+    c.innerHTML = `<div class="fbody"><div class="ftitle">${it.title}</div><div class="fdate">${day}</div></div>`
+      + (gain ? `<div class="fgain" title="More flood water NISAR found than the official flood map showed">${gain}</div>` : '');
     c.onclick = ev => {
       if (ev.target.classList.contains('fsel')) { PICK.has(key(it)) ? PICK.delete(key(it)) : PICK.add(key(it)); c.classList.toggle('picked'); batchBar(); return; }
       if (ev.target.tagName === 'A') return; it.site ? window.openSite(it.site.id) : flyTo(it); };
