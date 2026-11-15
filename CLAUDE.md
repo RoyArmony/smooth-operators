@@ -115,6 +115,9 @@ Current files and folders:
 - Commits Claude helped with end with the `Co-Authored-By: Claude ...` trailer (it is our AI disclosure).
 - The commit author email is public. Use your GitHub noreply address (`ID+user@users.noreply.github.com`)
   in `git config user.email`, not a personal email.
+- **The commit author must be you, not Claude.** Set `git config user.name` to your name and `user.email` to your noreply address
+  in every clone and cloud session. Never `Claude <noreply@anthropic.com>`: Vercel does not deploy commits from an author
+  outside our team, so they stay off the live site until someone else pushes. Claude goes in the `Co-Authored-By` trailer only.
 
 ## Free-text team files
 
