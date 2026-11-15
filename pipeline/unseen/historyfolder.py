@@ -120,6 +120,8 @@ def build(place):
     for t, d in enumerate(ndates):
         w = (L["water"][t] | L["canopy"][t]) & ~perm & valid
         cand[d] = dict(sensor="NISAR", t=t, flood=w, ok=valid, info=dict(band="L, frequency B (80 m)"))
+    if not any(c["sensor"] == "RADARSAT-1" for c in cand.values()):   # e.g. Pantanal: every scene unusable (water/land not separable)
+        raise SystemExit(f"{place}: no usable RADARSAT-1 image, so no history (nothing to compare NISAR with)")
     keep = thin([(d, float(c["flood"].sum() * px)) for d, c in cand.items()])
     print(f"{len(cand)} images → keep {len(keep)}: {keep}")
 

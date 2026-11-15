@@ -1,0 +1,24 @@
+{
+ "version": 2,
+ "id": "inner-niger-delta-mali",
+ "name": "Inner Niger Delta",
+ "country": "Mali",
+ "bbox": [
+  -4.6,
+  14.6,
+  -4.0,
+  15.2
+ ],
+ "floods": [
+  {
+   "id": "2026-07-flood",
+   "flood_date": "2026-07-18",
+   "title": "Inner Niger Delta flood, Jul 2026",
+   "baseline": "gfm",
+   "improvement_pct": 404,
+   "nisar_adds_km2": 223.1,
+   "baseline_flood_km2": 55.2
+  }
+ ],
+ "history": null
+}

@@ -1,0 +1,25 @@
+{
+ "version": 2,
+ "id": "thailand-floods-bang-pakong-2026",
+ "name": "Bang Pakong floods",
+ "country": "Thailand",
+ "bbox": [
+  100.7,
+  13.41,
+  101.3,
+  13.89
+ ],
+ "floods": [
+  {
+   "id": "2026-10-flood",
+   "flood_date": "2026-10-24",
+   "title": "Bang Pakong floods flood, Oct 2026",
+   "baseline": "gfm",
+   "improvement_pct": 17,
+   "nisar_adds_km2": 24.9,
+   "baseline_flood_km2": 144.1
+  }
+ ],
+ "history": null,
+ "validation": []
+}

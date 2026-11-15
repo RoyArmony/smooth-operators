@@ -1,0 +1,33 @@
+{
+ "version": 2,
+ "id": "amazon-varzea-mamiraua",
+ "name": "Amazon várzea (Mamirauá)",
+ "country": "Brazil",
+ "bbox": [
+  -65.2,
+  -3.3,
+  -64.6,
+  -2.7
+ ],
+ "floods": [
+  {
+   "id": "2026-06-flood",
+   "flood_date": "2026-06-25",
+   "title": "Amazon várzea (Mamirauá) flood, Jun 2026",
+   "baseline": "dswx",
+   "improvement_pct": 82,
+   "nisar_adds_km2": 20.5,
+   "baseline_flood_km2": 25.0
+  }
+ ],
+ "history": {
+  "id": "history",
+  "first": "1999-01-17",
+  "last": "2026-09-29",
+  "n_images": 5,
+  "sensors": [
+   "NISAR",
+   "RADARSAT-1"
+  ]
+ }
+}

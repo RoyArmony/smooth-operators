@@ -1,0 +1,564 @@
+{
+ "version": 2,
+ "id": "flood-india-2026-08/2026-10-flood",
+ "place": "Tamil Nadu floods, India",
+ "title": "Tamil Nadu floods flood, Oct 2026",
+ "flood_date": "2026-10-10",
+ "window": {
+  "start": "2026-09-10",
+  "end": "2026-11-09",
+  "days_before": 30,
+  "days_after": 30
+ },
+ "bbox": [
+  78.11,
+  10.932,
+  79.11,
+  11.732
+ ],
+ "area_km2": 9152,
+ "baselines": [
+  "dswx"
+ ],
+ "summary": {
+  "pass_date": "2026-10-10",
+  "baseline": "dswx",
+  "baseline_date": "2026-10-11",
+  "baseline_flood_km2": 67.3,
+  "nisar_adds_km2": 4.4,
+  "improvement_pct": 7,
+  "cannot_see_km2": 5661.9,
+  "cannot_see_clouds_km2": 5661.9,
+  "cannot_see_vegetation_km2": 0.0,
+  "still_unknown_km2": 0.0,
+  "nisar_water_km2": 8.5,
+  "sentence": "On 2026-10-10, NISAR adds 4 km² of flood (+7%) where NASA's flood map (OPERA DSWx-HLS) cannot see.",
+  "validation": {
+   "source": "dswx",
+   "dswx": {
+    "agreement_pct": 97.8,
+    "iou": 0.04,
+    "n_dates": 1
+   },
+   "agreement_pct": 97.8,
+   "iou": 0.04,
+   "n_dates": 1
+  }
+ },
+ "passes": [
+  {
+   "date": "2026-10-10",
+   "matched": {
+    "coh": "12-day GUNW pairs that include this pass",
+    "dswx": "2026-10-11"
+   },
+   "baselines": {
+    "dswx": {
+     "flood_km2": 67.3,
+     "cannot_see_km2": 5661.9,
+     "cannot_see_clouds_km2": 5661.9,
+     "cannot_see_vegetation_km2": 0.0,
+     "nisar_adds_km2": 4.4,
+     "improvement_pct": 7,
+     "still_unknown_km2": 0.0
+    }
+   },
+   "layers": [
+    "nisar_rgb",
+    "nisar_hh",
+    "nisar_hv",
+    "nisar_coh",
+    "dswx_classes",
+    "nisar_water",
+    "nisar_open",
+    "dswx_water",
+    "nisar_adds",
+    "combined"
+   ],
+   "nisar": {
+    "water_km2": 8.5,
+    "valid_pct": 93
+   },
+   "validation": {
+    "dswx": {
+     "compared_pct": 35,
+     "agreement_pct": 97.8,
+     "iou": 0.04,
+     "f1": 0.08,
+     "precision": 0.72,
+     "recall": 0.04,
+     "date": "2026-10-11"
+    }
+   },
+   "main_baseline": "dswx"
+  },
+  {
+   "date": "2026-10-22",
+   "matched": {
+    "dswx": "2026-10-24"
+   },
+   "baselines": {
+    "dswx": {
+     "flood_km2": 19.0,
+     "cannot_see_km2": 8887.5,
+     "cannot_see_clouds_km2": 8887.5,
+     "cannot_see_vegetation_km2": 0.0,
+     "nisar_adds_km2": 1.2,
+     "improvement_pct": 6,
+     "still_unknown_km2": 0.0
+    }
+   },
+   "layers": [
+    "nisar_rgb",
+    "nisar_hh",
+    "nisar_hv",
+    "dswx_classes",
+    "nisar_water",
+    "nisar_open",
+    "dswx_water",
+    "nisar_adds",
+    "combined"
+   ],
+   "nisar": {
+    "water_km2": 1.2,
+    "valid_pct": 93
+   },
+   "main_baseline": "dswx"
+  },
+  {
+   "date": "2026-11-03",
+   "matched": {
+    "dswx": "2026-11-03"
+   },
+   "baselines": {
+    "dswx": {
+     "flood_km2": 0.3,
+     "cannot_see_km2": 5540.5,
+     "cannot_see_clouds_km2": 5540.5,
+     "cannot_see_vegetation_km2": 0.0,
+     "nisar_adds_km2": 2.1,
+     "improvement_pct": null,
+     "still_unknown_km2": 0.0
+    }
+   },
+   "layers": [
+    "nisar_rgb",
+    "nisar_hh",
+    "nisar_hv",
+    "dswx_classes",
+    "nisar_water",
+    "nisar_open",
+    "dswx_water",
+    "nisar_adds",
+    "combined"
+   ],
+   "nisar": {
+    "water_km2": 2.2,
+    "valid_pct": 93
+   },
+   "main_baseline": "dswx"
+  }
+ ],
+ "layers": {
+  "nisar_mask": {
+   "group": "radar",
+   "sensor": "NISAR L-band",
+   "label": "NISAR can't measure (layover, shadow, no data)",
+   "legend": [
+    [
+     "#8c8c96",
+     "NISAR can't measure"
+    ]
+   ],
+   "default": false,
+   "once": true,
+   "files": {
+    "2026-10-10": "layers/nisar_mask_2026-10-10.png"
+   },
+   "bounds": [
+    [
+     10.92436,
+     78.10187
+    ],
+    [
+     11.74059,
+     79.11487
+    ]
+   ]
+  },
+  "landcover": {
+   "group": "context",
+   "sensor": "ESA WorldCover 2021",
+   "label": "Land cover",
+   "legend": [
+    [
+     "#006400",
+     "forest"
+    ],
+    [
+     "#f096ff",
+     "cropland"
+    ],
+    [
+     "#fa0000",
+     "built-up"
+    ],
+    [
+     "#0064c8",
+     "water"
+    ],
+    [
+     "#0096a0",
+     "wetland"
+    ]
+   ],
+   "default": false,
+   "once": true,
+   "files": {
+    "2026-10-10": "layers/landcover_2026-10-10.png"
+   },
+   "bounds": [
+    [
+     10.92436,
+     78.10187
+    ],
+    [
+     11.74059,
+     79.11487
+    ]
+   ]
+  },
+  "nisar_rgb": {
+   "group": "radar",
+   "sensor": "NISAR L-band GCOV",
+   "label": "NISAR radar (R = HH, G = HV, B = HH/HV)",
+   "legend": null,
+   "default": true,
+   "files": {
+    "2026-10-10": "layers/nisar_rgb_2026-10-10.jpg",
+    "2026-10-22": "layers/nisar_rgb_2026-10-22.jpg",
+    "2026-11-03": "layers/nisar_rgb_2026-11-03.jpg"
+   },
+   "bounds": [
+    [
+     10.92436,
+     78.10187
+    ],
+    [
+     11.74059,
+     79.11487
+    ]
+   ]
+  },
+  "nisar_hh": {
+   "group": "radar",
+   "sensor": "NISAR L-band GCOV",
+   "label": "NISAR HH (−25…0 dB)",
+   "legend": null,
+   "default": false,
+   "files": {
+    "2026-10-10": "layers/nisar_hh_2026-10-10.jpg",
+    "2026-10-22": "layers/nisar_hh_2026-10-22.jpg",
+    "2026-11-03": "layers/nisar_hh_2026-11-03.jpg"
+   },
+   "bounds": [
+    [
+     10.92472,
+     78.1015
+    ],
+    [
+     11.74094,
+     79.1145
+    ]
+   ]
+  },
+  "nisar_hv": {
+   "group": "radar",
+   "sensor": "NISAR L-band GCOV",
+   "label": "NISAR HV (−32…−8 dB)",
+   "legend": null,
+   "default": false,
+   "files": {
+    "2026-10-10": "layers/nisar_hv_2026-10-10.jpg",
+    "2026-10-22": "layers/nisar_hv_2026-10-22.jpg",
+    "2026-11-03": "layers/nisar_hv_2026-11-03.jpg"
+   },
+   "bounds": [
+    [
+     10.92472,
+     78.1015
+    ],
+    [
+     11.74094,
+     79.1145
+    ]
+   ]
+  },
+  "nisar_coh": {
+   "group": "radar",
+   "sensor": "NISAR L-band GUNW",
+   "label": "NISAR coherence (12-day pairs, 0…1)",
+   "legend": null,
+   "default": false,
+   "files": {
+    "2026-10-10": "layers/nisar_coh_2026-10-10.jpg"
+   },
+   "bounds": [
+    [
+     10.92472,
+     78.1015
+    ],
+    [
+     11.74094,
+     79.1145
+    ]
+   ]
+  },
+  "dswx_classes": {
+   "group": "baseline",
+   "sensor": "OPERA DSWx-HLS (NASA)",
+   "label": "NASA flood map (OPERA DSWx-HLS)",
+   "legend": [
+    [
+     "#2882ff",
+     "flood"
+    ],
+    [
+     "#0a3a8c",
+     "permanent water"
+    ],
+    [
+     "#ebebf0",
+     "cannot see here (clouds)"
+    ]
+   ],
+   "default": false,
+   "files": {
+    "2026-10-11": "layers/dswx_classes_2026-10-11.png",
+    "2026-10-24": "layers/dswx_classes_2026-10-24.png",
+    "2026-11-03": "layers/dswx_classes_2026-11-03.png"
+   },
+   "bounds": [
+    [
+     10.92436,
+     78.10187
+    ],
+    [
+     11.74059,
+     79.11487
+    ]
+   ]
+  },
+  "nisar_water": {
+   "group": "result",
+   "sensor": "NISAR L-band",
+   "label": "NISAR flood (our detector)",
+   "legend": [
+    [
+     "#2882ff",
+     "flood seen by NISAR"
+    ]
+   ],
+   "default": false,
+   "files": {
+    "2026-10-10": "layers/nisar_water_2026-10-10.png",
+    "2026-10-22": "layers/nisar_water_2026-10-22.png",
+    "2026-11-03": "layers/nisar_water_2026-11-03.png"
+   },
+   "bounds": [
+    [
+     10.92436,
+     78.10187
+    ],
+    [
+     11.74059,
+     79.11487
+    ]
+   ]
+  },
+  "nisar_open": {
+   "group": "validation",
+   "sensor": "NISAR L-band",
+   "label": "NISAR open water (incl. permanent)",
+   "legend": [
+    [
+     "#2882ff",
+     "open water (NISAR)"
+    ]
+   ],
+   "default": false,
+   "files": {
+    "2026-10-10": "layers/nisar_open_2026-10-10.png",
+    "2026-10-22": "layers/nisar_open_2026-10-22.png",
+    "2026-11-03": "layers/nisar_open_2026-11-03.png"
+   },
+   "bounds": [
+    [
+     10.92436,
+     78.10187
+    ],
+    [
+     11.74059,
+     79.11487
+    ]
+   ]
+  },
+  "dswx_water": {
+   "group": "validation",
+   "sensor": "OPERA DSWx-HLS (NASA)",
+   "label": "Water in NASA's map (DSWx, incl. permanent)",
+   "legend": [
+    [
+     "#3aa0ff",
+     "open water (NASA DSWx)"
+    ],
+    [
+     "#ebebf0",
+     "clouds"
+    ]
+   ],
+   "default": false,
+   "files": {
+    "2026-10-11": "layers/dswx_water_2026-10-11.png",
+    "2026-10-24": "layers/dswx_water_2026-10-24.png",
+    "2026-11-03": "layers/dswx_water_2026-11-03.png"
+   },
+   "bounds": [
+    [
+     10.92436,
+     78.10187
+    ],
+    [
+     11.74059,
+     79.11487
+    ]
+   ]
+  },
+  "nisar_adds": {
+   "group": "result",
+   "sensor": "NISAR L-band",
+   "label": "NISAR addition: water in the blank",
+   "legend": [
+    [
+     "#ff9a2e",
+     "NISAR addition: water in the blank"
+    ]
+   ],
+   "default": true,
+   "files": {
+    "2026-10-10": "layers/nisar_adds_2026-10-10.png",
+    "2026-10-22": "layers/nisar_adds_2026-10-22.png",
+    "2026-11-03": "layers/nisar_adds_2026-11-03.png"
+   },
+   "bounds": [
+    [
+     10.92436,
+     78.10187
+    ],
+    [
+     11.74059,
+     79.11487
+    ]
+   ]
+  },
+  "combined": {
+   "group": "result",
+   "sensor": "Baseline + NISAR",
+   "label": "Combined flood map (DSWX + NISAR)",
+   "legend": [
+    [
+     "#2882ff",
+     "flood in the official map"
+    ],
+    [
+     "#ff9a2e",
+     "NISAR addition"
+    ],
+    [
+     "#3c3c46",
+     "still unknown"
+    ],
+    [
+     "#0a3a8c",
+     "permanent water"
+    ]
+   ],
+   "default": false,
+   "files": {
+    "2026-10-10": "layers/combined_2026-10-10.png",
+    "2026-10-22": "layers/combined_2026-10-22.png",
+    "2026-11-03": "layers/combined_2026-11-03.png"
+   },
+   "bounds": [
+    [
+     10.92436,
+     78.10187
+    ],
+    [
+     11.74059,
+     79.11487
+    ]
+   ]
+  }
+ },
+ "validation": {
+  "dswx": {
+   "source": "NASA's flood map (OPERA DSWx-HLS, optical)",
+   "n_dates": 1,
+   "dates": [
+    "2026-10-10"
+   ],
+   "agreement_pct": 97.8,
+   "iou": 0.04,
+   "f1": 0.08,
+   "precision": 0.72,
+   "recall": 0.04,
+   "compared": "open water incl. permanent, where DSWx has no cloud",
+   "sentence": "NASA's DSWx map and NISAR agree on 98% of pixels (open water IoU 0.04, 1 pass)."
+  }
+ },
+ "method": {
+  "detector": "detect.py v2 (open water + water under vegetation, HH/HV), thresholds calibrated on clear optical days: HH -17.0 / HV -24.0 dB",
+  "pixel_m": 80.0,
+  "permanent_water": "dark on ≥ 90 % of NISAR passes",
+  "matching": {
+   "photo_days": 5,
+   "gfm_days": 2,
+   "dswx_days": 3
+  },
+  "nisar": {
+   "track": 149,
+   "frame": 83,
+   "product": "L2 GCOV (HH, HV) + L2 GUNW coherence"
+  },
+  "improvement": "100 × NISAR addition / baseline flood (null if baseline flood < 5 km²)",
+  "still_unknown": "baseline 'cannot see' where NISAR can't measure either (layover, shadow, no data)"
+ },
+ "sources": [
+  {
+   "name": "NISAR L2 GCOV + GUNW",
+   "url": "https://search.asf.alaska.edu",
+   "credit": "NASA/JPL-Caltech, ISRO; data via ASF DAAC"
+  },
+  {
+   "name": "Copernicus EMS Global Flood Monitoring",
+   "url": "https://global-flood.emergency.copernicus.eu",
+   "credit": "© European Union, Copernicus Emergency Management Service"
+  },
+  {
+   "name": "OPERA DSWx-HLS",
+   "url": "https://www.jpl.nasa.gov/go/opera",
+   "credit": "NASA/JPL OPERA; data via PO.DAAC"
+  },
+  {
+   "name": "HLS true colour via NASA GIBS",
+   "url": "https://earthdata.nasa.gov/gibs",
+   "credit": "NASA EOSDIS GIBS; HLS (NASA / USGS Landsat, ESA Copernicus Sentinel-2)"
+  },
+  {
+   "name": "ESA WorldCover 2021",
+   "url": "https://esa-worldcover.org",
+   "credit": "© ESA WorldCover project 2021, CC BY 4.0"
+  }
+ ]
+}

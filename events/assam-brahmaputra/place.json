@@ -1,0 +1,34 @@
+{
+ "version": 2,
+ "id": "assam-brahmaputra",
+ "name": "Brahmaputra, Assam",
+ "country": "India",
+ "bbox": [
+  92.2,
+  26.3,
+  92.8,
+  26.9
+ ],
+ "floods": [
+  {
+   "id": "2026-09-flood",
+   "flood_date": "2026-09-03",
+   "title": "Brahmaputra, Assam flood, Sep 2026",
+   "baseline": "dswx",
+   "improvement_pct": null,
+   "nisar_adds_km2": 414.0,
+   "baseline_flood_km2": 0.0
+  }
+ ],
+ "history": {
+  "id": "history",
+  "first": "1998-07-29",
+  "last": "2026-10-09",
+  "n_images": 9,
+  "sensors": [
+   "NISAR",
+   "RADARSAT-1"
+  ]
+ },
+ "validation": []
+}

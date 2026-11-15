@@ -560,6 +560,99 @@
  ],
  "places": [
   {
+   "id": "amazon-varzea-mamiraua",
+   "folder": "amazon-varzea-mamiraua",
+   "name": "Amazon várzea (Mamirauá)",
+   "country": "Brazil",
+   "bbox": [
+    -65.2,
+    -3.3,
+    -64.6,
+    -2.7
+   ],
+   "floods": [
+    {
+     "id": "2026-06-flood",
+     "flood_date": "2026-06-25",
+     "title": "Amazon várzea (Mamirauá) flood, Jun 2026",
+     "baseline": "dswx",
+     "improvement_pct": 82,
+     "nisar_adds_km2": 20.5,
+     "baseline_flood_km2": 25.0
+    }
+   ],
+   "history": {
+    "id": "history",
+    "first": "1999-01-17",
+    "last": "2026-09-29",
+    "n_images": 5,
+    "sensors": [
+     "NISAR",
+     "RADARSAT-1"
+    ]
+   },
+   "validation": []
+  },
+  {
+   "id": "assam-brahmaputra",
+   "folder": "assam-brahmaputra",
+   "name": "Brahmaputra, Assam",
+   "country": "India",
+   "bbox": [
+    92.2,
+    26.3,
+    92.8,
+    26.9
+   ],
+   "floods": [
+    {
+     "id": "2026-09-flood",
+     "flood_date": "2026-09-03",
+     "title": "Brahmaputra, Assam flood, Sep 2026",
+     "baseline": "dswx",
+     "improvement_pct": null,
+     "nisar_adds_km2": 414.0,
+     "baseline_flood_km2": 0.0
+    }
+   ],
+   "history": {
+    "id": "history",
+    "first": "1998-07-29",
+    "last": "2026-10-09",
+    "n_images": 9,
+    "sensors": [
+     "NISAR",
+     "RADARSAT-1"
+    ]
+   },
+   "validation": []
+  },
+  {
+   "id": "congo-cuvette-centrale",
+   "folder": "congo-cuvette-centrale",
+   "name": "Congo basin (Cuvette Centrale)",
+   "country": "Rep. of Congo",
+   "bbox": [
+    17.3,
+    0.2,
+    17.9,
+    0.8
+   ],
+   "floods": [
+    {
+     "id": "2026-10-flood",
+     "flood_date": "2026-10-31",
+     "title": "Congo basin (Cuvette Centrale) flood, Oct 2026",
+     "baseline": "gfm",
+     "improvement_pct": null,
+     "nisar_adds_km2": 118.3,
+     "baseline_flood_km2": 3.6
+    }
+   ],
+   "history": null,
+   "validation": []
+  },
+  {
    "id": "dead-sea-israel",
    "folder": "dead-sea-israel",
    "name": "Dead Sea (validation)",
@@ -605,6 +698,82 @@
    ]
   },
   {
+   "id": "flood-in-china-2026",
+   "folder": "flood-in-china-2026",
+   "name": "Hubei floods",
+   "country": "China",
+   "bbox": [
+    110.472,
+    30.428,
+    111.472,
+    31.228
+   ],
+   "floods": [
+    {
+     "id": "2026-10-flood",
+     "flood_date": "2026-10-27",
+     "title": "Hubei floods flood, Oct 2026",
+     "baseline": "dswx",
+     "improvement_pct": 12,
+     "nisar_adds_km2": 29.6,
+     "baseline_flood_km2": 253.0,
+     "validation": {
+      "source": "dswx",
+      "dswx": {
+       "agreement_pct": 92.2,
+       "iou": 0.22,
+       "n_dates": 2
+      },
+      "agreement_pct": 92.2,
+      "iou": 0.22,
+      "n_dates": 2
+     }
+    }
+   ],
+   "history": null,
+   "validation": [
+    "dswx"
+   ]
+  },
+  {
+   "id": "flood-india-2026-08",
+   "folder": "flood-india-2026-08",
+   "name": "Tamil Nadu floods",
+   "country": "India",
+   "bbox": [
+    78.11,
+    10.932,
+    79.11,
+    11.732
+   ],
+   "floods": [
+    {
+     "id": "2026-10-flood",
+     "flood_date": "2026-10-10",
+     "title": "Tamil Nadu floods flood, Oct 2026",
+     "baseline": "dswx",
+     "improvement_pct": 7,
+     "nisar_adds_km2": 4.4,
+     "baseline_flood_km2": 67.3,
+     "validation": {
+      "source": "dswx",
+      "dswx": {
+       "agreement_pct": 97.8,
+       "iou": 0.04,
+       "n_dates": 1
+      },
+      "agreement_pct": 97.8,
+      "iou": 0.04,
+      "n_dates": 1
+     }
+    }
+   ],
+   "history": null,
+   "validation": [
+    "dswx"
+   ]
+  },
+  {
    "id": "gerd-blue-nile-ethiopia",
    "folder": "gerd-blue-nile-ethiopia",
    "name": "GERD reservoir, Blue Nile",
@@ -636,6 +805,31 @@
      "Sentinel-1"
     ]
    },
+   "validation": []
+  },
+  {
+   "id": "inner-niger-delta-mali",
+   "folder": "inner-niger-delta-mali",
+   "name": "Inner Niger Delta",
+   "country": "Mali",
+   "bbox": [
+    -4.6,
+    14.6,
+    -4.0,
+    15.2
+   ],
+   "floods": [
+    {
+     "id": "2026-07-flood",
+     "flood_date": "2026-07-18",
+     "title": "Inner Niger Delta flood, Jul 2026",
+     "baseline": "gfm",
+     "improvement_pct": 404,
+     "nisar_adds_km2": 223.1,
+     "baseline_flood_km2": 55.2
+    }
+   ],
+   "history": null,
    "validation": []
   },
   {
@@ -741,7 +935,17 @@
     91.7,
     25.0
    ],
-   "floods": [],
+   "floods": [
+    {
+     "id": "2026-07-flood",
+     "flood_date": "2026-07-24",
+     "title": "Sylhet haor flood, Jul 2026",
+     "baseline": "dswx",
+     "improvement_pct": 778,
+     "nisar_adds_km2": 850.1,
+     "baseline_flood_km2": 109.3
+    }
+   ],
    "history": {
     "id": "history",
     "first": "1996-09-11",
@@ -806,6 +1010,31 @@
    ]
   },
   {
+   "id": "thailand-floods-bang-pakong-2026",
+   "folder": "thailand-floods-bang-pakong-2026",
+   "name": "Bang Pakong floods",
+   "country": "Thailand",
+   "bbox": [
+    100.7,
+    13.41,
+    101.3,
+    13.89
+   ],
+   "floods": [
+    {
+     "id": "2026-10-flood",
+     "flood_date": "2026-10-24",
+     "title": "Bang Pakong floods flood, Oct 2026",
+     "baseline": "gfm",
+     "improvement_pct": 17,
+     "nisar_adds_km2": 24.9,
+     "baseline_flood_km2": 144.1
+    }
+   ],
+   "history": null,
+   "validation": []
+  },
+  {
    "id": "tonle-sap-flood-pulse-2026",
    "folder": "tonle-sap-flood-pulse-2026",
    "name": "Tonle Sap",
@@ -816,7 +1045,17 @@
     104.7,
     13.3
    ],
-   "floods": [],
+   "floods": [
+    {
+     "id": "2026-10-flood",
+     "flood_date": "2026-10-17",
+     "title": "Tonle Sap flood, Oct 2026",
+     "baseline": "gfm",
+     "improvement_pct": 102,
+     "nisar_adds_km2": 540.7,
+     "baseline_flood_km2": 532.4
+    }
+   ],
    "history": {
     "id": "history",
     "first": "1998-07-29",

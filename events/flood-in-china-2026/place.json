@@ -1,0 +1,38 @@
+{
+ "version": 2,
+ "id": "flood-in-china-2026",
+ "name": "Hubei floods",
+ "country": "China",
+ "bbox": [
+  110.472,
+  30.428,
+  111.472,
+  31.228
+ ],
+ "floods": [
+  {
+   "id": "2026-10-flood",
+   "flood_date": "2026-10-27",
+   "title": "Hubei floods flood, Oct 2026",
+   "baseline": "dswx",
+   "improvement_pct": 12,
+   "nisar_adds_km2": 29.6,
+   "baseline_flood_km2": 253.0,
+   "validation": {
+    "source": "dswx",
+    "dswx": {
+     "agreement_pct": 92.2,
+     "iou": 0.22,
+     "n_dates": 2
+    },
+    "agreement_pct": 92.2,
+    "iou": 0.22,
+    "n_dates": 2
+   }
+  }
+ ],
+ "history": null,
+ "validation": [
+  "dswx"
+ ]
+}

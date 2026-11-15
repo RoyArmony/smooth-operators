@@ -1,0 +1,25 @@
+{
+ "version": 2,
+ "id": "congo-cuvette-centrale",
+ "name": "Congo basin (Cuvette Centrale)",
+ "country": "Rep. of Congo",
+ "bbox": [
+  17.3,
+  0.2,
+  17.9,
+  0.8
+ ],
+ "floods": [
+  {
+   "id": "2026-10-flood",
+   "flood_date": "2026-10-31",
+   "title": "Congo basin (Cuvette Centrale) flood, Oct 2026",
+   "baseline": "gfm",
+   "improvement_pct": null,
+   "nisar_adds_km2": 118.3,
+   "baseline_flood_km2": 3.6
+  }
+ ],
+ "history": null,
+ "validation": []
+}
