@@ -183,12 +183,12 @@
       <div class="feat">
         <div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
         <h3>Pass by pass</h3>
-        <p>NISAR passes every <b>12 days</b>, cloud or not. Follow each flood from June to October 2026, and compare the Mekong delta with <b>RADARSAT-1</b> from 1998–2007.</p>
+        <p>NISAR passes every <b>12 days</b>, cloud or not. Follow each flood since June 2026, then look back: <b>RADARSAT-1</b> 1997–2012 (Mekong, Peace–Athabasca) and <b>Sentinel-1</b> 2016–2025 (GERD dam).</p>
       </div>
       <div class="feat">
         <div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></div>
         <h3>Checked, not guessed</h3>
-        <p>We compare NISAR with an independent radar: Canada's <b>RCM</b>, the same week, over the Peace–Athabasca Delta. They agree <b>79%</b>.</p>
+        <p>Over Canada's Peace–Athabasca Delta, NISAR agrees with Canada's <b>RCM</b> radar on <b>90%</b> of pixels (2 passes, ≤3 days apart), and with NASA's <b>DSWx</b> on <b>80%</b>.</p>
       </div>
     </div>
   </div>
@@ -200,11 +200,11 @@
     <h2>First results</h2>
     <div class="nums">
       <div class="num hl"><b>2,177<small> km²</small></b><span>of water NISAR found where the official maps can't see, across 17 flood sites</span></div>
-      <div class="num hl"><b>+20%</b><span>more flood water than the official map showed, at the median site</span></div>
+      <div class="num hl"><b>+20%</b><span>more flood water than the official map showed, at the median site (74% in total)</span></div>
       <div class="num"><b>542<small> km²</small></b><span>in the blank at Tonle Sap, Cambodia, 17 Oct 2026 (344 km² in forest)</span></div>
-      <div class="num"><b>79%</b><span>agreement with Canada's RCM radar, same week (Peace–Athabasca, Canada)</span></div>
+      <div class="num"><b>90%</b><span>agreement with Canada's RCM radar, ≤3 days apart (Peace–Athabasca, Canada, Jul 2026)</span></div>
     </div>
-    <p class="fine">17 sites we chose, each on its wettest NISAR pass, Jun–Oct 2026: a sample, not a global total. Candidate water, not checked on the ground. NISAR products are still provisional.</p>
+    <p class="fine">17 sites we chose, each on its wettest NISAR pass, Jun–Oct 2026: a sample, not a global total. Median over the 10 sites where the official map shows flood. Candidate water, not checked on the ground. NISAR products are still provisional.</p>
   </div>
 </section>
 
@@ -216,17 +216,18 @@
       <div class="src nasa"><div class="who"><b>NASA / ISRO</b><span>NASA</span></div>
         <ul>
           <li><b>NISAR L2 GCOV</b>L-band radar, every 12 days (ASF DAAC)</li>
-          <li><b>OPERA DSWx</b>surface water from NASA JPL</li>
+          <li><b>OPERA DSWx</b>NASA JPL surface water, a second check (80% agreement)</li>
           <li><b>HLS</b>Landsat + Sentinel-2 photos, for what cameras see</li>
         </ul></div>
       <div class="src csa"><div class="who"><b>Canadian Space Agency</b><span>CSA</span></div>
         <ul>
-          <li><b>RADARSAT Constellation Mission (RCM)</b>independent check, same week as NISAR</li>
-          <li><b>RADARSAT-1</b>the long record: Mekong delta, 1998–2007</li>
+          <li><b>RADARSAT Constellation Mission (RCM)</b>independent radar check, 90% agreement</li>
+          <li><b>RADARSAT-1</b>the long record, 1997–2012: Mekong delta, Peace–Athabasca</li>
         </ul></div>
-      <div class="src ref"><div class="who"><b>The map we fill, and land cover</b><span>REFERENCE</span></div>
+      <div class="src ref"><div class="who"><b>The map we fill, and more</b><span>REFERENCE</span></div>
         <ul>
           <li><b>Copernicus GFM</b>Global Flood Monitoring (Sentinel-1), with its "cannot see" mask</li>
+          <li><b>Copernicus Sentinel-1</b>C-band radar, 2016–2025 history of the GERD reservoir</li>
           <li><b>ESA WorldCover</b>land cover, to tell forest from field</li>
         </ul></div>
     </div>
@@ -239,6 +240,7 @@
     <div class="ctas">
       <a class="btn primary" href="landing.html"><span class="play"></span>Watch the story</a>
       <a class="btn ghost" href="viewer/index.html">Open the Explorer →</a>
+      <a class="btn ghost" href="science.html">How we know →</a>
     </div>
   </div>
 </section>
@@ -262,7 +264,7 @@
   const T = ['<b>Tonle Sap</b>, Cambodia: the lake and its flooded forest.',
              'The optical photo: a <b>cloud</b> covers the lake, and trees hide the water.',
              'The official flood map (Sentinel-1 radar) finds <b>554 km²</b> of flooding.',
-             'But it marks a quarter of the area <b>"cannot see"</b>: the flooded forest is <b>missing</b>.',
+             'But it marks <b>2,759 km²</b>, a fifth of the area, <b>"cannot see"</b>: the flooded forest is <b>missing</b>.',
              'Inside that blank, NISAR measured <b>542 km²</b> of water, 344 km² of it in forest.'];
   const TAG = ['Tonle Sap, Cambodia · Esri World Imagery', 'Optical · NASA HLS (Landsat + Sentinel-2) · 4 Oct 2026', 'Sentinel-1 radar · Copernicus GFM · 17 Oct 2026',
                'Sentinel-1 · GFM "cannot see" mask · 17 Oct 2026', 'NISAR L-band radar · 17 Oct 2026'];
