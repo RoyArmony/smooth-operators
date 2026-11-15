@@ -54,6 +54,7 @@ async function openSite(id) {
     S.ev = Object.entries(E.layers || {}).sort((a, b) => (ORDER.indexOf(a[0]) + 1 || 99) - (ORDER.indexOf(b[0]) + 1 || 99))
       .map(([k, l]) => ({ k, l, base: `../../events/${eid}/`, ov: L.imageOverlay('data:,', L.latLngBounds(l.bounds), { pane: 'analysis', interactive: false, opacity: 0, className: k === 'gfm_excluded' ? 'excl' : '' }).addTo(map) }));
   } catch (e) { S.ev = []; }
+  S.official = S.ev.some(x => x.k === 'gfm_flood');   // official map + NISAR addition: the chart shows the same as the map
   // the flow, as in the Story: the area → optical (clouds, canopy) → official radar map ("cannot see") → NISAR fills the blank
   const has = k => S.ev.some(x => x.k === k), E_ = ks => ks.filter(has).map(k => 'E_' + k);
   S.steps = [{ label: 'Area', b: 'none', on: [], cap: `The area${D.kind ? `: ${D.kind}` : ''}, ${fmt(D.frames[0].date, { month: 'short', year: 'numeric' })} → ${fmt(D.frames[D.frames.length - 1].date, { month: 'short', year: 'numeric' })}.` }];
@@ -449,7 +450,7 @@ function render() {
   const vst = (S.steps[S.step] || {}).vs;
   if (vst && S.vs) return renderVs(vst);
   if (S.vs) { ['l1', 'l2', 'r1', 'r2'].forEach(k => S.vs[k].setOpacity(0)); vclip(); }
-  $('spK').innerHTML = '<i class="kb"></i>water <i class="ko"></i>hidden from optical';
+  $('spK').innerHTML = S.official ? '<i class="kb"></i>official flood <i class="ko"></i>NISAR adds' : '<i class="kb"></i>water <i class="ko"></i>hidden from optical';
   const { D, A, t } = S, f = D.frames[t], s = D.summary[t];
   $('spD').textContent = `${fmt(f.date, { day: 'numeric', month: 'short', year: 'numeric' })}${f.sensor && D.history ? ' · ' + f.sensor : ''}`;
   let note = '';
@@ -524,7 +525,9 @@ function chart() {
   if (S.D.report && S.D.report.hazard === 'volcano') return vchart();
   const c = $('spC'), g = c.getContext('2d'), W = c.clientWidth, H = 78, B = H - 12, { D, t } = S, n = D.frames.length;
   c.style.height = H + 'px'; c.width = W * devicePixelRatio; c.height = H * devicePixelRatio; g.scale(devicePixelRatio, devicePixelRatio); g.clearRect(0, 0, W, H);
-  const v = D.summary.map(S.nw), h = D.summary.map(S.hid), raw = Math.max(1, ...v);
+  // official map here: per pass official flood (blue, bottom) + NISAR addition (orange, on top), from the event timeline
+  const tl = S.official ? D.frames.map(f => ((S.evE.timeline || []).find(r => Math.abs(dn(r.date) - dn(f.date)) <= 6) || {}).stats || {}) : null;
+  const v = tl ? tl.map(x => (x.gfm_flood || 0) + (x.nisar_adds || 0)) : D.summary.map(S.nw), h = tl ? tl.map(x => x.nisar_adds || 0) : D.summary.map(S.hid), raw = Math.max(1, ...v);
   const step = 10 ** Math.floor(Math.log10(raw)), mx = Math.ceil(raw / step) * step, bw = (W - AX) / n, top = 4;
   const Y = x => B - (B - top) * x / mx;
   g.font = '10px system-ui'; g.fillStyle = '#8b95a3'; g.textAlign = 'right';
@@ -534,6 +537,7 @@ function chart() {
   v.forEach((x, i) => {
     const X = AX + i * bw + 1, yh = Math.min(h[i], x);
     g.globalAlpha = i === t ? 1 : 0.55;
+    if (tl) { g.fillStyle = '#2b8cbe'; g.fillRect(X, Y(x - yh), bw - 2, B - Y(x - yh)); g.fillStyle = '#ff7828'; g.fillRect(X, Y(x), bw - 2, Y(x - yh) - Y(x)); return; }
     g.fillStyle = D.frames[i].sensor === 'RADARSAT-1' ? '#8fb3d9' : '#2b8cbe'; g.fillRect(X, Y(x), bw - 2, Y(yh) - Y(x));
     g.fillStyle = '#ff7828'; g.fillRect(X, Y(yh), bw - 2, B - Y(yh));
   });
