@@ -13,7 +13,6 @@ panel.id = 'sp'; panel.hidden = true;
 panel.innerHTML = `
   <div class="sph"><div class="spsteps" id="spS"></div><button id="spX" title="Minimize">–</button></div>
   <div class="spbody">
-    <div class="spcap" id="spCap"></div>
     <div class="legend sub" id="spL"></div>
     <div class="spch"><span id="spD"></span><span class="spkey"><i class="kb"></i>water <i class="ko"></i>hidden from optical</span></div>
     <canvas id="spC" title="Water per pass. Click or drag to change the date (← → keys too)."></canvas>
@@ -85,8 +84,7 @@ const R_ = D => D.report || {};
 function setStep(i) {
   if (!S) return; S.step = Math.max(0, Math.min(S.steps.length - 1, i));
   const st = S.steps[S.step], n = S.steps.length; S.b = st.b; S.on = new Set(st.on);
-  $('spS').innerHTML = S.steps.map((x, k) => `<button data-k="${k}" class="${k === S.step ? 'on' : k < S.step ? 'done' : ''}${x.label === 'NISAR' ? ' nisar' : ''}">${x.label}</button>`).join('<span class="sparr">→</span>');
-  $('spCap').innerHTML = st.cap;
+  $('spS').innerHTML = S.steps.map((x, k) => `<button data-k="${k}" class="${k === S.step ? 'on' : k < S.step ? 'done' : ''}${x.label === 'NISAR' ? ' nisar' : ''}" title="${x.cap.replace(/<[^>]+>/g, '').replace(/"/g, '&quot;')}">${x.label}</button>`).join('<span class="sparr">→</span>');
   $('spBk').style.visibility = S.step ? '' : 'hidden';
   $('spNx').textContent = S.step < n - 1 ? `Next: ${S.steps[S.step + 1].label} →` : '↺ Start over';
   render();
