@@ -1,0 +1,336 @@
+{
+ "version": 2,
+ "id": "gerd-blue-nile-ethiopia/history",
+ "kind": "history",
+ "place": "GERD reservoir, Blue Nile, Ethiopia",
+ "title": "GERD reservoir, Blue Nile, 1998–2026",
+ "bbox": [
+  34.9,
+  10.2,
+  35.8,
+  11.35
+ ],
+ "area_km2": 12866,
+ "sampling": {
+  "min_gap_days": 30,
+  "rule": "each year's wettest image, then others ≥ 30 days from the kept ones",
+  "candidates": 12,
+  "kept": 5
+ },
+ "summary": {
+  "years": [
+   {
+    "year": 1998,
+    "sensor": "RADARSAT-1",
+    "max_flood_km2": null,
+    "date": "1998-07-09",
+    "n_images": 1,
+    "flood_season_seen": false
+   },
+   {
+    "year": 2026,
+    "sensor": "NISAR",
+    "max_flood_km2": 398.9,
+    "date": "2026-11-02",
+    "n_images": 4,
+    "flood_season_seen": true
+   }
+  ],
+  "sentence": "Same 12,866 km² box: RADARSAT-1 picture on 1998-07-09; flood 399 km² on 2026-11-02 (NISAR).",
+  "caveat": "Two radars (C-band 1998–2007, L-band 2026) and two methods: compare the pattern, not exact km²."
+ },
+ "images": [
+  {
+   "date": "1998-07-09",
+   "sensor": "RADARSAT-1",
+   "radar": {
+    "beam": "SCNB",
+    "orbit": "descending",
+    "scene": "RS1_13971_SNB_F424_19980709_032118_HH_GRF.tif",
+    "threshold_db": 35.0,
+    "split_tiles": 89,
+    "shift_px": [
+     -17,
+     -5
+    ]
+   },
+   "layers": [
+    "rs1_radar"
+   ],
+   "optical": null,
+   "baselines": {},
+   "flood_note": "No flood map from RADARSAT-1 here: our threshold is set on tiles holding both permanent water and land, and in 1998 (before the dam) today's lake was dry valley, so the split lands on terrain shadows. Picture only.",
+   "flood_km2": null,
+   "valid_pct": 73,
+   "baselines_missing": [
+    "gfm",
+    "dswx"
+   ]
+  },
+  {
+   "date": "2026-06-23",
+   "sensor": "NISAR",
+   "radar": {
+    "band": "L, frequency B (80 m)"
+   },
+   "layers": [
+    "nisar_rgb",
+    "nisar_water",
+    "dswx_classes"
+   ],
+   "optical": null,
+   "baselines": {
+    "dswx": {
+     "date": "2026-06-22",
+     "flood_km2": 65.0,
+     "cannot_see_km2": 9933.4,
+     "cannot_see_clouds_km2": 9933.4,
+     "cannot_see_vegetation_km2": 0.0,
+     "nisar_adds_km2": 7.4,
+     "improvement_pct": 11
+    }
+   },
+   "flood_km2": 10.3,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm"
+   ]
+  },
+  {
+   "date": "2026-08-10",
+   "sensor": "NISAR",
+   "radar": {
+    "band": "L, frequency B (80 m)"
+   },
+   "layers": [
+    "nisar_rgb",
+    "nisar_water",
+    "dswx_classes"
+   ],
+   "optical": null,
+   "baselines": {
+    "dswx": {
+     "date": "2026-08-11",
+     "flood_km2": 48.8,
+     "cannot_see_km2": 10326.4,
+     "cannot_see_clouds_km2": 10326.4,
+     "cannot_see_vegetation_km2": 0.0,
+     "nisar_adds_km2": 94.9,
+     "improvement_pct": 195
+    }
+   },
+   "flood_km2": 119.6,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm"
+   ]
+  },
+  {
+   "date": "2026-09-15",
+   "sensor": "NISAR",
+   "radar": {
+    "band": "L, frequency B (80 m)"
+   },
+   "layers": [
+    "nisar_rgb",
+    "nisar_water",
+    "dswx_classes"
+   ],
+   "optical": null,
+   "baselines": {
+    "dswx": {
+     "date": "2026-09-17",
+     "flood_km2": 149.5,
+     "cannot_see_km2": 4508.3,
+     "cannot_see_clouds_km2": 4508.3,
+     "cannot_see_vegetation_km2": 0.0,
+     "nisar_adds_km2": 214.3,
+     "improvement_pct": 143
+    }
+   },
+   "flood_km2": 318.4,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm"
+   ]
+  },
+  {
+   "date": "2026-11-02",
+   "sensor": "NISAR",
+   "radar": {
+    "band": "L, frequency B (80 m)"
+   },
+   "layers": [
+    "nisar_rgb",
+    "nisar_water",
+    "dswx_classes"
+   ],
+   "optical": null,
+   "baselines": {
+    "dswx": {
+     "date": "2026-10-31",
+     "flood_km2": 638.5,
+     "cannot_see_km2": 1458.1,
+     "cannot_see_clouds_km2": 1458.1,
+     "cannot_see_vegetation_km2": 0.0,
+     "nisar_adds_km2": 0.4,
+     "improvement_pct": 0
+    }
+   },
+   "flood_km2": 398.9,
+   "valid_pct": 100,
+   "baselines_missing": [
+    "gfm"
+   ]
+  }
+ ],
+ "layers": {
+  "rs1_radar": {
+   "group": "radar",
+   "sensor": "RADARSAT-1 C-band HH (CSA)",
+   "label": "RADARSAT-1 radar (dark = water)",
+   "legend": null,
+   "default": true,
+   "files": {
+    "1998-07-09": "layers/rs1_radar_1998-07-09.jpg"
+   },
+   "bounds": [
+    [
+     10.18945,
+     34.88389
+    ],
+    [
+     11.36155,
+     35.81228
+    ]
+   ]
+  },
+  "nisar_rgb": {
+   "group": "radar",
+   "sensor": "NISAR L-band GCOV",
+   "label": "NISAR radar (R = HH, G = HV, B = HH/HV)",
+   "legend": null,
+   "default": true,
+   "files": {
+    "2026-06-23": "layers/nisar_rgb_2026-06-23.jpg",
+    "2026-08-10": "layers/nisar_rgb_2026-08-10.jpg",
+    "2026-09-15": "layers/nisar_rgb_2026-09-15.jpg",
+    "2026-11-02": "layers/nisar_rgb_2026-11-02.jpg"
+   },
+   "bounds": [
+    [
+     10.18945,
+     34.88389
+    ],
+    [
+     11.36155,
+     35.81228
+    ]
+   ]
+  },
+  "nisar_water": {
+   "group": "result",
+   "sensor": "NISAR (our analysis)",
+   "label": "Flood from NISAR (our analysis)",
+   "legend": [
+    [
+     "#2882ff",
+     "flood"
+    ]
+   ],
+   "default": true,
+   "files": {
+    "2026-06-23": "layers/nisar_water_2026-06-23.png",
+    "2026-08-10": "layers/nisar_water_2026-08-10.png",
+    "2026-09-15": "layers/nisar_water_2026-09-15.png",
+    "2026-11-02": "layers/nisar_water_2026-11-02.png"
+   },
+   "bounds": [
+    [
+     10.18981,
+     34.88426
+    ],
+    [
+     11.36119,
+     35.81193
+    ]
+   ]
+  },
+  "dswx_classes": {
+   "group": "baseline",
+   "sensor": "OPERA DSWx-HLS (NASA)",
+   "label": "NASA flood map (OPERA DSWx-HLS)",
+   "legend": [
+    [
+     "#2882ff",
+     "flood"
+    ],
+    [
+     "#0a3a8c",
+     "permanent water"
+    ],
+    [
+     "#ebebf0",
+     "cannot see here"
+    ]
+   ],
+   "default": false,
+   "files": {
+    "2026-06-22": "layers/dswx_classes_2026-06-22.png",
+    "2026-08-11": "layers/dswx_classes_2026-08-11.png",
+    "2026-09-17": "layers/dswx_classes_2026-09-17.png",
+    "2026-10-31": "layers/dswx_classes_2026-10-31.png"
+   },
+   "bounds": [
+    [
+     10.18981,
+     34.88426
+    ],
+    [
+     11.36119,
+     35.81193
+    ]
+   ]
+  }
+ },
+ "method": {
+  "grid": "NISAR GCOV frequency B, 80 m (native); every source resampled onto it before analysis",
+  "rs1": "RADARSAT-1 HH warped with its GCPs, aligned to NISAR by edges, one threshold per image (Otsu on tiles with both river and land)",
+  "nisar": "detect.py v2, thresholds HH -13.0 / HV -18.0 dB (calibrated on clear optical days)",
+  "flood": "water beyond permanent water (dark on ≥ 90 % of NISAR passes); area = pixels × 80 m × 80 m",
+  "optical": "MODIS (250 m) least cloudy day within ± 3 d for 2000–2013; HLS (30 m) clearest within ± 5 d for 2026; none before 2000",
+  "baselines": "GFM (Sentinel-1) exists from 2015, NASA OPERA DSWx-HLS from 2023: only on NISAR dates"
+ },
+ "sources": [
+  {
+   "name": "RADARSAT-1 L1 (EODMS / AWS)",
+   "url": "https://registry.opendata.aws/radarsat-1/",
+   "credit": "RADARSAT-1 data © Canadian Space Agency; Open Government Licence – Canada"
+  },
+  {
+   "name": "NISAR L2 GCOV",
+   "url": "https://search.asf.alaska.edu",
+   "credit": "NASA/JPL-Caltech, ISRO; data via ASF DAAC"
+  },
+  {
+   "name": "MODIS Terra / Aqua Corrected Reflectance via NASA GIBS",
+   "url": "https://earthdata.nasa.gov/gibs",
+   "credit": "NASA EOSDIS GIBS / LANCE"
+  },
+  {
+   "name": "HLS true colour via NASA GIBS",
+   "url": "https://earthdata.nasa.gov/gibs",
+   "credit": "NASA EOSDIS GIBS; HLS (NASA / USGS Landsat, ESA Copernicus Sentinel-2)"
+  },
+  {
+   "name": "Copernicus EMS Global Flood Monitoring",
+   "url": "https://global-flood.emergency.copernicus.eu",
+   "credit": "© European Union, Copernicus Emergency Management Service"
+  },
+  {
+   "name": "OPERA DSWx-HLS",
+   "url": "https://www.jpl.nasa.gov/go/opera",
+   "credit": "NASA/JPL OPERA; data via PO.DAAC"
+  }
+ ]
+}
