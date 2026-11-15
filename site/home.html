@@ -60,7 +60,7 @@
   @keyframes flick { 0%,30%,60% { opacity: .15; } 15%,45%,75%,100% { opacity: 1; } }
   @keyframes glow { 0%,100% { filter: none; } 50% { filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px rgba(220,220,235,.9)); } }
   @media (prefers-reduced-motion: reduce) { .viz.f3 .excl, .viz.f3 .excl + .excl { animation: none; } }
-  .viz .tag { position: absolute; left: 12px; top: 12px; font-size: var(--fs-xs); font-weight: 600; padding: 4px 10px; border-radius: var(--r-pill); background: rgba(0,0,0,.6); }
+  .viz .tag { position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - 20px); font-size: var(--fs-xs); font-weight: 600; padding: 4px 10px; border-radius: var(--r-pill); background: rgba(0,0,0,.6); }
   .viz .seg { display: grid; grid-template-columns: repeat(5, 1fr); padding: var(--s2); gap: 6px; border-bottom: 1px solid var(--line); }
   .viz .seg button { height: 36px; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); font: 600 var(--fs-xs) var(--font); cursor: pointer; padding: 0 4px; white-space: nowrap; }
   .viz .seg button.on { background: var(--surface-3); border-color: var(--accent); color: var(--text); }
@@ -149,11 +149,11 @@
 
     <figure class="viz" style="margin:0">
       <div class="seg" role="tablist">
-        <button data-v="0" class="on" role="tab">Map</button>
+        <button data-v="0" role="tab">Map</button>
         <button data-v="1" role="tab">Optical</button>
         <button data-v="2" role="tab">Official</button>
         <button data-v="3" role="tab">Can't see</button>
-        <button data-v="4" role="tab">+ NISAR</button>
+        <button data-v="4" class="on" role="tab">+ NISAR</button>
       </div>
       <div class="stage">
         <div class="lyr" id="hmap"></div>
@@ -264,7 +264,7 @@
 <script>
 // hero card: a short loop, map → optical (clouds) → official flood map → what it can't see → + NISAR; stops when the visitor picks a step
 (() => {
-  const $ = id => document.getElementById(id), fig = document.querySelector('.viz'), say = $('say'), ph = $('hph'), tag = $('htag');
+  const $ = id => document.getElementById(id), fig = document.querySelector('.viz'), say = $('say'), tag = $('htag');
   const bs = document.querySelectorAll('.viz .seg button'), ks = document.querySelectorAll('.key span');
   try {                                                    // step 1: the place, on a plain map (same frame as the layers)
     const m = L.map('hmap', { zoomControl: false, zoomSnap: 0, dragging: false, scrollWheelZoom: false, doubleClickZoom: false, touchZoom: false, boxZoom: false, keyboard: false });
@@ -274,28 +274,24 @@
     const fit = () => { m.invalidateSize(); m.fitBounds([[12.3005, 103.5949], [13.2994, 104.7009]], { padding: [0, 0], animate: false }); };
     fit(); addEventListener('resize', fit);
   } catch (e) {}
-  const PH = ['2026-06-18', '2026-07-01', '2026-07-18', '2026-08-27', '2026-09-16', '2026-10-04', '2026-10-19'];   // full-frame optical looks (as in the Story)
-  const url = d => d === '2026-10-19' ? 'story/tonlesap/photo_2026-10-19.jpg' : `viewer/sites/tonle-sap-flood-pulse-2026-83-8/photo_${d}.jpg`;
-  PH.forEach(d => { new Image().src = url(d); });
-  const fmt = d => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
   const T = ['<b>Tonle Sap</b>, Cambodia: the lake and its flooded forest.',
-             'Optical photos through the season: <b>clouds</b> and trees hide the water.',
+             'The optical photo: <b>clouds</b> and trees hide the water.',
              'The official flood map (Sentinel-1 radar) finds <b>554 km²</b> of flooding.',
              'But it marks a quarter of the area <b>"cannot see"</b>: the flooded forest is <b>missing</b>.',
              'Inside that blank, NISAR measured <b>561 km²</b> of water, 362 km² of it under the trees.'];
-  const TAG = ['Tonle Sap, Cambodia', null, 'Official flood map · 17 Oct 2026', 'Official map: no data', 'NISAR L-band · 17 Oct 2026'];
-  const MS = [2200, 2800, 2200, 3200, 3600];
-  let f = 0, run = true, tm, fl;
+  const TAG = ['Tonle Sap, Cambodia · Esri World Imagery', 'Optical · NASA HLS (Landsat + Sentinel-2) · 19 Oct 2026', 'Sentinel-1 radar · Copernicus GFM · 17 Oct 2026',
+               'Sentinel-1 · GFM "cannot see" mask · 17 Oct 2026', 'NISAR L-band radar · 17 Oct 2026'];
+  const MS = [2200, 2400, 2200, 3200, 4500];
+  let f = 4, run = true, tm;
   function set(n) {
-    f = n; clearInterval(fl); fig.className = 'viz f' + n; say.innerHTML = T[n];
+    f = n; fig.className = 'viz f' + n; say.innerHTML = T[n]; tag.textContent = TAG[n];
     bs.forEach(b => b.classList.toggle('on', +b.dataset.v === n));
     ks.forEach(k => k.classList.toggle('on', +k.dataset.f <= n));
-    if (n === 1 && run) { let k = 0; const step = () => { const d = PH[k++]; ph.src = url(d); tag.textContent = 'Optical · ' + fmt(d); if (k >= PH.length) clearInterval(fl); }; step(); fl = setInterval(step, MS[1] / PH.length); }
-    else { ph.src = url('2026-10-19'); tag.textContent = TAG[n] || 'Optical · 19 Oct 2026'; }
     if (run) tm = setTimeout(() => set((f + 1) % 5), MS[n]);
   }
   bs.forEach(b => b.onclick = () => { run = false; clearTimeout(tm); set(+b.dataset.v); });
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { run = false; set(3); } else set(0);
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) run = false;
+  set(4);                                                  // open on the result (+ NISAR), then loop
 })();
 </script>
 </body>
