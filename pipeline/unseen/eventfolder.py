@@ -30,6 +30,7 @@ PLACES = {
         name="Mekong delta", country="Vietnam", bbox=(105.0, 10.4, 105.6, 11.0),
         stack_key="mekong-delta-vietnam-83-7",        # NISAR stack cache (data/stacks), track 83 frame 7 ascending
         viewer_site="mekong-delta-vietnam-83-7",      # its Explorer site: HLS photos on the same grid
+        skip=("dswx",),                               # 15.11 (Noa): GFM only here; NASA DSWx left out of this flood
         open_hh=-13.0, open_hv=-18.0,                 # detector thresholds calibrated on clear optical days (that site)
         gfm_bundle="mekong-delta-vietnam"),           # v1 bundle: GFM fallback when the GFM server is down
     "tonle-sap-flood-pulse-2026": dict(
@@ -474,7 +475,7 @@ def build(place, flood_date=None):
             base["gfm"] = dict(date=G["date"], seen=seen, flood=G["flood"] & ~perm & seen,
                                clouds=np.zeros(shape, bool), veg=G["excluded"] & ~perm & seen & ~G["flood"],
                                water=G["water"] if G.get("has_water") else None, clear=seen & ~G["excluded"])
-        dd, cls = dswx_classes(dfiles, d, grid, shape) if dfiles else (None, None)
+        dd, cls = dswx_classes(dfiles, d, grid, shape) if dfiles and "dswx" not in case.get("skip", ()) else (None, None)
         if cls is not None:
             seen = (cls != 255) & valid
             ocean = cls == 254

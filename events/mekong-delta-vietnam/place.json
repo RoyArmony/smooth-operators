@@ -17,18 +17,7 @@
    "baseline": "gfm",
    "improvement_pct": 13,
    "nisar_adds_km2": 90.1,
-   "baseline_flood_km2": 708.7,
-   "validation": {
-    "source": "dswx",
-    "dswx": {
-     "agreement_pct": 80.4,
-     "iou": 0.7,
-     "n_dates": 1
-    },
-    "agreement_pct": 80.4,
-    "iou": 0.7,
-    "n_dates": 1
-   }
+   "baseline_flood_km2": 708.7
   }
  ],
  "history": {
@@ -41,7 +30,5 @@
    "RADARSAT-1"
   ]
  },
- "validation": [
-  "dswx"
- ]
+ "validation": []
 }

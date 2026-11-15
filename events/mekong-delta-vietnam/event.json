@@ -376,29 +376,6 @@
     ]
    ],
    "default": true
-  },
-  "both_blind": {
-   "group": "official",
-   "sensor": "Copernicus GFM (Sentinel-1) + NASA OPERA DSWx-HLS",
-   "label": "Both official maps blind: radar blank + cloud",
-   "legend": "#d946ef",
-   "bounds": [
-    [
-     10.39927,
-     105.0
-    ],
-    [
-     11.00091,
-     105.60091
-    ]
-   ],
-   "files": {
-    "2026-08-30": "layers/both_blind_2026-08-30.png",
-    "2026-09-23": "layers/both_blind_2026-09-23.png",
-    "2026-10-05": "layers/both_blind_2026-10-05.png",
-    "2026-10-17": "layers/both_blind_2026-10-17.png"
-   },
-   "note": "GFM 'cannot see' ∩ DSWx-HLS cloud, matched dates from mekong-delta-vietnam/2026-09-flood; scripts/blank_breakdown.py"
   }
  },
  "validation": {},
@@ -417,11 +394,6 @@
    "name": "Copernicus EMS Global Flood Monitoring",
    "url": "https://global-flood.emergency.copernicus.eu",
    "credit": "© European Union, Copernicus Emergency Management Service"
-  },
-  {
-   "name": "OPERA DSWx-HLS",
-   "url": "https://www.jpl.nasa.gov/go/opera",
-   "credit": "NASA/JPL OPERA; data via PO.DAAC"
   }
  ],
  "method": {
@@ -482,5 +454,6 @@
    "frame": 7,
    "direction": "ascending"
   }
- }
+ },
+ "note_sources": "NASA OPERA DSWx left out of the Mekong flood on purpose (GFM only), 15.11"
 }
