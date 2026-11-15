@@ -19,7 +19,8 @@ const imagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/service
   { maxZoom: 18, noWrap: true, bounds: WORLD, attribution: 'Esri, Maxar, Earthstar Geographics' }).addTo(map);
 const labels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
   { maxZoom: 18, opacity: .8, noWrap: true, bounds: WORLD }).addTo(map);
-const siteLayer = L.layerGroup().addTo(map), covLayer = L.layerGroup().addTo(map), watchLayer = L.layerGroup().addTo(map), eventLayer = L.layerGroup().addTo(map);
+const siteLayer = L.layerGroup().addTo(map), covLayer = L.layerGroup().addTo(map), watchLayer = L.layerGroup().addTo(map), eventLayer = L.layerGroup().addTo(map), pinLayer = L.layerGroup().addTo(map);
+window.addEventListener('unseen:site', e => e.detail ? map.removeLayer(pinLayer) : pinLayer.addTo(map));   // no dots over an open event
 const fmtDate = d => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 
 // ---------- data: analysed sites + disasters (GDACS) + watched areas -> one feed, one map ----------
@@ -87,8 +88,15 @@ function drawMap(wa) {
   siteLayer.clearLayers(); watchLayer.clearLayers(); eventLayer.clearLayers();
   (window.UNSEEN_SITES || []).forEach(s => {
     const [w, so, e, n] = s.bbox;
-    L.rectangle([[so, w], [n, e]], { color: '#ff7828', weight: 2, fillOpacity: .08 })
-      .bindPopup(`<b>${s.title}</b><br>${fmtDate(s.first)} → ${fmtDate(s.last)} · ${s.history ? `${s.n_rs1} RADARSAT-1 + ${s.n_nisar} NISAR images` : `${s.n_dates} passes`}<br><a href="#site=${encodeURIComponent(s.id)}">open analysis</a>`).addTo(siteLayer);
+    L.rectangle([[so, w], [n, e]], { color: '#ff7828', weight: 2, fillOpacity: .08 }).on('click', () => window.openSite(s.id)).addTo(siteLayer);
+  });
+  // a pulsing red dot per event (same as its card): hover = name, click = open it
+  pinLayer.clearLayers(); const at = {};
+  ITEMS.filter(it => it.kind === 'site').forEach(it => {
+    const k = it.lat.toFixed(1) + ',' + it.lon.toFixed(1), dx = 14 * (at[k] = (at[k] ?? -1) + 1);   // same spot: nudge sideways
+    it.marker = L.marker([it.lat, it.lon], { title: it.title, riseOnHover: true,
+      icon: L.divIcon({ className: 'pin', html: '<i></i><b></b>', iconSize: [18, 18], iconAnchor: [9 - dx, 9] }) })
+      .bindTooltip(it.title, { direction: 'top', offset: [dx, -10] }).on('click', () => window.openSite(it.site.id)).addTo(pinLayer);
   });
   const sites = new Set((window.UNSEEN_SITES || []).map(s => s.id));
   wa.filter(a => !(a.site && sites.has(a.site))).forEach(a => {

@@ -229,3 +229,11 @@ body.focused #listhead, body.focused #feed, body.focused aside > details.more2 {
 .sptag { width:0; height:0; }
 .sptag span { position:absolute; left:0; top:6px; transform:translateX(-50%); white-space:nowrap; font-size:12px; font-weight:600; color:#fff;
   background:rgba(12,34,43,.85); border:1px solid #ff782888; border-radius:999px; padding:3px 10px; pointer-events:none; }
+
+/* event pins: red dot with a soft glow and a beating ring */
+.pin { cursor:pointer; }
+.pin b { position:absolute; inset:3px; border-radius:50%; background:#ff3b30; box-shadow:0 0 6px 2px #ff3b3099, 0 0 0 1.5px #fff; }
+.pin i { position:absolute; inset:0; border-radius:50%; background:#ff3b30; opacity:.6; animation:pinbeat 1.6s ease-out infinite; }
+@keyframes pinbeat { 0% { transform:scale(.6); opacity:.7; } 100% { transform:scale(2.6); opacity:0; } }
+.pin:hover b, .hl.pin b { background:#ff6a5f; box-shadow:0 0 10px 4px #ff3b30cc, 0 0 0 2px #fff; }
+@media (prefers-reduced-motion: reduce) { .pin i { animation:none; opacity:.25; transform:scale(1.6); } }

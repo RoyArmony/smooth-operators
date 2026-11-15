@@ -253,7 +253,7 @@ const scenes = [
               say('NISAR to the rescue', H('On 17 October, inside <b class="gy">that blank</b>, NISAR measured <b>542 km²</b> of water, 344 km² of it in forest.'), '', 'NISAR L-band'); }],
   [10, () => { show([]); vis(box, 0); legend([]); $('tag').classList.remove('in'); world(); many(dots, 1, 60);
       say('17 flood sites · June–October 2026', BIG('+74%', 'more flood water', 'o') + H('NISAR found <b>2,177 km²</b> of water in the official maps\' blanks, on each site\'s wettest pass.'), 'A sample of sites we chose, not a global total.'); }],
-  [0, () => { if ($('lp').checked) { setTimeout(() => goTo(0), 0); return; } say(''); document.body.classList.add('out');  setTimeout(() => location.href = 'viewer/index.html#site=tonle-sap-flood-pulse-2026-83-8', 1200); }],
+  [0, () => { if ($('lp').checked) { setTimeout(() => goTo(0), 0); return; } say(''); document.body.classList.add('out');  setTimeout(() => location.href = 'viewer/index.html', 1200); }],
 ];
 let i = -1, tm = null, paused = false, t0 = 0, left = 0;
 function next() { clearTimeout(tm); sg++; i++; if (i >= scenes.length) return; const [d, f] = scenes[i]; try { map.invalidateSize(); f(); } catch (e) { console.warn('scene', i, e); } if (d) { left = d * 1000; run(); }
