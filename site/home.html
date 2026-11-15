@@ -107,6 +107,26 @@
   .src li { padding: var(--s2) 0; border-top: 1px solid var(--line); font-size: var(--fs-sm); color: var(--muted); }
   .src li b { display: block; color: var(--text); font-weight: 600; }
 
+  /* outreach: the email we sent, shown as a mail window */
+  .reach { display: grid; grid-template-columns: 1fr 1.25fr; gap: 48px; align-items: center; margin-top: var(--s6); }
+  .reach .pts { margin: 0; padding: 0; list-style: none; }
+  .reach .pts li { padding: var(--s3) 0; border-top: 1px solid var(--line); font-size: var(--fs-sm); color: var(--muted); }
+  .reach .pts li b { display: block; color: var(--text); font-weight: 600; }
+  .reach .pts a { color: var(--accent); }
+  .mail { margin: 0; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow); border: 1px solid #d6dbe1; background: #fff; color: #1f2328; font: 13px/1.5 var(--font); transform: rotate(-.6deg); }
+  .mail .bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; background: #eef1f4; border-bottom: 1px solid #d6dbe1; }
+  .mail .bar i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; } .mail .bar i + i { background: #febc2e; } .mail .bar i + i + i { background: #28c840; }
+  .mail .bar span { margin-left: 8px; font-size: 12px; color: #57606a; font-weight: 600; }
+  .mail .hd { padding: 14px 18px 10px; border-bottom: 1px solid #e6e9ed; }
+  .mail .sub { font-size: 16px; font-weight: 700; line-height: 1.3; margin-bottom: 10px; }
+  .mail .row { display: flex; gap: 8px; font-size: 12px; color: #57606a; } .mail .row b { color: #1f2328; font-weight: 600; }
+  .mail .row .k { width: 34px; flex: none; }
+  .mail .sent { display: inline-block; margin-top: 8px; font-size: 11px; font-weight: 700; color: #1a7f37; background: #dafbe1; padding: 2px 8px; border-radius: 999px; }
+  .mail .bd { padding: 14px 18px 16px; max-height: 330px; overflow: hidden; position: relative; }
+  .mail .bd::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 56px; background: linear-gradient(transparent, #fff); }
+  .mail .bd p { margin: 0 0 9px; } .mail .bd ul { margin: 0 0 9px; padding-left: 20px; } .mail .bd a { color: #0969da; }
+  .mail figcaption { padding: 8px 18px; font-size: 11px; color: #57606a; background: #f6f8fa; border-top: 1px solid #e6e9ed; }
+
   /* closing */
   .end { text-align: center; padding: 88px 0; }
   .end h2 { font-size: clamp(28px, 3.4vw, 42px) !important; }
@@ -114,7 +134,8 @@
 
   @media (max-width: 900px) {
     .hero .wrap { grid-template-columns: 1fr; gap: var(--s6); }
-    .feats, .data { grid-template-columns: 1fr; }
+    .feats, .data, .reach { grid-template-columns: 1fr; }
+    .mail { transform: none; }
     .nums { grid-template-columns: 1fr 1fr; gap: var(--s5); }
     section { padding: 56px 0; }
   }
@@ -230,6 +251,44 @@
           <li><b>Copernicus Sentinel-1</b>C-band radar, 2016–2025 history of the GERD reservoir</li>
           <li><b>ESA WorldCover</b>land cover, to tell forest from field</li>
         </ul></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Next step</div>
+    <h2>We sent it to the team behind the map</h2>
+    <p class="lead">On 15 Nov 2026 we emailed the Copernicus GFM scientists our results and a guide to add NISAR to their system.</p>
+    <div class="reach">
+      <ul class="pts">
+        <li><b>Who</b>JRC (runs GFM), DLR, LIST and TU Wien: the groups behind GFM's flood algorithms</li>
+        <li><b>What we propose</b>A "flooded under vegetation" layer from NISAR inside GFM's "cannot see" mask. No change to their Sentinel-1 map.</li>
+        <li><b>The guide</b><a href="https://github.com/RoyArmony/smooth-operators/blob/main/docs/13-GFM-NISAR-integration.md" target="_blank" rel="noopener">Adding NISAR L-band to Copernicus GFM →</a> Data access, the NISAR handbook classifier, validation, limits.</li>
+      </ul>
+      <figure class="mail" aria-label="The email we sent to the Copernicus GFM team">
+        <div class="bar"><i></i><i></i><i></i><span>Sent mail</span></div>
+        <div class="hd">
+          <div class="sub">NISAR L-band can fill GFM's "cannot see" areas: a hackathon result and an integration guide</div>
+          <div class="row"><span class="k">From</span><span><b>Roy</b>, team Smooth Operators</span></div>
+          <div class="row"><span class="k">To</span><span><b>Peter Salamon</b> (JRC, European Commission)</span></div>
+          <div class="row"><span class="k">Cc</span><span>Sandro Martinis (DLR) · Patrick Matgen, Marco Chini (LIST) · Bernhard Bauer-Marschallinger (TU Wien)</span></div>
+          <span class="sent">✓ Sent · Sun 15 Nov 2026, 16:53 (Israel)</span>
+        </div>
+        <div class="bd">
+          <p>Dear Dr. Salamon, dear GFM team,</p>
+          <p>We are <b>Smooth Operators</b>, a team at the NASA Space Apps Challenge 2026 in Haifa, Israel. Over the weekend we built <b>Unseen Earth</b> (<a href="https://unseenearth.us">unseenearth.us</a>), an open tool that maps flood water in the areas GFM marks as "cannot see" (the exclusion mask). It uses the new NASA–ISRO <b>NISAR</b> L-band radar.</p>
+          <p>L-band passes through the forest canopy, where Sentinel-1 C-band is blocked. Our first results:</p>
+          <ul>
+            <li><b>2,177 km²</b> of flood water inside GFM's exclusion mask, across 17 flood sites (Jun–Oct 2026)</li>
+            <li>at the median site, <b>+20%</b> more flood area than the GFM map shows (+74% in total)</li>
+            <li><b>90%</b> agreement with Canada's RCM radar on near-same days (Peace–Athabasca, Jul 2026)</li>
+          </ul>
+          <p>These are candidate results: NISAR data are still provisional and the water has not been checked on the ground.</p>
+          <p>We suggest GFM consider NISAR as an extra input. The simplest option is a separate "flooded under vegetation" layer next to the exclusion mask, with no change to the Sentinel-1 ensemble. We wrote a short guide on how to do it…</p>
+        </div>
+        <figcaption>Copy of the sent email. Email addresses removed.</figcaption>
+      </figure>
     </div>
   </div>
 </section>
