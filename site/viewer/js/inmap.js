@@ -6,7 +6,7 @@ const $ = id => document.getElementById(id), map = window.UNSEEN_MAP;
 map.createPane('analysis').style.zIndex = 350;                 // above map tiles (200), below markers/popups
 const fmt = (d, o = { day: 'numeric', month: 'short' }) => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { ...o, timeZone: 'UTC' });
 const dn = d => Date.parse(d + 'T00:00:00Z') / 864e5;
-let S = null, timer = null;
+let S = null;
 
 const panel = document.createElement('div');
 panel.id = 'sp'; panel.hidden = true;
@@ -15,9 +15,8 @@ panel.innerHTML = `
   <div class="spbody">
     <div class="spcap" id="spCap"></div>
     <div class="legend sub" id="spL"></div>
-    <div class="sprow"><button id="spP" title="Play through passes">▶</button><input id="spR" type="range" min="0" value="0"><span id="spD"></span></div>
-    <canvas id="spC" height="60" title="Water per NISAR pass (orange = hidden from optical). Click a bar to jump."></canvas>
-    <div class="spsrc" id="spN"></div>
+    <div class="spch"><span id="spD"></span><span class="spkey"><i class="kb"></i>water <i class="ko"></i>hidden from optical</span></div>
+    <canvas id="spC" title="Water per pass. Click or drag to change the date (← → keys too)."></canvas>
     <div class="spnav"><button id="spBk">← Back</button><button id="spNx" class="primary"></button></div>
   </div>`;
 $('leftcol').appendChild(panel);
@@ -74,7 +73,6 @@ async function openSite(id) {
       S.extra.push(L.circle(c, { radius: V.r_ref_km[1] * 1000, color: '#fff', weight: 1, dashArray: '4 4', fill: false, pane: 'analysis', interactive: false }).addTo(map));
     }
   }
-  $('spR').max = N - 1; $('spR').value = S.t;
   panel.hidden = false;
   map.flyToBounds(B, { paddingTopLeft: [panel.offsetWidth + 70, 30], paddingBottomRight: [30, 30], duration: 1.2 });
   const S0 = S; map.once('moveend', () => S === S0 && S.box.setStyle({ opacity: 1 }));   // draw the outline once the camera lands (SVG is stretched mid-flight)
@@ -86,14 +84,13 @@ const R_ = D => D.report || {};
 function setStep(i) {
   if (!S) return; S.step = Math.max(0, Math.min(S.steps.length - 1, i));
   const st = S.steps[S.step], n = S.steps.length; S.b = st.b; S.on = new Set(st.on);
-  $('spS').innerHTML = S.steps.map((x, k) => `<button data-k="${k}" class="${k === S.step ? 'on' : k < S.step ? 'done' : ''}${x.label === 'NISAR' ? ' nisar' : ''}"><i>${k + 1}</i>${x.label}</button>`).join('');
+  $('spS').innerHTML = S.steps.map((x, k) => `<button data-k="${k}" class="${k === S.step ? 'on' : k < S.step ? 'done' : ''}${x.label === 'NISAR' ? ' nisar' : ''}">${x.label}</button>`).join('<span class="sparr">→</span>');
   $('spCap').innerHTML = st.cap;
   $('spBk').style.visibility = S.step ? '' : 'hidden';
   $('spNx').textContent = S.step < n - 1 ? `Next: ${S.steps[S.step + 1].label} →` : '↺ Start over';
   render();
 }
 function closeSite(keepHash) {
-  if (timer) togglePlay();
   if (S) { ['base', 'over', 'box', 'mo', 'fr'].forEach(k => S[k] && map.removeLayer(S[k])); (S.layers || []).forEach(l => map.removeLayer(l.ov)); (S.ev || []).forEach(x => map.removeLayer(x.ov)); (S.extra || []).forEach(x => map.removeLayer(x)); }
   const was = !!S; S = null; panel.hidden = true;
   if (was && keepHash !== 'swap') window.dispatchEvent(new CustomEvent('unseen:site', { detail: null }));
@@ -103,7 +100,7 @@ function closeSite(keepHash) {
 function render() {
   if (!S) return;
   const { D, A, t } = S, f = D.frames[t], s = D.summary[t];
-  $('spD').textContent = `${fmt(f.date, { day: 'numeric', month: 'short', year: 'numeric' })}${f.sensor ? ' · ' + f.sensor : ''} · ${t + 1}/${D.frames.length}`;
+  $('spD').textContent = `${fmt(f.date, { day: 'numeric', month: 'short', year: 'numeric' })}${f.sensor && D.history ? ' · ' + f.sensor : ''}`;
   let note = '';
   if (S.b === 'photo') {
     const p = S.photos.length ? S.photos.reduce((a, b) => Math.abs(dn(b[0]) - dn(f.date)) < Math.abs(dn(a[0]) - dn(f.date)) ? b : a) : null;
@@ -149,7 +146,6 @@ function render() {
   if (D.history) note = `Flood ${Math.round(s.new_water).toLocaleString()} km² (beyond rivers). ` + note;
   const g = (S.ev || []).find(x => x.k === 'gfm_flood' && on.has('E_gfm_flood'));
   if (S.b === 'none') note = [g && g.date ? `GFM (Sentinel-1) ${fmt(g.date)}` : '', on.has('E_nisar_adds') ? `NISAR ${fmt(f.date)}` : '', !on.size ? 'Basemap: Esri World Imagery' : ''].filter(Boolean).join(' · ');
-  $('spN').textContent = note;
   chart();
 }
 
@@ -173,49 +169,52 @@ function vchart() {                                   // volcano: vent motion pe
   g.fillText(`vent motion per 12-day pair (cm, ±${mx.toFixed(0)})`, 2, 10);
   g.fillText(fmt(P[0].ref), 2, H - 1); const l = fmt(P[P.length - 1].sec); g.fillText(l, W - g.measureText(l).width - 2, H - 1);
 }
+const AX = 36;                                          // left margin for the km² axis
 function chart() {
   if (S.D.report && S.D.report.hazard === 'volcano') return vchart();
-  const c = $('spC'), g = c.getContext('2d'), W = c.clientWidth, H = 70, { D, t } = S, n = D.frames.length;
-  c.width = W * devicePixelRatio; c.height = H * devicePixelRatio; g.scale(devicePixelRatio, devicePixelRatio); g.clearRect(0, 0, W, H);
-  const v = D.summary.map(S.nw), h = D.summary.map(S.hid), mx = Math.max(1, ...v), bw = W / n;
+  const c = $('spC'), g = c.getContext('2d'), W = c.clientWidth, H = 78, B = H - 12, { D, t } = S, n = D.frames.length;
+  c.style.height = H + 'px'; c.width = W * devicePixelRatio; c.height = H * devicePixelRatio; g.scale(devicePixelRatio, devicePixelRatio); g.clearRect(0, 0, W, H);
+  const v = D.summary.map(S.nw), h = D.summary.map(S.hid), raw = Math.max(1, ...v);
+  const step = 10 ** Math.floor(Math.log10(raw)), mx = Math.ceil(raw / step) * step, bw = (W - AX) / n, top = 4;
+  const Y = x => B - (B - top) * x / mx;
+  g.font = '10px system-ui'; g.fillStyle = '#8b95a3'; g.textAlign = 'right';
+  [0, mx / 2, mx].forEach(y => { g.fillText(y.toLocaleString('en-GB'), AX - 5, Y(y) + 3); g.fillStyle = '#ffffff14'; g.fillRect(AX, Y(y), W - AX, 1); g.fillStyle = '#8b95a3'; });
+  g.save(); g.translate(8, (B + top) / 2); g.rotate(-Math.PI / 2); g.textAlign = 'center'; g.fillText('km²', 0, 0); g.restore();
+  g.textAlign = 'left';
   v.forEach((x, i) => {
-    const y = (H - 12) * x / mx, yh = (H - 12) * Math.min(h[i], x) / mx;
+    const X = AX + i * bw + 1, yh = Math.min(h[i], x);
     g.globalAlpha = i === t ? 1 : 0.55;
-    g.fillStyle = D.frames[i].sensor === 'RADARSAT-1' ? '#8fb3d9' : '#2b8cbe'; g.fillRect(i * bw + 1, H - 12 - y, bw - 2, y - yh);
-    g.fillStyle = '#ff7828'; g.fillRect(i * bw + 1, H - 12 - yh, bw - 2, yh);
+    g.fillStyle = D.frames[i].sensor === 'RADARSAT-1' ? '#8fb3d9' : '#2b8cbe'; g.fillRect(X, Y(x), bw - 2, Y(yh) - Y(x));
+    g.fillStyle = '#ff7828'; g.fillRect(X, Y(yh), bw - 2, B - Y(yh));
   });
-  g.globalAlpha = 1; g.strokeStyle = '#fff'; g.strokeRect(t * bw + 0.5, 0.5, bw - 1, H - 12);
-  g.fillStyle = '#8b95a3'; g.font = '10px system-ui';
+  g.globalAlpha = 1; g.strokeStyle = '#fff'; g.strokeRect(AX + t * bw + 0.5, top - 2.5, bw - 1, B - top + 2);
+  g.fillStyle = '#8b95a3';
   if (D.history) {                                      // one label per year, a tick where the year changes
     let lx = -99;
     D.frames.forEach((fr, i) => { const y = fr.date.slice(0, 4);
       if (i && y === D.frames[i - 1].date.slice(0, 4)) return;
-      if (i) { g.fillRect(i * bw - 0.5, 0, 1, H - 12); }
+      if (i) { g.fillRect(AX + i * bw - 0.5, top, 1, B - top); }
       const txt = y === '2026' ? '2026 NISAR' : "'" + y.slice(2);
-      if (i * bw + 2 - lx < 4 && y !== '2026') return;
-      if (y === '2026' && i * bw + 2 < lx + 4) g.clearRect(lx - 30, H - 11, 30, 11);
-      g.fillText(txt, i * bw + 2, H - 1); lx = i * bw + 2 + g.measureText(txt).width; });
+      if (AX + i * bw + 2 - lx < 4 && y !== '2026') return;
+      if (y === '2026' && AX + i * bw + 2 < lx + 4) g.clearRect(lx - 30, H - 11, 30, 11);
+      g.fillText(txt, AX + i * bw + 2, H - 1); lx = AX + i * bw + 2 + g.measureText(txt).width; });
     return;
   }
-  g.fillText(fmt(D.frames[0].date), 2, H - 1);
-  const last = fmt(D.frames[n - 1].date); g.fillText(last, W - g.measureText(last).width - 2, H - 1);
+  g.fillText(fmt(D.frames[0].date), AX + 1, H - 1);
+  const last = fmt(D.frames[n - 1].date); g.fillText(last, W - g.measureText(last).width - 1, H - 1);
   if (D.event_date) {                                  // event marker on the pass axis
-    const d0 = dn(D.frames[0].date), d1 = dn(D.frames[n - 1].date), x = bw / 2 + (W - bw) * (dn(D.event_date) - d0) / Math.max(1, d1 - d0);
-    if (x >= 0 && x <= W) { g.strokeStyle = '#f85149'; g.setLineDash([3, 3]); g.beginPath(); g.moveTo(x, 0); g.lineTo(x, H - 12); g.stroke(); g.setLineDash([]); }
+    const d0 = dn(D.frames[0].date), d1 = dn(D.frames[n - 1].date), x = AX + bw / 2 + (W - AX - bw) * (dn(D.event_date) - d0) / Math.max(1, d1 - d0);
+    if (x >= AX && x <= W) { g.strokeStyle = '#f85149'; g.setLineDash([3, 3]); g.beginPath(); g.moveTo(x, 0); g.lineTo(x, B); g.stroke(); g.setLineDash([]); }
   }
 }
-$('spC').onclick = ev => { if (!S) return; const r = $('spC').getBoundingClientRect(); setT(Math.floor((ev.clientX - r.left) / r.width * S.D.frames.length)); };
+// the chart is the time control: click or drag across the bars
+const pick = ev => { if (!S) return; const r = $('spC').getBoundingClientRect(); setT(Math.floor((ev.clientX - r.left - AX) / (r.width - AX) * S.D.frames.length)); };
+let drag = false;
+$('spC').onpointerdown = ev => { drag = true; $('spC').setPointerCapture(ev.pointerId); pick(ev); };
+$('spC').onpointermove = ev => { if (drag) pick(ev); };
+$('spC').onpointerup = $('spC').onpointercancel = () => { drag = false; };
 
-function setT(i) { if (!S) return; S.t = Math.max(0, Math.min(S.D.frames.length - 1, i)); $('spR').value = S.t; render(); }
-function togglePlay() {
-  if (timer) { clearInterval(timer); timer = null; $('spP').textContent = '▶'; return; }
-  if (!S) return;
-  if (S.t >= S.D.frames.length - 1) setT(0);
-  $('spP').textContent = '❚❚';
-  timer = setInterval(() => { if (!S || S.t >= S.D.frames.length - 1) return togglePlay(); setT(S.t + 1); }, 900);
-}
-$('spR').oninput = () => setT(+$('spR').value);
-$('spP').onclick = togglePlay;
+function setT(i) { if (!S) return; S.t = Math.max(0, Math.min(S.D.frames.length - 1, i)); render(); }
 $('spX').onclick = () => { const m = panel.classList.toggle('min'); $('spX').textContent = m ? '+' : '–'; $('spX').title = m ? 'Expand' : 'Minimize'; };
 $('spS').onclick = ev => { const b = ev.target.closest('button'); if (b && S) { setStep(+b.dataset.k); if (panel.classList.contains('min')) $('spX').click(); } };
 $('spBk').onclick = () => setStep(S.step - 1);

@@ -218,3 +218,11 @@ body.focused #listhead, body.focused #feed, body.focused aside > details.more2 {
 #sp .spnav { display:flex; justify-content:space-between; gap:8px; margin-top:10px; }
 #sp .spnav button { padding:6px 12px; font-size:var(--fs-sm); }
 #sp.min .spbody { display:none; }
+#sp .spsteps { align-items:center; gap:2px; }
+#sp .spsteps button { padding:5px 8px; gap:0; }
+#sp .spsteps .sparr { color:var(--faint); font-size:11px; flex:none; }
+#sp .spch { display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin:8px 0 2px; font-size:11.5px; }
+#sp #spD { font-weight:600; color:var(--text); font-size:12px; }
+#sp .spkey { color:var(--muted); white-space:nowrap; } #sp .spkey i { display:inline-block; width:9px; height:9px; border-radius:2px; margin:0 3px 0 6px; vertical-align:-1px; }
+#sp .spkey .kb { background:#2b8cbe; } #sp .spkey .ko { background:#ff7828; }
+#sp canvas { cursor:ew-resize; touch-action:none; }
