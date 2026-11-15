@@ -73,6 +73,7 @@ Each owner runs the shared method (Noa) through `bundle.py` (Shai) and checks it
 - [x] [Noa] Explorer: swipe RCM⇔NISAR and NASA⇔NISAR on Peace–Athabasca with % agreement (panel + side card); DSWx vs NISAR in the metadata; size budget 50 MB
 - [x] [Noa] Explorer list: hide Tamil Nadu, Atchafalaya, Okavango; Nepal box cut to the flooded plain
 - [x] [Noa] Over-the-years folders: Tonle Sap (1998–2026) and Sylhet (1996–2026); Nepal not possible (thin river, no RADARSAT-1 threshold)
+- [x] [Noa] Data inventory per event (docs/10): passes, photos, GFM/DSWx, NISAR; one-source floods flagged; GERD photos added (scripts/fill_photos.py)
 - [ ] [Shai] Event folders v2: pipeline writes `events/<place>/<flood>/` (docs/12) · [Roy] site reads it
 - [x] [Noa] ~~Mekong history bundle in `events/mekong-delta-history/`~~ replaced by `events/mekong-delta-vietnam/history/` (v2)
 - [ ] [Shai] **Tonle Sap, Cambodia**: P0 Sun 01:00 GFM flood, "cannot see", NISAR adds, DSWx-S1, photo; passes Jun–Oct · `science.md`

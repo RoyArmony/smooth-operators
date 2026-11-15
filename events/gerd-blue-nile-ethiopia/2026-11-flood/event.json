@@ -39,7 +39,8 @@
    "date": "2026-10-09",
    "matched": {
     "coh": "12-day GUNW pairs that include this pass",
-    "dswx": "2026-10-10"
+    "dswx": "2026-10-10",
+    "photo": "2026-10-05"
    },
    "baselines": {
     "dswx": {
@@ -53,6 +54,7 @@
     }
    },
    "layers": [
+    "photo",
     "nisar_rgb",
     "nisar_hh",
     "nisar_hv",
@@ -66,13 +68,15 @@
     "water_km2": 395.1,
     "valid_pct": 100
    },
-   "main_baseline": "dswx"
+   "main_baseline": "dswx",
+   "clouds_pct": 0
   },
   {
    "date": "2026-10-21",
    "matched": {
     "coh": "12-day GUNW pairs that include this pass",
-    "dswx": "2026-10-20"
+    "dswx": "2026-10-20",
+    "photo": "2026-10-20"
    },
    "baselines": {
     "dswx": {
@@ -86,6 +90,7 @@
     }
    },
    "layers": [
+    "photo",
     "nisar_rgb",
     "nisar_hh",
     "nisar_hv",
@@ -99,12 +104,14 @@
     "water_km2": 389.2,
     "valid_pct": 100
    },
-   "main_baseline": "dswx"
+   "main_baseline": "dswx",
+   "clouds_pct": 0
   },
   {
    "date": "2026-11-02",
    "matched": {
-    "dswx": "2026-11-04"
+    "dswx": "2026-11-04",
+    "photo": "2026-10-31"
    },
    "baselines": {
     "dswx": {
@@ -118,6 +125,7 @@
     }
    },
    "layers": [
+    "photo",
     "nisar_rgb",
     "nisar_hh",
     "nisar_hv",
@@ -130,7 +138,8 @@
     "water_km2": 398.9,
     "valid_pct": 100
    },
-   "main_baseline": "dswx"
+   "main_baseline": "dswx",
+   "clouds_pct": 3
   }
  ],
  "layers": {
@@ -416,6 +425,33 @@
      35.81193
     ]
    ]
+  },
+  "photo": {
+   "group": "optical",
+   "sensor": "Optical true colour via NASA GIBS (HLS / VIIRS / MODIS, see sources)",
+   "label": "Optical photo (true colour)",
+   "legend": null,
+   "default": false,
+   "files": {
+    "2026-10-05": "layers/photo_2026-10-05.jpg",
+    "2026-10-20": "layers/photo_2026-10-20.jpg",
+    "2026-10-31": "layers/photo_2026-10-31.jpg"
+   },
+   "bounds": [
+    [
+     10.2,
+     34.9
+    ],
+    [
+     11.35,
+     35.8
+    ]
+   ],
+   "sources": {
+    "2026-10-05": "HLS Sentinel-2 (30 m) via NASA GIBS",
+    "2026-10-20": "HLS Sentinel-2 (30 m) via NASA GIBS",
+    "2026-10-31": "HLS Landsat (30 m) via NASA GIBS"
+   }
   }
  },
  "method": {

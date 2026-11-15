@@ -190,3 +190,37 @@ image, Youden J ≥ 0.5 quality check). Each RADARSAT-1 flood map checked by eye
 | Sylhet | 11 | 908 | 72 | **8 %** | – |
 
 km² summed over passes (km² × passes, not one area). Each pass's own numbers: `events/<id>/event.json` timeline / passes.
+
+## Data inventory per event (15.11.26, Noa)
+
+Counted from each `event.json` (`passes[]`). Flood folders: flood date ± 30 days, one row per NISAR pass set.
+Every NISAR pass has HH, HV, the RGB picture and our water map. **⚠** = only one official flood-map source
+(GFM or NASA DSWx, not both). **⛔** = one source on one pass only. *numbers only* = no pictures committed (Explorer card only).
+
+| Place (flood) | NISAR passes | Optical photo (source) | GFM | NASA DSWx | NISAR coherence | NISAR valid | Checks | Pooled % |
+|---|---|---|---|---|---|---|---|---|
+| Amazon várzea (Jun) **⚠** | 3 | 3 (MODIS) | 0 | 3 | 0 | 100 % | – | 18 % |
+| Assam (Sep) **⚠** | 5 | 5 (VIIRS) | 0 | 4 | 4 | 100 % | – | 370 % |
+| Congo Cuvette (Oct), *numbers only* | 3 | 2 (HLS) | 3 | 3 | 2 | 100 % | – | – (flood < 5 km²) |
+| Dead Sea (Oct) **⚠** | 5 | 5 (VIIRS) | 0 | 5 | 3 | 100 % | DSWx, LANCE | 7 % |
+| Hubei, China (Oct) **⚠** | 3 | 3 (VIIRS) | 0 | 2 | 2 | 90 % | DSWx | 14 % |
+| Nepal (Jul, small box) | 4 | 4 (VIIRS) | 1 | 4 | 4 | 100 % | – | – (flood < 5 km²) |
+| Tamil Nadu (Oct, hidden), *numbers only* **⚠** | 3 | 0 | 0 | 3 | 1 | 93 % | DSWx | 9 % |
+| GERD (Nov) **⚠** | 3 | **3 (HLS, added)** | 0 | 3 | 2 | 100 % | – | 7 % |
+| Inner Niger (Jul), *numbers only* | 4 | 4 (HLS) | 4 | 4 | 2 | 100 % | – | 664 % |
+| Likouala (Oct) **⚠** | 3 | 3 (VIIRS) | 0 | 3 | 0 | 100 % | – | 277 % |
+| Mekong (Sep) | 5 | 5 (HLS) | 5 | 4 | 3 | 100 % | – | 24 % |
+| Pantanal (Oct) | 4 | 4 (VIIRS) | 1 | 4 | 0 | 100 % | – | – (flood < 5 km²) |
+| Peace–Athabasca (Jun) **⚠** | 3 | 3 (HLS) | 0 | 3 | 1 | 100 % | RCM, DSWx | 21 % |
+| Sylhet (Jul) **⚠** | 4 | 4 (VIIRS) | 0 | 4 | 0 | 97 % | – | 316 % |
+| Sylhet, validation (Oct) | 6 | 6 (VIIRS) | 5 | 5 | 0 | 97 % | GFM, DSWx, LANCE | 25 % |
+| Bang Pakong, Thailand (Oct) **⛔** | 3 | 3 (VIIRS) | 1 | 0 | 0 | 93 % | – | 17 % (1 pass) |
+| Tonle Sap (Oct), *numbers only* | 4 | 3 (HLS) | 4 | 3 | 2 | 100 % | – | 88 % |
+
+Over the years (`history/`): Peace–Athabasca 26 images (22 RADARSAT-1 + 4 NISAR, 1997–2026), Mekong 17 (13 + 4),
+GERD 14 (10 Sentinel-1 + 4 NISAR, 2016–2026), Tonle Sap 13 (9 + 4), Assam 9 (6 + 3), Sylhet 9 (4 + 5), Amazon 5 (2 + 3).
+Optical there: MODIS 2000–2013, HLS 2026, none before 2000.
+
+Missing photos filled with `scripts/fill_photos.py` (NASA GIBS true colour ± 5 d: HLS Sentinel-2 / Landsat, then VIIRS,
+then MODIS; least cloud, ≥ 70 % of the box): GERD 5 Oct and 20 Oct (HLS Sentinel-2) and 31 Oct (HLS Landsat), cloud 0–3 %.
+Numbers-only folders (Congo, Tamil Nadu, Inner Niger, Tonle Sap) have no pictures, so no photo was added there.
