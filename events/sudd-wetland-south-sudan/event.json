@@ -291,5 +291,7 @@
   "pixel_m": 80.0,
   "gap": "NISAR water inside GFM exclusion mask, both valid, permanent water removed",
   "stack": null
- }
+ },
+ "hidden": true,
+ "hidden_why": "taken out of the Explorer list (Roy, 15.11)"
 }

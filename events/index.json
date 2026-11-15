@@ -393,39 +393,6 @@
    }
   },
   {
-   "id": "sudd-wetland-south-sudan",
-   "title": "Sudd wetland, South Sudan",
-   "place": "Sudd wetland, South Sudan",
-   "date": "2026-10-06",
-   "bbox": [
-    30.3,
-    7.0,
-    30.9,
-    7.6
-   ],
-   "kind": "site",
-   "headline": {
-    "sentence": "On 2026-10-06, NISAR found 916 km² of water where the official flood map (Copernicus GFM, 2026-10-05) says it cannot see.",
-    "numbers": [
-     {
-      "label": "Official map: flood",
-      "value": 55.4,
-      "unit": "km²"
-     },
-     {
-      "label": "NISAR adds, in the blank",
-      "value": 916.1,
-      "unit": "km²"
-     },
-     {
-      "label": "of it in forest (ESA WorldCover)",
-      "value": 0.9,
-      "unit": "km²"
-     }
-    ]
-   }
-  },
-  {
    "id": "sylhet-haor-bangladesh",
    "title": "Sylhet haor, Bangladesh",
    "place": "Sylhet haor, Bangladesh",
