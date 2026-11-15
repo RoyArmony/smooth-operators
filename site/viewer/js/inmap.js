@@ -94,18 +94,19 @@ function setStep(i) {
   if (!S) return; S.step = Math.max(0, Math.min(S.steps.length - 1, i));
   const st = S.steps[S.step], n = S.steps.length; S.b = st.b; S.on = new Set(st.on || []);
   if (S.hist && st.t != null) S.t = st.t;
+  S.flick = st.label === 'Official';          // entering Official: the "cannot see" blank flickers once
   if (st.t0 && !S.hist) { const k = S.D.frames.reduce((b, f, j) => Math.abs(dn(f.date) - dn(st.t0)) < Math.abs(dn(S.D.frames[b].date) - dn(st.t0)) ? j : b, 0); S.t = k; }
   $('spS').innerHTML = S.steps.map((x, k) => `<button data-k="${k}" class="${k === S.step ? 'on' : k < S.step ? 'done' : ''}${x.label === 'NISAR' || x.nisar ? ' nisar' : ''}${x.csa ? ' csa' : ''}" title="${x.cap.replace(/<[^>]+>/g, '').replace(/"/g, '&quot;')}">${x.label}</button>`).join('<span class="sparr">→</span>');
   $('spBk').style.visibility = S.step ? '' : 'hidden';
   $('spNx').textContent = S.step < n - 1 ? `Next: ${S.steps[S.step + 1].label} →` : '↺ Start over';
   render();
 }
-// the official map's "cannot see" blank: grey, flickers when it appears, then a soft glow (as on Home)
-function blink(ov, on) {
+// the official map's "cannot see" blank: lit grey; flickers once when it appears or the Official step opens again
+function blink(ov, on, again) {
   const el = ov.getElement(); if (!el) return;
   if (!on) { el.classList.remove('blink'); return; }
-  if (el.classList.contains('blink')) return;
-  void el.offsetWidth; el.classList.add('blink');
+  if (el.classList.contains('blink') && !again) return;
+  el.classList.remove('blink'); void el.offsetWidth; el.classList.add('blink');
 }
 // an event bundle with no Explorer site (events/<id>/event.json): same panel and steps as a site (Area → Official → NISAR),
 // the chart is the bundle's timeline (official flood + NISAR addition per pass)
@@ -139,12 +140,13 @@ function drawEv(date, on) {
     ds.forEach(d => { if (Math.abs(dn(d) - dn(date)) <= 6 && (!best || Math.abs(dn(d) - dn(date)) < Math.abs(dn(best) - dn(date)))) best = d; });
     if (best) x.ov.setUrl(x.base + x.l.files[best]); x.date = best;
     x.ov.setOpacity(best && on.has('E_' + x.k) ? 1 : 0);
-    if (x.k === 'gfm_excluded') blink(x.ov, !!(best && on.has('E_' + x.k)));
+    if (x.k === 'gfm_excluded') { blink(x.ov, !!(best && on.has('E_' + x.k)), S.flick); S.flick = false; }
     if (on.has('E_' + x.k) && !best) miss.push(x.l.label || x.k);
   });
   return miss;
 }
-const HATCH = 'repeating-linear-gradient(45deg,#dcdce4 0 2px,#696973 2px 6px)';
+// legend swatch = the blank as drawn on the map: lit grey hatch (grayscale, ×1.4) with the same white glow (style.css .excl)
+const HATCH = 'repeating-linear-gradient(45deg,#f4f4f8 0 2px,#55555c 2px 6px);box-shadow:0 0 4px #fff,0 0 8px rgba(220,220,235,.8)';
 const km = v => Math.round(v).toLocaleString('en-GB');
 function renderBundle() {
   const x = S.T[S.t], on = S.on || new Set(), st = x.stats || {};

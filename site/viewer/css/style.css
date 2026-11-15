@@ -239,10 +239,9 @@ body.focused #listhead, body.focused #feed, body.focused aside > details.more2 {
 @media (prefers-reduced-motion: reduce) { .pin i { animation:none; opacity:.25; transform:scale(1.6); } }
 .fcard .blegend { margin-top:var(--s3); padding-top:var(--s3); border-top:1px solid var(--line); }
 /* official map's "cannot see" blank: grey like Home, flickers when it appears, then glows softly */
-.leaflet-image-layer.excl { filter:grayscale(1) brightness(1.4); }
-.leaflet-image-layer.excl.blink { animation:flick 1.6s steps(1, end), glow 2.4s ease-in-out 1.6s infinite; }
-@keyframes flick { 0%,30%,60% { opacity:.15; } 15%,45%,75%,100% { opacity:1; } }
-@keyframes glow { 0%,100% { filter:grayscale(1) brightness(1.4); } 50% { filter:grayscale(1) brightness(1.4) drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px rgba(220,220,235,.9)); } }
+.leaflet-image-layer.excl { filter:grayscale(1) brightness(1.4) drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px rgba(220,220,235,.9)); }
+.leaflet-image-layer.excl.blink { animation:flick .8s steps(1, end) 1; }   /* one flick each time the Official step opens, then stays lit */
+@keyframes flick { 0%,50% { opacity:.12; } 25%,75%,100% { opacity:1; } }
 @media (prefers-reduced-motion: reduce) { .leaflet-image-layer.excl.blink { animation:none; } }
 
 /* sensor badges: NISAR (orange) and the Canadian Space Agency's radars (red) */
