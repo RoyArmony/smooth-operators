@@ -196,3 +196,25 @@ body.focused #listhead, body.focused #feed, body.focused aside > details.more2 {
 .gpct { grid-column:1 / -1; display:flex; align-items:baseline; gap:8px; padding-top:var(--s3); border-top:1px solid var(--line); }
 .gpct b { font-size:var(--fs-3xl); font-weight:800; color:#ff9a2e; line-height:1; font-variant-numeric:tabular-nums; }
 .garrow { font-size:var(--fs-2xl) !important; color:#ff9a2e !important; font-weight:800; }
+
+/* map panel = a 4-step flow (Area → Optical → Official → NISAR); "–" minimizes to the stepper */
+#sp { width:310px; padding:10px; }
+#sp .sph { gap:6px; }
+#sp .spsteps { flex:1; display:flex; gap:3px; }
+#sp .spsteps button { flex:1; display:flex; align-items:center; justify-content:center; gap:4px; padding:5px 2px; font-size:11.5px; font-weight:600;
+  border-radius:999px; border:1px solid var(--line); background:none; color:var(--muted); cursor:pointer; white-space:nowrap; }
+#sp .spsteps button i { font-style:normal; font-size:10px; width:15px; height:15px; line-height:15px; border-radius:50%; background:var(--line); color:var(--text); }
+#sp .spsteps button.done { color:var(--text); }
+#sp .spsteps button.on { background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+#sp .spsteps button.on i { background:rgba(0,0,0,.25); color:var(--on-accent); }
+#sp .spsteps button.nisar.on { background:#ff9a2e; border-color:#ff9a2e; color:#1a1206; }
+#sp .sph #spX { width:24px; height:24px; padding:0; font-size:18px; line-height:1; color:var(--muted); }
+#sp .spcap { margin:10px 0 6px; font-size:var(--fs-md); line-height:1.4; } #sp .spcap b.o { color:#ff9a2e; }
+#sp .legend { display:flex; flex-wrap:wrap; gap:2px 12px; margin:4px 0; } #sp .legend div { margin:0; font-size:11.5px; } #sp .legend:empty { display:none; }
+#sp .sprow { margin:6px 0 2px; } #sp #spD { min-width:0; font-size:11.5px; color:var(--muted); }
+#sp #spP { width:28px; height:28px; padding:0; }
+#sp canvas { width:100%; display:block; }
+#sp .spsrc { font-size:11px; color:var(--faint); margin-top:4px; min-height:14px; }
+#sp .spnav { display:flex; justify-content:space-between; gap:8px; margin-top:10px; }
+#sp .spnav button { padding:6px 12px; font-size:var(--fs-sm); }
+#sp.min .spbody { display:none; }
