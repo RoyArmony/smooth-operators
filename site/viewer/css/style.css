@@ -281,3 +281,11 @@ body.focused #listhead, body.focused #feed, body.focused aside > details.more2 {
 .vagree b { font-size:var(--fs-xl); font-weight:800; color:#2ecc71; } .vagree em { font-style:normal; color:var(--muted); font-size:var(--fs-xs); }
 #sp .spsteps { flex-wrap:wrap; row-gap:4px; }
 .gpct.gvhead b { color:#2ecc71; } .gpct.gvhead .garrow { color:#2ecc71 !important; } .fgain .fval { color:#2ecc71; }
+/* one pin per place (globe.js): count badge + a small chooser when the place has several views */
+.pin s { position:absolute; top:-8px; right:-10px; min-width:14px; height:14px; padding:0 3px; border-radius:7px; background:#fff; color:#0c222b;
+         font:700 10px/14px system-ui; text-align:center; text-decoration:none; box-shadow:0 1px 3px #0008; }
+.pinpick { display:flex; flex-direction:column; gap:6px; min-width:170px; }
+.pinpick b { font-size:13px; }
+.pinpick button { text-align:left; padding:6px 10px; border-radius:6px; border:1px solid var(--line-2, #2a3a44); background:var(--card, #12303b);
+                  color:var(--text, #e8eef5); font-size:12px; cursor:pointer; }
+.pinpick button:hover { border-color:#ff9a2e; }

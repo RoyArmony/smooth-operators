@@ -123,14 +123,25 @@ function drawMap(wa) {
     L.rectangle([[so, w], [n, e]], { color: '#ff7828', weight: 2, fillOpacity: .08 }).on('click', () => window.openSite(s.id)).addTo(siteLayer);
   });
   // a pulsing red dot per event (same as its card): hover = name, click = open it
-  pinLayer.clearLayers(); const at = {};
-  ITEMS.filter(it => it.kind === 'site').forEach(it => {
-    const k = it.lat.toFixed(1) + ',' + it.lon.toFixed(1), dx = 14 * (at[k] = (at[k] ?? -1) + 1);   // same spot: nudge sideways
-    it.marker = L.marker([it.lat, it.lon], { title: it.title, riseOnHover: true,
-      icon: L.divIcon({ className: 'pin', html: '<i></i><b></b>', iconSize: [18, 18], iconAnchor: [9 - dx, 9] }) })
-      .bindTooltip(it.title, { direction: 'top', offset: [dx, -10] }).on('click', () => window.openSite(it.site.id))
-      .on('mouseover', () => { if (it.card) { it.card.classList.add('hl'); it.card.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } })
-      .on('mouseout', () => it.card && it.card.classList.remove('hl')).addTo(pinLayer);
+  // one pin per place: items whose boxes hold each other's centre (flood, over-the-years, validation) share it
+  pinLayer.clearLayers();
+  const groups = [], near = (a, b) => inBox(a.site.bbox, b.lat, b.lon) || inBox(b.site.bbox, a.lat, a.lon);
+  ITEMS.filter(it => it.kind === 'site').forEach(it => { const g = groups.find(g => g.some(x => near(x, it))); g ? g.push(it) : groups.push([it]); });
+  const label = it => it.site.history ? `Over the years · ${it.site.first.slice(0, 4)}–${it.site.last.slice(0, 4)}`
+    : `${/validation/i.test(it.site.title || '') ? 'Check' : 'Flood'} · ${fmtDate(it.date)}`;
+  groups.forEach(g => {
+    const p = g.find(x => !x.site.history) || g[0], name = p.title, many = g.length > 1;
+    const m = L.marker([p.lat, p.lon], { title: name, riseOnHover: true,
+      icon: L.divIcon({ className: 'pin', html: `<i></i><b></b>${many ? `<s>${g.length}</s>` : ''}`, iconSize: [18, 18], iconAnchor: [9, 9] }) })
+      .bindTooltip(many ? `${name} · ${g.length} views` : name, { direction: 'top', offset: [0, -10] })
+      .on('mouseover', () => g.forEach(it => it.card && it.card.classList.add('hl')))
+      .on('mouseout', () => g.forEach(it => it.card && it.card.classList.remove('hl'))).addTo(pinLayer);
+    if (many) {
+      const html = `<div class="pinpick"><b>${name}</b>${g.map((it, k) => `<button type="button" data-k="${k}">${label(it)}</button>`).join('')}</div>`;
+      m.bindPopup(html, { offset: [0, -6] }).on('popupopen', e => e.popup.getElement().querySelectorAll('[data-k]')
+        .forEach(b => { b.onclick = () => { m.closePopup(); window.openSite(g[+b.dataset.k].site.id); }; }));
+    } else m.on('click', () => window.openSite(p.site.id));
+    g.forEach(it => { it.marker = m; it.group = g; });
   });
   const sites = new Set((window.UNSEEN_SITES || []).map(s => s.id));
   wa.filter(a => !(a.site && sites.has(a.site))).forEach(a => {
@@ -232,7 +243,7 @@ function renderFeed() {
     c.onmouseleave = () => it.marker && it.marker.getElement()?.classList.remove('hl');
     $('feed').appendChild(c);
   }); });
-  ITEMS.forEach(it => { if (it.marker) it.marker.setOpacity(visible(it) ? 1 : 0.12); });
+  ITEMS.forEach(it => { if (it.marker) it.marker.setOpacity((it.group || [it]).some(visible) ? 1 : 0.12); });   // shared pin: lit if any of its items is
   $('fcount').textContent = `${L_.length} of ${ITEMS.length}`;
   SHOWN = L_; batchBar();
 }
