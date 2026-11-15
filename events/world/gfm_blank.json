@@ -1,0 +1,272 @@
+{
+ "what": "Land cover (ESA WorldCover 2021) of the Copernicus GFM exclusion mask ('cannot see'), each site's compared pass",
+ "script": "scripts/gfm_blank_landcover.py",
+ "clouds_note": "GFM is Sentinel-1 radar: 0% of its blank is cloud.",
+ "total": {
+  "cannot_see_km2": 31661.7,
+  "share": {
+   "forest": 0.662,
+   "built-up": 0.019,
+   "cropland": 0.108,
+   "wetland": 0.125,
+   "shrub & grass": 0.068,
+   "bare / sand": 0.005,
+   "water": 0.013,
+   "no data": 0.001
+  }
+ },
+ "sites": [
+  {
+   "id": "tonle-sap-flood-pulse-2026",
+   "date": "2026-10-17",
+   "cannot_see_km2": 2758.9,
+   "share": {
+    "forest": 0.655,
+    "built-up": 0.006,
+    "cropland": 0.162,
+    "wetland": 0.057,
+    "shrub & grass": 0.115,
+    "bare / sand": 0.001,
+    "water": 0.002,
+    "no data": 0.002
+   },
+   "title": "Tonle Sap, Cambodia"
+  },
+  {
+   "id": "inner-niger-delta-mali",
+   "date": "2026-09-16",
+   "cannot_see_km2": 613.3,
+   "share": {
+    "forest": 0.027,
+    "built-up": 0.005,
+    "cropland": 0.036,
+    "wetland": 0.219,
+    "shrub & grass": 0.526,
+    "bare / sand": 0.176,
+    "water": 0.011,
+    "no data": 0.001
+   },
+   "title": "Inner Niger Delta, Mali"
+  },
+  {
+   "id": "mekong-delta-vietnam",
+   "date": "2026-09-23",
+   "cannot_see_km2": 1052.4,
+   "share": {
+    "forest": 0.392,
+    "built-up": 0.117,
+    "cropland": 0.407,
+    "wetland": 0.002,
+    "shrub & grass": 0.027,
+    "bare / sand": 0.001,
+    "water": 0.052,
+    "no data": 0.001
+   },
+   "title": "Mekong delta, Vietnam"
+  },
+  {
+   "id": "irrawaddy-delta-myanmar",
+   "date": "2026-07-17",
+   "cannot_see_km2": 893.8,
+   "share": {
+    "forest": 0.525,
+    "built-up": 0.003,
+    "cropland": 0.385,
+    "wetland": 0.0,
+    "shrub & grass": 0.018,
+    "bare / sand": 0.0,
+    "water": 0.069
+   },
+   "title": "Irrawaddy delta, Myanmar"
+  },
+  {
+   "id": "congo-cuvette-centrale",
+   "date": "2026-10-31",
+   "cannot_see_km2": 3067.9,
+   "share": {
+    "forest": 0.901,
+    "built-up": 0.0,
+    "wetland": 0.004,
+    "shrub & grass": 0.09,
+    "bare / sand": 0.0,
+    "water": 0.004,
+    "no data": 0.001
+   },
+   "title": "Congo basin (Cuvette Centrale), Rep. of Congo"
+  },
+  {
+   "id": "sylhet-haor-bangladesh",
+   "date": "2026-06-18",
+   "cannot_see_km2": 412.5,
+   "share": {
+    "forest": 0.646,
+    "built-up": 0.003,
+    "cropland": 0.301,
+    "wetland": 0.011,
+    "shrub & grass": 0.004,
+    "bare / sand": 0.0,
+    "water": 0.033,
+    "no data": 0.0
+   },
+   "title": "Sylhet haor, Bangladesh"
+  },
+  {
+   "id": "amazon-varzea-mamiraua",
+   "date": "2026-10-11",
+   "cannot_see_km2": 3812.4,
+   "share": {
+    "forest": 0.95,
+    "built-up": 0.0,
+    "wetland": 0.001,
+    "shrub & grass": 0.027,
+    "water": 0.02,
+    "no data": 0.001
+   },
+   "title": "Amazon várzea (Mamirauá), Brazil"
+  },
+  {
+   "id": "assam-brahmaputra",
+   "date": "2026-06-23",
+   "cannot_see_km2": 1196.7,
+   "share": {
+    "forest": 0.667,
+    "built-up": 0.023,
+    "cropland": 0.248,
+    "wetland": 0.0,
+    "shrub & grass": 0.026,
+    "bare / sand": 0.004,
+    "water": 0.032
+   },
+   "title": "Brahmaputra, Assam, India"
+  },
+  {
+   "id": "thailand-floods-bang-pakong-2026",
+   "date": "2026-10-24",
+   "cannot_see_km2": 775.8,
+   "share": {
+    "forest": 0.354,
+    "built-up": 0.323,
+    "cropland": 0.143,
+    "wetland": 0.003,
+    "shrub & grass": 0.106,
+    "bare / sand": 0.011,
+    "water": 0.061
+   },
+   "title": "Bang Pakong floods, Thailand"
+  },
+  {
+   "id": "flood-in-china-2026",
+   "date": "2026-07-23",
+   "cannot_see_km2": 2145.7,
+   "share": {
+    "forest": 0.859,
+    "built-up": 0.002,
+    "cropland": 0.093,
+    "shrub & grass": 0.042,
+    "bare / sand": 0.0,
+    "water": 0.003
+   },
+   "title": "Hubei floods, China"
+  },
+  {
+   "id": "flood-in-nepal-2026",
+   "date": "2026-07-26",
+   "cannot_see_km2": 118.9,
+   "share": {
+    "forest": 0.586,
+    "built-up": 0.06,
+    "cropland": 0.265,
+    "shrub & grass": 0.029,
+    "bare / sand": 0.035,
+    "water": 0.025
+   },
+   "title": "Nepal floods"
+  },
+  {
+   "id": "flood-india-2026-08",
+   "date": "2026-06-24",
+   "cannot_see_km2": 4018.8,
+   "share": {
+    "forest": 0.458,
+    "built-up": 0.035,
+    "cropland": 0.347,
+    "wetland": 0.0,
+    "shrub & grass": 0.154,
+    "bare / sand": 0.004,
+    "water": 0.002,
+    "no data": 0.0
+   },
+   "title": "Tamil Nadu floods, India"
+  },
+  {
+   "id": "atchafalaya-basin",
+   "date": "2026-06-20",
+   "cannot_see_km2": 1796.9,
+   "share": {
+    "forest": 0.929,
+    "built-up": 0.007,
+    "cropland": 0.016,
+    "wetland": 0.002,
+    "shrub & grass": 0.028,
+    "bare / sand": 0.0,
+    "water": 0.017,
+    "no data": 0.0
+   },
+   "title": "Atchafalaya Basin, USA"
+  },
+  {
+   "id": "okavango-delta",
+   "date": "2026-06-26",
+   "cannot_see_km2": 263.1,
+   "share": {
+    "forest": 0.198,
+    "wetland": 0.665,
+    "shrub & grass": 0.133,
+    "bare / sand": 0.0,
+    "water": 0.004,
+    "no data": 0.001
+   },
+   "title": "Okavango Delta, Botswana"
+  },
+  {
+   "id": "pantanal-brazil",
+   "date": "2026-10-21",
+   "cannot_see_km2": 2438.0,
+   "share": {
+    "forest": 0.353,
+    "wetland": 0.622,
+    "shrub & grass": 0.014,
+    "water": 0.01,
+    "no data": 0.002
+   },
+   "title": "Pantanal, Brazil"
+  },
+  {
+   "id": "sudd-wetland-south-sudan",
+   "date": "2026-10-06",
+   "cannot_see_km2": 2023.5,
+   "share": {
+    "forest": 0.004,
+    "wetland": 0.956,
+    "shrub & grass": 0.038,
+    "water": 0.002,
+    "no data": 0.0
+   },
+   "title": "Sudd wetland, South Sudan"
+  },
+  {
+   "id": "likouala-flood-congo-2026",
+   "date": "2026-07-03",
+   "cannot_see_km2": 4273.1,
+   "share": {
+    "forest": 0.978,
+    "built-up": 0.001,
+    "wetland": 0.0,
+    "shrub & grass": 0.015,
+    "water": 0.005,
+    "no data": 0.0
+   },
+   "title": "Likouala floods, Rep. of Congo (Oct 2026)"
+  }
+ ]
+}

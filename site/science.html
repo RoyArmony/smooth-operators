@@ -174,6 +174,24 @@
   .cb b { color: var(--text); font-variant-numeric: tabular-nums; text-align: right; }
   .cb.hi span, .cb.hi b { color: var(--accent); font-weight: 700; } .cb.hi i { background: var(--accent); }
   @media (max-width: 960px) { .litg, .eqbar { grid-template-columns: 1fr; } .cb { grid-template-columns: 150px 1fr 70px; } }
+  /* what is in the blank */
+  .blank2 { display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--s4); margin-top: var(--s4); }
+  .bk { padding: var(--s4) var(--s5); }
+  .bk .k { font-size: var(--fs-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); margin-bottom: var(--s3); }
+  .stack { display: flex; height: 26px; border-radius: var(--r-sm); overflow: hidden; }
+  .stack i { display: block; height: 100%; position: relative; }
+  .stack i span { position: absolute; inset: 0; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: #06141b; font-style: normal; }
+  .bklg { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 10px 0; font-size: var(--fs-xs); color: var(--muted); }
+  .bklg i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+  .bkr { display: grid; grid-template-columns: 150px 1fr 70px; gap: var(--s3); align-items: center; font-size: 12px; color: var(--muted); padding: 2px 0; }
+  .bkr .stack { height: 9px; border-radius: 2px; min-width: 0; background: var(--surface-3); } .bkr b { text-align: right; color: var(--text); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .bkr span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .vs { display: grid; gap: var(--s4); }
+  .vs > div > b { display: block; } .vs > div > span { font-size: var(--fs-xs); color: var(--faint); }
+  .bar2 { height: 14px; background: var(--surface-3); border-radius: var(--r-sm); overflow: hidden; margin: 8px 0 6px; }
+  .bar2 i { display: block; height: 100%; } .bar2 .veg { background: #3a7d44; } .bar2 .cld { background: #c8d3d8; }
+  .vs p { margin: 0; font-size: var(--fs-sm); color: var(--muted); } .vs .n { color: var(--text); font-size: var(--fs-lg); }
+  @media (max-width: 960px) { .blank2 { grid-template-columns: 1fr; } .bkr { grid-template-columns: 110px 1fr 60px; } }
 </style>
 </head>
 <body data-page="science">
@@ -273,6 +291,30 @@
         <p>"More %" is shown only where GFM maps ≥ 5 km² of flood, so tiny bases don't inflate it.</p>
       </div>
     
+    </div>
+    <h3 class="sub3" id="blank">What is in the blank?</h3>
+    <p class="lead">GFM is radar, so clouds never blank it. It blanks where C-band can't map floods: mostly forest.</p>
+    <div class="blank2">
+      <div class="card bk">
+        <div class="k">GFM "cannot see" · 17 sites · <span id="bk-km">31,662</span> km² · land cover (ESA WorldCover)</div>
+        <div class="stack" id="bk-all"></div>
+        <div class="bklg" id="bk-lg"></div>
+        <div id="bk-rows"></div>
+      </div>
+      <div class="card bk">
+        <div class="k">Two kinds of blank · Mekong delta, 21–23 Sep 2026 · box 4,366 km²</div>
+        <div class="vs">
+          <div><b>Radar map (GFM)</b><span>Sentinel-1, C-band</span>
+            <div class="bar2"><i class="veg" style="width:24%"></i></div>
+            <p><b class="n">1,050 km²</b> cannot see<br>0% cloud · 100% vegetation &amp; city</p></div>
+          <div><b>Optical map (OPERA DSWx-HLS)</b><span>Landsat / Sentinel-2</span>
+            <div class="bar2"><i class="cld" style="width:89%"></i></div>
+            <p><b class="n">3,894 km²</b> cannot see<br>100% cloud</p></div>
+        </div>
+        <div class="bklg"><span><i style="background:#3a7d44"></i>vegetation &amp; city</span><span><i style="background:#c8d3d8"></i>cloud</span></div>
+        <p class="note">NISAR sees through both: L-band passes cloud and canopy.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -509,6 +551,21 @@
     links.forEach((a, i) => { const on = i === k; if (on && !a.classList.contains('on')) { const w = a.parentNode; w.scrollLeft = a.offsetLeft - (w.clientWidth - a.offsetWidth) / 2; } a.classList.toggle('on', on); });
   };
   addEventListener('scroll', set, { passive: true }); set();
+})();
+</script>
+<script>
+// What is in GFM's blank: land cover per site, from events/world/gfm_blank.json (scripts/gfm_blank_landcover.py)
+(async () => {
+  const C = { 'forest': '#3a7d44', 'wetland': '#5fb3a8', 'cropland': '#d8b45a', 'shrub & grass': '#93a85a', 'built-up': '#c0566a', 'bare / sand': '#9a8a78', 'water': '#4a6fa5', 'other': '#5f7f88', 'no data': '#2a3a40' };
+  let d; try { d = await (await fetch('../events/world/gfm_blank.json')).json(); } catch (e) { return; }
+  const bar = (sh, lab) => Object.keys(C).filter(g => sh[g] >= 0.005).map(g => `<i style="width:${100 * sh[g]}%;background:${C[g]}" title="${g} ${Math.round(100 * sh[g])}%">${lab && sh[g] >= 0.06 ? `<span>${Math.round(100 * sh[g])}%</span>` : ''}</i>`).join('');
+  const fmt = v => Math.round(v).toLocaleString('en-US');
+  document.getElementById('bk-km').textContent = fmt(d.total.cannot_see_km2);
+  document.getElementById('bk-all').innerHTML = bar(d.total.share, true);
+  document.getElementById('bk-lg').innerHTML = Object.keys(C).filter(g => (d.total.share[g] || 0) >= 0.005).map(g => `<span><i style="background:${C[g]}"></i>${g} ${Math.round(100 * d.total.share[g])}%</span>`).join('');
+  const esc = t => t.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  document.getElementById('bk-rows').innerHTML = d.sites.slice().sort((a, b) => (b.share.forest || 0) - (a.share.forest || 0)).map(r =>
+    `<div class="bkr"><span title="${esc(r.title)}">${esc(r.title.split(/[,(]/)[0].trim())}</span><div class="stack">${bar(r.share)}</div><b>${fmt(r.cannot_see_km2 || 0)} km²</b></div>`).join('');
 })();
 </script>
 </body>

@@ -133,3 +133,17 @@ relative orbit 50, the pass nearest 1 Oct each year, on the NISAR 80 m grid. Wat
 - Nepal floods: box cut from [84.865, 26.895, 85.865, 27.695] to the flooded plain [85.22, 26.90, 85.44, 27.11]
   (`scripts/crop_bundle.py`, same pixels). 26 Jul 2026: GFM flood 7.4 → 4.6 km² (62 % of it inside), NISAR adds
   1.2 → 0.8 km² (68 %), in 1/18 of the area. Other dates had no maps, so their km² were dropped.
+
+## What is in the official map's "cannot see" area
+
+`python scripts/gfm_blank_landcover.py` → `events/world/gfm_blank.json`. GFM exclusion layer of each site's compared pass
+(from its bundle) overlaid on ESA WorldCover 2021 (~80 m overview), pixels weighted by cos(lat). Date (who): 15.11.26 (Noa).
+
+| What | Value |
+|---|---|
+| GFM "cannot see", 17 sites | 31,662 km²: forest (tree + mangrove) 66% · herbaceous wetland 12.5% · cropland 11% · shrub & grass 7% · built-up 2% · water 1% |
+| Clouds in GFM's blank | 0% (GFM is Sentinel-1 radar) |
+| Most forest | Likouala 98% · Amazon várzea 95% · Atchafalaya 93% · Congo 90% · Hubei 86% · Tonle Sap 66% |
+| Not forest | Sudd 96% wetland · Okavango 66% wetland · Pantanal 62% wetland · Inner Niger 53% shrub & grass + 18% bare/sand · Bang Pakong 32% built-up |
+| Mekong, 21–23 Sep 2026, box 4,366 km² | GFM cannot see 1,050 km² (vegetation / city, 0% cloud) · OPERA DSWx-HLS cannot see 3,894 km² (cloud) — from `events/mekong-delta-vietnam/2026-09-flood/event.json` |
+
