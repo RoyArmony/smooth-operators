@@ -1,0 +1,23 @@
+{
+ "version": 2,
+ "id": "sylhet-haor-bangladesh",
+ "name": "Sylhet haor",
+ "country": "Bangladesh",
+ "bbox": [
+  91.1,
+  24.4,
+  91.7,
+  25.0
+ ],
+ "floods": [],
+ "history": {
+  "id": "history",
+  "first": "1996-09-11",
+  "last": "2026-11-09",
+  "n_images": 9,
+  "sensors": [
+   "NISAR",
+   "RADARSAT-1"
+  ]
+ }
+}

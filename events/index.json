@@ -764,6 +764,30 @@
    ]
   },
   {
+   "id": "sylhet-haor-bangladesh",
+   "folder": "sylhet-haor-bangladesh",
+   "name": "Sylhet haor",
+   "country": "Bangladesh",
+   "bbox": [
+    91.1,
+    24.4,
+    91.7,
+    25.0
+   ],
+   "floods": [],
+   "history": {
+    "id": "history",
+    "first": "1996-09-11",
+    "last": "2026-11-09",
+    "n_images": 9,
+    "sensors": [
+     "NISAR",
+     "RADARSAT-1"
+    ]
+   },
+   "validation": []
+  },
+  {
    "id": "sylhet-haor-validation",
    "folder": "sylhet-haor-validation",
    "name": "Sylhet haor (validation)",
@@ -813,6 +837,30 @@
     "gfm",
     "lance"
    ]
+  },
+  {
+   "id": "tonle-sap-flood-pulse-2026",
+   "folder": "tonle-sap-flood-pulse-2026",
+   "name": "Tonle Sap",
+   "country": "Cambodia",
+   "bbox": [
+    103.6,
+    12.3,
+    104.7,
+    13.3
+   ],
+   "floods": [],
+   "history": {
+    "id": "history",
+    "first": "1998-07-29",
+    "last": "2026-10-17",
+    "n_images": 13,
+    "sensors": [
+     "NISAR",
+     "RADARSAT-1"
+    ]
+   },
+   "validation": []
   }
  ]
 }

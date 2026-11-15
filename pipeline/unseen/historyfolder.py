@@ -99,6 +99,9 @@ def build(place):
         db = shift(db, dy, dx)
         db = median_filter(np.nan_to_num(db, nan=np.nanmedian(db)), 3) * np.where(np.isfinite(db), 1, np.nan)
         thr, ntiles = split_threshold(db, perm)
+        if not ntiles and case.get("rs1_flood", True):      # no tile with both permanent water and land (thin rivers)
+            rejected.append(dict(date=d, youden_j=None, why="no tile with both permanent water and land"))
+            print(f"  RADARSAT-1 {d} dropped: no tile with both water and land"); continue
         ok = np.isfinite(db) & valid
         # quality check with permanent water as the known reference: share of it below the threshold minus the
         # share of the rest below it (Youden J). Low = water and land not separable (wind, wet snow, low contrast)

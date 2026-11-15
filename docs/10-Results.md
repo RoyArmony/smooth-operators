@@ -164,3 +164,14 @@ Explorer layer `both_blind` (magenta, step "Both blind" on the Mekong site): the
 written by `python scripts/blank_breakdown.py mekong-delta-vietnam/2026-09-flood --layer mekong-delta-vietnam`
 into `events/mekong-delta-vietnam/layers/both_blind_<date>.png` (4 passes). 15.11.26 (Noa).
 
+
+## Over-the-years folders: Tonle Sap, Sylhet (Nepal not possible) — 15.11.26 (Noa)
+
+`python -m unseen.historyfolder <place>`; same method as Mekong / Peace–Athabasca (RADARSAT-1 ≥ 90 % cover, Otsu per
+image, Youden J ≥ 0.5 quality check). Each RADARSAT-1 flood map checked by eye against MODIS.
+
+| Place | Images kept | RADARSAT-1 | Most flood, then → now | Notes |
+|---|---|---|---|---|
+| Tonle Sap, Cambodia | 13 | 9 (1998–2006), 0 dropped | 1,716 km² (2001-08-30) → 4,060 km² (NISAR 2026-10-17) | flood pulse: dry 300–700, wet 1,000–1,700 km² |
+| Sylhet haor, Bangladesh | 9 | 4 (1996–2002), 3 dropped (J < 0.5) | 931 km² (2002-07-01) → 920 km² (NISAR 2026-07-24) | monsoon haor edges; no MODIS before 2000, cloud after |
+| Nepal (small box) | – | 10 found, all unusable | – | box holds only a thin river: no tile with both permanent water and land, so no threshold |

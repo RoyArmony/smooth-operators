@@ -142,7 +142,7 @@ def split_threshold(db, permanent, tile=32):
                 pick[i:i + tile, j:j + tile] = True
                 n += 1
     v = db[pick & np.isfinite(db)]
-    return otsu(v), n
+    return (otsu(v) if n else float("nan")), n       # no tile with both water and land: no threshold
 
 
 def gfm_from_bundle(eid, date, grid, shape):
