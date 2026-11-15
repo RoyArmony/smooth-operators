@@ -148,11 +148,9 @@ def coherence(bbox, grid, track, frame, dates, log=print):
     return out
 
 
-def _score(x, m):
-    z = (x - np.array(m["mu"])) / np.array(m["sd"])
-    z = np.nan_to_num(z)
-    p = 1 / (1 + np.exp(-(z @ np.array(m["w"]) + m["b"])))
-    return p >= m["cut"]
+def _prob(x, m):
+    z = np.nan_to_num((x - np.array(m["mu"])) / np.array(m["sd"]))
+    return 1 / (1 + np.exp(-(z @ np.array(m["w"]) + m["b"])))
 
 
 def _clean(w, pixel_m):
@@ -177,19 +175,19 @@ def detect_fused(stack, dates, grid, bbox, track=None, frame=None, dry_dates=Non
     with np.errstate(all="ignore"):
         rh = np.nanmedian(hh[dry], 0); rv = np.nanmedian(hv[dry], 0)
     coh = coherence(bbox, grid, track, frame, dates, log) if track is not None else [None] * T
-    water = np.zeros(hh.shape, bool); used_coh = []
+    water = np.zeros(hh.shape, bool); prob = np.zeros(hh.shape, np.float32); used_coh = []
     for t in range(T):
         f = [hh[t] - th[t], hv[t] - tv[t], hh[t] - rh, hv[t] - rv, hh[t] - hv[t], np.full(hh[t].shape, MODEL_COH["mu"][5]), rh - th[t]]
         if coh[t] is not None:
-            w = _score(np.stack(f + [coh[t]], -1), MODEL_COH); used_coh.append(True)
+            m = MODEL_COH; prob[t] = _prob(np.stack(f + [coh[t]], -1), m); used_coh.append(True)
         else:
-            w = _score(np.stack(f, -1), MODEL_NOCOH); used_coh.append(False)
-        water[t] = _clean(w, grid["dx"])
+            m = MODEL_NOCOH; prob[t] = _prob(np.stack(f, -1), m); used_coh.append(False)
+        water[t] = _clean(prob[t] >= m["cut"], grid["dx"])
     valid = np.isfinite(hh).all(0)
     water &= valid[None]
     old = detect(stack, pixel_m=grid["dx"])                                # double bounce = water under vegetation
     canopy = old["canopy"] & ~water
     permanent = (water.mean(0) >= 0.9) & valid
-    return dict(water=water, canopy=canopy, valid=valid, permanent=permanent,
+    return dict(water=water, canopy=canopy, valid=valid, permanent=permanent, prob=prob,
                 info=dict(detector="fused v3", thresholds_hh=[round(v, 1) for v in th], thresholds_hv=[round(v, 1) for v in tv],
                           dry_passes=[dates[i] for i in dry], coherence=used_coh))

@@ -128,6 +128,27 @@ Same passes, same truth (OPERA DSWx-HLS, clear days), same quality check. Mean F
 - Needs a dry-season reference and ≥ 1 GUNW pair per pass.
 - Open water focus; flooded vegetation still relies on the double-bounce rule in §2.
 
+## 2c. Smart fill with height (GLO-30 HAND), experimental
+
+Idea: a pixel that is **lower than the flood next to it** and **almost dark enough to be water** is probably flooded too.
+Code: `pipeline/unseen/fill.py` (`unseen site|build --fill`, off by default); height: `pipeline/unseen/hand.py`.
+
+1. **Seeds:** v3 water $W$ and its water probability $p$ (v3 calls water at $p \ge 0.30$).
+2. **Boundaries:** edge pixels of $W$. **Local water level** $\ell(x)$ = HAND of the nearest edge pixel.
+3. **Grow** step by step from $W$ (connected) into pixels with
+   $$\text{HAND}(x) \le \ell(x) + \text{tol}, \qquad p(x) \ge p_{low}, \qquad \text{dist}(x, W) \le d_{max}$$
+   Tuned on Inner Niger track 145: $p_{low}$ = 0.25, tol = 0 m, $d_{max}$ = 2 km.
+
+HAND = Height Above Nearest Drainage, from ASF's GLO-30 HAND (Copernicus DEM, 30 m), averaged onto the 80 m grid.
+
+**Inner Niger result (truth: OPERA DSWx-HLS):** no gain. Mean flood-season F1 0.706 → 0.707 (track 145), 0.698 → 0.695
+(track 138, held out); it adds 20–65 km² per pass. Same fill without the height rule: 0.704 / 0.686, so height does
+help the fill a little, but the delta is too flat: median HAND 0.2 m, 90 % of pixels < 1.1 m; water 0.15 m vs land 0.27 m.
+HAND as a filter (drop water above h): h = 1 m keeps F1 (0.700) and cuts dry-season false water ~10 %; h = 0.5 m ~25 %, F1 0.694.
+
+**Next:** test where there is relief (Tonle Sap edge, Peace–Athabasca). Limits: HAND is from a surface model (treetops
+count as ground, so it under-fills flooded forest); ±2–4 m vertical error is larger than shallow flood depth.
+
 ## 3. Gap vs official map (`pipeline/unseen/gfm.py`, `scripts/validation/gap_all.py`)
 
 - GFM `ensemble_flood_extent` and `exclusion_mask` within ±2 days, nearest-neighbour onto the NISAR grid.

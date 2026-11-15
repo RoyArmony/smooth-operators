@@ -39,7 +39,7 @@ def load(bbox, sid, refresh=False):
     return stack, dates, grid, st
 
 
-def water(stack, dates, grid, bbox, use_optical=True, detector="v3", st=None, dry_dates=None):
+def water(stack, dates, grid, bbox, use_optical=True, detector="v3", st=None, dry_dates=None, fill=False, key=None):
     """Water layers per pass. detector="v3" (default): fused.detect_fused (docs/07 §2b: per-scene threshold, change
     from the dry season, HV, GUNW coherence). detector="v2": detect.detect with thresholds calibrated on clear optical
     days. Both add the optical ocean mask to permanent water. Returns (L, calibration or None)."""
@@ -47,6 +47,9 @@ def water(stack, dates, grid, bbox, use_optical=True, detector="v3", st=None, dr
     if detector == "v3":
         from .fused import detect_fused
         L = detect_fused(stack, dates, grid, bbox, track=(st or {}).get("track"), frame=(st or {}).get("frame"), dry_dates=dry_dates)
+        if fill:                                                # optional: smart fill with HAND (fill.py)
+            from .fill import apply
+            L = apply(L, grid, bbox, key=key)
         if use_optical:
             try:
                 d0 = (dt.date.fromisoformat(dates[0]) - dt.timedelta(days=6)).isoformat()

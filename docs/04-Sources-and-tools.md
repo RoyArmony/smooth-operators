@@ -62,6 +62,7 @@ All 14 links from the [Resources tab](https://www.spaceappschallenge.org/2026/ch
 ## Other data
 
 - **Copernicus DEM GLO-30** (ESA / EU, AWS open data, no login) — elevation for radar shadow / layover and troposphere correction — https://registry.opendata.aws/copernicus-dem/ (Roy, 31.10.26)
+- **GLO-30 HAND** (ASF, Height Above Nearest Drainage from Copernicus DEM GLO-30; AWS open data `s3://glo-30-hand`, no login, 1° COG tiles) — smart fill / height filter for flood maps (`pipeline/unseen/hand.py`) — https://registry.opendata.aws/glo-30-hand/ (Noa, 15.11.26)
 - **ESA WorldCover 2021 v200** (CC BY 4.0, AWS COGs) — land cover: cropland, built-up, forest — https://esa-worldcover.org (Shai, 09.11.26)
 - **WorldPop 2025 constrained population, 1 km** (CC BY 4.0) — people in affected zones — https://www.worldpop.org (Shai, 09.11.26)
 - **Microsoft Planetary Computer** (STAC, no login; `pystac-client`, `planetary-computer`) — Sentinel-1 RTC, Sentinel-2 L2A, ALOS PALSAR annual mosaics, USDA cropland layer — https://planetarycomputer.microsoft.com/catalog (Noa, 14.11.26)

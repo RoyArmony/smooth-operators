@@ -11,13 +11,13 @@ import argparse, json
 from . import bundle, flood, landcover
 
 
-def site(eid, title, bbox, kind="site", passes="all", place=None, use_optical=True, refresh=False, detector="v3", dry_dates=None):
+def site(eid, title, bbox, kind="site", passes="all", place=None, use_optical=True, refresh=False, detector="v3", dry_dates=None, fill=False):
     from .fused import qa
     stack, dates, grid, st = flood.load(bbox, eid, refresh=refresh)
     stack, dates, dropped = qa(stack, dates)                 # corrupt passes out (both detectors)
     if dropped:
         print(f"[qa] {eid}: dropped corrupt passes {dropped}")
-    L, cal = flood.water(stack, dates, grid, bbox, use_optical=use_optical, detector=detector, st=st, dry_dates=dry_dates)
+    L, cal = flood.water(stack, dates, grid, bbox, use_optical=use_optical, detector=detector, st=st, dry_dates=dry_dates, fill=fill, key=eid)
     try:
         lc = landcover.on_grid(grid, bbox, key=eid)
     except Exception as e:  # noqa: BLE001
@@ -58,6 +58,7 @@ def site(eid, title, bbox, kind="site", passes="all", place=None, use_optical=Tr
                                   "water under vegetation from detect.py)") if detector == "v3"
                         else "detect.py v2 (open water + water under vegetation, HH/HV)",
                         detector_info=L.get("info"), qa_dropped=dropped,
+                        smart_fill=dict(on=True, added_km2=L.get("filled_km2")) if fill else None,
                         calibration=cal if cal and cal.get("used") else None, pixel_m=grid["dx"],
                         gap="NISAR water inside GFM exclusion mask, both valid, permanent water removed",
                         stack=None if st is None else dict(track=st["track"], frame=st["frame"], direction=st["direction"]))
@@ -121,8 +122,10 @@ def main(argv=None):
     s.add_argument("--passes", default="all", choices=["all", "best"])
     s.add_argument("--place"); s.add_argument("--no-optical", action="store_true")
     s.add_argument("--detector", default="v3", choices=["v3", "v2"], help="v3 = fused (default), v2 = old detect.py")
+    s.add_argument("--fill", action="store_true", help="smart fill with GLO-30 HAND (v3 only, experimental)")
     b = sub.add_parser("build"); b.add_argument("--only"); b.add_argument("--refresh", action="store_true", help="search for new NISAR passes")
     b.add_argument("--detector", default="v3", choices=["v3", "v2"])
+    b.add_argument("--fill", action="store_true", help="smart fill with GLO-30 HAND (experimental)")
     sub.add_parser("world")
     sub.add_parser("index")
     a = ap.parse_args(argv)
@@ -132,7 +135,7 @@ def main(argv=None):
         print("Earthdata login:", "ok" if r.status_code in (200, 302) else f"HTTP {r.status_code}")
     elif a.cmd == "site":
         ev = site(a.id, a.title, [float(v) for v in a.bbox.split(",")], a.kind, a.passes, a.place, not a.no_optical,
-                  detector=a.detector)
+                  detector=a.detector, fill=a.fill)
         print(json.dumps(ev["headline"], indent=1, ensure_ascii=False))
         bundle.write_index()
     elif a.cmd == "build":
@@ -141,7 +144,7 @@ def main(argv=None):
                 continue
             try:
                 ev = site(s["id"], s["title"], s["bbox"], s["kind"], "all" if s["kind"] == "story" else "best",
-                          refresh=a.refresh, detector=a.detector, dry_dates=s.get("dry_dates"))
+                          refresh=a.refresh, detector=a.detector, dry_dates=s.get("dry_dates"), fill=a.fill)
                 print(s["id"], ev["headline"]["numbers"][:2], flush=True)
             except Exception as e:  # noqa: BLE001
                 print(s["id"], "FAILED", repr(e)[:200], flush=True)

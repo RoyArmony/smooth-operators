@@ -24,6 +24,7 @@ permanent water removed; area = pixels × 80 m × 80 m.
 | `bundle.py` | masks → `events/<id>/layers/*.png` (EPSG:4326) + `event.json`; `events/index.json` |
 | `cli.py` | the `unseen` command; `sites.json` = the 16 sites |
 | `nisar.py`, `gcov.py`, `remote.py`, `auth.py` | ASF search, NISAR GCOV windowed reads over HTTP, Earthdata login |
+| `fill.py`, `hand.py` | optional smart fill (`--fill`): grow water into low (GLO-30 HAND), near-threshold neighbours; HAND on our grid |
 | `fused.py` | **default detector v3**: QA, per-scene threshold, dry-season change, HV, GUNW coherence → water |
 | `detect.py`, `flood_nasa.py` | old detector v2 (also gives water under vegetation); NISAR handbook §6.4 classifier (second opinion) |
 | `gfm.py`, `optical.py`, `rcm.py` | Copernicus GFM, OPERA DSWx-HLS, Canada's RCM on our grid |

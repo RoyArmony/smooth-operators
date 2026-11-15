@@ -26,6 +26,7 @@ Our maps and numbers are derived products, not official NASA products, and not e
 | **Sentinel-1, Sentinel-2** (ESA Copernicus; ASF, Planetary Computer) | C-band radar, optical checks | Free and open; "Contains modified Copernicus Sentinel data [year]" |
 | **Global Seasonal Sentinel-1 Coherence** (Kellndorfer et al. 2022, AWS) | C-band coherence reference | CC BY 4.0; cite Kellndorfer et al. 2022, *Sci. Data* 9:73 |
 | **Copernicus DEM GLO-30** (ESA / EU, AWS) | Elevation, shadow/layover, troposphere | "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA" |
+| **GLO-30 HAND** (ASF / Alaska Satellite Facility, from Copernicus DEM GLO-30; AWS open data) | Height above nearest drainage: smart fill of flood maps | Derived from Copernicus DEM: "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA"; HAND dataset by ASF (licence: see https://registry.opendata.aws/glo-30-hand/, to verify before submission) |
 | **ESA WorldCover 2021 v200** | Land cover | CC BY 4.0; "© ESA WorldCover project 2021 / Contains modified Copernicus Sentinel data (2021) processed by ESA WorldCover consortium" |
 | **WorldPop 2025** (Univ. of Southampton) | Population | CC BY 4.0; credit WorldPop |
 | **Copernicus EMS Global Flood Monitoring** | Sentinel-1 flood extent | "© European Union, Copernicus Emergency Management Service"; free and open |
