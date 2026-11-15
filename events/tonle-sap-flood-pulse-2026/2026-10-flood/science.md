@@ -1,6 +1,6 @@
 # Tonle Sap flood, Oct 2026
 
-On 2026-10-17, NISAR adds 541 km² of flood (+102%) where the official flood map (Copernicus GFM) cannot see.
+On 2026-10-17, NISAR adds 359 km² of flood (+65%) where the official flood map (Copernicus GFM) cannot see.
 
 **Window:** 2026-09-17 → 2026-11-16 (flood date ± 30 days), 4 NISAR passes, every 12 days.
 

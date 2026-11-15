@@ -25,15 +25,15 @@
   "pass_date": "2026-10-17",
   "baseline": "gfm",
   "baseline_date": "2026-10-17",
-  "baseline_flood_km2": 532.4,
-  "nisar_adds_km2": 540.7,
-  "improvement_pct": 102,
-  "cannot_see_km2": 2751.9,
+  "baseline_flood_km2": 553.4,
+  "nisar_adds_km2": 359.1,
+  "improvement_pct": 65,
+  "cannot_see_km2": 2758.9,
   "cannot_see_clouds_km2": 0.0,
-  "cannot_see_vegetation_km2": 2751.9,
+  "cannot_see_vegetation_km2": 2758.9,
   "still_unknown_km2": 0.0,
-  "nisar_water_km2": 4059.9,
-  "sentence": "On 2026-10-17, NISAR adds 541 km² of flood (+102%) where the official flood map (Copernicus GFM) cannot see."
+  "nisar_water_km2": 3683.5,
+  "sentence": "On 2026-10-17, NISAR adds 359 km² of flood (+65%) where the official flood map (Copernicus GFM) cannot see."
  },
  "passes": [
   {
@@ -44,12 +44,12 @@
    },
    "baselines": {
     "gfm": {
-     "flood_km2": 845.8,
-     "cannot_see_km2": 2767.0,
+     "flood_km2": 878.3,
+     "cannot_see_km2": 2774.1,
      "cannot_see_clouds_km2": 0.0,
-     "cannot_see_vegetation_km2": 2767.0,
-     "nisar_adds_km2": 466.4,
-     "improvement_pct": 55,
+     "cannot_see_vegetation_km2": 2774.1,
+     "nisar_adds_km2": 269.1,
+     "improvement_pct": 31,
      "still_unknown_km2": 0.0
     }
    },
@@ -65,7 +65,7 @@
    ],
    "clouds_pct": 92,
    "nisar": {
-    "water_km2": 3833.5,
+    "water_km2": 2310.0,
     "valid_pct": 100
    },
    "main_baseline": "gfm"
@@ -80,21 +80,21 @@
    },
    "baselines": {
     "gfm": {
-     "flood_km2": 375.8,
-     "cannot_see_km2": 2753.0,
+     "flood_km2": 395.0,
+     "cannot_see_km2": 2760.0,
      "cannot_see_clouds_km2": 0.0,
-     "cannot_see_vegetation_km2": 2753.0,
-     "nisar_adds_km2": 485.6,
-     "improvement_pct": 129,
+     "cannot_see_vegetation_km2": 2760.0,
+     "nisar_adds_km2": 341.2,
+     "improvement_pct": 86,
      "still_unknown_km2": 0.0
     },
     "dswx": {
-     "flood_km2": 863.7,
-     "cannot_see_km2": 8299.5,
-     "cannot_see_clouds_km2": 8299.5,
+     "flood_km2": 899.1,
+     "cannot_see_km2": 9065.1,
+     "cannot_see_clouds_km2": 9065.1,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 3356.6,
-     "improvement_pct": 389,
+     "nisar_adds_km2": 3222.4,
+     "improvement_pct": 358,
      "still_unknown_km2": 0.0
     }
    },
@@ -114,7 +114,7 @@
    ],
    "clouds_pct": 77,
    "nisar": {
-    "water_km2": 3794.5,
+    "water_km2": 3584.1,
     "valid_pct": 100
    },
    "main_baseline": "gfm"
@@ -129,21 +129,21 @@
    },
    "baselines": {
     "gfm": {
-     "flood_km2": 532.4,
-     "cannot_see_km2": 2751.9,
+     "flood_km2": 553.4,
+     "cannot_see_km2": 2758.9,
      "cannot_see_clouds_km2": 0.0,
-     "cannot_see_vegetation_km2": 2751.9,
-     "nisar_adds_km2": 540.7,
-     "improvement_pct": 102,
+     "cannot_see_vegetation_km2": 2758.9,
+     "nisar_adds_km2": 359.1,
+     "improvement_pct": 65,
      "still_unknown_km2": 0.0
     },
     "dswx": {
-     "flood_km2": 1898.8,
-     "cannot_see_km2": 7820.8,
-     "cannot_see_clouds_km2": 7820.8,
+     "flood_km2": 2180.6,
+     "cannot_see_km2": 8334.8,
+     "cannot_see_clouds_km2": 8334.8,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 2278.9,
-     "improvement_pct": 120,
+     "nisar_adds_km2": 2076.8,
+     "improvement_pct": 95,
      "still_unknown_km2": 0.0
     }
    },
@@ -163,7 +163,7 @@
    ],
    "clouds_pct": 64,
    "nisar": {
-    "water_km2": 4059.9,
+    "water_km2": 3683.5,
     "valid_pct": 100
    },
    "main_baseline": "gfm"
@@ -172,25 +172,26 @@
    "date": "2026-10-29",
    "matched": {
     "gfm": "2026-10-29",
-    "dswx": "2026-10-29"
+    "dswx": "2026-10-29",
+    "photo": "2026-10-29"
    },
    "baselines": {
     "gfm": {
-     "flood_km2": 319.9,
-     "cannot_see_km2": 2752.2,
+     "flood_km2": 336.0,
+     "cannot_see_km2": 2759.2,
      "cannot_see_clouds_km2": 0.0,
-     "cannot_see_vegetation_km2": 2752.2,
-     "nisar_adds_km2": 340.6,
-     "improvement_pct": 106,
+     "cannot_see_vegetation_km2": 2759.2,
+     "nisar_adds_km2": 194.4,
+     "improvement_pct": 58,
      "still_unknown_km2": 0.0
     },
     "dswx": {
-     "flood_km2": 710.3,
-     "cannot_see_km2": 7990.3,
-     "cannot_see_clouds_km2": 7990.3,
+     "flood_km2": 857.3,
+     "cannot_see_km2": 8631.7,
+     "cannot_see_clouds_km2": 8631.7,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 2462.4,
-     "improvement_pct": 347,
+     "nisar_adds_km2": 1506.0,
+     "improvement_pct": 176,
      "still_unknown_km2": 0.0
     }
    },
@@ -204,10 +205,11 @@
     "nisar_open",
     "dswx_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
-    "water_km2": 3344.7,
+    "water_km2": 2023.1,
     "valid_pct": 100
    },
    "main_baseline": "gfm"
@@ -291,7 +293,8 @@
    "files": {
     "2026-09-18": "layers/photo_2026-09-18.jpg",
     "2026-10-04": "layers/photo_2026-10-04.jpg",
-    "2026-10-19": "layers/photo_2026-10-19.jpg"
+    "2026-10-19": "layers/photo_2026-10-19.jpg",
+    "2026-10-29": "layers/photo_2026-10-29.jpg"
    },
    "bounds": [
     [
@@ -302,7 +305,10 @@
      13.30226,
      104.14948
     ]
-   ]
+   ],
+   "sensors": {
+    "2026-10-29": "VIIRS (NOAA-20) true colour via NASA GIBS"
+   }
   },
   "nisar_rgb": {
    "group": "radar",
@@ -621,7 +627,54 @@
   }
  },
  "method": {
-  "detector": "detect.py v2 (open water + water under vegetation, HH/HV), thresholds calibrated on clear optical days: HH -14.0 / HV -19.0 dB",
+  "detector": "fused v3 (fused.py: per-scene threshold, change from the dry season, HV, GUNW coherence; water under vegetation from detect.py)",
+  "detector_info": {
+   "detector": "fused v3",
+   "thresholds_hh": [
+    -14.3,
+    -14.5,
+    -14.3,
+    -12.7,
+    -13.4,
+    -13.8,
+    -13.8,
+    -12.8,
+    -13.8,
+    -13.9,
+    -13.4
+   ],
+   "thresholds_hv": [
+    -15.7,
+    -15.5,
+    -16.3,
+    -15.6,
+    -15.4,
+    -15.7,
+    -16.5,
+    -18.3,
+    -19.5,
+    -19.6,
+    -19.3
+   ],
+   "dry_passes": [
+    "2026-06-19",
+    "2026-07-01"
+   ],
+   "coherence": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    true,
+    true,
+    false
+   ]
+  },
+  "qa_dropped": [],
   "pixel_m": 80.0,
   "permanent_water": "dark on ≥ 90 % of NISAR passes",
   "matching": {

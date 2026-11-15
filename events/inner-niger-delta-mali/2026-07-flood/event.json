@@ -25,15 +25,26 @@
   "pass_date": "2026-07-18",
   "baseline": "gfm",
   "baseline_date": "2026-07-20",
-  "baseline_flood_km2": 55.2,
-  "nisar_adds_km2": 223.1,
-  "improvement_pct": 404,
-  "cannot_see_km2": 491.3,
+  "baseline_flood_km2": 118.4,
+  "nisar_adds_km2": 29.6,
+  "improvement_pct": 25,
+  "cannot_see_km2": 596.5,
   "cannot_see_clouds_km2": 0.0,
-  "cannot_see_vegetation_km2": 491.3,
+  "cannot_see_vegetation_km2": 596.5,
   "still_unknown_km2": 0.0,
-  "nisar_water_km2": 1721.9,
-  "sentence": "On 2026-07-18, NISAR adds 223 km² of flood (+404%) where the official flood map (Copernicus GFM) cannot see."
+  "nisar_water_km2": 482.1,
+  "sentence": "On 2026-07-18, NISAR adds 30 km² of flood (+25%) where the official flood map (Copernicus GFM) cannot see.",
+  "validation": {
+   "source": "dswx",
+   "dswx": {
+    "agreement_pct": 90.4,
+    "iou": 0.27,
+    "n_dates": 2
+   },
+   "agreement_pct": 90.4,
+   "iou": 0.27,
+   "n_dates": 2
+  }
  },
  "passes": [
   {
@@ -45,21 +56,21 @@
    },
    "baselines": {
     "gfm": {
-     "flood_km2": 7.4,
-     "cannot_see_km2": 503.2,
+     "flood_km2": 15.7,
+     "cannot_see_km2": 614.3,
      "cannot_see_clouds_km2": 0.0,
-     "cannot_see_vegetation_km2": 503.2,
-     "nisar_adds_km2": 174.0,
-     "improvement_pct": 2359,
+     "cannot_see_vegetation_km2": 614.3,
+     "nisar_adds_km2": 52.6,
+     "improvement_pct": 335,
      "still_unknown_km2": 0.0
     },
     "dswx": {
-     "flood_km2": 6.9,
-     "cannot_see_km2": 558.8,
-     "cannot_see_clouds_km2": 558.8,
+     "flood_km2": 10.5,
+     "cannot_see_km2": 688.4,
+     "cannot_see_clouds_km2": 688.4,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 229.2,
-     "improvement_pct": 3338,
+     "nisar_adds_km2": 74.3,
+     "improvement_pct": 710,
      "still_unknown_km2": 0.0
     }
    },
@@ -71,58 +82,26 @@
     "gfm_classes",
     "dswx_classes",
     "nisar_water",
+    "nisar_open",
+    "dswx_water",
     "nisar_adds",
     "combined"
    ],
    "clouds_pct": 9,
    "nisar": {
-    "water_km2": 1448.1,
+    "water_km2": 389.6,
     "valid_pct": 100
    },
-   "main_baseline": "gfm"
-  },
-  {
-   "date": "2026-07-06",
-   "matched": {
-    "photo": "2026-07-09",
-    "gfm": "2026-07-08",
-    "dswx": "2026-07-05"
-   },
-   "baselines": {
-    "gfm": {
-     "flood_km2": 0.2,
-     "cannot_see_km2": 491.3,
-     "cannot_see_clouds_km2": 0.0,
-     "cannot_see_vegetation_km2": 491.3,
-     "nisar_adds_km2": 54.6,
-     "improvement_pct": null,
-     "still_unknown_km2": 0.0
-    },
+   "validation": {
     "dswx": {
-     "flood_km2": 0.6,
-     "cannot_see_km2": 2678.2,
-     "cannot_see_clouds_km2": 2678.2,
-     "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 349.1,
-     "improvement_pct": null,
-     "still_unknown_km2": 0.0
+     "compared_pct": 84,
+     "agreement_pct": 92.0,
+     "iou": 0.01,
+     "f1": 0.01,
+     "precision": 0.01,
+     "recall": 0.14,
+     "date": "2026-06-23"
     }
-   },
-   "layers": [
-    "photo",
-    "nisar_rgb",
-    "nisar_hh",
-    "nisar_hv",
-    "gfm_classes",
-    "dswx_classes",
-    "nisar_water",
-    "nisar_adds",
-    "combined"
-   ],
-   "clouds_pct": 19,
-   "nisar": {
-    "water_km2": 354.8,
-    "valid_pct": 100
    },
    "main_baseline": "gfm"
   },
@@ -136,20 +115,20 @@
    },
    "baselines": {
     "gfm": {
-     "flood_km2": 55.2,
-     "cannot_see_km2": 491.3,
+     "flood_km2": 118.4,
+     "cannot_see_km2": 596.5,
      "cannot_see_clouds_km2": 0.0,
-     "cannot_see_vegetation_km2": 491.3,
-     "nisar_adds_km2": 223.1,
-     "improvement_pct": 404,
+     "cannot_see_vegetation_km2": 596.5,
+     "nisar_adds_km2": 29.6,
+     "improvement_pct": 25,
      "still_unknown_km2": 0.0
     },
     "dswx": {
-     "flood_km2": 3.3,
-     "cannot_see_km2": 2751.1,
-     "cannot_see_clouds_km2": 2751.1,
+     "flood_km2": 4.6,
+     "cannot_see_km2": 3934.1,
+     "cannot_see_clouds_km2": 3934.1,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 1577.4,
+     "nisar_adds_km2": 441.3,
      "improvement_pct": null,
      "still_unknown_km2": 0.0
     }
@@ -163,12 +142,14 @@
     "gfm_classes",
     "dswx_classes",
     "nisar_water",
+    "nisar_open",
+    "dswx_water",
     "nisar_adds",
     "combined"
    ],
    "clouds_pct": 31,
    "nisar": {
-    "water_km2": 1721.9,
+    "water_km2": 482.1,
     "valid_pct": 100
    },
    "main_baseline": "gfm"
@@ -183,21 +164,21 @@
    },
    "baselines": {
     "gfm": {
-     "flood_km2": 38.1,
-     "cannot_see_km2": 501.8,
+     "flood_km2": 107.0,
+     "cannot_see_km2": 612.0,
      "cannot_see_clouds_km2": 0.0,
-     "cannot_see_vegetation_km2": 501.8,
-     "nisar_adds_km2": 217.8,
-     "improvement_pct": 572,
+     "cannot_see_vegetation_km2": 612.0,
+     "nisar_adds_km2": 22.8,
+     "improvement_pct": 21,
      "still_unknown_km2": 0.0
     },
     "dswx": {
-     "flood_km2": 107.8,
-     "cannot_see_km2": 2022.1,
-     "cannot_see_clouds_km2": 2022.1,
+     "flood_km2": 228.2,
+     "cannot_see_km2": 2845.0,
+     "cannot_see_clouds_km2": 2845.0,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 858.8,
-     "improvement_pct": 797,
+     "nisar_adds_km2": 383.6,
+     "improvement_pct": 168,
      "still_unknown_km2": 0.0
     }
    },
@@ -210,13 +191,26 @@
     "gfm_classes",
     "dswx_classes",
     "nisar_water",
+    "nisar_open",
+    "dswx_water",
     "nisar_adds",
     "combined"
    ],
    "clouds_pct": 7,
    "nisar": {
-    "water_km2": 1596.5,
+    "water_km2": 681.6,
     "valid_pct": 100
+   },
+   "validation": {
+    "dswx": {
+     "compared_pct": 34,
+     "agreement_pct": 88.8,
+     "iou": 0.52,
+     "f1": 0.68,
+     "precision": 0.61,
+     "recall": 0.77,
+     "date": "2026-08-10"
+    }
    },
    "main_baseline": "gfm"
   }
@@ -298,7 +292,6 @@
    "default": false,
    "files": {
     "2026-06-27": "layers/photo_2026-06-27.jpg",
-    "2026-07-09": "layers/photo_2026-07-09.jpg",
     "2026-07-20": "layers/photo_2026-07-20.jpg",
     "2026-08-06": "layers/photo_2026-08-06.jpg"
    },
@@ -321,7 +314,6 @@
    "default": true,
    "files": {
     "2026-06-24": "layers/nisar_rgb_2026-06-24.jpg",
-    "2026-07-06": "layers/nisar_rgb_2026-07-06.jpg",
     "2026-07-18": "layers/nisar_rgb_2026-07-18.jpg",
     "2026-08-11": "layers/nisar_rgb_2026-08-11.jpg"
    },
@@ -344,7 +336,6 @@
    "default": false,
    "files": {
     "2026-06-24": "layers/nisar_hh_2026-06-24.jpg",
-    "2026-07-06": "layers/nisar_hh_2026-07-06.jpg",
     "2026-07-18": "layers/nisar_hh_2026-07-18.jpg",
     "2026-08-11": "layers/nisar_hh_2026-08-11.jpg"
    },
@@ -367,7 +358,6 @@
    "default": false,
    "files": {
     "2026-06-24": "layers/nisar_hv_2026-06-24.jpg",
-    "2026-07-06": "layers/nisar_hv_2026-07-06.jpg",
     "2026-07-18": "layers/nisar_hv_2026-07-18.jpg",
     "2026-08-11": "layers/nisar_hv_2026-08-11.jpg"
    },
@@ -403,7 +393,6 @@
    "default": true,
    "files": {
     "2026-06-26": "layers/gfm_classes_2026-06-26.png",
-    "2026-07-08": "layers/gfm_classes_2026-07-08.png",
     "2026-07-20": "layers/gfm_classes_2026-07-20.png",
     "2026-08-13": "layers/gfm_classes_2026-08-13.png"
    },
@@ -439,7 +428,6 @@
    "default": false,
    "files": {
     "2026-06-23": "layers/dswx_classes_2026-06-23.png",
-    "2026-07-05": "layers/dswx_classes_2026-07-05.png",
     "2026-07-17": "layers/dswx_classes_2026-07-17.png",
     "2026-08-10": "layers/dswx_classes_2026-08-10.png"
    },
@@ -467,9 +455,66 @@
    "default": false,
    "files": {
     "2026-06-24": "layers/nisar_water_2026-06-24.png",
-    "2026-07-06": "layers/nisar_water_2026-07-06.png",
     "2026-07-18": "layers/nisar_water_2026-07-18.png",
     "2026-08-11": "layers/nisar_water_2026-08-11.png"
+   },
+   "bounds": [
+    [
+     14.59672,
+     -4.60418
+    ],
+    [
+     15.20314,
+     -3.99776
+    ]
+   ]
+  },
+  "nisar_open": {
+   "group": "validation",
+   "sensor": "NISAR L-band",
+   "label": "NISAR open water (incl. permanent)",
+   "legend": [
+    [
+     "#2882ff",
+     "open water (NISAR)"
+    ]
+   ],
+   "default": false,
+   "files": {
+    "2026-06-24": "layers/nisar_open_2026-06-24.png",
+    "2026-07-18": "layers/nisar_open_2026-07-18.png",
+    "2026-08-11": "layers/nisar_open_2026-08-11.png"
+   },
+   "bounds": [
+    [
+     14.59672,
+     -4.60418
+    ],
+    [
+     15.20314,
+     -3.99776
+    ]
+   ]
+  },
+  "dswx_water": {
+   "group": "validation",
+   "sensor": "OPERA DSWx-HLS (NASA)",
+   "label": "Water in NASA's map (DSWx, incl. permanent)",
+   "legend": [
+    [
+     "#3aa0ff",
+     "open water (NASA DSWx)"
+    ],
+    [
+     "#ebebf0",
+     "clouds"
+    ]
+   ],
+   "default": false,
+   "files": {
+    "2026-06-23": "layers/dswx_water_2026-06-23.png",
+    "2026-07-17": "layers/dswx_water_2026-07-17.png",
+    "2026-08-10": "layers/dswx_water_2026-08-10.png"
    },
    "bounds": [
     [
@@ -495,7 +540,6 @@
    "default": true,
    "files": {
     "2026-06-24": "layers/nisar_adds_2026-06-24.png",
-    "2026-07-06": "layers/nisar_adds_2026-07-06.png",
     "2026-07-18": "layers/nisar_adds_2026-07-18.png",
     "2026-08-11": "layers/nisar_adds_2026-08-11.png"
    },
@@ -535,7 +579,6 @@
    "default": false,
    "files": {
     "2026-06-24": "layers/combined_2026-06-24.png",
-    "2026-07-06": "layers/combined_2026-07-06.png",
     "2026-07-18": "layers/combined_2026-07-18.png",
     "2026-08-11": "layers/combined_2026-08-11.png"
    },
@@ -572,8 +615,68 @@
    ]
   }
  },
+ "validation": {
+  "dswx": {
+   "source": "NASA's flood map (OPERA DSWx-HLS, optical)",
+   "n_dates": 2,
+   "dates": [
+    "2026-06-24",
+    "2026-08-11"
+   ],
+   "agreement_pct": 90.4,
+   "iou": 0.27,
+   "f1": 0.35,
+   "precision": 0.31,
+   "recall": 0.46,
+   "compared": "open water incl. permanent, where DSWx has no cloud",
+   "sentence": "NASA's DSWx map and NISAR agree on 90% of pixels (open water IoU 0.27, 2 passes)."
+  }
+ },
  "method": {
-  "detector": "detect.py v2 (open water + water under vegetation, HH/HV), thresholds calibrated on clear optical days: HH -17.0 / HV -24.0 dB",
+  "detector": "fused v3 (fused.py: per-scene threshold, change from the dry season, HV, GUNW coherence; water under vegetation from detect.py)",
+  "detector_info": {
+   "detector": "fused v3",
+   "thresholds_hh": [
+    -14.2,
+    -16.8,
+    -17.7,
+    -16.6,
+    -14.2,
+    -14.8,
+    -15.7,
+    -15.6,
+    -15.6
+   ],
+   "thresholds_hv": [
+    -19.0,
+    -19.4,
+    -18.5,
+    -17.9,
+    -18.5,
+    -18.5,
+    -18.5,
+    -19.0,
+    -20.0
+   ],
+   "dry_passes": [
+    "2026-06-24",
+    "2026-07-18"
+   ],
+   "coherence": [
+    false,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false
+   ]
+  },
+  "qa_dropped": [
+   "2026-07-06"
+  ],
   "pixel_m": 80.0,
   "permanent_water": "dark on ≥ 90 % of NISAR passes",
   "matching": {

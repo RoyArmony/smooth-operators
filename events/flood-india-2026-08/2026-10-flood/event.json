@@ -24,24 +24,24 @@
   "pass_date": "2026-10-10",
   "baseline": "dswx",
   "baseline_date": "2026-10-11",
-  "baseline_flood_km2": 67.3,
-  "nisar_adds_km2": 4.4,
-  "improvement_pct": 7,
-  "cannot_see_km2": 5661.9,
-  "cannot_see_clouds_km2": 5661.9,
+  "baseline_flood_km2": 62.5,
+  "nisar_adds_km2": 104.3,
+  "improvement_pct": 167,
+  "cannot_see_km2": 5665.0,
+  "cannot_see_clouds_km2": 5665.0,
   "cannot_see_vegetation_km2": 0.0,
   "still_unknown_km2": 0.0,
-  "nisar_water_km2": 8.5,
-  "sentence": "On 2026-10-10, NISAR adds 4 km² of flood (+7%) where NASA's flood map (OPERA DSWx-HLS) cannot see.",
+  "nisar_water_km2": 148.6,
+  "sentence": "On 2026-10-10, NISAR adds 104 km² of flood (+167%) where NASA's flood map (OPERA DSWx-HLS) cannot see.",
   "validation": {
    "source": "dswx",
    "dswx": {
-    "agreement_pct": 97.8,
-    "iou": 0.04,
+    "agreement_pct": 97.2,
+    "iou": 0.18,
     "n_dates": 1
    },
-   "agreement_pct": 97.8,
-   "iou": 0.04,
+   "agreement_pct": 97.2,
+   "iou": 0.18,
    "n_dates": 1
   }
  },
@@ -50,16 +50,17 @@
    "date": "2026-10-10",
    "matched": {
     "coh": "12-day GUNW pairs that include this pass",
-    "dswx": "2026-10-11"
+    "dswx": "2026-10-11",
+    "photo": "2026-10-10"
    },
    "baselines": {
     "dswx": {
-     "flood_km2": 67.3,
-     "cannot_see_km2": 5661.9,
-     "cannot_see_clouds_km2": 5661.9,
+     "flood_km2": 62.5,
+     "cannot_see_km2": 5665.0,
+     "cannot_see_clouds_km2": 5665.0,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 4.4,
-     "improvement_pct": 7,
+     "nisar_adds_km2": 104.3,
+     "improvement_pct": 167,
      "still_unknown_km2": 0.0
     }
    },
@@ -73,20 +74,21 @@
     "nisar_open",
     "dswx_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
-    "water_km2": 8.5,
+    "water_km2": 148.6,
     "valid_pct": 93
    },
    "validation": {
     "dswx": {
      "compared_pct": 35,
-     "agreement_pct": 97.8,
-     "iou": 0.04,
-     "f1": 0.08,
-     "precision": 0.72,
-     "recall": 0.04,
+     "agreement_pct": 97.2,
+     "iou": 0.18,
+     "f1": 0.3,
+     "precision": 0.34,
+     "recall": 0.27,
      "date": "2026-10-11"
     }
    },
@@ -95,16 +97,17 @@
   {
    "date": "2026-10-22",
    "matched": {
-    "dswx": "2026-10-24"
+    "dswx": "2026-10-24",
+    "photo": "2026-10-22"
    },
    "baselines": {
     "dswx": {
-     "flood_km2": 19.0,
-     "cannot_see_km2": 8887.5,
-     "cannot_see_clouds_km2": 8887.5,
+     "flood_km2": 15.5,
+     "cannot_see_km2": 8892.5,
+     "cannot_see_clouds_km2": 8892.5,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 1.2,
-     "improvement_pct": 6,
+     "nisar_adds_km2": 64.2,
+     "improvement_pct": 415,
      "still_unknown_km2": 0.0
     }
    },
@@ -117,10 +120,11 @@
     "nisar_open",
     "dswx_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
-    "water_km2": 1.2,
+    "water_km2": 68.1,
     "valid_pct": 93
    },
    "main_baseline": "dswx"
@@ -128,15 +132,16 @@
   {
    "date": "2026-11-03",
    "matched": {
-    "dswx": "2026-11-03"
+    "dswx": "2026-11-03",
+    "photo": "2026-11-03"
    },
    "baselines": {
     "dswx": {
      "flood_km2": 0.3,
-     "cannot_see_km2": 5540.5,
-     "cannot_see_clouds_km2": 5540.5,
+     "cannot_see_km2": 5542.5,
+     "cannot_see_clouds_km2": 5542.5,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 2.1,
+     "nisar_adds_km2": 200.9,
      "improvement_pct": null,
      "still_unknown_km2": 0.0
     }
@@ -150,10 +155,11 @@
     "nisar_open",
     "dswx_water",
     "nisar_adds",
-    "combined"
+    "combined",
+    "photo"
    ],
    "nisar": {
-    "water_km2": 2.2,
+    "water_km2": 245.7,
     "valid_pct": 93
    },
    "main_baseline": "dswx"
@@ -499,6 +505,33 @@
      79.11487
     ]
    ]
+  },
+  "photo": {
+   "group": "optical",
+   "sensor": "VIIRS (NOAA-20) true colour via NASA GIBS",
+   "label": "Optical photo (true colour, same day)",
+   "legend": null,
+   "default": false,
+   "files": {
+    "2026-10-10": "layers/photo_2026-10-10.jpg",
+    "2026-10-22": "layers/photo_2026-10-22.jpg",
+    "2026-11-03": "layers/photo_2026-11-03.jpg"
+   },
+   "bounds": [
+    [
+     10.932,
+     78.11
+    ],
+    [
+     11.732,
+     79.11
+    ]
+   ],
+   "sensors": {
+    "2026-10-10": "VIIRS (NOAA-20) true colour via NASA GIBS",
+    "2026-10-22": "VIIRS (NOAA-20) true colour via NASA GIBS",
+    "2026-11-03": "VIIRS (NOAA-20) true colour via NASA GIBS"
+   }
   }
  },
  "validation": {
@@ -508,17 +541,52 @@
    "dates": [
     "2026-10-10"
    ],
-   "agreement_pct": 97.8,
-   "iou": 0.04,
-   "f1": 0.08,
-   "precision": 0.72,
-   "recall": 0.04,
+   "agreement_pct": 97.2,
+   "iou": 0.18,
+   "f1": 0.3,
+   "precision": 0.34,
+   "recall": 0.27,
    "compared": "open water incl. permanent, where DSWx has no cloud",
-   "sentence": "NASA's DSWx map and NISAR agree on 98% of pixels (open water IoU 0.04, 1 pass)."
+   "sentence": "NASA's DSWx map and NISAR agree on 97% of pixels (open water IoU 0.18, 1 pass)."
   }
  },
  "method": {
-  "detector": "detect.py v2 (open water + water under vegetation, HH/HV), thresholds calibrated on clear optical days: HH -17.0 / HV -24.0 dB",
+  "detector": "fused v3 (fused.py: per-scene threshold, change from the dry season, HV, GUNW coherence; water under vegetation from detect.py)",
+  "detector_info": {
+   "detector": "fused v3",
+   "thresholds_hh": [
+    -12.6,
+    -0.7,
+    -13.0,
+    1.1,
+    -12.7,
+    -11.3,
+    -12.5
+   ],
+   "thresholds_hv": [
+    -14.3,
+    -14.7,
+    -14.8,
+    -14.2,
+    -14.2,
+    -12.6,
+    -13.0
+   ],
+   "dry_passes": [
+    "2026-06-24",
+    "2026-07-06"
+   ],
+   "coherence": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    false
+   ]
+  },
+  "qa_dropped": [],
   "pixel_m": 80.0,
   "permanent_water": "dark on ≥ 90 % of NISAR passes",
   "matching": {

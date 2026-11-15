@@ -15,18 +15,18 @@
    "flood_date": "2026-10-10",
    "title": "Tamil Nadu floods flood, Oct 2026",
    "baseline": "dswx",
-   "improvement_pct": 7,
-   "nisar_adds_km2": 4.4,
-   "baseline_flood_km2": 67.3,
+   "improvement_pct": 167,
+   "nisar_adds_km2": 104.3,
+   "baseline_flood_km2": 62.5,
    "validation": {
     "source": "dswx",
     "dswx": {
-     "agreement_pct": 97.8,
-     "iou": 0.04,
+     "agreement_pct": 97.2,
+     "iou": 0.18,
      "n_dates": 1
     },
-    "agreement_pct": 97.8,
-    "iou": 0.04,
+    "agreement_pct": 97.2,
+    "iou": 0.18,
     "n_dates": 1
    }
   }

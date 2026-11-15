@@ -324,7 +324,7 @@ function gainHTML(m) {
 // when NISAR adds < 5 % (clear sky, little hidden), headline the independent check instead: % agreement (RCM first)
 const VNAME = { rcm: 'Canada’s RCM radar (CSA)', dswx: 'NASA’s DSWx map', lance: 'NASA’s LANCE flood map', gfm: 'Copernicus GFM' };
 function headCheck(g) {                                 // validation places always lead with the check
-  const v = g && g.val; if (!v || (g.kind !== 'validation' && g.pct != null && g.pct >= 5)) return null;
+  const v = g && g.val; if (!v || (g.kind !== 'validation' && !v.rcm && g.pct != null && g.pct >= 5)) return null;   // RCM check: validation too
   const k = ['rcm', 'gfm', 'dswx', 'lance'].find(x => v[x]); return k ? { k, ...v[k] } : null;
 }
 // independent checks of NISAR's water (docs/12 §11): % of pixels where the other sensor agrees, same days

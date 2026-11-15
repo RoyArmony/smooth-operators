@@ -16,8 +16,19 @@
    "title": "GERD reservoir, Blue Nile flood, Nov 2026",
    "baseline": "dswx",
    "improvement_pct": 1,
-   "nisar_adds_km2": 4.1,
-   "baseline_flood_km2": 477.5
+   "nisar_adds_km2": 3.2,
+   "baseline_flood_km2": 449.9,
+   "validation": {
+    "source": "dswx",
+    "dswx": {
+     "agreement_pct": 98.1,
+     "iou": 0.86,
+     "n_dates": 3
+    },
+    "agreement_pct": 98.1,
+    "iou": 0.86,
+    "n_dates": 3
+   }
   }
  ],
  "history": {
@@ -29,5 +40,8 @@
    "NISAR",
    "Sentinel-1"
   ]
- }
+ },
+ "validation": [
+  "dswx"
+ ]
 }

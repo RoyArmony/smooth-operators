@@ -10,22 +10,22 @@
   75
  ],
  "headline": {
-  "date": "2026-10-31",
-  "sentence": "Across 17 flood sites we chose, on each site's wettest NISAR pass, NISAR found 2,177 km² of water inside the official flood maps' blanks: 74% more than the 2,952 km² they showed. A sample, not a global total.",
+  "date": "2026-11-09",
+  "sentence": "Across 16 flood sites we chose, on each site's wettest NISAR pass, NISAR found 873 km² of water inside the official flood maps' blanks: 67% more than the 1,298 km² they showed. A sample, not a global total.",
   "numbers": [
    {
     "label": "NISAR adds, in the blanks",
-    "value": 2176.7,
+    "value": 873.0,
     "unit": "km²"
    },
    {
     "label": "Official maps: flood",
-    "value": 2951.9,
+    "value": 1298.0,
     "unit": "km²"
    },
    {
     "label": "more",
-    "value": 74,
+    "value": 67,
     "unit": "%"
    }
   ],
@@ -58,8 +58,8 @@
    "date": "2026-10-17",
    "gfm_date": "2026-10-17",
    "gfm_flood_km2": 553.8,
-   "nisar_adds_km2": 541.6,
-   "pct": 98
+   "nisar_adds_km2": 359.1,
+   "pct": 65
   },
   {
    "id": "inner-niger-delta-mali",
@@ -71,11 +71,11 @@
     15.2
    ],
    "compared": true,
-   "date": "2026-09-16",
-   "gfm_date": "2026-09-18",
-   "gfm_flood_km2": 51.3,
-   "nisar_adds_km2": 252.8,
-   "pct": 493
+   "date": "2026-10-22",
+   "gfm_date": "2026-10-24",
+   "gfm_flood_km2": 106.2,
+   "nisar_adds_km2": 47.3,
+   "pct": 45
   },
   {
    "id": "mekong-delta-vietnam",
@@ -87,11 +87,11 @@
     11.0
    ],
    "compared": true,
-   "date": "2026-09-23",
-   "gfm_date": "2026-09-23",
-   "gfm_flood_km2": 708.7,
-   "nisar_adds_km2": 169.6,
-   "pct": 24
+   "date": "2026-10-05",
+   "gfm_date": "2026-10-05",
+   "gfm_flood_km2": 431.1,
+   "nisar_adds_km2": 132.6,
+   "pct": 31
   },
   {
    "id": "irrawaddy-delta-myanmar",
@@ -103,11 +103,11 @@
     16.9
    ],
    "compared": true,
-   "date": "2026-07-17",
-   "gfm_date": "2026-07-15",
-   "gfm_flood_km2": 974.2,
-   "nisar_adds_km2": 76.1,
-   "pct": 8
+   "date": "2026-08-22",
+   "gfm_date": "2026-08-20",
+   "gfm_flood_km2": 97.3,
+   "nisar_adds_km2": 45.4,
+   "pct": 47
   },
   {
    "id": "congo-cuvette-centrale",
@@ -119,11 +119,11 @@
     0.8
    ],
    "compared": true,
-   "date": "2026-10-31",
-   "gfm_date": "2026-11-02",
-   "gfm_flood_km2": 3.5,
-   "nisar_adds_km2": 118.3,
-   "pct": null
+   "date": "2026-10-19",
+   "gfm_date": "2026-10-17",
+   "gfm_flood_km2": 10.9,
+   "nisar_adds_km2": 78.7,
+   "pct": 722
   },
   {
    "id": "sylhet-haor-bangladesh",
@@ -135,11 +135,11 @@
     25.0
    ],
    "compared": true,
-   "date": "2026-06-18",
-   "gfm_date": "2026-06-19",
-   "gfm_flood_km2": 411.4,
-   "nisar_adds_km2": 13.8,
-   "pct": 3
+   "date": "2026-11-09",
+   "gfm_date": "2026-11-10",
+   "gfm_flood_km2": 35.9,
+   "nisar_adds_km2": 4.3,
+   "pct": 12
   },
   {
    "id": "amazon-varzea-mamiraua",
@@ -151,10 +151,10 @@
     -2.7
    ],
    "compared": true,
-   "date": "2026-10-11",
-   "gfm_date": "2026-10-13",
-   "gfm_flood_km2": 0.7,
-   "nisar_adds_km2": 11.0,
+   "date": "2026-09-05",
+   "gfm_date": "2026-09-07",
+   "gfm_flood_km2": 1.1,
+   "nisar_adds_km2": 9.0,
    "pct": null
   },
   {
@@ -169,9 +169,9 @@
    "compared": true,
    "date": "2026-06-23",
    "gfm_date": "2026-06-21",
-   "gfm_flood_km2": 13.3,
-   "nisar_adds_km2": 18.6,
-   "pct": 140
+   "gfm_flood_km2": 13.2,
+   "nisar_adds_km2": 33.5,
+   "pct": 254
   },
   {
    "id": "thailand-floods-bang-pakong-2026",
@@ -183,11 +183,11 @@
     13.89
    ],
    "compared": true,
-   "date": "2026-10-24",
-   "gfm_date": "2026-10-25",
-   "gfm_flood_km2": 144.8,
-   "nisar_adds_km2": 25.0,
-   "pct": 17
+   "date": "2026-08-13",
+   "gfm_date": "2026-08-14",
+   "gfm_flood_km2": 15.6,
+   "nisar_adds_km2": 6.2,
+   "pct": 40
   },
   {
    "id": "flood-in-china-2026",
@@ -202,24 +202,24 @@
    "date": "2026-07-23",
    "gfm_date": "2026-07-23",
    "gfm_flood_km2": 0.0,
-   "nisar_adds_km2": 27.6,
+   "nisar_adds_km2": 19.9,
    "pct": null
   },
   {
    "id": "flood-in-nepal-2026",
    "title": "Nepal floods",
    "bbox": [
-    84.865,
-    26.895,
-    85.865,
-    27.695
+    85.22,
+    26.9,
+    85.44,
+    27.11
    ],
    "compared": true,
    "date": "2026-07-26",
    "gfm_date": "2026-07-26",
-   "gfm_flood_km2": 7.4,
-   "nisar_adds_km2": 1.2,
-   "pct": 16
+   "gfm_flood_km2": 4.6,
+   "nisar_adds_km2": 6.3,
+   "pct": null
   },
   {
    "id": "flood-india-2026-08",
@@ -234,7 +234,7 @@
    "date": "2026-06-24",
    "gfm_date": "2026-06-23",
    "gfm_flood_km2": 3.9,
-   "nisar_adds_km2": 0.1,
+   "nisar_adds_km2": 75.5,
    "pct": null
   },
   {
@@ -249,8 +249,8 @@
    "compared": true,
    "date": "2026-06-20",
    "gfm_date": "2026-06-21",
-   "gfm_flood_km2": 0.6,
-   "nisar_adds_km2": 0.0,
+   "gfm_flood_km2": 1.5,
+   "nisar_adds_km2": 4.9,
    "pct": null
   },
   {
@@ -266,8 +266,8 @@
    "date": "2026-06-26",
    "gfm_date": "2026-06-24",
    "gfm_flood_km2": 22.7,
-   "nisar_adds_km2": 0.0,
-   "pct": 0
+   "nisar_adds_km2": 16.0,
+   "pct": 70
   },
   {
    "id": "pantanal-brazil",
@@ -282,7 +282,7 @@
    "date": "2026-10-21",
    "gfm_date": "2026-10-19",
    "gfm_flood_km2": 0.1,
-   "nisar_adds_km2": 2.4,
+   "nisar_adds_km2": 28.2,
    "pct": null
   },
   {
@@ -294,12 +294,8 @@
     30.9,
     7.6
    ],
-   "compared": true,
-   "date": "2026-10-06",
-   "gfm_date": "2026-10-05",
-   "gfm_flood_km2": 55.4,
-   "nisar_adds_km2": 916.1,
-   "pct": 1654
+   "compared": false,
+   "why": "no v3 comparison (no usable GFM map for a v3 pass)"
   },
   {
    "id": "likouala-flood-congo-2026",
@@ -311,10 +307,10 @@
     1.9
    ],
    "compared": true,
-   "date": "2026-07-03",
-   "gfm_date": "2026-07-01",
+   "date": "2026-10-19",
+   "gfm_date": "2026-10-17",
    "gfm_flood_km2": 0.1,
-   "nisar_adds_km2": 2.5,
+   "nisar_adds_km2": 6.1,
    "pct": null
   }
  ]

@@ -15,9 +15,9 @@
    "flood_date": "2026-10-31",
    "title": "Congo basin (Cuvette Centrale) flood, Oct 2026",
    "baseline": "gfm",
-   "improvement_pct": null,
-   "nisar_adds_km2": 118.3,
-   "baseline_flood_km2": 3.6
+   "improvement_pct": 723,
+   "nisar_adds_km2": 78.7,
+   "baseline_flood_km2": 10.9
   }
  ],
  "history": null,

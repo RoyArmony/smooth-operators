@@ -15,16 +15,16 @@
    "flood_date": "2026-10-17",
    "title": "Tonle Sap flood, Oct 2026",
    "baseline": "gfm",
-   "improvement_pct": 102,
-   "nisar_adds_km2": 540.7,
-   "baseline_flood_km2": 532.4
+   "improvement_pct": 65,
+   "nisar_adds_km2": 359.1,
+   "baseline_flood_km2": 553.4
   }
  ],
  "history": {
   "id": "history",
   "first": "1998-07-29",
   "last": "2026-10-17",
-  "n_images": 13,
+  "n_images": 11,
   "sensors": [
    "NISAR",
    "RADARSAT-1"

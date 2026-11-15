@@ -14,12 +14,21 @@
  "sampling": {
   "min_gap_days": 30,
   "rule": "each year's wettest image, then others ≥ 30 days from the kept ones",
-  "candidates": 23,
-  "kept": 13,
+  "candidates": 21,
+  "kept": 11,
   "rs1_rejected": {
    "rule": "Youden J < 0.5: permanent water and land not separable by the image's threshold",
-   "n": 0,
-   "dates": []
+   "n": 2,
+   "dates": [
+    {
+     "date": "2001-08-30",
+     "youden_j": 0.5
+    },
+    {
+     "date": "2005-09-02",
+     "youden_j": 0.19
+    }
+   ]
   }
  },
  "summary": {
@@ -27,31 +36,23 @@
    {
     "year": 1998,
     "sensor": "RADARSAT-1",
-    "max_flood_km2": 281.4,
+    "max_flood_km2": 1004.4,
     "date": "1998-07-29",
     "n_images": 1,
     "flood_season_seen": false
    },
    {
-    "year": 2001,
-    "sensor": "RADARSAT-1",
-    "max_flood_km2": 1715.9,
-    "date": "2001-08-30",
-    "n_images": 1,
-    "flood_season_seen": true
-   },
-   {
     "year": 2005,
     "sensor": "RADARSAT-1",
-    "max_flood_km2": 1085.1,
+    "max_flood_km2": 1536.4,
     "date": "2005-11-13",
-    "n_images": 2,
+    "n_images": 1,
     "flood_season_seen": true
    },
    {
     "year": 2006,
     "sensor": "RADARSAT-1",
-    "max_flood_km2": 1480.5,
+    "max_flood_km2": 2010.5,
     "date": "2006-09-21",
     "n_images": 5,
     "flood_season_seen": true
@@ -59,13 +60,13 @@
    {
     "year": 2026,
     "sensor": "NISAR",
-    "max_flood_km2": 4059.9,
+    "max_flood_km2": 3683.5,
     "date": "2026-10-17",
     "n_images": 4,
     "flood_season_seen": true
    }
   ],
-  "sentence": "Same 13,289 km² box: flood 1,716 km² on 2001-08-30 (RADARSAT-1), 4,060 km² on 2026-10-17 (NISAR).",
+  "sentence": "Same 13,289 km² box: flood 2,010 km² on 2006-09-21 (RADARSAT-1), 3,684 km² on 2026-10-17 (NISAR).",
   "caveat": "Two radars (C-band 1998–2006, L-band 2026) and two methods: compare the pattern, not exact km²."
  },
  "images": [
@@ -76,9 +77,9 @@
     "beam": "SCWA",
     "orbit": "descending",
     "scene": "RS1_14262_SWA_F030_19980729_111736_HH_GRF.tif",
-    "threshold_db": 36.3,
-    "split_tiles": 116,
-    "youden_j": 0.93,
+    "threshold_db": 36.1,
+    "split_tiles": 216,
+    "youden_j": 0.89,
     "shift_px": [
      -40,
      -16
@@ -90,74 +91,8 @@
    ],
    "optical": null,
    "baselines": {},
-   "flood_km2": 281.4,
+   "flood_km2": 1004.4,
    "valid_pct": 96,
-   "baselines_missing": [
-    "gfm",
-    "dswx"
-   ]
-  },
-  {
-   "date": "2001-08-30",
-   "sensor": "RADARSAT-1",
-   "radar": {
-    "beam": "SCNB",
-    "orbit": "ascending",
-    "scene": "RS1_M0260986_SCNB_20010830_111706_HH_SCN.tif",
-    "threshold_db": 31.4,
-    "split_tiles": 117,
-    "youden_j": 0.7,
-    "shift_px": [
-     0,
-     0
-    ]
-   },
-   "layers": [
-    "rs1_radar",
-    "rs1_flood",
-    "photo_modis"
-   ],
-   "optical": {
-    "date": "2001-08-31",
-    "source": "MODIS Terra",
-    "cloud_pct": 1
-   },
-   "baselines": {},
-   "flood_km2": 1715.9,
-   "valid_pct": 100,
-   "baselines_missing": [
-    "gfm",
-    "dswx"
-   ]
-  },
-  {
-   "date": "2005-09-02",
-   "sensor": "RADARSAT-1",
-   "radar": {
-    "beam": "SCNB",
-    "orbit": "ascending",
-    "scene": "RS1_P0425108_SCNB_20050902_111446_HH_SCN.tif",
-    "threshold_db": 33.3,
-    "split_tiles": 117,
-    "youden_j": 0.89,
-    "shift_px": [
-     -2,
-     0
-    ]
-   },
-   "layers": [
-    "rs1_radar",
-    "rs1_flood",
-    "photo_modis"
-   ],
-   "optical": {
-    "date": "2005-09-05",
-    "source": "MODIS Terra",
-    "cloud_pct": 3
-   },
-   "baselines": {},
-   "flood_km2": 998.2,
-   "valid_pct": 100,
    "baselines_missing": [
     "gfm",
     "dswx"
@@ -170,9 +105,9 @@
     "beam": "SCNB",
     "orbit": "ascending",
     "scene": "RS1_P0433312_SCNB_20051113_111306_HH_SCN.tif",
-    "threshold_db": 31.6,
-    "split_tiles": 117,
-    "youden_j": 0.88,
+    "threshold_db": 29.6,
+    "split_tiles": 217,
+    "youden_j": 0.87,
     "shift_px": [
      -2,
      0
@@ -189,7 +124,7 @@
     "cloud_pct": 3
    },
    "baselines": {},
-   "flood_km2": 1085.1,
+   "flood_km2": 1536.4,
    "valid_pct": 100,
    "baselines_missing": [
     "gfm",
@@ -203,9 +138,9 @@
     "beam": "SCNB",
     "orbit": "ascending",
     "scene": "RS1_P0448573_SCNB_20060313_111256_HH_SCN.tif",
-    "threshold_db": 34.9,
-    "split_tiles": 117,
-    "youden_j": 0.91,
+    "threshold_db": 34.4,
+    "split_tiles": 217,
+    "youden_j": 0.89,
     "shift_px": [
      -1,
      0
@@ -222,7 +157,7 @@
     "cloud_pct": 0
    },
    "baselines": {},
-   "flood_km2": 710.1,
+   "flood_km2": 1308.8,
    "valid_pct": 100,
    "baselines_missing": [
     "gfm",
@@ -236,9 +171,9 @@
     "beam": "SCNB",
     "orbit": "ascending",
     "scene": "RS1_P0451867_SCNB_20060430_111256_HH_SCN.tif",
-    "threshold_db": 34.2,
-    "split_tiles": 117,
-    "youden_j": 0.94,
+    "threshold_db": 33.5,
+    "split_tiles": 217,
+    "youden_j": 0.91,
     "shift_px": [
      -1,
      0
@@ -255,7 +190,7 @@
     "cloud_pct": 0
    },
    "baselines": {},
-   "flood_km2": 315.1,
+   "flood_km2": 1020.4,
    "valid_pct": 100,
    "baselines_missing": [
     "gfm",
@@ -269,9 +204,9 @@
     "beam": "SCNB",
     "orbit": "ascending",
     "scene": "RS1_P0456974_SCNB_20060617_111255_HH_SCN.tif",
-    "threshold_db": 35.5,
-    "split_tiles": 117,
-    "youden_j": 0.93,
+    "threshold_db": 35.7,
+    "split_tiles": 217,
+    "youden_j": 0.9,
     "shift_px": [
      -1,
      0
@@ -288,7 +223,7 @@
     "cloud_pct": 2
    },
    "baselines": {},
-   "flood_km2": 375.2,
+   "flood_km2": 1124.4,
    "valid_pct": 100,
    "baselines_missing": [
     "gfm",
@@ -302,9 +237,9 @@
     "beam": "SCNB",
     "orbit": "ascending",
     "scene": "RS1_P0470720_SCNB_20060921_111248_HH_SCN.tif",
-    "threshold_db": 32.6,
-    "split_tiles": 117,
-    "youden_j": 0.85,
+    "threshold_db": 31.6,
+    "split_tiles": 217,
+    "youden_j": 0.83,
     "shift_px": [
      -1,
      0
@@ -321,7 +256,7 @@
     "cloud_pct": 16
    },
    "baselines": {},
-   "flood_km2": 1480.5,
+   "flood_km2": 2010.5,
    "valid_pct": 100,
    "baselines_missing": [
     "gfm",
@@ -335,9 +270,9 @@
     "beam": "SCNB",
     "orbit": "ascending",
     "scene": "RS1_P0477277_SCNB_20061108_111245_HH_SCN.tif",
-    "threshold_db": 32.4,
-    "split_tiles": 117,
-    "youden_j": 0.86,
+    "threshold_db": 31.0,
+    "split_tiles": 217,
+    "youden_j": 0.84,
     "shift_px": [
      -1,
      0
@@ -354,7 +289,7 @@
     "cloud_pct": 0
    },
    "baselines": {},
-   "flood_km2": 1374.3,
+   "flood_km2": 1859.0,
    "valid_pct": 100,
    "baselines_missing": [
     "gfm",
@@ -383,24 +318,24 @@
    "baselines": {
     "gfm": {
      "date": "2026-06-18",
-     "flood_km2": 4.7,
-     "cannot_see_km2": 2775.8,
+     "flood_km2": 6.3,
+     "cannot_see_km2": 2783.2,
      "cannot_see_clouds_km2": 0.0,
-     "cannot_see_vegetation_km2": 2775.8,
-     "nisar_adds_km2": 9.2,
-     "improvement_pct": null
+     "cannot_see_vegetation_km2": 2783.2,
+     "nisar_adds_km2": 12.9,
+     "improvement_pct": 206
     },
     "dswx": {
      "date": "2026-06-18",
-     "flood_km2": 286.8,
-     "cannot_see_km2": 3671.5,
-     "cannot_see_clouds_km2": 3671.5,
+     "flood_km2": 338.2,
+     "cannot_see_km2": 4371.4,
+     "cannot_see_clouds_km2": 4371.4,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 93.7,
-     "improvement_pct": 33
+     "nisar_adds_km2": 740.3,
+     "improvement_pct": 219
     }
    },
-   "flood_km2": 253.8,
+   "flood_km2": 876.7,
    "valid_pct": 100,
    "baselines_missing": []
   },
@@ -426,24 +361,24 @@
    "baselines": {
     "gfm": {
      "date": "2026-07-25",
-     "flood_km2": 16.7,
-     "cannot_see_km2": 2593.0,
+     "flood_km2": 19.2,
+     "cannot_see_km2": 2597.4,
      "cannot_see_clouds_km2": 0.0,
-     "cannot_see_vegetation_km2": 2593.0,
-     "nisar_adds_km2": 12.3,
-     "improvement_pct": 74
+     "cannot_see_vegetation_km2": 2597.4,
+     "nisar_adds_km2": 3.1,
+     "improvement_pct": 16
     },
     "dswx": {
-     "date": "2026-07-24",
-     "flood_km2": 396.8,
-     "cannot_see_km2": 3749.8,
-     "cannot_see_clouds_km2": 3749.8,
+     "date": "2026-07-26",
+     "flood_km2": 2.4,
+     "cannot_see_km2": 6219.5,
+     "cannot_see_clouds_km2": 6219.5,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 60.6,
-     "improvement_pct": 15
+     "nisar_adds_km2": 125.8,
+     "improvement_pct": null
     }
    },
-   "flood_km2": 467.9,
+   "flood_km2": 560.6,
    "valid_pct": 100,
    "baselines_missing": []
   },
@@ -469,24 +404,24 @@
    "baselines": {
     "gfm": {
      "date": "2026-08-30",
-     "flood_km2": 556.7,
-     "cannot_see_km2": 2773.1,
+     "flood_km2": 587.0,
+     "cannot_see_km2": 2780.5,
      "cannot_see_clouds_km2": 0.0,
-     "cannot_see_vegetation_km2": 2773.1,
-     "nisar_adds_km2": 155.1,
+     "cannot_see_vegetation_km2": 2780.5,
+     "nisar_adds_km2": 162.0,
      "improvement_pct": 28
     },
     "dswx": {
-     "date": "2026-08-27",
-     "flood_km2": 1560.8,
-     "cannot_see_km2": 4803.9,
-     "cannot_see_clouds_km2": 4803.9,
+     "date": "2026-09-02",
+     "flood_km2": 574.4,
+     "cannot_see_km2": 4988.0,
+     "cannot_see_clouds_km2": 4988.0,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 896.4,
-     "improvement_pct": 57
+     "nisar_adds_km2": 931.5,
+     "improvement_pct": 162
     }
    },
-   "flood_km2": 1831.1,
+   "flood_km2": 2576.5,
    "valid_pct": 100,
    "baselines_missing": []
   },
@@ -512,24 +447,24 @@
    "baselines": {
     "gfm": {
      "date": "2026-10-17",
-     "flood_km2": 532.4,
-     "cannot_see_km2": 2751.9,
+     "flood_km2": 553.4,
+     "cannot_see_km2": 2758.9,
      "cannot_see_clouds_km2": 0.0,
-     "cannot_see_vegetation_km2": 2751.9,
-     "nisar_adds_km2": 540.7,
-     "improvement_pct": 102
+     "cannot_see_vegetation_km2": 2758.9,
+     "nisar_adds_km2": 359.1,
+     "improvement_pct": 65
     },
     "dswx": {
      "date": "2026-10-19",
-     "flood_km2": 1898.8,
-     "cannot_see_km2": 7820.8,
-     "cannot_see_clouds_km2": 7820.8,
+     "flood_km2": 2180.6,
+     "cannot_see_km2": 8334.8,
+     "cannot_see_clouds_km2": 8334.8,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 2278.9,
-     "improvement_pct": 120
+     "nisar_adds_km2": 2076.8,
+     "improvement_pct": 95
     }
    },
-   "flood_km2": 4059.9,
+   "flood_km2": 3683.5,
    "valid_pct": 100,
    "baselines_missing": []
   }
@@ -543,8 +478,6 @@
    "default": true,
    "files": {
     "1998-07-29": "layers/rs1_radar_1998-07-29.jpg",
-    "2001-08-30": "layers/rs1_radar_2001-08-30.jpg",
-    "2005-09-02": "layers/rs1_radar_2005-09-02.jpg",
     "2005-11-13": "layers/rs1_radar_2005-11-13.jpg",
     "2006-03-13": "layers/rs1_radar_2006-03-13.jpg",
     "2006-04-30": "layers/rs1_radar_2006-04-30.jpg",
@@ -576,8 +509,6 @@
    "default": true,
    "files": {
     "1998-07-29": "layers/rs1_flood_1998-07-29.png",
-    "2001-08-30": "layers/rs1_flood_2001-08-30.png",
-    "2005-09-02": "layers/rs1_flood_2005-09-02.png",
     "2005-11-13": "layers/rs1_flood_2005-11-13.png",
     "2006-03-13": "layers/rs1_flood_2006-03-13.png",
     "2006-04-30": "layers/rs1_flood_2006-04-30.png",
@@ -603,8 +534,6 @@
    "legend": null,
    "default": false,
    "files": {
-    "2001-08-31": "layers/photo_modis_2001-08-31.jpg",
-    "2005-09-05": "layers/photo_modis_2005-09-05.jpg",
     "2005-11-14": "layers/photo_modis_2005-11-14.jpg",
     "2006-03-12": "layers/photo_modis_2006-03-12.jpg",
     "2006-05-03": "layers/photo_modis_2006-05-03.jpg",
@@ -782,8 +711,8 @@
    "default": false,
    "files": {
     "2026-06-18": "layers/dswx_classes_2026-06-18.png",
-    "2026-07-24": "layers/dswx_classes_2026-07-24.png",
-    "2026-08-27": "layers/dswx_classes_2026-08-27.png",
+    "2026-07-26": "layers/dswx_classes_2026-07-26.png",
+    "2026-09-02": "layers/dswx_classes_2026-09-02.png",
     "2026-10-19": "layers/dswx_classes_2026-10-19.png"
    },
    "bounds": [
@@ -801,7 +730,7 @@
  "method": {
   "grid": "NISAR GCOV frequency B, 80 m (native); every source resampled onto it before analysis",
   "rs1": "RADARSAT-1 HH warped with its GCPs, aligned to NISAR by edges, one threshold per image (Otsu on tiles with both river and land); image dropped if that threshold does not separate permanent water from land (Youden J < 0.5)",
-  "nisar": "detect.py v2, thresholds HH -14.0 / HV -19.0 dB (calibrated on clear optical days)",
+  "nisar": "fused v3 (fused.py: per-scene threshold, change from the dry season, HV, GUNW coherence; water under vegetation from detect.py)",
   "flood": "water beyond permanent water (dark on ≥ 90 % of NISAR passes); area = pixels × 80 m × 80 m",
   "optical": "MODIS (250 m) least cloudy day within ± 3 d for 2000–2013; HLS (30 m) clearest within ± 5 d for 2026; none before 2000",
   "baselines": "GFM (Sentinel-1) exists from 2015, NASA OPERA DSWx-HLS from 2023: only on NISAR dates"

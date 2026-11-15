@@ -25,29 +25,29 @@
   "pass_date": "2026-09-28",
   "baseline": "dswx",
   "baseline_date": "2026-09-26",
-  "baseline_flood_km2": 253.0,
+  "baseline_flood_km2": 154.6,
   "nisar_adds_km2": 0.0,
   "improvement_pct": 0,
   "cannot_see_km2": 0.0,
   "cannot_see_clouds_km2": 0.0,
   "cannot_see_vegetation_km2": 0.0,
   "still_unknown_km2": 0.0,
-  "nisar_water_km2": 40.9,
-  "sentence": "Clear sky, no vegetation: NASA's DSWx map and NISAR agree on 74% of pixels (open water IoU 0.46, 5 passes). NASA's LANCE flood map and NISAR agree on 73% of pixels (open water IoU 0.36, 5 passes).",
+  "nisar_water_km2": 96.8,
+  "sentence": "Clear sky, no vegetation: NASA's DSWx map and NISAR agree on 83% of pixels (open water IoU 0.64, 5 passes). NASA's LANCE flood map and NISAR agree on 72% of pixels (open water IoU 0.44, 5 passes).",
   "validation": {
    "source": "dswx",
    "dswx": {
-    "agreement_pct": 74.4,
-    "iou": 0.46,
+    "agreement_pct": 83.2,
+    "iou": 0.64,
     "n_dates": 5
    },
    "lance": {
-    "agreement_pct": 73.3,
-    "iou": 0.36,
+    "agreement_pct": 71.5,
+    "iou": 0.44,
     "n_dates": 5
    },
-   "agreement_pct": 74.4,
-   "iou": 0.46,
+   "agreement_pct": 83.2,
+   "iou": 0.64,
    "n_dates": 5
   }
  },
@@ -62,12 +62,12 @@
    },
    "baselines": {
     "dswx": {
-     "flood_km2": 219.3,
-     "cannot_see_km2": 40.9,
-     "cannot_see_clouds_km2": 40.9,
+     "flood_km2": 121.9,
+     "cannot_see_km2": 39.9,
+     "cannot_see_clouds_km2": 39.9,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 1.8,
-     "improvement_pct": 1,
+     "nisar_adds_km2": 14.8,
+     "improvement_pct": 12,
      "still_unknown_km2": 0.0
     }
    },
@@ -88,26 +88,26 @@
     "combined"
    ],
    "nisar": {
-    "water_km2": 110.4,
+    "water_km2": 139.1,
     "valid_pct": 100
    },
    "validation": {
     "dswx": {
      "compared_pct": 93,
-     "agreement_pct": 78.3,
-     "iou": 0.51,
-     "f1": 0.67,
-     "precision": 0.99,
-     "recall": 0.51,
+     "agreement_pct": 96.1,
+     "iou": 0.91,
+     "f1": 0.96,
+     "precision": 0.95,
+     "recall": 0.96,
      "date": "2026-09-16"
     },
     "lance": {
      "compared_pct": 79,
-     "agreement_pct": 74.0,
-     "iou": 0.47,
-     "f1": 0.64,
-     "precision": 0.88,
-     "recall": 0.51,
+     "agreement_pct": 85.1,
+     "iou": 0.74,
+     "f1": 0.85,
+     "precision": 0.79,
+     "recall": 0.93,
      "date": "2026-09-17"
     }
    },
@@ -123,7 +123,7 @@
    },
    "baselines": {
     "dswx": {
-     "flood_km2": 253.0,
+     "flood_km2": 154.6,
      "cannot_see_km2": 0.0,
      "cannot_see_clouds_km2": 0.0,
      "cannot_see_vegetation_km2": 0.0,
@@ -149,26 +149,26 @@
     "combined"
    ],
    "nisar": {
-    "water_km2": 40.9,
+    "water_km2": 96.8,
     "valid_pct": 100
    },
    "validation": {
     "dswx": {
      "compared_pct": 100,
-     "agreement_pct": 61.7,
-     "iou": 0.18,
-     "f1": 0.3,
-     "precision": 0.98,
-     "recall": 0.18,
+     "agreement_pct": 84.0,
+     "iou": 0.67,
+     "f1": 0.8,
+     "precision": 0.93,
+     "recall": 0.71,
      "date": "2026-09-26"
     },
     "lance": {
      "compared_pct": 79,
-     "agreement_pct": 67.5,
-     "iou": 0.18,
-     "f1": 0.31,
-     "precision": 0.68,
-     "recall": 0.2,
+     "agreement_pct": 74.3,
+     "iou": 0.51,
+     "f1": 0.68,
+     "precision": 0.62,
+     "recall": 0.75,
      "date": "2026-09-29"
     }
    },
@@ -184,12 +184,12 @@
    },
    "baselines": {
     "dswx": {
-     "flood_km2": 112.0,
-     "cannot_see_km2": 349.5,
-     "cannot_see_clouds_km2": 349.5,
+     "flood_km2": 68.3,
+     "cannot_see_km2": 295.0,
+     "cannot_see_clouds_km2": 295.0,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 56.1,
-     "improvement_pct": 50,
+     "nisar_adds_km2": 82.6,
+     "improvement_pct": 121,
      "still_unknown_km2": 0.0
     }
    },
@@ -210,26 +210,26 @@
     "combined"
    ],
    "nisar": {
-    "water_km2": 106.3,
+    "water_km2": 130.6,
     "valid_pct": 100
    },
    "validation": {
     "dswx": {
      "compared_pct": 36,
-     "agreement_pct": 69.2,
-     "iou": 0.45,
-     "f1": 0.62,
-     "precision": 0.99,
-     "recall": 0.46,
+     "agreement_pct": 86.8,
+     "iou": 0.77,
+     "f1": 0.87,
+     "precision": 0.97,
+     "recall": 0.79,
      "date": "2026-10-11"
     },
     "lance": {
      "compared_pct": 58,
-     "agreement_pct": 73.6,
-     "iou": 0.17,
-     "f1": 0.3,
-     "precision": 0.24,
-     "recall": 0.39,
+     "agreement_pct": 59.7,
+     "iou": 0.25,
+     "f1": 0.4,
+     "precision": 0.25,
+     "recall": 0.94,
      "date": "2026-10-11"
     }
    },
@@ -244,11 +244,11 @@
    },
    "baselines": {
     "dswx": {
-     "flood_km2": 216.0,
-     "cannot_see_km2": 45.8,
-     "cannot_see_clouds_km2": 45.8,
+     "flood_km2": 119.5,
+     "cannot_see_km2": 43.9,
+     "cannot_see_clouds_km2": 43.9,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 3.6,
+     "nisar_adds_km2": 2.7,
      "improvement_pct": 2,
      "still_unknown_km2": 0.0
     }
@@ -269,26 +269,26 @@
     "combined"
    ],
    "nisar": {
-    "water_km2": 120.0,
+    "water_km2": 28.1,
     "valid_pct": 100
    },
    "validation": {
     "dswx": {
      "compared_pct": 92,
-     "agreement_pct": 80.3,
-     "iou": 0.55,
-     "f1": 0.71,
-     "precision": 0.99,
-     "recall": 0.55,
+     "agreement_pct": 75.8,
+     "iou": 0.44,
+     "f1": 0.62,
+     "precision": 1.0,
+     "recall": 0.44,
      "date": "2026-10-23"
     },
     "lance": {
      "compared_pct": 79,
-     "agreement_pct": 74.8,
-     "iou": 0.46,
-     "f1": 0.63,
-     "precision": 0.74,
-     "recall": 0.55,
+     "agreement_pct": 69.3,
+     "iou": 0.34,
+     "f1": 0.51,
+     "precision": 0.68,
+     "recall": 0.41,
      "date": "2026-10-23"
     }
    },
@@ -303,12 +303,12 @@
    },
    "baselines": {
     "dswx": {
-     "flood_km2": 214.5,
-     "cannot_see_km2": 58.1,
-     "cannot_see_clouds_km2": 58.1,
+     "flood_km2": 120.0,
+     "cannot_see_km2": 54.4,
+     "cannot_see_clouds_km2": 54.4,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 5.6,
-     "improvement_pct": 3,
+     "nisar_adds_km2": 2.3,
+     "improvement_pct": 2,
      "still_unknown_km2": 0.0
     }
    },
@@ -328,26 +328,26 @@
     "combined"
    ],
    "nisar": {
-    "water_km2": 133.2,
+    "water_km2": 16.5,
     "valid_pct": 100
    },
    "validation": {
     "dswx": {
      "compared_pct": 90,
-     "agreement_pct": 82.5,
-     "iou": 0.6,
-     "f1": 0.75,
+     "agreement_pct": 73.2,
+     "iou": 0.4,
+     "f1": 0.57,
      "precision": 1.0,
-     "recall": 0.61,
+     "recall": 0.4,
      "date": "2026-11-02"
     },
     "lance": {
      "compared_pct": 79,
-     "agreement_pct": 76.5,
-     "iou": 0.53,
-     "f1": 0.7,
+     "agreement_pct": 69.1,
+     "iou": 0.36,
+     "f1": 0.53,
      "precision": 0.84,
-     "recall": 0.59,
+     "recall": 0.39,
      "date": "2026-11-04"
     }
    },
@@ -854,13 +854,13 @@
     "2026-10-22",
     "2026-11-03"
    ],
-   "agreement_pct": 74.4,
-   "iou": 0.46,
-   "f1": 0.61,
-   "precision": 0.99,
-   "recall": 0.46,
+   "agreement_pct": 83.2,
+   "iou": 0.64,
+   "f1": 0.76,
+   "precision": 0.97,
+   "recall": 0.66,
    "compared": "open water incl. permanent, where DSWx has no cloud",
-   "sentence": "NASA's DSWx map and NISAR agree on 74% of pixels (open water IoU 0.46, 5 passes)."
+   "sentence": "NASA's DSWx map and NISAR agree on 83% of pixels (open water IoU 0.64, 5 passes)."
   },
   "lance": {
    "source": "NASA's LANCE flood map (VIIRS / MODIS, optical, 250 m)",
@@ -887,17 +887,64 @@
      "2026-11-04"
     ]
    ],
-   "agreement_pct": 73.3,
-   "iou": 0.36,
-   "f1": 0.52,
-   "precision": 0.68,
-   "recall": 0.45,
+   "agreement_pct": 71.5,
+   "iou": 0.44,
+   "f1": 0.59,
+   "precision": 0.64,
+   "recall": 0.68,
    "compared": "water incl. permanent, where the map can see (LANCE: no cloud / terrain mask; GFM: outside its exclusion mask)",
-   "sentence": "NASA's LANCE flood map and NISAR agree on 73% of pixels (open water IoU 0.36, 5 passes)."
+   "sentence": "NASA's LANCE flood map and NISAR agree on 72% of pixels (open water IoU 0.44, 5 passes)."
   }
  },
  "method": {
-  "detector": "flood_nasa.final(): NISAR handbook §6.4 classes + transitions, confidence >= 0.8, handbook mask (no cropland, city, bare land, slope > 5°); open-water HH threshold -17.0 dB",
+  "detector": "fused v3 (fused.py: per-scene threshold, change from the dry season, HV, GUNW coherence; water under vegetation from detect.py)",
+  "detector_info": {
+   "detector": "fused v3",
+   "thresholds_hh": [
+    -14.1,
+    -14.0,
+    -14.8,
+    -14.8,
+    -15.6,
+    -14.2,
+    -16.4,
+    -14.1,
+    -15.9,
+    -16.5,
+    -16.1
+   ],
+   "thresholds_hv": [
+    -19.2,
+    -19.8,
+    -19.6,
+    -19.7,
+    -19.6,
+    -19.8,
+    -20.2,
+    -19.8,
+    -20.3,
+    -20.9,
+    -20.6
+   ],
+   "dry_passes": [
+    "2026-06-24",
+    "2026-07-06"
+   ],
+   "coherence": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false,
+    false
+   ]
+  },
+  "qa_dropped": [],
   "pixel_m": 80.0,
   "permanent_water": "dark on ≥ 90 % of NISAR passes",
   "matching": {
@@ -943,11 +990,6 @@
    "name": "NASA LANCE NRT Global Flood Product (VIIRS VCDWD, MODIS MCDWD) + VIIRS true colour, via NASA GIBS",
    "url": "https://www.earthdata.nasa.gov/data/tools/flood",
    "credit": "NASA LANCE / ESDIS; NASA EOSDIS GIBS"
-  },
-  {
-   "name": "Copernicus DEM GLO-30 (slope for the handbook mask)",
-   "url": "https://registry.opendata.aws/copernicus-dem/",
-   "credit": "© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018, provided under COPERNICUS by the European Union and ESA"
   }
  ]
 }

@@ -347,7 +347,7 @@
     <div class="flow">
       <div class="card step"><div class="n">NASA data</div><h3>NISAR GCOV</h3><p>L2 backscatter, HH + HV, 80 m grid, every 12 days. Calibrated passes only (Provisional / Validated).</p><p><code>nisar.py</code> <code>gcov.py</code></p></div>
       <div class="card step"><div class="n">Stack</div><h3>One track, one mode</h3><p>Same orbit track, frame and mode, so pixels compare over time. Drift of stable land removed.</p><p><code>nisar.py</code></p></div>
-      <div class="card step"><div class="n">Detect</div><h3>Water per pass</h3><p>Open water, flooded fields, water under trees. Permanent water removed.</p><p><code>detect.py</code></p></div>
+      <div class="card step"><div class="n">Detect</div><h3>Water per pass</h3><p>Detector v3: corrupt passes dropped, then a logistic score of the per-scene threshold, change from the dry season, HV and 12-day coherence. Water under trees by double bounce. Permanent water removed.</p><p><code>fused.py</code> <code>detect.py</code></p></div>
       <div class="card step"><div class="n">Compare</div><h3>vs official map</h3><p>Copernicus GFM within ±2 days: its flood and its "cannot see" mask.</p><p><code>gfm.py</code> <code>flood.py</code></p></div>
       <div class="card step"><div class="n">Result</div><h3>Added km²</h3><p>Water only NISAR sees, split by land cover (ESA WorldCover). Checked against other sensors.</p><p><code>bundle.py</code></p></div>
     </div>
@@ -359,26 +359,25 @@
 <section id="detect">
   <div class="wrap">
     <div class="eyebrow">4 · Algorithm</div>
-    <h2>From radar features to water</h2>
-    <p class="lead">Each pixel vs its own dry self, not a fixed colour scale.</p>
+    <h2>From radar features to water: detector v3</h2>
+    <p class="lead">Flood maps and numbers use detector v3 (<code>fused.py</code>): a learned score per pixel, with its threshold set per scene.</p>
     <div class="card phys">
-      <svg viewBox="0 0 960 360" role="img" aria-label="Algorithm diagram: radar features on the left feed five rules in the middle, which give open water, flooded vegetation or not-a-flood on the right.">
+      <svg viewBox="0 0 960 360" role="img" aria-label="Detector v3: per-pass radar features feed a logistic score; above 0.30 is open water; double bounce adds water under trees; water on 90 % of passes is permanent, not flood.">
         <defs><marker id="af" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5f7f88"/></marker></defs>
         <g font-size="13" font-weight="700" fill="#e6f1f2">
           <text x="20" y="22" fill="#8fb0b8" font-size="12" letter-spacing="1.5">FEATURES (per pass)</text>
-          <rect x="20" y="36" width="210" height="44" rx="8" fill="#16323c"/><text x="34" y="63">HH  (dB)</text>
-          <rect x="20" y="90" width="210" height="44" rx="8" fill="#16323c"/><text x="34" y="117">HV  (dB)</text>
-          <rect x="20" y="144" width="210" height="44" rx="8" fill="#16323c"/><text x="34" y="171">ΔHH, ΔHV vs dry self</text>
-          <rect x="20" y="198" width="210" height="44" rx="8" fill="#16323c" stroke="#5f7f88" stroke-dasharray="4 3"/><text x="34" y="225">HH − HV  (v3)</text>
-          <rect x="20" y="252" width="210" height="44" rx="8" fill="#16323c" stroke="#5f7f88" stroke-dasharray="4 3"/><text x="34" y="279">Coherence, InSAR (v3)</text>
-          <text x="20" y="320" fill="#8fb0b8" font-size="11" font-weight="500">dashed = used by detector v3 (logistic score), tested on one site</text>
+          <rect x="20" y="36" width="230" height="44" rx="8" fill="#16323c"/><text x="34" y="63">HH, HV − scene threshold</text>
+          <rect x="20" y="90" width="230" height="44" rx="8" fill="#16323c"/><text x="34" y="117">HH, HV − dry season</text>
+          <rect x="20" y="144" width="230" height="44" rx="8" fill="#16323c"/><text x="34" y="171">HH − HV</text>
+          <rect x="20" y="198" width="230" height="44" rx="8" fill="#16323c"/><text x="34" y="225">12-day coherence (GUNW)</text>
+          <rect x="20" y="252" width="230" height="44" rx="8" fill="#16323c"/><text x="34" y="279">HH rise, HV steady</text>
 
-          <text x="370" y="22" fill="#8fb0b8" font-size="12" letter-spacing="1.5">RULES</text>
-          <rect x="370" y="36" width="250" height="44" rx="8" fill="#0f3a52"/><text x="384" y="63">① Open water</text>
-          <rect x="370" y="90" width="250" height="44" rx="8" fill="#0f3a52"/><text x="384" y="117">② Water spreads</text>
-          <rect x="370" y="144" width="250" height="44" rx="8" fill="#0f3a52"/><text x="384" y="171">③ Flooded field</text>
-          <rect x="370" y="198" width="250" height="44" rx="8" fill="#3d2a10"/><text x="384" y="225">④ Water under trees</text>
-          <rect x="370" y="252" width="250" height="44" rx="8" fill="#2a2a33"/><text x="384" y="279">⑤ Permanent water</text>
+          <text x="370" y="22" fill="#8fb0b8" font-size="12" letter-spacing="1.5">STEPS</text>
+          <rect x="370" y="36" width="250" height="44" rx="8" fill="#2a2a33"/><text x="384" y="63">⓪ Drop corrupt passes</text>
+          <rect x="370" y="90" width="250" height="44" rx="8" fill="#0f3a52"/><text x="384" y="117">① Logistic score p ≥ 0.30</text>
+          <rect x="370" y="144" width="250" height="44" rx="8" fill="#0f3a52"/><text x="384" y="171">② Clean: 3×3, ≥ 0.1 km²</text>
+          <rect x="370" y="198" width="250" height="44" rx="8" fill="#3d2a10"/><text x="384" y="225">③ Water under trees</text>
+          <rect x="370" y="252" width="250" height="44" rx="8" fill="#2a2a33"/><text x="384" y="279">④ Permanent water</text>
 
           <text x="760" y="22" fill="#8fb0b8" font-size="12" letter-spacing="1.5">OUTPUT</text>
           <rect x="760" y="80" width="180" height="56" rx="8" fill="#2882ff"/><text x="776" y="114">Open water</text>
@@ -386,46 +385,42 @@
           <rect x="760" y="252" width="180" height="44" rx="8" fill="#3c3c46"/><text x="776" y="279" fill="#c8c8d2">Not a flood</text>
         </g>
         <g stroke="#5f7f88" stroke-width="1.6" fill="none" marker-end="url(#af)">
-          <path d="M230 58 L370 58"/><path d="M230 112 L370 62"/>
-          <path d="M230 166 L370 112"/><path d="M230 166 L370 166"/><path d="M230 166 L370 220"/>
-          <path d="M230 58 L370 160"/><path d="M230 112 L370 228"/>
-          <path d="M230 58 L370 270"/><path d="M230 112 L370 276"/>
-          <path d="M230 220 L370 64" stroke-dasharray="4 3"/><path d="M230 274 L370 116" stroke-dasharray="4 3"/>
-          <path d="M620 58 L760 100"/><path d="M620 112 L760 108"/><path d="M620 166 L760 116"/>
-          <path d="M620 220 L760 220"/><path d="M620 274 L760 274"/>
+          <path d="M250 58 L370 108"/><path d="M250 112 L370 112"/><path d="M250 166 L370 116"/><path d="M250 220 L370 120"/>
+          <path d="M250 274 L370 222"/>
+          <path d="M495 80 L495 90"/><path d="M495 134 L495 144"/>
+          <path d="M620 166 L760 108"/><path d="M620 220 L760 220"/><path d="M620 274 L760 274"/>
         </g>
       </svg>
     </div>
 
     <div class="card eqbar">
       <div><span class="k">Backscatter in dB</span><math display="block"><msub><mi>σ</mi><mi>dB</mi></msub><mo>=</mo><mn>10</mn><msub><mi>log</mi><mn>10</mn></msub><msup><mi>σ</mi><mn>0</mn></msup></math></div>
-      <div><span class="k">Change vs its dry self</span><math display="block"><mi>Δ</mi><msub><mi>HH</mi><mi>t</mi></msub><mo>=</mo><msub><mi>HH</mi><mi>t</mi></msub><mo>−</mo><msub><mover><mi>HH</mi><mo>‾</mo></mover><mi>dry</mi></msub><mo>−</mo><msub><mi>d</mi><mi>t</mi></msub></math></div>
-      <div><span class="k">Drift of stable land</span><math display="block"><msub><mi>d</mi><mi>t</mi></msub><mo>=</mo><munder><mi>median</mi><mtext>quiet 30%</mtext></munder><mo>(</mo><msub><mi>HH</mi><mi>t</mi></msub><mo>)</mo></math></div>
+      <div><span class="k">Scene threshold (Martinis 2015)</span><math display="block"><msub><mi>t</mi><mi>t</mi></msub><mo>=</mo><munder><mi>median</mi><mtext>two-class tiles</mtext></munder><msub><mi>KI</mi><mtext>3.2 km tile</mtext></msub></math></div>
+      <div><span class="k">Dry season</span><math display="block"><msub><mover><mi>HH</mi><mo>‾</mo></mover><mi>dry</mi></msub><mo>=</mo><mi>median</mi><mo>(</mo><mtext>first 2 passes</mtext><mo>)</mo></math></div>
     </div>
     <div class="rules2">
-      <div class="card rl"><h3>① Open water</h3>
-        <math display="block"><msub><mi>HH</mi><mi>t</mi></msub><mo>&lt;</mo><msub><mi>t</mi><mi>HH</mi></msub><mo>∧</mo><msub><mi>HV</mi><mi>t</mi></msub><mo>&lt;</mo><msub><mi>t</mi><mi>HV</mi></msub></math>
-        <math display="block"><mo>(</mo><msubsup><mi>t</mi><mi>HH</mi><mo>*</mo></msubsup><mo>,</mo><msubsup><mi>t</mi><mi>HV</mi><mo>*</mo></msubsup><mo>)</mo><mo>=</mo><munder><mi>arg max</mi><mi>t</mi></munder><msub><mi>F</mi><mn>1</mn></msub><mo>(</mo><mtext>NISAR</mtext><mo>,</mo><mtext>DSWx clear</mtext><mo>)</mo></math>
-        <p>Mirror: both channels dark. Default −17 / −24 dB; tuned per site on cloud-free days.</p></div>
-      <div class="card rl"><h3>② Water spreads</h3>
-        <math display="block"><mi>Δ</mi><mi>HH</mi><mo>≤</mo><mo>−</mo><mn>2.5</mn><mo>∧</mo><mi>Δ</mi><mi>HV</mi><mo>≤</mo><mo>−</mo><mn>2.5</mn><mo>∧</mo><mi>dist</mi><mo>(</mo><mtext>open water</mtext><mo>)</mo><mo>≤</mo><mn>1</mn><mtext>&#xA0;km</mtext></math>
-        <p>−2.5 dB ≈ half the power, ≫ 0.5 dB noise of stable land.</p></div>
-      <div class="card rl"><h3>③ Flooded field</h3>
-        <math display="block"><mi>A</mi><mo>≥</mo><mn>0.5</mn><mtext>&#xA0;km²</mtext><mo>∧</mo><mover><mi>HH</mi><mo>‾</mo></mover><mo>≤</mo><mo>−</mo><mn>12</mn><mo>∧</mo><mi>Δ</mi><mi>HH</mi><mo>≤</mo><mi>Δ</mi><mi>HV</mi><mo>+</mo><mn>1</mn></math>
-        <p>Paddies: big, dark, mirror-like (HH falls with HV, unlike harvest).</p></div>
-      <div class="card rl"><h3>④ Water under trees</h3>
-        <math display="block"><mi>Δ</mi><mi>HH</mi><mo>≥</mo><mo>+</mo><mn>3</mn><mo>∧</mo><mo>|</mo><mi>Δ</mi><mi>HV</mi><mo>|</mo><mo>&lt;</mo><mn>1.5</mn><mo>∧</mo><mi>dist</mi><mo>(</mo><mtext>water</mtext><mo>)</mo><mo>≤</mo><mn>3</mn><mtext>&#xA0;km</mtext></math>
-        <p>Double bounce: +3 dB = power ×2; HV steady = canopy unchanged.</p></div>
-      <div class="card rl"><h3>⑤ Permanent water</h3>
-        <math display="block"><mfrac><mn>1</mn><mi>T</mi></mfrac><munderover><mo>∑</mo><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><mi>T</mi></munderover><mn>𝟙</mn><mo>[</mo><msub><mi>HH</mi><mi>t</mi></msub><mo>&lt;</mo><mo>−</mo><mn>13</mn><mo>∧</mo><msub><mi>HV</mi><mi>t</mi></msub><mo>&lt;</mo><mo>−</mo><mn>19</mn><mo>]</mo><mo>≥</mo><mn>0.9</mn></math>
+      <div class="card rl"><h3>⓪ Corrupt passes out</h3>
+        <math display="block"><mo>|</mo><munder><mi>median</mi><mtext>scene</mtext></munder><msub><mi>HH</mi><mi>t</mi></msub><mo>−</mo><munder><mi>median</mi><mtext>stack</mtext></munder><mo>|</mo><mo>&gt;</mo><mn>3</mn><mtext>&#xA0;dB</mtext></math>
+        <p>A bad granule is dropped before anything is counted (e.g. Inner Niger, 6 Jul; Sudd, 6 Oct).</p></div>
+      <div class="card rl"><h3>① Open water: logistic score</h3>
+        <math display="block"><mi>p</mi><mo>=</mo><mi>σ</mi><mo>(</mo><mi>w</mi><mo>·</mo><mi>z</mi><mo>+</mo><mi>b</mi><mo>)</mo><mo>≥</mo><mn>0.30</mn></math>
+        <p><i>z</i> = standardised HH−<i>t</i><sub>HH</sub>, HV−<i>t</i><sub>HV</sub>, HH−HH<sub>dry</sub>, HV−HV<sub>dry</sub>, HH−HV, HH<sub>dry</sub>−<i>t</i><sub>HH</sub>, and coherence when a 12-day GUNW pair covers the pass (else a model without it). Fitted on Inner Niger track 145 vs NASA DSWx clear days.</p></div>
+      <div class="card rl"><h3>② Clean</h3>
+        <math display="block"><mtext>3×3 majority</mtext><mo>∧</mo><mi>A</mi><mo>≥</mo><mn>0.1</mn><mtext>&#xA0;km²</mtext></math>
+        <p>Speckle and single pixels out.</p></div>
+      <div class="card rl"><h3>③ Water under trees</h3>
+        <math display="block"><mi>Δ</mi><mi>HH</mi><mo>≥</mo><mo>+</mo><mn>3</mn><mo>∧</mo><mo>|</mo><mi>Δ</mi><mi>HV</mi><mo>|</mo><mo>&lt;</mo><mn>1.5</mn><mo>∧</mo><mi>near water</mi></math>
+        <p>Double bounce: +3 dB = power ×2; HV steady = canopy unchanged. Kept from v2, only where ① found no open water.</p></div>
+      <div class="card rl"><h3>④ Permanent water</h3>
+        <math display="block"><mfrac><mn>1</mn><mi>T</mi></mfrac><munderover><mo>∑</mo><mrow><mi>t</mi><mo>=</mo><mn>1</mn></mrow><mi>T</mi></munderover><msub><mtext>water</mtext><mi>t</mi></msub><mo>≥</mo><mn>0.9</mn></math>
         <p>Lake core, river, sea: removed, never "flood".</p></div>
       <div class="card rl"><h3>Area</h3>
         <math display="block"><mtext>km²</mtext><mo>=</mo><mi>N</mi><mtext>&#xA0;pixels</mtext><mo>×</mo><mn>0.08</mn><mo>×</mo><mn>0.08</mn></math>
         <p>80 m NISAR GCOV grid.</p></div>
     </div>
     <div class="card cal">
-      <p><b style="color:var(--text)">Optical teaches radar, Tonle Sap.</b> 9 clear days → −13.5 / −18.5 dB, scored leave-one-out.</p>
-      <div class="f1"><div><b style="color:var(--muted)">0.43</b><span>F1, default</span></div><div><b style="color:var(--accent)">0.78</b><span>F1, tuned</span></div></div>
+      <p><b style="color:var(--text)">Dry season per site.</b> Default: the first two passes (mid-June, before the monsoon at most sites). Peace–Athabasca floods May–Aug, so its dry passes are 4 and 16 Sep. Detector v2 (fixed thresholds tuned on clear optical days) is kept in git history.</p>
+      <div class="f1"><div><b style="color:var(--muted)">0.61</b><span>F1, Martinis alone</span></div><div><b style="color:var(--accent)">0.70</b><span>F1, v3 (held-out track)</span></div></div>
     </div>
   </div>
 </section>
@@ -453,7 +448,7 @@
         <math display="block"><msub><mi>f</mi><mi>n</mi></msub><mo>=</mo><mfrac><msub><mrow><mo>⟨</mo><mi>σ</mi><mo>(</mo><mi>A</mi><mo>)</mo><mo>⟩</mo></mrow><mi>t</mi></msub><mrow><msub><mi>σ</mi><mi>n</mi></msub><mo>(</mo><mi>A</mi><mo>)</mo></mrow></mfrac><mspace width="1em"/><msubsup><mi>σ</mi><mi>n</mi><mi>c</mi></msubsup><mo>=</mo><msub><mi>f</mi><mi>n</mi></msub><msub><mi>σ</mi><mi>n</mi></msub><mspace width="1em"/><mtext>(6.3-5, 6.3-6)</mtext></math>
         <math display="block"><mtext>N2IV:</mtext><mspace width=".4em"/><mfrac><msub><mi>HH</mi><mi>n</mi></msub><mover><mi>HH</mi><mo>‾</mo></mover></mfrac><mo>&gt;</mo><msub><mi>T</mi><mi>iv</mi></msub><mo>,</mo><mspace width=".4em"/><mfrac><msub><mi>HV</mi><mi>n</mi></msub><mover><mi>HV</mi><mo>‾</mo></mover></mfrac><mo>&lt;</mo><msub><mi>T</mi><mi>HV</mi></msub><mspace width="1em"/><mtext>(6.4-4)</mtext></math>
         <p class="note" style="margin-top:0">N2O = Not inundated → Open water · N2IV = Not inundated → Inundated vegetation.</p>
-        <ul class="took"><li><b>We use:</b> change vs the pixel's own reference, stable-land calibration (our drift <i>d<sub>t</sub></i>), the double-bounce rule ④ with the same thresholds.</li><li><b>We tested</b> the full classifier as a second opinion (<code>flood_nasa.py</code>).</li></ul>
+        <ul class="took"><li><b>We use:</b> change vs the pixel's own dry season, and the double-bounce rule (v3 step ③) with the same thresholds.</li><li><b>We tested</b> the full classifier as a second opinion (<code>flood_nasa.py</code>).</li></ul>
       </div>
       <div class="card lit">
         <div class="src"><span class="tag">Paper</span><a href="https://doi.org/10.1016/j.isprsjprs.2014.07.014" target="_blank" rel="noopener">Martinis, Kersten &amp; Twele (2015), ISPRS J. 104:203–212 ↗</a></div>
@@ -499,24 +494,24 @@
     <div class="vgrid">
       <div class="card vb">
         <div class="k">A · Optical, clear days · NASA OPERA DSWx-HLS</div>
-        <div class="vnum"><b class="ok">0.78</b><span>F1, Tonle Sap<br>(0.43 fixed thresholds)</span></div>
-        <p>Pixel by pixel, clear sky only, ±5 days, leave-one-out.</p>
+        <div class="vnum"><b class="ok">0.69–0.79</b><span>mean F1, detector v3<br>Tonle Sap, Mekong, Congo, Peace–Athabasca</span></div>
+        <p>Pixel by pixel, clear sky only, ±5 days. v2 (thresholds tuned on these days): 0.64–0.86. Inner Niger: 0.15 (v2 0.06), dry soil as dark as water.</p>
         <p class="lim1"><b>Limit:</b> optical can't see water under trees.</p>
       </div>
       <div class="card vb">
         <div class="k">B · Same-week radar · CSA RCM (C-band)</div>
-        <div class="vnum"><b class="ok">79%</b><span>of NISAR water confirmed<br>IoU 0.65 · 4 pairs ≤ 3 days</span></div>
+        <div class="vnum"><b class="ok">88%</b><span>pixels agree, detector v3<br>IoU 0.44 · 2 passes ≤ 3 days</span></div>
         <p>Peace–Athabasca Delta. Under vegetation: RCM double bounce 42–45% vs 10% by chance (~4×).</p>
-        <p class="lim1"><b>Limit:</b> one delta, autumn 2026.</p>
+        <p class="lim1"><b>Limit:</b> one delta, July 2026.</p>
       </div>
       <div class="card vb">
         <div class="k">C · Ground truth · USGS EDEN gauges</div>
         <div class="vnum"><b class="ok">0.95–1.00</b><span>precision, Everglades<br>recall ≤ 0.35</span></div>
-        <p>Water = depth &gt; 5 cm, 400 m daily grid.</p>
+        <p>Water = depth &gt; 5 cm, 400 m daily grid. Scored with detector v2 (gauge site not re-run).</p>
         <p class="lim1"><b>So:</b> our water is water; areas are lower bounds.</p>
       </div>
     </div>
-    <p class="note">History: RADARSAT-1 (CSA, 1998–2007) on the same grid shows the Mekong delta's flood pulse, ~100–350 km² dry vs ~1,500–2,800 km² wet. NISAR 2026 peak: 1,854 km².</p>
+    <p class="note">History: RADARSAT-1 (CSA, 1998–2007) on the same grid shows the Mekong delta's flood pulse, ~100–350 km² dry vs ~1,500–2,800 km² wet. NISAR 2026 peak: 1,854 km² (detector v2: this view is not yet re-run with v3).</p>
   </div>
 </section>
 
@@ -531,7 +526,7 @@
       <div><b>A sample</b><span>Wettest pass per site, sites we picked. Not a global or average figure.</span></div>
       <div><b>Provisional data</b><span>Most NISAR passes are still Provisional; calibration may change.</span></div>
       <div><b>80 m grid</b><span>GFM (20 m) and NISAR dates differ by ≤ 2 days. Small or fast floods blur.</span></div>
-      <div><b>Detector versions</b><span>Site numbers use detector v2. v3 (with coherence) is tested on one site so far.</span></div>
+      <div><b>Detector versions</b><span>Flood maps, cards and totals use detector v3 (15 Nov); the over-the-years views move to v3 one by one (Tonle Sap done), the rest still show v2. The v2 numbers stay in git history. v3 is fitted on one site (Inner Niger); it scores below v2 at Tonle Sap and Peace–Athabasca, where v2 was tuned.</span></div>
     </div>
   </div>
 </section>

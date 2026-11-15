@@ -24,34 +24,34 @@
   "pass_date": "2026-06-24",
   "baseline": "dswx",
   "baseline_date": "2026-06-24",
-  "baseline_flood_km2": 974.3,
-  "nisar_adds_km2": 2.6,
+  "baseline_flood_km2": 1282.9,
+  "nisar_adds_km2": 3.8,
   "improvement_pct": 0,
-  "cannot_see_km2": 9.6,
-  "cannot_see_clouds_km2": 9.6,
+  "cannot_see_km2": 14.2,
+  "cannot_see_clouds_km2": 14.2,
   "cannot_see_vegetation_km2": 0.0,
   "still_unknown_km2": 0.0,
-  "nisar_water_km2": 439.6,
-  "sentence": "On 2026-06-24, NISAR adds 3 km² of flood (+0%) where NASA's flood map (OPERA DSWx-HLS) cannot see.",
+  "nisar_water_km2": 490.6,
+  "sentence": "On 2026-06-24, NISAR adds 4 km² of flood (+0%) where NASA's flood map (OPERA DSWx-HLS) cannot see.",
   "validation": {
    "source": "rcm",
    "rcm": {
-    "agreement_pct": 89.5,
-    "iou": 0.6,
+    "agreement_pct": 87.8,
+    "iou": 0.44,
     "n_dates": 2
    },
    "dswx": {
-    "agreement_pct": 80.5,
-    "iou": 0.59,
+    "agreement_pct": 68.2,
+    "iou": 0.33,
     "n_dates": 2
    },
    "rcm_vs_dswx": {
-    "agreement_pct": 73.8,
-    "iou": 0.43,
+    "agreement_pct": 73.0,
+    "iou": 0.41,
     "n_dates": 1
    },
-   "agreement_pct": 89.5,
-   "iou": 0.6,
+   "agreement_pct": 87.8,
+   "iou": 0.44,
    "n_dates": 2
   }
  },
@@ -64,11 +64,11 @@
    },
    "baselines": {
     "dswx": {
-     "flood_km2": 974.3,
-     "cannot_see_km2": 9.6,
-     "cannot_see_clouds_km2": 9.6,
+     "flood_km2": 1282.9,
+     "cannot_see_km2": 14.2,
+     "cannot_see_clouds_km2": 14.2,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 2.6,
+     "nisar_adds_km2": 3.8,
      "improvement_pct": 0,
      "still_unknown_km2": 0.0
     }
@@ -87,15 +87,17 @@
    ],
    "clouds_pct": 1,
    "nisar": {
-    "water_km2": 439.6,
+    "water_km2": 490.6,
     "valid_pct": 100
    },
    "validation": {
     "dswx": {
      "compared_pct": 99,
-     "agreement_pct": 81.2,
-     "iou": 0.61,
-     "f1": 0.76,
+     "agreement_pct": 74.3,
+     "iou": 0.46,
+     "f1": 0.63,
+     "precision": 0.99,
+     "recall": 0.46,
      "date": "2026-06-24"
     }
    },
@@ -110,12 +112,12 @@
    },
    "baselines": {
     "dswx": {
-     "flood_km2": 835.0,
-     "cannot_see_km2": 291.7,
-     "cannot_see_clouds_km2": 291.7,
+     "flood_km2": 1142.6,
+     "cannot_see_km2": 298.2,
+     "cannot_see_clouds_km2": 298.2,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 9.1,
-     "improvement_pct": 1,
+     "nisar_adds_km2": 2.9,
+     "improvement_pct": 0,
      "still_unknown_km2": 0.0
     }
    },
@@ -136,32 +138,36 @@
    ],
    "clouds_pct": 4,
    "nisar": {
-    "water_km2": 311.3,
+    "water_km2": 167.0,
     "valid_pct": 100
    },
    "validation": {
     "rcm": {
-     "threshold_db": -12.3,
-     "split_tiles": 63,
+     "threshold_db": -12.5,
+     "split_tiles": 34,
      "compared_pct": 79,
-     "agreement_pct": 88.9,
-     "iou": 0.58,
-     "f1": 0.74,
-     "nisar_open_km2": 576.4,
-     "rcm_water_km2": 467.8
+     "agreement_pct": 83.8,
+     "iou": 0.19,
+     "f1": 0.32,
+     "nisar_open_km2": 145.2,
+     "rcm_water_km2": 447.0
     },
     "dswx": {
      "compared_pct": 90,
-     "agreement_pct": 79.7,
-     "iou": 0.57,
-     "f1": 0.73,
+     "agreement_pct": 62.2,
+     "iou": 0.2,
+     "f1": 0.33,
+     "precision": 0.96,
+     "recall": 0.2,
      "date": "2026-07-07"
     },
     "rcm_vs_dswx": {
      "compared_pct": 73,
-     "agreement_pct": 73.8,
-     "iou": 0.43,
-     "f1": 0.6
+     "agreement_pct": 73.0,
+     "iou": 0.41,
+     "f1": 0.58,
+     "precision": 0.99,
+     "recall": 0.41
     }
    },
    "main_baseline": "dswx"
@@ -176,12 +182,12 @@
    },
    "baselines": {
     "dswx": {
-     "flood_km2": 12.2,
-     "cannot_see_km2": 2578.0,
-     "cannot_see_clouds_km2": 2578.0,
+     "flood_km2": 12.6,
+     "cannot_see_km2": 2891.4,
+     "cannot_see_clouds_km2": 2891.4,
      "cannot_see_vegetation_km2": 0.0,
-     "nisar_adds_km2": 371.0,
-     "improvement_pct": 3037,
+     "nisar_adds_km2": 645.4,
+     "improvement_pct": 5103,
      "still_unknown_km2": 0.0
     }
    },
@@ -203,19 +209,19 @@
    ],
    "clouds_pct": 15,
    "nisar": {
-    "water_km2": 372.9,
+    "water_km2": 647.8,
     "valid_pct": 100
    },
    "validation": {
     "rcm": {
-     "threshold_db": -14.7,
-     "split_tiles": 22,
+     "threshold_db": -13.2,
+     "split_tiles": 4,
      "compared_pct": 41,
-     "agreement_pct": 90.1,
-     "iou": 0.63,
-     "f1": 0.77,
-     "nisar_open_km2": 322.3,
-     "rcm_water_km2": 243.4
+     "agreement_pct": 91.9,
+     "iou": 0.7,
+     "f1": 0.82,
+     "nisar_open_km2": 322.2,
+     "rcm_water_km2": 271.1
     }
    },
    "main_baseline": "dswx"
@@ -680,13 +686,13 @@
      "2026-07-18"
     ]
    ],
-   "agreement_pct": 89.5,
-   "iou": 0.6,
-   "f1": 0.76,
+   "agreement_pct": 87.8,
+   "iou": 0.44,
+   "f1": 0.57,
    "sensor": "RCM C-band compact-pol (CSA), CEOS-ARD",
    "match_days": 3,
    "compared": "open water incl. permanent (C-band can't see water under trees)",
-   "sentence": "Canada's RCM radar and NISAR agree on 90% of pixels (open water IoU 0.6, 2 passes)."
+   "sentence": "Canada's RCM radar and NISAR agree on 88% of pixels (open water IoU 0.44, 2 passes)."
   },
   "dswx": {
    "source": "NASA's flood map (OPERA DSWx-HLS, optical)",
@@ -695,11 +701,13 @@
     "2026-06-24",
     "2026-07-06"
    ],
-   "agreement_pct": 80.5,
-   "iou": 0.59,
-   "f1": 0.74,
+   "agreement_pct": 68.2,
+   "iou": 0.33,
+   "f1": 0.48,
+   "precision": 0.97,
+   "recall": 0.33,
    "compared": "open water incl. permanent, where DSWx has no cloud",
-   "sentence": "NASA's DSWx map and NISAR agree on 80% of pixels (open water IoU 0.59, 2 passes)."
+   "sentence": "NASA's DSWx map and NISAR agree on 68% of pixels (open water IoU 0.33, 2 passes)."
   },
   "rcm_vs_dswx": {
    "source": "RCM vs NASA DSWx (no NISAR: how well two other sensors agree)",
@@ -707,14 +715,60 @@
    "dates": [
     "2026-07-06"
    ],
-   "agreement_pct": 73.8,
-   "iou": 0.43,
-   "f1": 0.6,
-   "sentence": "RCM and NASA's DSWx agree on 74% of pixels (open water IoU 0.43, 1 pass)."
+   "agreement_pct": 73.0,
+   "iou": 0.41,
+   "f1": 0.58,
+   "precision": 0.99,
+   "recall": 0.41,
+   "sentence": "RCM and NASA's DSWx agree on 73% of pixels (open water IoU 0.41, 1 pass)."
   }
  },
  "method": {
-  "detector": "detect.py v2 (open water + water under vegetation, HH/HV), thresholds calibrated on clear optical days: HH -12.0 / HV -18.0 dB",
+  "detector": "fused v3 (fused.py: per-scene threshold, change from the dry season, HV, GUNW coherence; water under vegetation from detect.py)",
+  "detector_info": {
+   "detector": "fused v3",
+   "thresholds_hh": [
+    -13.1,
+    -12.2,
+    -12.2,
+    -11.5,
+    -12.1,
+    -11.6,
+    -11.7,
+    -12.4,
+    -12.9,
+    -12.5
+   ],
+   "thresholds_hv": [
+    -18.1,
+    -16.5,
+    -18.5,
+    -17.2,
+    -16.9,
+    -16.9,
+    -15.3,
+    -16.5,
+    -16.1,
+    -16.6
+   ],
+   "dry_passes": [
+    "2026-09-04",
+    "2026-09-16"
+   ],
+   "coherence": [
+    false,
+    false,
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "qa_dropped": [],
   "pixel_m": 80.0,
   "permanent_water": "dark on ≥ 90 % of NISAR passes",
   "matching": {

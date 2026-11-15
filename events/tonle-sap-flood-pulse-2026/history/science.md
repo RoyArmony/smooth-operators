@@ -1,8 +1,8 @@
 # Tonle Sap, 1998–2026: flood history
 
-Same 13,289 km² box: flood 1,716 km² on 2001-08-30 (RADARSAT-1), 4,060 km² on 2026-10-17 (NISAR).
+Same 13,289 km² box: flood 2,010 km² on 2006-09-21 (RADARSAT-1), 3,684 km² on 2026-10-17 (NISAR).
 
-**Images:** 13, about one every month or two (each year's wettest kept). RADARSAT-1 (CSA, C-band),
+**Images:** 11, about one every month or two (each year's wettest kept). RADARSAT-1 (CSA, C-band),
 NISAR (L-band) 2026 (years: see the image list). Each with our flood map, a photo near the same day (MODIS from 2000, HLS in 2026), and the
 official flood maps where they exist (GFM from 2015, NASA DSWx-HLS from 2023: 2026 only).
 

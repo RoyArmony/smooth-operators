@@ -15,10 +15,24 @@
    "flood_date": "2026-07-18",
    "title": "Inner Niger Delta flood, Jul 2026",
    "baseline": "gfm",
-   "improvement_pct": 404,
-   "nisar_adds_km2": 223.1,
-   "baseline_flood_km2": 55.2
+   "improvement_pct": 25,
+   "nisar_adds_km2": 29.6,
+   "baseline_flood_km2": 118.4,
+   "validation": {
+    "source": "dswx",
+    "dswx": {
+     "agreement_pct": 90.4,
+     "iou": 0.27,
+     "n_dates": 2
+    },
+    "agreement_pct": 90.4,
+    "iou": 0.27,
+    "n_dates": 2
+   }
   }
  ],
- "history": null
+ "history": null,
+ "validation": [
+  "dswx"
+ ]
 }

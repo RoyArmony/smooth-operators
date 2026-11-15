@@ -1,6 +1,6 @@
 # Bang Pakong floods flood, Oct 2026
 
-On 2026-10-24, NISAR adds 25 km² of flood (+17%) where the official flood map (Copernicus GFM) cannot see.
+On 2026-10-24, NISAR adds 2 km² of flood (+1%) where the official flood map (Copernicus GFM) cannot see.
 
 **Window:** 2026-09-24 → 2026-11-23 (flood date ± 30 days), 3 NISAR passes, every 12 days.
 
@@ -13,3 +13,6 @@ NISAR addition / baseline flood. Area = pixels × 80 m × 80 m.
 
 **Limits:** a NISAR addition is a candidate, not proven flood; paddies are flooded on purpose in season; numbers are
 from one detector with thresholds fitted on clear days. Audit: docs/10-Results.md.
+
+**Check against NASA's map (DSWx-HLS):** NASA's DSWx map and NISAR agree on 46% of pixels (open water IoU 0.04, 1 pass).  Same open-water masks, only where DSWx has no cloud.
+Layer `dswx_water`.

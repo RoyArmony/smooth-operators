@@ -11,22 +11,22 @@
  ],
  "headline": {
   "date": "2026-06-23",
-  "sentence": "On 2026-06-23, NISAR found 19 km² of water where the official flood map (Copernicus GFM, 2026-06-21) says it cannot see.",
+  "sentence": "On 2026-06-23, NISAR found 34 km² of water where the official flood map (Copernicus GFM, 2026-06-21) says it cannot see.",
   "numbers": [
    {
     "label": "Official map: flood",
-    "value": 13.3,
+    "value": 13.2,
     "unit": "km²"
    },
    {
     "label": "NISAR adds, in the blank",
-    "value": 18.6,
+    "value": 33.5,
     "unit": "km²"
    },
    {
-    "label": "of it in forest (ESA WorldCover)",
-    "value": 0.2,
-    "unit": "km²"
+    "label": "more than the official map",
+    "value": 254,
+    "unit": "%"
    }
   ],
   "badge": {
@@ -39,14 +39,14 @@
    "date": "2026-06-23",
    "gfm_date": "2026-06-21",
    "stats": {
-    "gfm_flood": 13.3,
-    "gfm_excluded": 1196.7,
-    "nisar_wet": 69.5,
-    "nisar_adds": 18.6,
+    "gfm_flood": 13.2,
+    "gfm_excluded": 1196.3,
+    "nisar_wet": 391.4,
+    "nisar_adds": 33.5,
     "nisar_adds_canopy": 0.0,
-    "nisar_adds_forest": 0.2,
-    "nisar_adds_wetland": 0.0,
-    "nisar_adds_cropland": 8.9
+    "nisar_adds_forest": 0.7,
+    "nisar_adds_wetland": 0.1,
+    "nisar_adds_cropland": 16.6
    },
    "layers": [
     "gfm_flood",
@@ -59,7 +59,7 @@
   "gfm_flood": {
    "group": "official",
    "sensor": "Sentinel-1 (Copernicus GFM)",
-   "label": "Flood on the official map",
+   "label": "Official flood map (GFM)",
    "legend": "#2882ff",
    "files": {
     "2026-06-23": "layers/gfm_flood_2026-06-23.png"
@@ -99,7 +99,7 @@
   "nisar_adds": {
    "group": "result",
    "sensor": "NISAR L-band",
-   "label": "Only NISAR: water in the blank",
+   "label": "NISAR addition: water in the blank",
    "legend": "#ff9628",
    "files": {
     "2026-06-23": "layers/nisar_adds_2026-06-23.png"
@@ -125,6 +125,11 @@
    "credit": "NASA/JPL-Caltech, ISRO; data via ASF DAAC"
   },
   {
+   "name": "NISAR L2 GUNW (coherence)",
+   "url": "https://search.asf.alaska.edu",
+   "credit": "NASA/JPL-Caltech, ISRO; data via ASF DAAC"
+  },
+  {
    "name": "Copernicus EMS Global Flood Monitoring",
    "url": "https://global-flood.emergency.copernicus.eu",
    "credit": "© European Union, Copernicus Emergency Management Service"
@@ -136,67 +141,62 @@
   }
  ],
  "method": {
-  "detector": "detect.py (open water + water under vegetation, HH/HV)",
-  "calibration": {
-   "used": true,
-   "open_hh": -13.0,
-   "open_hv": -18.0,
-   "f1_fit": 0.7463648064122764,
-   "f1_default": 0.10882843280178826,
-   "n_days": 6,
-   "loo": [
-    {
-     "date": "2026-07-05",
-     "f1": 0.738416844277317,
-     "thresholds": [
-      -13.0,
-      -18.0
-     ]
-    },
-    {
-     "date": "2026-08-22",
-     "f1": 0.0,
-     "thresholds": [
-      -13.0,
-      -18.0
-     ]
-    },
-    {
-     "date": "2026-09-27",
-     "f1": 0.8917833194277062,
-     "thresholds": [
-      -13.0,
-      -18.0
-     ]
-    },
-    {
-     "date": "2026-10-09",
-     "f1": 0.7378911993278723,
-     "thresholds": [
-      -13.0,
-      -18.0
-     ]
-    },
-    {
-     "date": "2026-10-21",
-     "f1": 0.7188424063211983,
-     "thresholds": [
-      -12.5,
-      -17.5
-     ]
-    },
-    {
-     "date": "2026-11-02",
-     "f1": 0.6823342651068088,
-     "thresholds": [
-      -12.5,
-      -17.5
-     ]
-    }
+  "detector": "fused v3 (fused.py: per-scene threshold, change from dry season, HV, GUNW coherence; water under vegetation from detect.py)",
+  "detector_info": {
+   "detector": "fused v3",
+   "thresholds_hh": [
+    -14.7,
+    -14.1,
+    -14.9,
+    -15.1,
+    5.2,
+    -14.8,
+    -14.2,
+    -14.0,
+    -13.1,
+    -14.9,
+    -15.2
+   ],
+   "thresholds_hv": [
+    -17.7,
+    -17.9,
+    -18.3,
+    -17.3,
+    -16.0,
+    -16.7,
+    -16.1,
+    -17.0,
+    -18.9,
+    -19.3,
+    -19.4
+   ],
+   "dry_passes": [
+    "2026-06-23",
+    "2026-07-05"
+   ],
+   "coherence": [
+    true,
+    true,
+    true,
+    true,
+    false,
+    true,
+    true,
+    true,
+    true,
+    false,
+    false
    ]
   },
+  "qa_dropped": [],
+  "smart_fill": null,
+  "calibration": null,
   "pixel_m": 80.0,
   "gap": "NISAR water inside GFM exclusion mask, both valid, permanent water removed",
-  "stack": null
+  "stack": {
+   "track": 141,
+   "frame": 15,
+   "direction": "ascending"
+  }
  }
 }

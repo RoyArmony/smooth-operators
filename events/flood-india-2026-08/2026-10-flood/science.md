@@ -1,6 +1,6 @@
 # Tamil Nadu floods flood, Oct 2026
 
-On 2026-10-10, NISAR adds 4 km² of flood (+7%) where NASA's flood map (OPERA DSWx-HLS) cannot see.
+On 2026-10-10, NISAR adds 104 km² of flood (+167%) where NASA's flood map (OPERA DSWx-HLS) cannot see.
 
 **Window:** 2026-09-10 → 2026-11-09 (flood date ± 30 days), 3 NISAR passes, every 12 days.
 
@@ -14,5 +14,5 @@ NISAR addition / baseline flood. Area = pixels × 80 m × 80 m.
 **Limits:** a NISAR addition is a candidate, not proven flood; paddies are flooded on purpose in season; numbers are
 from one detector with thresholds fitted on clear days. Audit: docs/10-Results.md.
 
-**Check against NASA's map (DSWx-HLS):** NASA's DSWx map and NISAR agree on 98% of pixels (open water IoU 0.04, 1 pass).  Same open-water masks, only where DSWx has no cloud.
+**Check against NASA's map (DSWx-HLS):** NASA's DSWx map and NISAR agree on 97% of pixels (open water IoU 0.18, 1 pass).  Same open-water masks, only where DSWx has no cloud.
 Layer `dswx_water`.

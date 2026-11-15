@@ -1,6 +1,6 @@
 # Brahmaputra, Assam flood, Sep 2026
 
-On 2026-09-03, NISAR adds 414 km² of flood (+None%) where NASA's flood map (OPERA DSWx-HLS) cannot see.
+On 2026-09-03, NISAR adds 459 km² of flood (+None%) where NASA's flood map (OPERA DSWx-HLS) cannot see.
 
 **Window:** 2026-08-04 → 2026-10-03 (flood date ± 30 days), 5 NISAR passes, every 12 days.
 

@@ -5,7 +5,7 @@
    "id": "amazon-varzea-mamiraua",
    "title": "Amazon várzea (Mamirauá), Brazil",
    "place": "Amazon várzea (Mamirauá), Brazil",
-   "date": "2026-10-11",
+   "date": "2026-09-05",
    "bbox": [
     -65.2,
     -3.3,
@@ -14,29 +14,29 @@
    ],
    "kind": "site",
    "headline": {
-    "sentence": "On 2026-10-11, NISAR found 11 km² of water where the official flood map (Copernicus GFM, 2026-10-13) says it cannot see.",
+    "sentence": "On 2026-09-05, NISAR found 9 km² of water where the official flood map (Copernicus GFM, 2026-09-07) says it cannot see.",
     "numbers": [
      {
       "label": "Official map: flood",
-      "value": 0.7,
+      "value": 1.1,
       "unit": "km²"
      },
      {
       "label": "NISAR adds, in the blank",
-      "value": 11.0,
+      "value": 9.0,
       "unit": "km²"
      },
      {
       "label": "of it in forest (ESA WorldCover)",
-      "value": 4.2,
+      "value": 3.4,
       "unit": "km²"
      }
     ]
    },
    "total": {
     "flood_km2": 10.4,
-    "adds_km2": 79.1,
-    "pct": 761,
+    "adds_km2": 63.2,
+    "pct": 608,
     "n": 9,
     "first": "2026-06-25",
     "last": "2026-10-23",
@@ -56,29 +56,29 @@
    ],
    "kind": "site",
    "headline": {
-    "sentence": "On 2026-06-23, NISAR found 19 km² of water where the official flood map (Copernicus GFM, 2026-06-21) says it cannot see.",
+    "sentence": "On 2026-06-23, NISAR found 34 km² of water where the official flood map (Copernicus GFM, 2026-06-21) says it cannot see.",
     "numbers": [
      {
       "label": "Official map: flood",
-      "value": 13.3,
+      "value": 13.2,
       "unit": "km²"
      },
      {
       "label": "NISAR adds, in the blank",
-      "value": 18.6,
+      "value": 33.5,
       "unit": "km²"
      },
      {
-      "label": "of it in forest (ESA WorldCover)",
-      "value": 0.2,
-      "unit": "km²"
+      "label": "more than the official map",
+      "value": 254,
+      "unit": "%"
      }
     ]
    },
    "total": {
-    "flood_km2": 13.3,
-    "adds_km2": 18.6,
-    "pct": 140,
+    "flood_km2": 13.2,
+    "adds_km2": 33.5,
+    "pct": 254,
     "n": 1,
     "first": "2026-06-23",
     "last": "2026-06-23",
@@ -89,7 +89,7 @@
    "id": "congo-cuvette-centrale",
    "title": "Congo basin (Cuvette Centrale), Rep. of Congo",
    "place": "Congo basin (Cuvette Centrale), Rep. of Congo",
-   "date": "2026-10-31",
+   "date": "2026-10-19",
    "bbox": [
     17.3,
     0.2,
@@ -98,32 +98,32 @@
    ],
    "kind": "story",
    "headline": {
-    "sentence": "On 2026-10-31, NISAR found 118 km² of water where the official flood map (Copernicus GFM, 2026-11-02) says it cannot see.",
+    "sentence": "On 2026-10-19, NISAR found 79 km² of water where the official flood map (Copernicus GFM, 2026-10-17) says it cannot see.",
     "numbers": [
      {
       "label": "Official map: flood",
-      "value": 3.5,
+      "value": 10.9,
       "unit": "km²"
      },
      {
       "label": "NISAR adds, in the blank",
-      "value": 118.3,
+      "value": 78.7,
       "unit": "km²"
      },
      {
-      "label": "of it in forest (ESA WorldCover)",
-      "value": 9.4,
-      "unit": "km²"
+      "label": "more than the official map",
+      "value": 722,
+      "unit": "%"
      }
     ]
    },
    "total": {
-    "flood_km2": 12.3,
-    "adds_km2": 374.9,
-    "pct": 3048,
-    "n": 10,
+    "flood_km2": 11.6,
+    "adds_km2": 232.8,
+    "pct": 2007,
+    "n": 9,
     "first": "2026-07-03",
-    "last": "2026-10-31",
+    "last": "2026-10-19",
     "rule": "100 × Σ NISAR addition / Σ official flood, all passes"
    }
   },
@@ -140,7 +140,7 @@
    ],
    "kind": "site",
    "headline": {
-    "sentence": "On 2026-07-23, NISAR found 28 km² of water where the official flood map (Copernicus GFM, 2026-07-23) says it cannot see.",
+    "sentence": "On 2026-07-23, NISAR found 20 km² of water where the official flood map (Copernicus GFM, 2026-07-23) says it cannot see.",
     "numbers": [
      {
       "label": "Official map: flood",
@@ -149,19 +149,19 @@
      },
      {
       "label": "NISAR adds, in the blank",
-      "value": 27.6,
+      "value": 19.9,
       "unit": "km²"
      },
      {
       "label": "of it in forest (ESA WorldCover)",
-      "value": 24.1,
+      "value": 17.4,
       "unit": "km²"
      }
     ]
    },
    "total": {
     "flood_km2": 0.1,
-    "adds_km2": 208.7,
+    "adds_km2": 102.1,
     "pct": null,
     "n": 10,
     "first": "2026-06-17",
@@ -182,7 +182,7 @@
    ],
    "kind": "site",
    "headline": {
-    "sentence": "On 2026-07-26, NISAR found 0.8 km² of water where the official flood map (Copernicus GFM) says it cannot see, in the flooded plain.",
+    "sentence": "On 2026-07-26, NISAR found 6.3 km² of water where the official flood map (Copernicus GFM) says it cannot see, in the flooded plain.",
     "numbers": [
      {
       "label": "Official map: flood",
@@ -191,14 +191,14 @@
      },
      {
       "label": "NISAR adds, in the blank",
-      "value": 0.8,
+      "value": 6.3,
       "unit": "km²"
      }
     ]
    },
    "total": {
     "flood_km2": 4.6,
-    "adds_km2": 0.8,
+    "adds_km2": 6.3,
     "pct": null,
     "n": 1,
     "first": "2026-07-26",
@@ -210,7 +210,7 @@
    "id": "inner-niger-delta-mali",
    "title": "Inner Niger Delta, Mali",
    "place": "Inner Niger Delta, Mali",
-   "date": "2026-09-16",
+   "date": "2026-10-22",
    "bbox": [
     -4.6,
     14.6,
@@ -219,31 +219,31 @@
    ],
    "kind": "story",
    "headline": {
-    "sentence": "On 2026-09-16, NISAR found 253 km² of water where the official flood map (Copernicus GFM, 2026-09-18) says it cannot see.",
+    "sentence": "On 2026-10-22, NISAR found 47 km² of water where the official flood map (Copernicus GFM, 2026-10-24) says it cannot see.",
     "numbers": [
      {
       "label": "Official map: flood",
-      "value": 51.3,
+      "value": 106.2,
       "unit": "km²"
      },
      {
       "label": "NISAR adds, in the blank",
-      "value": 252.8,
+      "value": 47.3,
       "unit": "km²"
      },
      {
-      "label": "of it in forest (ESA WorldCover)",
-      "value": 6.8,
-      "unit": "km²"
+      "label": "more than the official map",
+      "value": 45,
+      "unit": "%"
      }
     ]
    },
    "total": {
-    "flood_km2": 568.6,
-    "adds_km2": 2083.4,
-    "pct": 366,
-    "n": 10,
-    "first": "2026-06-24",
+    "flood_km2": 552.0,
+    "adds_km2": 247.2,
+    "pct": 45,
+    "n": 8,
+    "first": "2026-07-18",
     "last": "2026-10-22",
     "rule": "100 × Σ NISAR addition / Σ official flood, all passes"
    }
@@ -252,7 +252,7 @@
    "id": "irrawaddy-delta-myanmar",
    "title": "Irrawaddy delta, Myanmar",
    "place": "Irrawaddy delta, Myanmar",
-   "date": "2026-07-17",
+   "date": "2026-08-22",
    "bbox": [
     95.0,
     16.3,
@@ -261,30 +261,30 @@
    ],
    "kind": "site",
    "headline": {
-    "sentence": "On 2026-07-17, NISAR found 76 km² of water where the official flood map (Copernicus GFM, 2026-07-15) says it cannot see.",
+    "sentence": "On 2026-08-22, NISAR found 45 km² of water where the official flood map (Copernicus GFM, 2026-08-20) says it cannot see.",
     "numbers": [
      {
       "label": "Official map: flood",
-      "value": 974.2,
+      "value": 97.3,
       "unit": "km²"
      },
      {
       "label": "NISAR adds, in the blank",
-      "value": 76.1,
+      "value": 45.4,
       "unit": "km²"
      },
      {
-      "label": "of it in forest (ESA WorldCover)",
-      "value": 1.8,
-      "unit": "km²"
+      "label": "more than the official map",
+      "value": 47,
+      "unit": "%"
      }
     ]
    },
    "total": {
-    "flood_km2": 2543.0,
-    "adds_km2": 470.8,
-    "pct": 19,
-    "n": 11,
+    "flood_km2": 1510.3,
+    "adds_km2": 174.0,
+    "pct": 12,
+    "n": 9,
     "first": "2026-06-23",
     "last": "2026-11-02",
     "rule": "100 × Σ NISAR addition / Σ official flood, all passes"
@@ -327,7 +327,7 @@
    "id": "likouala-flood-congo-2026",
    "title": "Likouala floods, Rep. of Congo (Oct 2026)",
    "place": "Likouala floods, Rep. of Congo (Oct 2026)",
-   "date": "2026-07-03",
+   "date": "2026-10-19",
    "bbox": [
     17.6,
     1.3,
@@ -336,7 +336,7 @@
    ],
    "kind": "site",
    "headline": {
-    "sentence": "On 2026-07-03, NISAR found 2 km² of water where the official flood map (Copernicus GFM, 2026-07-01) says it cannot see.",
+    "sentence": "On 2026-10-19, NISAR found 6 km² of water where the official flood map (Copernicus GFM, 2026-10-17) says it cannot see.",
     "numbers": [
      {
       "label": "Official map: flood",
@@ -345,23 +345,23 @@
      },
      {
       "label": "NISAR adds, in the blank",
-      "value": 2.5,
+      "value": 6.1,
       "unit": "km²"
      },
      {
       "label": "of it in forest (ESA WorldCover)",
-      "value": 0.0,
+      "value": 0.8,
       "unit": "km²"
      }
     ]
    },
    "total": {
-    "flood_km2": 0.1,
-    "adds_km2": 10.2,
+    "flood_km2": 0.5,
+    "adds_km2": 13.2,
     "pct": null,
-    "n": 10,
+    "n": 9,
     "first": "2026-07-03",
-    "last": "2026-10-31",
+    "last": "2026-10-19",
     "rule": "100 × Σ NISAR addition / Σ official flood, all passes"
    }
   },
@@ -369,7 +369,7 @@
    "id": "mekong-delta-vietnam",
    "title": "Mekong delta, Vietnam",
    "place": "Mekong delta, Vietnam",
-   "date": "2026-09-23",
+   "date": "2026-10-05",
    "bbox": [
     105.0,
     10.4,
@@ -378,29 +378,29 @@
    ],
    "kind": "story",
    "headline": {
-    "sentence": "On 2026-09-23, NISAR found 170 km² of water where the official flood map (Copernicus GFM, 2026-09-23) says it cannot see.",
+    "sentence": "On 2026-10-05, NISAR found 133 km² of water where the official flood map (Copernicus GFM, 2026-10-05) says it cannot see.",
     "numbers": [
      {
       "label": "Official map: flood",
-      "value": 708.7,
+      "value": 431.1,
       "unit": "km²"
      },
      {
       "label": "NISAR adds, in the blank",
-      "value": 169.6,
+      "value": 132.6,
       "unit": "km²"
      },
      {
-      "label": "of it in forest (ESA WorldCover)",
-      "value": 13.6,
-      "unit": "km²"
+      "label": "more than the official map",
+      "value": 31,
+      "unit": "%"
      }
     ]
    },
    "total": {
     "flood_km2": 4150.8,
-    "adds_km2": 1061.9,
-    "pct": 26,
+    "adds_km2": 731.9,
+    "pct": 18,
     "n": 11,
     "first": "2026-06-19",
     "last": "2026-10-29",
@@ -420,7 +420,7 @@
    ],
    "kind": "site",
    "headline": {
-    "sentence": "On 2026-10-21, NISAR found 2 km² of water where the official flood map (Copernicus GFM, 2026-10-19) says it cannot see.",
+    "sentence": "On 2026-10-21, NISAR found 28 km² of water where the official flood map (Copernicus GFM, 2026-10-19) says it cannot see.",
     "numbers": [
      {
       "label": "Official map: flood",
@@ -429,7 +429,7 @@
      },
      {
       "label": "NISAR adds, in the blank",
-      "value": 2.4,
+      "value": 28.2,
       "unit": "km²"
      },
      {
@@ -440,11 +440,11 @@
     ]
    },
    "total": {
-    "flood_km2": 3.5,
-    "adds_km2": 4.9,
+    "flood_km2": 0.1,
+    "adds_km2": 28.2,
     "pct": null,
-    "n": 9,
-    "first": "2026-07-05",
+    "n": 1,
+    "first": "2026-10-21",
     "last": "2026-10-21",
     "rule": "100 × Σ NISAR addition / Σ official flood, all passes"
    }
@@ -486,7 +486,7 @@
    "id": "sylhet-haor-bangladesh",
    "title": "Sylhet haor, Bangladesh",
    "place": "Sylhet haor, Bangladesh",
-   "date": "2026-06-18",
+   "date": "2026-11-09",
    "bbox": [
     91.1,
     24.4,
@@ -495,29 +495,29 @@
    ],
    "kind": "site",
    "headline": {
-    "sentence": "On 2026-06-18, NISAR found 14 km² of water where the official flood map (Copernicus GFM, 2026-06-19) says it cannot see.",
+    "sentence": "On 2026-11-09, NISAR found 4 km² of water where the official flood map (Copernicus GFM, 2026-11-10) says it cannot see.",
     "numbers": [
      {
       "label": "Official map: flood",
-      "value": 411.4,
+      "value": 35.9,
       "unit": "km²"
      },
      {
       "label": "NISAR adds, in the blank",
-      "value": 13.8,
+      "value": 4.3,
       "unit": "km²"
      },
      {
-      "label": "of it in forest (ESA WorldCover)",
-      "value": 0.7,
-      "unit": "km²"
+      "label": "more than the official map",
+      "value": 12,
+      "unit": "%"
      }
     ]
    },
    "total": {
     "flood_km2": 907.8,
-    "adds_km2": 72.1,
-    "pct": 8,
+    "adds_km2": 18.8,
+    "pct": 2,
     "n": 11,
     "first": "2026-06-18",
     "last": "2026-11-09",
@@ -570,7 +570,7 @@
    ],
    "kind": "story",
    "headline": {
-    "sentence": "On 2026-10-17, NISAR found 542 km² of water where the official flood map (Copernicus GFM, 2026-10-17) says it cannot see.",
+    "sentence": "On 2026-10-17, NISAR found 359 km² of water where the official flood map (Copernicus GFM, 2026-10-17) says it cannot see.",
     "numbers": [
      {
       "label": "Official map: flood",
@@ -579,20 +579,20 @@
      },
      {
       "label": "NISAR adds, in the blank",
-      "value": 541.6,
+      "value": 359.1,
       "unit": "km²"
      },
      {
-      "label": "of it in forest (ESA WorldCover)",
-      "value": 344.0,
-      "unit": "km²"
+      "label": "more than the official map",
+      "value": 65,
+      "unit": "%"
      }
     ]
    },
    "total": {
     "flood_km2": 3719.0,
-    "adds_km2": 2386.5,
-    "pct": 64,
+    "adds_km2": 1656.6,
+    "pct": 45,
     "n": 11,
     "first": "2026-06-19",
     "last": "2026-10-29",
@@ -603,7 +603,7 @@
    "id": "world",
    "title": "16 flood sites",
    "place": "World",
-   "date": "2026-10-31",
+   "date": "2026-11-09",
    "bbox": [
     -180,
     -60,
@@ -612,21 +612,21 @@
    ],
    "kind": "world",
    "headline": {
-    "sentence": "Across 17 flood sites we chose, on each site's wettest NISAR pass, NISAR found 2,177 km² of water inside the official flood maps' blanks: 74% more than the 2,952 km² they showed. A sample, not a global total.",
+    "sentence": "Across 16 flood sites we chose, on each site's wettest NISAR pass, NISAR found 873 km² of water inside the official flood maps' blanks: 67% more than the 1,298 km² they showed. A sample, not a global total.",
     "numbers": [
      {
       "label": "NISAR adds, in the blanks",
-      "value": 2176.7,
+      "value": 873.0,
       "unit": "km²"
      },
      {
       "label": "Official maps: flood",
-      "value": 2951.9,
+      "value": 1298.0,
       "unit": "km²"
      },
      {
       "label": "more",
-      "value": 74,
+      "value": 67,
       "unit": "%"
      }
     ]
@@ -650,19 +650,30 @@
      "id": "2026-06-flood",
      "flood_date": "2026-06-25",
      "title": "Amazon várzea (Mamirauá) flood, Jun 2026",
-     "baseline": "dswx",
-     "improvement_pct": 82,
-     "nisar_adds_km2": 20.5,
-     "baseline_flood_km2": 25.0,
+     "baseline": "gfm",
+     "improvement_pct": null,
+     "nisar_adds_km2": 8.9,
+     "baseline_flood_km2": 1.3,
+     "validation": {
+      "source": "dswx",
+      "dswx": {
+       "agreement_pct": 91.5,
+       "iou": 0.74,
+       "n_dates": 1
+      },
+      "agreement_pct": 91.5,
+      "iou": 0.74,
+      "n_dates": 1
+     },
      "total": {
-      "flood_km2": 352.4,
-      "adds_km2": 63.3,
-      "pct": 18,
+      "flood_km2": 4.1,
+      "adds_km2": 24.6,
+      "pct": null,
       "n": 3,
       "first": "2026-06-25",
       "last": "2026-07-19",
       "rule": "100 × Σ NISAR addition / Σ official flood, all passes",
-      "baseline": "dswx"
+      "baseline": "gfm"
      }
     }
    ],
@@ -676,7 +687,9 @@
      "RADARSAT-1"
     ]
    },
-   "validation": []
+   "validation": [
+    "dswx"
+   ]
   },
   {
    "id": "assam-brahmaputra",
@@ -696,12 +709,12 @@
      "title": "Brahmaputra, Assam flood, Sep 2026",
      "baseline": "dswx",
      "improvement_pct": null,
-     "nisar_adds_km2": 414.0,
+     "nisar_adds_km2": 458.9,
      "baseline_flood_km2": 0.0,
      "total": {
-      "flood_km2": 235.8,
-      "adds_km2": 873.0,
-      "pct": 370,
+      "flood_km2": 337.7,
+      "adds_km2": 923.7,
+      "pct": 274,
       "n": 4,
       "first": "2026-08-10",
       "last": "2026-09-27",
@@ -739,16 +752,16 @@
      "flood_date": "2026-10-31",
      "title": "Congo basin (Cuvette Centrale) flood, Oct 2026",
      "baseline": "gfm",
-     "improvement_pct": null,
-     "nisar_adds_km2": 118.3,
-     "baseline_flood_km2": 3.6,
+     "improvement_pct": 723,
+     "nisar_adds_km2": 78.7,
+     "baseline_flood_km2": 10.9,
      "total": {
-      "flood_km2": 3.7,
-      "adds_km2": 257.7,
-      "pct": null,
-      "n": 3,
+      "flood_km2": 10.9,
+      "adds_km2": 137.5,
+      "pct": 1261,
+      "n": 2,
       "first": "2026-10-07",
-      "last": "2026-10-31",
+      "last": "2026-10-19",
       "rule": "100 × Σ NISAR addition / Σ official flood, all passes",
       "baseline": "gfm"
      }
@@ -777,27 +790,27 @@
      "kind": "validation",
      "improvement_pct": 0,
      "nisar_adds_km2": 0.0,
-     "baseline_flood_km2": 253.0,
+     "baseline_flood_km2": 154.6,
      "validation": {
       "source": "dswx",
       "dswx": {
-       "agreement_pct": 74.4,
-       "iou": 0.46,
+       "agreement_pct": 83.2,
+       "iou": 0.64,
        "n_dates": 5
       },
       "lance": {
-       "agreement_pct": 73.3,
-       "iou": 0.36,
+       "agreement_pct": 71.5,
+       "iou": 0.44,
        "n_dates": 5
       },
-      "agreement_pct": 74.4,
-      "iou": 0.46,
+      "agreement_pct": 83.2,
+      "iou": 0.64,
       "n_dates": 5
      },
      "total": {
-      "flood_km2": 1014.8,
-      "adds_km2": 67.1,
-      "pct": 7,
+      "flood_km2": 584.3,
+      "adds_km2": 102.4,
+      "pct": 18,
       "n": 5,
       "first": "2026-09-16",
       "last": "2026-11-03",
@@ -828,30 +841,30 @@
      "id": "2026-10-flood",
      "flood_date": "2026-10-27",
      "title": "Hubei floods flood, Oct 2026",
-     "baseline": "dswx",
-     "improvement_pct": 12,
-     "nisar_adds_km2": 29.6,
-     "baseline_flood_km2": 253.0,
+     "baseline": "gfm",
+     "improvement_pct": null,
+     "nisar_adds_km2": 5.3,
+     "baseline_flood_km2": 0.0,
      "validation": {
       "source": "dswx",
       "dswx": {
-       "agreement_pct": 92.2,
-       "iou": 0.22,
+       "agreement_pct": 92.0,
+       "iou": 0.18,
        "n_dates": 2
       },
-      "agreement_pct": 92.2,
-      "iou": 0.22,
+      "agreement_pct": 92.0,
+      "iou": 0.18,
       "n_dates": 2
      },
      "total": {
-      "flood_km2": 539.7,
-      "adds_km2": 74.3,
-      "pct": 14,
+      "flood_km2": 0.0,
+      "adds_km2": 14.0,
+      "pct": null,
       "n": 2,
       "first": "2026-10-03",
       "last": "2026-10-15",
       "rule": "100 × Σ NISAR addition / Σ official flood, all passes",
-      "baseline": "dswx"
+      "baseline": "gfm"
      }
     }
    ],
@@ -877,24 +890,24 @@
      "flood_date": "2026-10-10",
      "title": "Tamil Nadu floods flood, Oct 2026",
      "baseline": "dswx",
-     "improvement_pct": 7,
-     "nisar_adds_km2": 4.4,
-     "baseline_flood_km2": 67.3,
+     "improvement_pct": 167,
+     "nisar_adds_km2": 104.3,
+     "baseline_flood_km2": 62.5,
      "validation": {
       "source": "dswx",
       "dswx": {
-       "agreement_pct": 97.8,
-       "iou": 0.04,
+       "agreement_pct": 97.2,
+       "iou": 0.18,
        "n_dates": 1
       },
-      "agreement_pct": 97.8,
-      "iou": 0.04,
+      "agreement_pct": 97.2,
+      "iou": 0.18,
       "n_dates": 1
      },
      "total": {
-      "flood_km2": 86.6,
-      "adds_km2": 7.7,
-      "pct": 9,
+      "flood_km2": 78.3,
+      "adds_km2": 369.4,
+      "pct": 472,
       "n": 3,
       "first": "2026-10-10",
       "last": "2026-11-03",
@@ -926,12 +939,23 @@
      "title": "GERD reservoir, Blue Nile flood, Nov 2026",
      "baseline": "dswx",
      "improvement_pct": 1,
-     "nisar_adds_km2": 4.1,
-     "baseline_flood_km2": 477.5,
+     "nisar_adds_km2": 3.2,
+     "baseline_flood_km2": 449.9,
+     "validation": {
+      "source": "dswx",
+      "dswx": {
+       "agreement_pct": 98.1,
+       "iou": 0.86,
+       "n_dates": 3
+      },
+      "agreement_pct": 98.1,
+      "iou": 0.86,
+      "n_dates": 3
+     },
      "total": {
-      "flood_km2": 1370.0,
-      "adds_km2": 91.8,
-      "pct": 7,
+      "flood_km2": 1289.7,
+      "adds_km2": 72.5,
+      "pct": 6,
       "n": 3,
       "first": "2026-10-09",
       "last": "2026-11-02",
@@ -950,7 +974,9 @@
      "Sentinel-1"
     ]
    },
-   "validation": []
+   "validation": [
+    "dswx"
+   ]
   },
   {
    "id": "inner-niger-delta-mali",
@@ -969,14 +995,25 @@
      "flood_date": "2026-07-18",
      "title": "Inner Niger Delta flood, Jul 2026",
      "baseline": "gfm",
-     "improvement_pct": 404,
-     "nisar_adds_km2": 223.1,
-     "baseline_flood_km2": 55.2,
+     "improvement_pct": 25,
+     "nisar_adds_km2": 29.6,
+     "baseline_flood_km2": 118.4,
+     "validation": {
+      "source": "dswx",
+      "dswx": {
+       "agreement_pct": 90.4,
+       "iou": 0.27,
+       "n_dates": 2
+      },
+      "agreement_pct": 90.4,
+      "iou": 0.27,
+      "n_dates": 2
+     },
      "total": {
-      "flood_km2": 100.9,
-      "adds_km2": 669.5,
-      "pct": 664,
-      "n": 4,
+      "flood_km2": 241.1,
+      "adds_km2": 105.0,
+      "pct": 44,
+      "n": 3,
       "first": "2026-06-24",
       "last": "2026-08-11",
       "rule": "100 × Σ NISAR addition / Σ official flood, all passes",
@@ -985,7 +1022,9 @@
     }
    ],
    "history": null,
-   "validation": []
+   "validation": [
+    "dswx"
+   ]
   },
   {
    "id": "mekong-delta-vietnam",
@@ -1004,13 +1043,24 @@
      "flood_date": "2026-09-23",
      "title": "Mekong delta flood, Sep 2026",
      "baseline": "gfm",
-     "improvement_pct": 24,
-     "nisar_adds_km2": 169.7,
-     "baseline_flood_km2": 706.0,
+     "improvement_pct": 13,
+     "nisar_adds_km2": 90.1,
+     "baseline_flood_km2": 708.7,
+     "validation": {
+      "source": "dswx",
+      "dswx": {
+       "agreement_pct": 80.4,
+       "iou": 0.7,
+       "n_dates": 1
+      },
+      "agreement_pct": 80.4,
+      "iou": 0.7,
+      "n_dates": 1
+     },
      "total": {
-      "flood_km2": 3145.5,
-      "adds_km2": 769.2,
-      "pct": 24,
+      "flood_km2": 3161.3,
+      "adds_km2": 536.5,
+      "pct": 17,
       "n": 5,
       "first": "2026-08-30",
       "last": "2026-10-17",
@@ -1029,7 +1079,9 @@
      "RADARSAT-1"
     ]
    },
-   "validation": []
+   "validation": [
+    "dswx"
+   ]
   },
   {
    "id": "peace-athabasca-delta",
@@ -1049,33 +1101,33 @@
      "title": "Peace-Athabasca Delta flood, Jun 2026",
      "baseline": "dswx",
      "improvement_pct": 0,
-     "nisar_adds_km2": 2.6,
-     "baseline_flood_km2": 974.3,
+     "nisar_adds_km2": 3.8,
+     "baseline_flood_km2": 1282.9,
      "validation": {
       "source": "rcm",
       "rcm": {
-       "agreement_pct": 89.5,
-       "iou": 0.6,
+       "agreement_pct": 87.8,
+       "iou": 0.44,
        "n_dates": 2
       },
       "dswx": {
-       "agreement_pct": 80.5,
-       "iou": 0.59,
+       "agreement_pct": 68.2,
+       "iou": 0.33,
        "n_dates": 2
       },
       "rcm_vs_dswx": {
-       "agreement_pct": 73.8,
-       "iou": 0.43,
+       "agreement_pct": 73.0,
+       "iou": 0.41,
        "n_dates": 1
       },
-      "agreement_pct": 89.5,
-      "iou": 0.6,
+      "agreement_pct": 87.8,
+      "iou": 0.44,
       "n_dates": 2
      },
      "total": {
-      "flood_km2": 1821.5,
-      "adds_km2": 382.7,
-      "pct": 21,
+      "flood_km2": 2438.1,
+      "adds_km2": 652.1,
+      "pct": 27,
       "n": 3,
       "first": "2026-06-24",
       "last": "2026-07-18",
@@ -1115,19 +1167,19 @@
      "id": "2026-07-flood",
      "flood_date": "2026-07-24",
      "title": "Sylhet haor flood, Jul 2026",
-     "baseline": "dswx",
-     "improvement_pct": 778,
-     "nisar_adds_km2": 850.1,
-     "baseline_flood_km2": 109.3,
+     "baseline": "gfm",
+     "improvement_pct": 2,
+     "nisar_adds_km2": 1.2,
+     "baseline_flood_km2": 55.3,
      "total": {
-      "flood_km2": 748.3,
-      "adds_km2": 2364.6,
-      "pct": 316,
+      "flood_km2": 230.6,
+      "adds_km2": 6.1,
+      "pct": 3,
       "n": 4,
       "first": "2026-06-30",
       "last": "2026-08-17",
       "rule": "100 × Σ NISAR addition / Σ official flood, all passes",
-      "baseline": "dswx"
+      "baseline": "gfm"
      }
     }
    ],
@@ -1161,34 +1213,34 @@
      "title": "Sylhet haor (validation), Oct 2026",
      "baseline": "gfm",
      "kind": "validation",
-     "improvement_pct": 16,
-     "nisar_adds_km2": 1.3,
-     "baseline_flood_km2": 8.0,
+     "improvement_pct": 12,
+     "nisar_adds_km2": 4.3,
+     "baseline_flood_km2": 35.8,
      "validation": {
       "source": "gfm",
       "dswx": {
-       "agreement_pct": 76.8,
-       "iou": 0.61,
+       "agreement_pct": 44.5,
+       "iou": 0.03,
        "n_dates": 4
       },
       "lance": {
-       "agreement_pct": 80.4,
-       "iou": 0.55,
+       "agreement_pct": 72.6,
+       "iou": 0.1,
        "n_dates": 6
       },
       "gfm": {
-       "agreement_pct": 79.4,
-       "iou": 0.69,
+       "agreement_pct": 49.0,
+       "iou": 0.09,
        "n_dates": 5
       },
-      "agreement_pct": 79.4,
-      "iou": 0.69,
+      "agreement_pct": 49.0,
+      "iou": 0.09,
       "n_dates": 5
      },
      "total": {
-      "flood_km2": 104.0,
-      "adds_km2": 25.5,
-      "pct": 25,
+      "flood_km2": 214.3,
+      "adds_km2": 11.1,
+      "pct": 5,
       "n": 5,
       "first": "2026-09-10",
       "last": "2026-11-09",
@@ -1221,13 +1273,13 @@
      "flood_date": "2026-10-17",
      "title": "Tonle Sap flood, Oct 2026",
      "baseline": "gfm",
-     "improvement_pct": 102,
-     "nisar_adds_km2": 540.7,
-     "baseline_flood_km2": 532.4,
+     "improvement_pct": 65,
+     "nisar_adds_km2": 359.1,
+     "baseline_flood_km2": 553.4,
      "total": {
-      "flood_km2": 2073.9,
-      "adds_km2": 1833.3,
-      "pct": 88,
+      "flood_km2": 2162.7,
+      "adds_km2": 1163.8,
+      "pct": 54,
       "n": 4,
       "first": "2026-09-23",
       "last": "2026-10-29",
@@ -1240,7 +1292,7 @@
     "id": "history",
     "first": "1998-07-29",
     "last": "2026-10-17",
-    "n_images": 13,
+    "n_images": 11,
     "sensors": [
      "NISAR",
      "RADARSAT-1"

@@ -1,6 +1,6 @@
 # Sylhet haor flood, Jul 2026
 
-On 2026-07-24, NISAR adds 850 km² of flood (+778%) where NASA's flood map (OPERA DSWx-HLS) cannot see.
+On 2026-07-24, NISAR adds 1 km² of flood (+2%) where the official flood map (Copernicus GFM) cannot see.
 
 **Window:** 2026-06-24 → 2026-08-23 (flood date ± 30 days), 4 NISAR passes, every 12 days.
 

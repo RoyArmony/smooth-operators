@@ -11,7 +11,7 @@
  ],
  "headline": {
   "date": "2026-06-26",
-  "sentence": "On 2026-06-26, NISAR found 0 km² of water where the official flood map (Copernicus GFM, 2026-06-24) says it cannot see.",
+  "sentence": "On 2026-06-26, NISAR found 16 km² of water where the official flood map (Copernicus GFM, 2026-06-24) says it cannot see.",
   "numbers": [
    {
     "label": "Official map: flood",
@@ -20,13 +20,13 @@
    },
    {
     "label": "NISAR adds, in the blank",
-    "value": 0.0,
+    "value": 16.0,
     "unit": "km²"
    },
    {
-    "label": "of it in forest (ESA WorldCover)",
-    "value": 0.0,
-    "unit": "km²"
+    "label": "more than the official map",
+    "value": 70,
+    "unit": "%"
    }
   ],
   "badge": {
@@ -40,12 +40,12 @@
    "gfm_date": "2026-06-24",
    "stats": {
     "gfm_flood": 22.7,
-    "gfm_excluded": 263.1,
-    "nisar_wet": 0.2,
-    "nisar_adds": 0.0,
+    "gfm_excluded": 263.5,
+    "nisar_wet": 339.7,
+    "nisar_adds": 16.0,
     "nisar_adds_canopy": 0.0,
-    "nisar_adds_forest": 0.0,
-    "nisar_adds_wetland": 0.0,
+    "nisar_adds_forest": 0.1,
+    "nisar_adds_wetland": 15.4,
     "nisar_adds_cropland": 0.0
    },
    "layers": [
@@ -59,7 +59,7 @@
   "gfm_flood": {
    "group": "official",
    "sensor": "Sentinel-1 (Copernicus GFM)",
-   "label": "Flood on the official map",
+   "label": "Official flood map (GFM)",
    "legend": "#2882ff",
    "files": {
     "2026-06-26": "layers/gfm_flood_2026-06-26.png"
@@ -99,7 +99,7 @@
   "nisar_adds": {
    "group": "result",
    "sensor": "NISAR L-band",
-   "label": "Only NISAR: water in the blank",
+   "label": "NISAR addition: water in the blank",
    "legend": "#ff9628",
    "files": {
     "2026-06-26": "layers/nisar_adds_2026-06-26.png"
@@ -125,6 +125,11 @@
    "credit": "NASA/JPL-Caltech, ISRO; data via ASF DAAC"
   },
   {
+   "name": "NISAR L2 GUNW (coherence)",
+   "url": "https://search.asf.alaska.edu",
+   "credit": "NASA/JPL-Caltech, ISRO; data via ASF DAAC"
+  },
+  {
    "name": "Copernicus EMS Global Flood Monitoring",
    "url": "https://global-flood.emergency.copernicus.eu",
    "credit": "© European Union, Copernicus Emergency Management Service"
@@ -136,11 +141,60 @@
   }
  ],
  "method": {
-  "detector": "detect.py (open water + water under vegetation, HH/HV)",
+  "detector": "fused v3 (fused.py: per-scene threshold, change from dry season, HV, GUNW coherence; water under vegetation from detect.py)",
+  "detector_info": {
+   "detector": "fused v3",
+   "thresholds_hh": [
+    -17.2,
+    -17.1,
+    -16.6,
+    -16.9,
+    -16.7,
+    -15.6,
+    -13.2,
+    -15.5,
+    -13.3,
+    -13.7
+   ],
+   "thresholds_hv": [
+    -17.9,
+    -18.3,
+    -17.5,
+    -17.2,
+    -17.4,
+    -17.2,
+    -18.4,
+    -18.2,
+    -18.3,
+    -18.2
+   ],
+   "dry_passes": [
+    "2026-06-26",
+    "2026-07-08"
+   ],
+   "coherence": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    false
+   ]
+  },
+  "qa_dropped": [],
+  "smart_fill": null,
   "calibration": null,
   "pixel_m": 80.0,
   "gap": "NISAR water inside GFM exclusion mask, both valid, permanent water removed",
-  "stack": null
+  "stack": {
+   "track": 172,
+   "frame": 168,
+   "direction": "ascending"
+  }
  },
  "hidden": true,
  "hidden_why": "taken out of the Explorer list (Noa, 15.11): weak or unclear flood signal"

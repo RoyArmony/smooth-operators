@@ -16,27 +16,27 @@
    "title": "Peace-Athabasca Delta flood, Jun 2026",
    "baseline": "dswx",
    "improvement_pct": 0,
-   "nisar_adds_km2": 2.6,
-   "baseline_flood_km2": 974.3,
+   "nisar_adds_km2": 3.8,
+   "baseline_flood_km2": 1282.9,
    "validation": {
     "source": "rcm",
     "rcm": {
-     "agreement_pct": 89.5,
-     "iou": 0.6,
+     "agreement_pct": 87.8,
+     "iou": 0.44,
      "n_dates": 2
     },
     "dswx": {
-     "agreement_pct": 80.5,
-     "iou": 0.59,
+     "agreement_pct": 68.2,
+     "iou": 0.33,
      "n_dates": 2
     },
     "rcm_vs_dswx": {
-     "agreement_pct": 73.8,
-     "iou": 0.43,
+     "agreement_pct": 73.0,
+     "iou": 0.41,
      "n_dates": 1
     },
-    "agreement_pct": 89.5,
-    "iou": 0.6,
+    "agreement_pct": 87.8,
+    "iou": 0.44,
     "n_dates": 2
    }
   }

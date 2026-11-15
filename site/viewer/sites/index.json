@@ -1,1 +1,696 @@
-[{"id": "peace-athabasca-delta-143-59", "title": "Peace-Athabasca Delta", "bbox": [-111.8, 58.3, -111.0, 58.9], "created": "2026-11-14T14:08Z", "n_dates": 9, "kind": "flood (seasonal)", "hazard": "FL", "event_date": null, "headline": ["Flooded at peak", 440, "km\u00b2"], "first": "2026-06-24", "last": "2026-10-22", "stack": {"track": 143, "frame": 59, "direction": "descending", "mode": "4005", "n_dates": 9, "n_dual": 9, "maturity": ["PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "VALIDATED"]}, "peak_water_km2": 440, "max_hidden_by_clouds": 0.39, "veg_change_km2": 10, "passes": [{"date": "2026-06-24", "kind": "baseline", "water_km2": 951, "dwater_km2": 0, "hidden": 0.0, "veg_km2": 5.2, "clear": 1.0}, {"date": "2026-07-06", "kind": "water", "water_km2": 822, "dwater_km2": -128, "hidden": 0.0, "veg_km2": 0.0, "clear": 1.0}, {"date": "2026-07-18", "kind": "water", "water_km2": 884, "dwater_km2": -67, "hidden": 0.0, "veg_km2": 0.4, "clear": 0.99}, {"date": "2026-08-11", "kind": "water", "water_km2": 819, "dwater_km2": -132, "hidden": 0.09, "veg_km2": 0.0, "clear": 0.81}, {"date": "2026-08-23", "kind": "water", "water_km2": 773, "dwater_km2": -178, "hidden": 0.0, "veg_km2": 1.1, "clear": 1.0}, {"date": "2026-09-04", "kind": "water", "water_km2": 771, "dwater_km2": -180, "hidden": 0.2, "veg_km2": 9.9, "clear": 0.76}, {"date": "2026-09-16", "kind": "water", "water_km2": 700, "dwater_km2": -250, "hidden": 0.32, "veg_km2": 0.0, "clear": 0.56}, {"date": "2026-10-10", "kind": "water", "water_km2": 727, "dwater_km2": -224, "hidden": 0.01, "veg_km2": 0.0, "clear": 0.99}, {"date": "2026-10-22", "kind": "water", "water_km2": 697, "dwater_km2": -254, "hidden": 0.33, "veg_km2": 3.6, "clear": 0.58}]}, {"id": "congo-cuvette-centrale-101-2", "title": "Congo Cuvette Centrale", "bbox": [17.3, 0.2, 17.9, 0.8], "created": "2026-11-14T13:53Z", "n_dates": 10, "kind": "flood (seasonal)", "hazard": "FL", "event_date": null, "headline": ["Flooded at peak", 203, "km\u00b2"], "first": "2026-06-21", "last": "2026-10-19", "stack": {"track": 101, "frame": 2, "direction": "ascending", "mode": "2005", "n_dates": 10, "n_dual": 9, "maturity": ["PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL"]}, "peak_water_km2": 203, "max_hidden_by_clouds": 0.84, "veg_change_km2": 2, "passes": [{"date": "2026-06-21", "kind": "baseline", "water_km2": 45, "dwater_km2": 0, "hidden": 0.15, "veg_km2": 0.0, "clear": 0.09}, {"date": "2026-07-03", "kind": "none", "water_km2": 48, "dwater_km2": 4, "hidden": 0.21, "veg_km2": 0.0, "clear": 0.97}, {"date": "2026-07-15", "kind": "none", "water_km2": 43, "dwater_km2": -2, "hidden": 0.25, "veg_km2": 0.1, "clear": 0.16}, {"date": "2026-07-27", "kind": "water_hidden", "water_km2": 105, "dwater_km2": 60, "hidden": 0.5, "veg_km2": 0.6, "clear": 0.26}, {"date": "2026-08-20", "kind": "water", "water_km2": 61, "dwater_km2": 16, "hidden": 0.45, "veg_km2": 1.8, "clear": 0.72}, {"date": "2026-09-01", "kind": "water_hidden", "water_km2": 138, "dwater_km2": 93, "hidden": 0.58, "veg_km2": 0.8, "clear": 0.43}, {"date": "2026-09-13", "kind": "water", "water_km2": 123, "dwater_km2": 78, "hidden": 0.15, "veg_km2": 1.3, "clear": 0.53}, {"date": "2026-09-25", "kind": "water_hidden", "water_km2": 147, "dwater_km2": 102, "hidden": 0.6, "veg_km2": 0.8, "clear": 0.35}, {"date": "2026-10-07", "kind": "water_hidden", "water_km2": 233, "dwater_km2": 189, "hidden": 0.55, "veg_km2": 0.7, "clear": 0.22}, {"date": "2026-10-19", "kind": "water_hidden", "water_km2": 246, "dwater_km2": 201, "hidden": 0.76, "veg_km2": 0.9, "clear": 0.08}]}, {"id": "mekong-delta-vietnam-83-7", "title": "Mekong delta Vietnam", "bbox": [105.0, 10.4, 105.6, 11.0], "created": "2026-11-14T13:53Z", "n_dates": 11, "kind": "flood (seasonal)", "hazard": "FL", "event_date": null, "headline": ["Flooded at peak", 1854, "km\u00b2"], "first": "2026-06-19", "last": "2026-10-29", "stack": {"track": 83, "frame": 7, "direction": "ascending", "mode": "4005", "n_dates": 11, "n_dual": 11, "maturity": ["PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "VALIDATED"]}, "peak_water_km2": 1854, "max_hidden_by_clouds": 0.68, "veg_change_km2": 3, "passes": [{"date": "2026-06-19", "kind": "baseline", "water_km2": 424, "dwater_km2": 0, "hidden": 0.12, "veg_km2": 0.1, "clear": 0.89}, {"date": "2026-07-01", "kind": "water", "water_km2": 279, "dwater_km2": -145, "hidden": 0.17, "veg_km2": 0.2, "clear": 0.75}, {"date": "2026-07-13", "kind": "water", "water_km2": 286, "dwater_km2": -138, "hidden": 0.24, "veg_km2": 2.2, "clear": 0.77}, {"date": "2026-07-25", "kind": "water", "water_km2": 309, "dwater_km2": -115, "hidden": 0.42, "veg_km2": 0.6, "clear": 0.56}, {"date": "2026-08-18", "kind": "water_hidden", "water_km2": 1248, "dwater_km2": 824, "hidden": 0.65, "veg_km2": 0.4, "clear": 0.3}, {"date": "2026-08-30", "kind": "water_hidden", "water_km2": 1583, "dwater_km2": 1159, "hidden": 0.69, "veg_km2": 0.3, "clear": 0.33}, {"date": "2026-09-11", "kind": "water", "water_km2": 1886, "dwater_km2": 1462, "hidden": 0.36, "veg_km2": 0.2, "clear": 0.58}, {"date": "2026-09-23", "kind": "water", "water_km2": 1927, "dwater_km2": 1503, "hidden": 0.13, "veg_km2": 1.8, "clear": 0.78}, {"date": "2026-10-05", "kind": "water", "water_km2": 1755, "dwater_km2": 1331, "hidden": 0.15, "veg_km2": 1.9, "clear": 0.71}, {"date": "2026-10-17", "kind": "water", "water_km2": 1654, "dwater_km2": 1230, "hidden": 0.12, "veg_km2": 1.6, "clear": 0.76}, {"date": "2026-10-29", "kind": "water", "water_km2": 1507, "dwater_km2": 1083, "hidden": 0.19, "veg_km2": 2.6, "clear": 0.7}]}, {"id": "inner-niger-delta-mali-145-9", "title": "Inner Niger Delta Mali", "bbox": [-4.6, 14.6, -4.0, 15.2], "created": "2026-11-14T13:43Z", "n_dates": 10, "kind": "flood (seasonal)", "hazard": "FL", "event_date": null, "headline": ["Flooded at peak", 1722, "km\u00b2"], "first": "2026-06-24", "last": "2026-10-22", "stack": {"track": 145, "frame": 9, "direction": "ascending", "mode": "2005", "n_dates": 10, "n_dual": 10, "maturity": ["PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "VALIDATED"]}, "peak_water_km2": 1722, "max_hidden_by_clouds": 0.26, "veg_change_km2": 380, "passes": [{"date": "2026-06-24", "kind": "baseline", "water_km2": 2515, "dwater_km2": 0, "hidden": 0.0, "veg_km2": 380.5, "clear": 1.0}, {"date": "2026-07-06", "kind": "water", "water_km2": 463, "dwater_km2": -2052, "hidden": 0.01, "veg_km2": 27.2, "clear": 0.98}, {"date": "2026-07-18", "kind": "water", "water_km2": 2798, "dwater_km2": 283, "hidden": 0.32, "veg_km2": 5.9, "clear": 0.75}, {"date": "2026-08-11", "kind": "water", "water_km2": 2659, "dwater_km2": 144, "hidden": 0.05, "veg_km2": 7.9, "clear": 0.96}, {"date": "2026-08-23", "kind": "water", "water_km2": 2593, "dwater_km2": 78, "hidden": 0.0, "veg_km2": 95.0, "clear": 1.0}, {"date": "2026-09-04", "kind": "water", "water_km2": 2612, "dwater_km2": 97, "hidden": 0.0, "veg_km2": 10.0, "clear": 1.0}, {"date": "2026-09-16", "kind": "water", "water_km2": 2798, "dwater_km2": 283, "hidden": 0.06, "veg_km2": 77.1, "clear": 0.93}, {"date": "2026-09-28", "kind": "water", "water_km2": 2804, "dwater_km2": 289, "hidden": 0.0, "veg_km2": 66.8, "clear": 1.0}, {"date": "2026-10-10", "kind": "water", "water_km2": 2823, "dwater_km2": 308, "hidden": 0.0, "veg_km2": 74.3, "clear": 1.0}, {"date": "2026-10-22", "kind": "water", "water_km2": 2730, "dwater_km2": 215, "hidden": 0.0, "veg_km2": 57.3, "clear": 1.0}]}, {"id": "tonle-sap-flood-pulse-2026-83-8", "title": "Tonle Sap flood pulse 2026", "bbox": [103.6, 12.3, 104.7, 13.3], "created": "2026-11-09T18:56Z", "n_dates": 10, "kind": "flood under clouds and canopy", "hazard": "FL", "event_date": null, "headline": ["Flooded at peak", 4112, "km\u00b2"], "first": "2026-06-19", "last": "2026-10-17", "stack": {"track": 83, "frame": 8, "direction": "ascending", "mode": "2005", "n_dates": 10, "n_dual": 10, "maturity": ["PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL"]}, "peak_water_km2": 4112, "max_hidden_by_clouds": 0.89, "veg_change_km2": 32, "passes": [{"date": "2026-06-19", "kind": "baseline", "water_km2": 2486, "dwater_km2": 0, "hidden": 0.0, "veg_km2": 0.1, "clear": 1.0}, {"date": "2026-07-01", "kind": "water_hidden", "water_km2": 2379, "dwater_km2": -107, "hidden": 0.75, "veg_km2": 0.1, "clear": 0.74}, {"date": "2026-07-13", "kind": "water_hidden", "water_km2": 2772, "dwater_km2": 286, "hidden": 0.67, "veg_km2": 7.4, "clear": 0.69}, {"date": "2026-07-25", "kind": "water_hidden", "water_km2": 2723, "dwater_km2": 237, "hidden": 0.52, "veg_km2": 8.2, "clear": 0.85}, {"date": "2026-08-18", "kind": "water_hidden", "water_km2": 3478, "dwater_km2": 992, "hidden": 0.62, "veg_km2": 31.8, "clear": 0.4}, {"date": "2026-08-30", "kind": "water", "water_km2": 4102, "dwater_km2": 1616, "hidden": 0.45, "veg_km2": 16.5, "clear": 0.82}, {"date": "2026-09-11", "kind": "water", "water_km2": 4808, "dwater_km2": 2321, "hidden": 0.4, "veg_km2": 12.0, "clear": 0.61}, {"date": "2026-09-23", "kind": "water_hidden", "water_km2": 6141, "dwater_km2": 3655, "hidden": 0.92, "veg_km2": 25.0, "clear": 0.08}, {"date": "2026-10-05", "kind": "water_hidden", "water_km2": 6119, "dwater_km2": 3633, "hidden": 0.52, "veg_km2": 6.7, "clear": 0.48}, {"date": "2026-10-17", "kind": "water", "water_km2": 6389, "dwater_km2": 3903, "hidden": 0.35, "veg_km2": 5.5, "clear": 0.6}]}, {"id": "mekong-delta-history-1998-2026", "title": "Mekong delta, 1998\u20132026", "bbox": [105.0, 10.4, 105.6, 11.0], "created": "2026-11-14T18:46Z", "n_dates": 28, "kind": "flood history (RADARSAT-1 + NISAR)", "hazard": "FL", "event_date": null, "history": true, "n_rs1": 17, "n_nisar": 11, "headline": ["Years compared", 6, "(1998\u20132026)"], "first": "1998-01-10", "last": "2026-10-29", "stack": {"track": 83, "frame": 7, "direction": "ascending", "mode": "4005", "n_dates": 11, "n_dual": 11, "scenes": ["NISAR_L2_PR_GCOV_023_083_A_007_4005_DHDH_A_20260619T223603_20260619T223638_P05023_N_F_J_001", "NISAR_L2_PR_GCOV_024_083_A_007_4005_DHDH_A_20260701T223603_20260701T223637_P05023_N_F_J_001", "NISAR_L2_PR_GCOV_025_083_A_007_4005_DHDH_A_20260713T223602_20260713T223637_P05023_N_F_J_001", "NISAR_L2_PR_GCOV_026_083_A_007_4005_DHDH_A_20260725T223601_20260725T223636_P05023_N_F_J_001", "NISAR_L2_PR_GCOV_028_083_A_007_4005_DHDH_A_20260818T223600_20260818T223635_P05023_N_F_J_001", "NISAR_L2_PR_GCOV_029_083_A_007_4005_DHDH_A_20260830T223600_20260830T223634_P05023_N_F_J_001", "NISAR_L2_PR_GCOV_030_083_A_007_4005_DHDH_A_20260911T223600_20260911T223634_P05023_N_F_J_001", "NISAR_L2_PR_GCOV_031_083_A_007_4005_DHDH_A_20260923T223600_20260923T223634_P05023_N_F_J_001", "NISAR_L2_PR_GCOV_032_083_A_007_4005_DHDH_A_20261005T223600_20261005T223634_P05023_N_F_J_001", "NISAR_L2_PR_GCOV_033_083_A_007_4005_DHDH_A_20261017T223600_20261017T223634_P05023_N_F_J_001", "NISAR_L2_PR_GCOV_034_083_A_007_4005_DHDH_A_20261029T223600_20261029T223635_P05036_N_F_J_001"], "maturity": ["PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "PROVISIONAL", "VALIDATED"]}, "peak_water_km2": 2830, "max_hidden_by_clouds": 0, "veg_change_km2": 0, "passes": [{"date": "1998-01-10", "kind": "RADARSAT-1", "water_km2": 232.2}, {"date": "1998-07-29", "kind": "RADARSAT-1", "water_km2": 126.6}, {"date": "2001-08-30", "kind": "RADARSAT-1", "water_km2": 2830.5}, {"date": "2001-11-07", "kind": "RADARSAT-1", "water_km2": 2421.7}, {"date": "2005-09-02", "kind": "RADARSAT-1", "water_km2": 2491.2}, {"date": "2005-10-27", "kind": "RADARSAT-1", "water_km2": 2592.4}, {"date": "2005-11-13", "kind": "RADARSAT-1", "water_km2": 2253.0}, {"date": "2006-03-13", "kind": "RADARSAT-1", "water_km2": 115.3}, {"date": "2006-04-30", "kind": "RADARSAT-1", "water_km2": 343.2}, {"date": "2006-06-17", "kind": "RADARSAT-1", "water_km2": 110.4}, {"date": "2006-07-11", "kind": "RADARSAT-1", "water_km2": 126.4}, {"date": "2006-08-28", "kind": "RADARSAT-1", "water_km2": 2435.4}, {"date": "2006-09-21", "kind": "RADARSAT-1", "water_km2": 2523.4}, {"date": "2006-10-22", "kind": "RADARSAT-1", "water_km2": 2680.4}, {"date": "2006-11-08", "kind": "RADARSAT-1", "water_km2": 2432.4}, {"date": "2006-12-02", "kind": "RADARSAT-1", "water_km2": 1733.4}, {"date": "2007-05-04", "kind": "RADARSAT-1", "water_km2": 182.2}, {"date": "2026-06-19", "kind": "NISAR", "water_km2": 351.7}, {"date": "2026-07-01", "kind": "NISAR", "water_km2": 209.4}, {"date": "2026-07-13", "kind": "NISAR", "water_km2": 218.2}, {"date": "2026-07-25", "kind": "NISAR", "water_km2": 238.1}, {"date": "2026-08-18", "kind": "NISAR", "water_km2": 1176.6}, {"date": "2026-08-30", "kind": "NISAR", "water_km2": 1511.0}, {"date": "2026-09-11", "kind": "NISAR", "water_km2": 1813.1}, {"date": "2026-09-23", "kind": "NISAR", "water_km2": 1854.3}, {"date": "2026-10-05", "kind": "NISAR", "water_km2": 1682.6}, {"date": "2026-10-17", "kind": "NISAR", "water_km2": 1581.2}, {"date": "2026-10-29", "kind": "NISAR", "water_km2": 1434.2}]}]
+[
+ {
+  "id": "peace-athabasca-delta-143-59",
+  "title": "Peace-Athabasca Delta",
+  "bbox": [
+   -111.8,
+   58.3,
+   -111.0,
+   58.9
+  ],
+  "created": "2026-11-15T15:02Z",
+  "n_dates": 10,
+  "kind": "flood (seasonal)",
+  "hazard": "FL",
+  "event_date": null,
+  "headline": [
+   "Flooded at peak",
+   648,
+   "km\u00b2"
+  ],
+  "first": "2026-06-24",
+  "last": "2026-11-03",
+  "stack": {
+   "track": 143,
+   "frame": 59,
+   "direction": "descending",
+   "mode": "4005",
+   "n_dates": 9,
+   "n_dual": 9,
+   "maturity": [
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "VALIDATED"
+   ]
+  },
+  "peak_water_km2": 648,
+  "max_hidden_by_clouds": 0.73,
+  "veg_change_km2": 31,
+  "passes": [
+   {
+    "date": "2026-06-24",
+    "kind": "baseline",
+    "water_km2": 687,
+    "dwater_km2": 0,
+    "hidden": 0.0,
+    "veg_km2": 8.7,
+    "clear": 1.0
+   },
+   {
+    "date": "2026-07-06",
+    "kind": "water",
+    "water_km2": 308,
+    "dwater_km2": -379,
+    "hidden": 0.0,
+    "veg_km2": 0.0,
+    "clear": 1.0
+   },
+   {
+    "date": "2026-07-18",
+    "kind": "water",
+    "water_km2": 845,
+    "dwater_km2": 158,
+    "hidden": 0.0,
+    "veg_km2": 1.8,
+    "clear": 0.99
+   },
+   {
+    "date": "2026-08-11",
+    "kind": "water",
+    "water_km2": 822,
+    "dwater_km2": 135,
+    "hidden": 0.09,
+    "veg_km2": 0.6,
+    "clear": 0.81
+   },
+   {
+    "date": "2026-08-23",
+    "kind": "water",
+    "water_km2": 743,
+    "dwater_km2": 56,
+    "hidden": 0.0,
+    "veg_km2": 0.9,
+    "clear": 1.0
+   },
+   {
+    "date": "2026-09-04",
+    "kind": "water",
+    "water_km2": 709,
+    "dwater_km2": 22,
+    "hidden": 0.19,
+    "veg_km2": 30.6,
+    "clear": 0.76
+   },
+   {
+    "date": "2026-09-16",
+    "kind": "water",
+    "water_km2": 531,
+    "dwater_km2": -156,
+    "hidden": 0.24,
+    "veg_km2": 0.5,
+    "clear": 0.56
+   },
+   {
+    "date": "2026-10-10",
+    "kind": "water",
+    "water_km2": 234,
+    "dwater_km2": -453,
+    "hidden": 0.02,
+    "veg_km2": 0.5,
+    "clear": 0.99
+   },
+   {
+    "date": "2026-10-22",
+    "kind": "water",
+    "water_km2": 634,
+    "dwater_km2": -53,
+    "hidden": 0.33,
+    "veg_km2": 7.2,
+    "clear": 0.58
+   },
+   {
+    "date": "2026-11-03",
+    "kind": "water_hidden",
+    "water_km2": 508,
+    "dwater_km2": -179,
+    "hidden": 0.69,
+    "veg_km2": 2.5,
+    "clear": 0.06
+   }
+  ]
+ },
+ {
+  "id": "tonle-sap-flood-pulse-2026-83-8",
+  "title": "Tonle Sap flood pulse 2026",
+  "bbox": [
+   103.6,
+   12.3,
+   104.7,
+   13.3
+  ],
+  "created": "2026-11-15T14:48Z",
+  "n_dates": 11,
+  "kind": "flood under clouds and canopy",
+  "hazard": "FL",
+  "event_date": null,
+  "headline": [
+   "Flooded at peak",
+   3684,
+   "km\u00b2"
+  ],
+  "first": "2026-06-19",
+  "last": "2026-10-29",
+  "stack": {
+   "track": 83,
+   "frame": 8,
+   "direction": "ascending",
+   "mode": "2005",
+   "n_dates": 10,
+   "n_dual": 10,
+   "maturity": [
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL"
+   ]
+  },
+  "peak_water_km2": 3684,
+  "max_hidden_by_clouds": 0.89,
+  "veg_change_km2": 94,
+  "passes": [
+   {
+    "date": "2026-06-19",
+    "kind": "baseline",
+    "water_km2": 2350,
+    "dwater_km2": 0,
+    "hidden": 0.0,
+    "veg_km2": 0.5,
+    "clear": 1.0
+   },
+   {
+    "date": "2026-07-01",
+    "kind": "water_hidden",
+    "water_km2": 2288,
+    "dwater_km2": -63,
+    "hidden": 0.79,
+    "veg_km2": 0.6,
+    "clear": 0.74
+   },
+   {
+    "date": "2026-07-13",
+    "kind": "water_hidden",
+    "water_km2": 2464,
+    "dwater_km2": 113,
+    "hidden": 0.73,
+    "veg_km2": 36.1,
+    "clear": 0.69
+   },
+   {
+    "date": "2026-07-25",
+    "kind": "water_hidden",
+    "water_km2": 1701,
+    "dwater_km2": -649,
+    "hidden": 0.64,
+    "veg_km2": 33.0,
+    "clear": 0.85
+   },
+   {
+    "date": "2026-08-18",
+    "kind": "water_hidden",
+    "water_km2": 3525,
+    "dwater_km2": 1174,
+    "hidden": 0.62,
+    "veg_km2": 73.3,
+    "clear": 0.4
+   },
+   {
+    "date": "2026-08-30",
+    "kind": "water",
+    "water_km2": 4054,
+    "dwater_km2": 1704,
+    "hidden": 0.45,
+    "veg_km2": 33.7,
+    "clear": 0.82
+   },
+   {
+    "date": "2026-09-11",
+    "kind": "water",
+    "water_km2": 4487,
+    "dwater_km2": 2137,
+    "hidden": 0.39,
+    "veg_km2": 24.2,
+    "clear": 0.61
+   },
+   {
+    "date": "2026-09-23",
+    "kind": "water_hidden",
+    "water_km2": 3686,
+    "dwater_km2": 1336,
+    "hidden": 0.92,
+    "veg_km2": 94.3,
+    "clear": 0.08
+   },
+   {
+    "date": "2026-10-05",
+    "kind": "water_hidden",
+    "water_km2": 5061,
+    "dwater_km2": 2711,
+    "hidden": 0.51,
+    "veg_km2": 47.2,
+    "clear": 0.48
+   },
+   {
+    "date": "2026-10-17",
+    "kind": "water",
+    "water_km2": 5159,
+    "dwater_km2": 2808,
+    "hidden": 0.3,
+    "veg_km2": 26.3,
+    "clear": 0.63
+   },
+   {
+    "date": "2026-10-29",
+    "kind": "water",
+    "water_km2": 3009,
+    "dwater_km2": 659,
+    "hidden": 0.01,
+    "veg_km2": 26.5,
+    "clear": 0.92
+   }
+  ]
+ },
+ {
+  "id": "mekong-delta-vietnam-83-7",
+  "title": "Mekong delta Vietnam",
+  "bbox": [
+   105.0,
+   10.4,
+   105.6,
+   11.0
+  ],
+  "created": "2026-11-15T14:44Z",
+  "n_dates": 11,
+  "kind": "flood (seasonal)",
+  "hazard": "FL",
+  "event_date": null,
+  "headline": [
+   "Flooded at peak",
+   1498,
+   "km\u00b2"
+  ],
+  "first": "2026-06-19",
+  "last": "2026-10-29",
+  "stack": {
+   "track": 83,
+   "frame": 7,
+   "direction": "ascending",
+   "mode": "4005",
+   "n_dates": 11,
+   "n_dual": 11,
+   "maturity": [
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "VALIDATED"
+   ]
+  },
+  "peak_water_km2": 1498,
+  "max_hidden_by_clouds": 0.69,
+  "veg_change_km2": 28,
+  "passes": [
+   {
+    "date": "2026-06-19",
+    "kind": "baseline",
+    "water_km2": 254,
+    "dwater_km2": 0,
+    "hidden": 0.16,
+    "veg_km2": 0.9,
+    "clear": 0.89
+   },
+   {
+    "date": "2026-07-01",
+    "kind": "water",
+    "water_km2": 180,
+    "dwater_km2": -74,
+    "hidden": 0.18,
+    "veg_km2": 0.4,
+    "clear": 0.75
+   },
+   {
+    "date": "2026-07-13",
+    "kind": "water",
+    "water_km2": 199,
+    "dwater_km2": -55,
+    "hidden": 0.28,
+    "veg_km2": 9.9,
+    "clear": 0.77
+   },
+   {
+    "date": "2026-07-25",
+    "kind": "surface",
+    "water_km2": 254,
+    "dwater_km2": -1,
+    "hidden": 0.43,
+    "veg_km2": 3.4,
+    "clear": 0.56
+   },
+   {
+    "date": "2026-08-18",
+    "kind": "water_hidden",
+    "water_km2": 1057,
+    "dwater_km2": 803,
+    "hidden": 0.63,
+    "veg_km2": 12.9,
+    "clear": 0.3
+   },
+   {
+    "date": "2026-08-30",
+    "kind": "water_hidden",
+    "water_km2": 1366,
+    "dwater_km2": 1112,
+    "hidden": 0.69,
+    "veg_km2": 15.0,
+    "clear": 0.33
+   },
+   {
+    "date": "2026-09-11",
+    "kind": "water",
+    "water_km2": 904,
+    "dwater_km2": 650,
+    "hidden": 0.33,
+    "veg_km2": 26.9,
+    "clear": 0.58
+   },
+   {
+    "date": "2026-09-23",
+    "kind": "water",
+    "water_km2": 982,
+    "dwater_km2": 727,
+    "hidden": 0.1,
+    "veg_km2": 28.1,
+    "clear": 0.78
+   },
+   {
+    "date": "2026-10-05",
+    "kind": "water",
+    "water_km2": 1476,
+    "dwater_km2": 1222,
+    "hidden": 0.12,
+    "veg_km2": 19.7,
+    "clear": 0.71
+   },
+   {
+    "date": "2026-10-17",
+    "kind": "water",
+    "water_km2": 1501,
+    "dwater_km2": 1247,
+    "hidden": 0.11,
+    "veg_km2": 17.0,
+    "clear": 0.76
+   },
+   {
+    "date": "2026-10-29",
+    "kind": "water",
+    "water_km2": 1098,
+    "dwater_km2": 844,
+    "hidden": 0.14,
+    "veg_km2": 24.3,
+    "clear": 0.7
+   }
+  ]
+ },
+ {
+  "id": "inner-niger-delta-mali-145-9",
+  "title": "Inner Niger Delta Mali",
+  "bbox": [
+   -4.6,
+   14.6,
+   -4.0,
+   15.2
+  ],
+  "created": "2026-11-15T14:42Z",
+  "n_dates": 9,
+  "kind": "flood (seasonal)",
+  "hazard": "FL",
+  "event_date": null,
+  "headline": [
+   "Flooded at peak",
+   1306,
+   "km\u00b2"
+  ],
+  "first": "2026-06-24",
+  "last": "2026-10-22",
+  "stack": {
+   "track": 145,
+   "frame": 9,
+   "direction": "ascending",
+   "mode": "2005",
+   "n_dates": 10,
+   "n_dual": 10,
+   "maturity": [
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "VALIDATED"
+   ]
+  },
+  "peak_water_km2": 1306,
+  "max_hidden_by_clouds": 0.48,
+  "veg_change_km2": 6,
+  "passes": [
+   {
+    "date": "2026-06-24",
+    "kind": "baseline",
+    "water_km2": 403,
+    "dwater_km2": 0,
+    "hidden": 0.0,
+    "veg_km2": 0.0,
+    "clear": 1.0
+   },
+   {
+    "date": "2026-07-18",
+    "kind": "water",
+    "water_km2": 496,
+    "dwater_km2": 92,
+    "hidden": 0.49,
+    "veg_km2": 0.0,
+    "clear": 0.75
+   },
+   {
+    "date": "2026-08-11",
+    "kind": "water",
+    "water_km2": 695,
+    "dwater_km2": 292,
+    "hidden": 0.15,
+    "veg_km2": 1.6,
+    "clear": 0.96
+   },
+   {
+    "date": "2026-08-23",
+    "kind": "water",
+    "water_km2": 736,
+    "dwater_km2": 332,
+    "hidden": 0.0,
+    "veg_km2": 2.2,
+    "clear": 1.0
+   },
+   {
+    "date": "2026-09-04",
+    "kind": "water",
+    "water_km2": 729,
+    "dwater_km2": 326,
+    "hidden": 0.0,
+    "veg_km2": 1.2,
+    "clear": 1.0
+   },
+   {
+    "date": "2026-09-16",
+    "kind": "water",
+    "water_km2": 1040,
+    "dwater_km2": 637,
+    "hidden": 0.02,
+    "veg_km2": 2.1,
+    "clear": 0.93
+   },
+   {
+    "date": "2026-09-28",
+    "kind": "water",
+    "water_km2": 1236,
+    "dwater_km2": 833,
+    "hidden": 0.0,
+    "veg_km2": 5.9,
+    "clear": 1.0
+   },
+   {
+    "date": "2026-10-10",
+    "kind": "water",
+    "water_km2": 1320,
+    "dwater_km2": 917,
+    "hidden": 0.0,
+    "veg_km2": 1.4,
+    "clear": 1.0
+   },
+   {
+    "date": "2026-10-22",
+    "kind": "water",
+    "water_km2": 1030,
+    "dwater_km2": 627,
+    "hidden": 0.0,
+    "veg_km2": 1.7,
+    "clear": 1.0
+   }
+  ]
+ },
+ {
+  "id": "congo-cuvette-centrale-101-2",
+  "title": "Congo Cuvette Centrale",
+  "bbox": [
+   17.3,
+   0.2,
+   17.9,
+   0.8
+  ],
+  "created": "2026-11-15T14:41Z",
+  "n_dates": 10,
+  "kind": "flood (seasonal)",
+  "hazard": "FL",
+  "event_date": null,
+  "headline": [
+   "Flooded at peak",
+   208,
+   "km\u00b2"
+  ],
+  "first": "2026-06-21",
+  "last": "2026-10-19",
+  "stack": {
+   "track": 101,
+   "frame": 2,
+   "direction": "ascending",
+   "mode": "2005",
+   "n_dates": 10,
+   "n_dual": 9,
+   "maturity": [
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL",
+    "PROVISIONAL"
+   ]
+  },
+  "peak_water_km2": 208,
+  "max_hidden_by_clouds": 0.82,
+  "veg_change_km2": 21,
+  "passes": [
+   {
+    "date": "2026-06-21",
+    "kind": "baseline",
+    "water_km2": 67,
+    "dwater_km2": 0,
+    "hidden": 0.19,
+    "veg_km2": 0.0,
+    "clear": 0.09
+   },
+   {
+    "date": "2026-07-03",
+    "kind": "none",
+    "water_km2": 69,
+    "dwater_km2": 2,
+    "hidden": 0.23,
+    "veg_km2": 0.0,
+    "clear": 0.97
+   },
+   {
+    "date": "2026-07-15",
+    "kind": "none",
+    "water_km2": 70,
+    "dwater_km2": 3,
+    "hidden": 0.35,
+    "veg_km2": 0.1,
+    "clear": 0.16
+   },
+   {
+    "date": "2026-07-27",
+    "kind": "water",
+    "water_km2": 105,
+    "dwater_km2": 38,
+    "hidden": 0.41,
+    "veg_km2": 12.0,
+    "clear": 0.26
+   },
+   {
+    "date": "2026-08-20",
+    "kind": "water_hidden",
+    "water_km2": 78,
+    "dwater_km2": 11,
+    "hidden": 0.64,
+    "veg_km2": 8.0,
+    "clear": 0.72
+   },
+   {
+    "date": "2026-09-01",
+    "kind": "water_hidden",
+    "water_km2": 139,
+    "dwater_km2": 72,
+    "hidden": 0.68,
+    "veg_km2": 21.4,
+    "clear": 0.43
+   },
+   {
+    "date": "2026-09-13",
+    "kind": "water",
+    "water_km2": 183,
+    "dwater_km2": 116,
+    "hidden": 0.16,
+    "veg_km2": 4.9,
+    "clear": 0.53
+   },
+   {
+    "date": "2026-09-25",
+    "kind": "water_hidden",
+    "water_km2": 219,
+    "dwater_km2": 152,
+    "hidden": 0.58,
+    "veg_km2": 6.5,
+    "clear": 0.35
+   },
+   {
+    "date": "2026-10-07",
+    "kind": "water_hidden",
+    "water_km2": 247,
+    "dwater_km2": 180,
+    "hidden": 0.57,
+    "veg_km2": 10.0,
+    "clear": 0.22
+   },
+   {
+    "date": "2026-10-19",
+    "kind": "water_hidden",
+    "water_km2": 275,
+    "dwater_km2": 207,
+    "hidden": 0.77,
+    "veg_km2": 9.1,
+    "clear": 0.08
+   }
+  ]
+ }
+]

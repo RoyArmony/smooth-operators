@@ -10,23 +10,23 @@
   25.0
  ],
  "headline": {
-  "date": "2026-06-18",
-  "sentence": "On 2026-06-18, NISAR found 14 km² of water where the official flood map (Copernicus GFM, 2026-06-19) says it cannot see.",
+  "date": "2026-11-09",
+  "sentence": "On 2026-11-09, NISAR found 4 km² of water where the official flood map (Copernicus GFM, 2026-11-10) says it cannot see.",
   "numbers": [
    {
     "label": "Official map: flood",
-    "value": 411.4,
+    "value": 35.9,
     "unit": "km²"
    },
    {
     "label": "NISAR adds, in the blank",
-    "value": 13.8,
+    "value": 4.3,
     "unit": "km²"
    },
    {
-    "label": "of it in forest (ESA WorldCover)",
-    "value": 0.7,
-    "unit": "km²"
+    "label": "more than the official map",
+    "value": 12,
+    "unit": "%"
    }
   ],
   "badge": {
@@ -41,18 +41,14 @@
    "stats": {
     "gfm_flood": 411.4,
     "gfm_excluded": 412.5,
-    "nisar_wet": 766.9,
-    "nisar_adds": 13.8,
+    "nisar_wet": 143.4,
+    "nisar_adds": 0.5,
     "nisar_adds_canopy": 0.0,
-    "nisar_adds_forest": 0.7,
-    "nisar_adds_wetland": 0.6,
-    "nisar_adds_cropland": 10.0
+    "nisar_adds_forest": 0.0,
+    "nisar_adds_wetland": 0.1,
+    "nisar_adds_cropland": 0.3
    },
-   "layers": [
-    "gfm_flood",
-    "gfm_excluded",
-    "nisar_adds"
-   ]
+   "layers": []
   },
   {
    "date": "2026-06-30",
@@ -60,12 +56,12 @@
    "stats": {
     "gfm_flood": 38.8,
     "gfm_excluded": 110.5,
-    "nisar_wet": 565.7,
-    "nisar_adds": 7.6,
+    "nisar_wet": 492.1,
+    "nisar_adds": 2.5,
     "nisar_adds_canopy": 0.0,
-    "nisar_adds_forest": 0.7,
-    "nisar_adds_wetland": 0.2,
-    "nisar_adds_cropland": 5.5
+    "nisar_adds_forest": 0.1,
+    "nisar_adds_wetland": 0.5,
+    "nisar_adds_cropland": 1.7
    },
    "layers": []
   },
@@ -75,12 +71,12 @@
    "stats": {
     "gfm_flood": 82.5,
     "gfm_excluded": 110.3,
-    "nisar_wet": 610.8,
-    "nisar_adds": 8.7,
-    "nisar_adds_canopy": 0.1,
-    "nisar_adds_forest": 0.8,
-    "nisar_adds_wetland": 0.3,
-    "nisar_adds_cropland": 6.3
+    "nisar_wet": 357.2,
+    "nisar_adds": 1.7,
+    "nisar_adds_canopy": 0.4,
+    "nisar_adds_forest": 0.0,
+    "nisar_adds_wetland": 0.2,
+    "nisar_adds_cropland": 1.4
    },
    "layers": []
   },
@@ -90,12 +86,12 @@
    "stats": {
     "gfm_flood": 55.3,
     "gfm_excluded": 109.8,
-    "nisar_wet": 619.4,
-    "nisar_adds": 8.4,
-    "nisar_adds_canopy": 0.1,
-    "nisar_adds_forest": 0.6,
-    "nisar_adds_wetland": 0.3,
-    "nisar_adds_cropland": 6.2
+    "nisar_wet": 229.4,
+    "nisar_adds": 1.2,
+    "nisar_adds_canopy": 0.2,
+    "nisar_adds_forest": 0.0,
+    "nisar_adds_wetland": 0.0,
+    "nisar_adds_cropland": 1.0
    },
    "layers": []
   },
@@ -105,12 +101,12 @@
    "stats": {
     "gfm_flood": 54.0,
     "gfm_excluded": 111.3,
-    "nisar_wet": 420.5,
-    "nisar_adds": 4.4,
-    "nisar_adds_canopy": 0.2,
-    "nisar_adds_forest": 0.3,
+    "nisar_wet": 140.8,
+    "nisar_adds": 0.7,
+    "nisar_adds_canopy": 0.5,
+    "nisar_adds_forest": 0.1,
     "nisar_adds_wetland": 0.2,
-    "nisar_adds_cropland": 3.2
+    "nisar_adds_cropland": 0.4
    },
    "layers": []
   },
@@ -120,12 +116,12 @@
    "stats": {
     "gfm_flood": 51.3,
     "gfm_excluded": 111.4,
-    "nisar_wet": 444.2,
-    "nisar_adds": 4.9,
+    "nisar_wet": 215.6,
+    "nisar_adds": 1.1,
     "nisar_adds_canopy": 0.3,
-    "nisar_adds_forest": 0.3,
-    "nisar_adds_wetland": 0.2,
-    "nisar_adds_cropland": 3.5
+    "nisar_adds_forest": 0.1,
+    "nisar_adds_wetland": 0.1,
+    "nisar_adds_cropland": 0.6
    },
    "layers": []
   },
@@ -135,12 +131,12 @@
    "stats": {
     "gfm_flood": 45.8,
     "gfm_excluded": 114.7,
-    "nisar_wet": 439.3,
-    "nisar_adds": 5.9,
+    "nisar_wet": 341.9,
+    "nisar_adds": 2.2,
     "nisar_adds_canopy": 0.4,
-    "nisar_adds_forest": 0.3,
-    "nisar_adds_wetland": 0.2,
-    "nisar_adds_cropland": 4.0
+    "nisar_adds_forest": 0.2,
+    "nisar_adds_wetland": 0.4,
+    "nisar_adds_cropland": 1.2
    },
    "layers": []
   },
@@ -150,12 +146,12 @@
    "stats": {
     "gfm_flood": 41.1,
     "gfm_excluded": 114.2,
-    "nisar_wet": 370.7,
-    "nisar_adds": 4.6,
-    "nisar_adds_canopy": 0.9,
-    "nisar_adds_forest": 0.3,
-    "nisar_adds_wetland": 0.1,
-    "nisar_adds_cropland": 3.1
+    "nisar_wet": 113.2,
+    "nisar_adds": 1.1,
+    "nisar_adds_canopy": 1.1,
+    "nisar_adds_forest": 0.2,
+    "nisar_adds_wetland": 0.0,
+    "nisar_adds_cropland": 0.7
    },
    "layers": []
   },
@@ -165,12 +161,12 @@
    "stats": {
     "gfm_flood": 57.4,
     "gfm_excluded": 117.8,
-    "nisar_wet": 300.4,
-    "nisar_adds": 5.0,
-    "nisar_adds_canopy": 1.5,
-    "nisar_adds_forest": 0.4,
-    "nisar_adds_wetland": 0.1,
-    "nisar_adds_cropland": 3.5
+    "nisar_wet": 88.6,
+    "nisar_adds": 1.7,
+    "nisar_adds_canopy": 1.7,
+    "nisar_adds_forest": 0.3,
+    "nisar_adds_wetland": 0.0,
+    "nisar_adds_cropland": 1.0
    },
    "layers": []
   },
@@ -180,12 +176,12 @@
    "stats": {
     "gfm_flood": 34.3,
     "gfm_excluded": 117.7,
-    "nisar_wet": 220.1,
-    "nisar_adds": 3.9,
-    "nisar_adds_canopy": 1.7,
-    "nisar_adds_forest": 0.4,
-    "nisar_adds_wetland": 0.1,
-    "nisar_adds_cropland": 2.6
+    "nisar_wet": 105.5,
+    "nisar_adds": 1.8,
+    "nisar_adds_canopy": 1.8,
+    "nisar_adds_forest": 0.3,
+    "nisar_adds_wetland": 0.0,
+    "nisar_adds_cropland": 1.1
    },
    "layers": []
   },
@@ -195,24 +191,28 @@
    "stats": {
     "gfm_flood": 35.9,
     "gfm_excluded": 133.3,
-    "nisar_wet": 114.9,
-    "nisar_adds": 4.9,
-    "nisar_adds_canopy": 3.3,
-    "nisar_adds_forest": 0.5,
-    "nisar_adds_wetland": 0.1,
-    "nisar_adds_cropland": 2.9
+    "nisar_wet": 270.7,
+    "nisar_adds": 4.3,
+    "nisar_adds_canopy": 4.0,
+    "nisar_adds_forest": 0.4,
+    "nisar_adds_wetland": 0.3,
+    "nisar_adds_cropland": 2.4
    },
-   "layers": []
+   "layers": [
+    "gfm_flood",
+    "gfm_excluded",
+    "nisar_adds"
+   ]
   }
  ],
  "layers": {
   "gfm_flood": {
    "group": "official",
    "sensor": "Sentinel-1 (Copernicus GFM)",
-   "label": "Flood on the official map",
+   "label": "Official flood map (GFM)",
    "legend": "#2882ff",
    "files": {
-    "2026-06-18": "layers/gfm_flood_2026-06-18.png"
+    "2026-11-09": "layers/gfm_flood_2026-11-09.png"
    },
    "bounds": [
     [
@@ -232,7 +232,7 @@
    "label": "Official map: \"cannot see\"",
    "legend": "hatch",
    "files": {
-    "2026-06-18": "layers/gfm_excluded_2026-06-18.png"
+    "2026-11-09": "layers/gfm_excluded_2026-11-09.png"
    },
    "bounds": [
     [
@@ -249,10 +249,10 @@
   "nisar_adds": {
    "group": "result",
    "sensor": "NISAR L-band",
-   "label": "Only NISAR: water in the blank",
+   "label": "NISAR addition: water in the blank",
    "legend": "#ff9628",
    "files": {
-    "2026-06-18": "layers/nisar_adds_2026-06-18.png"
+    "2026-11-09": "layers/nisar_adds_2026-11-09.png"
    },
    "bounds": [
     [
@@ -275,6 +275,11 @@
    "credit": "NASA/JPL-Caltech, ISRO; data via ASF DAAC"
   },
   {
+   "name": "NISAR L2 GUNW (coherence)",
+   "url": "https://search.asf.alaska.edu",
+   "credit": "NASA/JPL-Caltech, ISRO; data via ASF DAAC"
+  },
+  {
    "name": "Copernicus EMS Global Flood Monitoring",
    "url": "https://global-flood.emergency.copernicus.eu",
    "credit": "© European Union, Copernicus Emergency Management Service"
@@ -286,91 +291,65 @@
   }
  ],
  "method": {
-  "detector": "detect.py (open water + water under vegetation, HH/HV)",
-  "calibration": {
-   "used": true,
-   "open_hh": -12.0,
-   "open_hv": -21.0,
-   "f1_fit": 0.7934050785022798,
-   "f1_default": 0.38953487719487295,
-   "n_days": 9,
-   "loo": [
-    {
-     "date": "2026-07-12",
-     "f1": 0.5058033407955915,
-     "thresholds": [
-      -12.0,
-      -21.0
-     ]
-    },
-    {
-     "date": "2026-07-24",
-     "f1": 0.921040940868386,
-     "thresholds": [
-      -12.0,
-      -21.0
-     ]
-    },
-    {
-     "date": "2026-08-17",
-     "f1": 0.6560937465582942,
-     "thresholds": [
-      -12.0,
-      -21.0
-     ]
-    },
-    {
-     "date": "2026-08-29",
-     "f1": 0.5771187774300152,
-     "thresholds": [
-      -12.0,
-      -21.0
-     ]
-    },
-    {
-     "date": "2026-09-10",
-     "f1": 0.6470536730584012,
-     "thresholds": [
-      -12.0,
-      -21.0
-     ]
-    },
-    {
-     "date": "2026-09-22",
-     "f1": 0.6630000897692929,
-     "thresholds": [
-      -12.0,
-      -21.0
-     ]
-    },
-    {
-     "date": "2026-10-04",
-     "f1": 0.9652595029239766,
-     "thresholds": [
-      -12.0,
-      -21.0
-     ]
-    },
-    {
-     "date": "2026-10-16",
-     "f1": 0.812472140599878,
-     "thresholds": [
-      -12.0,
-      -21.0
-     ]
-    },
-    {
-     "date": "2026-10-28",
-     "f1": 0.7666657920897433,
-     "thresholds": [
-      -12.5,
-      -21.5
-     ]
-    }
+  "detector": "fused v3 (fused.py: per-scene threshold, change from dry season, HV, GUNW coherence; water under vegetation from detect.py)",
+  "detector_info": {
+   "detector": "fused v3",
+   "thresholds_hh": [
+    -13.6,
+    -13.5,
+    -13.4,
+    -12.9,
+    -12.6,
+    -12.8,
+    -13.4,
+    -13.4,
+    -13.1,
+    -13.0,
+    -11.8,
+    -12.3
+   ],
+   "thresholds_hv": [
+    -21.1,
+    -20.2,
+    -20.5,
+    -20.7,
+    -18.9,
+    -20.0,
+    -20.3,
+    -21.0,
+    -22.0,
+    -21.6,
+    -19.3,
+    -18.1
+   ],
+   "dry_passes": [
+    "2026-06-18",
+    "2026-06-30"
+   ],
+   "coherence": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
    ]
   },
+  "qa_dropped": [],
+  "smart_fill": null,
+  "calibration": null,
   "pixel_m": 80.0,
   "gap": "NISAR water inside GFM exclusion mask, both valid, permanent water removed",
-  "stack": null
+  "stack": {
+   "track": 69,
+   "frame": 14,
+   "direction": "ascending"
+  }
  }
 }
