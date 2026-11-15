@@ -50,6 +50,11 @@
   .viz.f0 .photo { filter: none; }
   .viz .L { opacity: 0; transition: opacity .7s var(--ease); }
   .viz.f1 .gfm, .viz.f2 .gfm, .viz.f3 .gfm, .viz.f2 .excl, .viz.f3 .excl, .viz.f3 .add { opacity: 1; }
+  .viz.f2 .excl { animation: flick 1.6s steps(1, end) both; }            /* blink the blank like the Story does, with a glow, so the no-data area is clear */
+  .viz.f2 .excl + .excl { animation: flick 1.6s steps(1, end) both, glow 2.4s ease-in-out .2s; }
+  @keyframes flick { 0%,30%,60% { opacity: .15; } 15%,45%,75%,100% { opacity: 1; } }
+  @keyframes glow { 0%,100% { filter: none; } 40% { filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 10px rgba(220,220,235,.9)); } }
+  @media (prefers-reduced-motion: reduce) { .viz.f2 .excl { animation: none; } }
   .viz .tag { position: absolute; left: 12px; top: 12px; font-size: var(--fs-xs); font-weight: 600; padding: 4px 10px; border-radius: var(--r-pill); background: rgba(0,0,0,.6); }
   .viz .seg { display: grid; grid-template-columns: repeat(3, 1fr); padding: var(--s2); gap: var(--s2); border-bottom: 1px solid var(--line); }
   .viz .seg button { height: 36px; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); font: 600 var(--fs-sm) var(--font); cursor: pointer; }
