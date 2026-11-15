@@ -383,5 +383,7 @@
    "frame": 9,
    "direction": "ascending"
   }
- }
+ },
+ "hidden": true,
+ "hidden_why": "taken out of the Explorer (Noa, 15.11): flood panel images missing"
 }

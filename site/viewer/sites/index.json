@@ -16,7 +16,7 @@
   "headline": [
    "Flooded at peak",
    648,
-   "km\u00b2"
+   "km²"
   ],
   "first": "2026-06-24",
   "last": "2026-11-03",
@@ -152,7 +152,7 @@
   "headline": [
    "Flooded at peak",
    3684,
-   "km\u00b2"
+   "km²"
   ],
   "first": "2026-06-19",
   "last": "2026-10-29",
@@ -298,7 +298,7 @@
   "headline": [
    "Flooded at peak",
    1498,
-   "km\u00b2"
+   "km²"
   ],
   "first": "2026-06-19",
   "last": "2026-10-29",
@@ -429,134 +429,6 @@
   ]
  },
  {
-  "id": "inner-niger-delta-mali-145-9",
-  "title": "Inner Niger Delta Mali",
-  "bbox": [
-   -4.6,
-   14.6,
-   -4.0,
-   15.2
-  ],
-  "created": "2026-11-15T14:42Z",
-  "n_dates": 9,
-  "kind": "flood (seasonal)",
-  "hazard": "FL",
-  "event_date": null,
-  "headline": [
-   "Flooded at peak",
-   1306,
-   "km\u00b2"
-  ],
-  "first": "2026-06-24",
-  "last": "2026-10-22",
-  "stack": {
-   "track": 145,
-   "frame": 9,
-   "direction": "ascending",
-   "mode": "2005",
-   "n_dates": 10,
-   "n_dual": 10,
-   "maturity": [
-    "PROVISIONAL",
-    "PROVISIONAL",
-    "PROVISIONAL",
-    "PROVISIONAL",
-    "PROVISIONAL",
-    "PROVISIONAL",
-    "PROVISIONAL",
-    "PROVISIONAL",
-    "PROVISIONAL",
-    "VALIDATED"
-   ]
-  },
-  "peak_water_km2": 1306,
-  "max_hidden_by_clouds": 0.48,
-  "veg_change_km2": 6,
-  "passes": [
-   {
-    "date": "2026-06-24",
-    "kind": "baseline",
-    "water_km2": 403,
-    "dwater_km2": 0,
-    "hidden": 0.0,
-    "veg_km2": 0.0,
-    "clear": 1.0
-   },
-   {
-    "date": "2026-07-18",
-    "kind": "water",
-    "water_km2": 496,
-    "dwater_km2": 92,
-    "hidden": 0.49,
-    "veg_km2": 0.0,
-    "clear": 0.75
-   },
-   {
-    "date": "2026-08-11",
-    "kind": "water",
-    "water_km2": 695,
-    "dwater_km2": 292,
-    "hidden": 0.15,
-    "veg_km2": 1.6,
-    "clear": 0.96
-   },
-   {
-    "date": "2026-08-23",
-    "kind": "water",
-    "water_km2": 736,
-    "dwater_km2": 332,
-    "hidden": 0.0,
-    "veg_km2": 2.2,
-    "clear": 1.0
-   },
-   {
-    "date": "2026-09-04",
-    "kind": "water",
-    "water_km2": 729,
-    "dwater_km2": 326,
-    "hidden": 0.0,
-    "veg_km2": 1.2,
-    "clear": 1.0
-   },
-   {
-    "date": "2026-09-16",
-    "kind": "water",
-    "water_km2": 1040,
-    "dwater_km2": 637,
-    "hidden": 0.02,
-    "veg_km2": 2.1,
-    "clear": 0.93
-   },
-   {
-    "date": "2026-09-28",
-    "kind": "water",
-    "water_km2": 1236,
-    "dwater_km2": 833,
-    "hidden": 0.0,
-    "veg_km2": 5.9,
-    "clear": 1.0
-   },
-   {
-    "date": "2026-10-10",
-    "kind": "water",
-    "water_km2": 1320,
-    "dwater_km2": 917,
-    "hidden": 0.0,
-    "veg_km2": 1.4,
-    "clear": 1.0
-   },
-   {
-    "date": "2026-10-22",
-    "kind": "water",
-    "water_km2": 1030,
-    "dwater_km2": 627,
-    "hidden": 0.0,
-    "veg_km2": 1.7,
-    "clear": 1.0
-   }
-  ]
- },
- {
   "id": "congo-cuvette-centrale-101-2",
   "title": "Congo Cuvette Centrale",
   "bbox": [
@@ -573,7 +445,7 @@
   "headline": [
    "Flooded at peak",
    208,
-   "km\u00b2"
+   "km²"
   ],
   "first": "2026-06-21",
   "last": "2026-10-19",

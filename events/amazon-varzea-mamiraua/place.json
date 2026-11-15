@@ -9,28 +9,7 @@
   -64.6,
   -2.7
  ],
- "floods": [
-  {
-   "id": "2026-06-flood",
-   "flood_date": "2026-06-25",
-   "title": "Amazon várzea (Mamirauá) flood, Jun 2026",
-   "baseline": "gfm",
-   "improvement_pct": null,
-   "nisar_adds_km2": 8.9,
-   "baseline_flood_km2": 1.3,
-   "validation": {
-    "source": "dswx",
-    "dswx": {
-     "agreement_pct": 91.5,
-     "iou": 0.74,
-     "n_dates": 1
-    },
-    "agreement_pct": 91.5,
-    "iou": 0.74,
-    "n_dates": 1
-   }
-  }
- ],
+ "floods": [],
  "history": {
   "id": "history",
   "first": "1999-01-17",

@@ -9,17 +9,7 @@
   91.7,
   25.0
  ],
- "floods": [
-  {
-   "id": "2026-07-flood",
-   "flood_date": "2026-07-24",
-   "title": "Sylhet haor flood, Jul 2026",
-   "baseline": "gfm",
-   "improvement_pct": 2,
-   "nisar_adds_km2": 1.2,
-   "baseline_flood_km2": 55.3
-  }
- ],
+ "floods": [],
  "history": {
   "id": "history",
   "first": "1996-09-11",

@@ -123,48 +123,6 @@
    }
   },
   {
-   "id": "inner-niger-delta-mali",
-   "title": "Inner Niger Delta, Mali",
-   "place": "Inner Niger Delta, Mali",
-   "date": "2026-10-22",
-   "bbox": [
-    -4.6,
-    14.6,
-    -4.0,
-    15.2
-   ],
-   "kind": "story",
-   "headline": {
-    "sentence": "On 2026-10-22, NISAR found 47 km² of water where the official flood map (Copernicus GFM, 2026-10-24) says it cannot see.",
-    "numbers": [
-     {
-      "label": "Official map: flood",
-      "value": 106.2,
-      "unit": "km²"
-     },
-     {
-      "label": "NISAR adds, in the blank",
-      "value": 47.3,
-      "unit": "km²"
-     },
-     {
-      "label": "more than the official map",
-      "value": 45,
-      "unit": "%"
-     }
-    ]
-   },
-   "total": {
-    "flood_km2": 552.0,
-    "adds_km2": 247.2,
-    "pct": 45,
-    "n": 8,
-    "first": "2026-07-18",
-    "last": "2026-10-22",
-    "rule": "100 × Σ NISAR addition / Σ official flood, all passes"
-   }
-  },
-  {
    "id": "irrawaddy-delta-myanmar",
    "title": "Irrawaddy delta, Myanmar",
    "place": "Irrawaddy delta, Myanmar",
@@ -396,48 +354,6 @@
       "unit": "km²"
      }
     ]
-   }
-  },
-  {
-   "id": "sylhet-haor-bangladesh",
-   "title": "Sylhet haor, Bangladesh",
-   "place": "Sylhet haor, Bangladesh",
-   "date": "2026-11-09",
-   "bbox": [
-    91.1,
-    24.4,
-    91.7,
-    25.0
-   ],
-   "kind": "site",
-   "headline": {
-    "sentence": "On 2026-11-09, NISAR found 4 km² of water where the official flood map (Copernicus GFM, 2026-11-10) says it cannot see.",
-    "numbers": [
-     {
-      "label": "Official map: flood",
-      "value": 35.9,
-      "unit": "km²"
-     },
-     {
-      "label": "NISAR adds, in the blank",
-      "value": 4.3,
-      "unit": "km²"
-     },
-     {
-      "label": "more than the official map",
-      "value": 12,
-      "unit": "%"
-     }
-    ]
-   },
-   "total": {
-    "flood_km2": 907.8,
-    "adds_km2": 18.8,
-    "pct": 2,
-    "n": 11,
-    "first": "2026-06-18",
-    "last": "2026-11-09",
-    "rule": "100 × Σ NISAR addition / Σ official flood, all passes"
    }
   },
   {
@@ -790,54 +706,6 @@
    ]
   },
   {
-   "id": "inner-niger-delta-mali",
-   "folder": "inner-niger-delta-mali",
-   "name": "Inner Niger Delta",
-   "country": "Mali",
-   "bbox": [
-    -4.6,
-    14.6,
-    -4.0,
-    15.2
-   ],
-   "floods": [
-    {
-     "id": "2026-07-flood",
-     "flood_date": "2026-07-18",
-     "title": "Inner Niger Delta flood, Jul 2026",
-     "baseline": "gfm",
-     "improvement_pct": 25,
-     "nisar_adds_km2": 29.6,
-     "baseline_flood_km2": 118.4,
-     "validation": {
-      "source": "dswx",
-      "dswx": {
-       "agreement_pct": 90.4,
-       "iou": 0.27,
-       "n_dates": 2
-      },
-      "agreement_pct": 90.4,
-      "iou": 0.27,
-      "n_dates": 2
-     },
-     "total": {
-      "flood_km2": 241.1,
-      "adds_km2": 105.0,
-      "pct": 44,
-      "n": 3,
-      "first": "2026-06-24",
-      "last": "2026-08-11",
-      "rule": "100 × Σ NISAR addition / Σ official flood, all passes",
-      "baseline": "gfm"
-     }
-    }
-   ],
-   "history": null,
-   "validation": [
-    "dswx"
-   ]
-  },
-  {
    "id": "mekong-delta-vietnam",
    "folder": "mekong-delta-vietnam",
    "name": "Mekong delta",
@@ -960,27 +828,7 @@
     91.7,
     25.0
    ],
-   "floods": [
-    {
-     "id": "2026-07-flood",
-     "flood_date": "2026-07-24",
-     "title": "Sylhet haor flood, Jul 2026",
-     "baseline": "gfm",
-     "improvement_pct": 2,
-     "nisar_adds_km2": 1.2,
-     "baseline_flood_km2": 55.3,
-     "total": {
-      "flood_km2": 230.6,
-      "adds_km2": 6.1,
-      "pct": 3,
-      "n": 4,
-      "first": "2026-06-30",
-      "last": "2026-08-17",
-      "rule": "100 × Σ NISAR addition / Σ official flood, all passes",
-      "baseline": "gfm"
-     }
-    }
-   ],
+   "floods": [],
    "history": {
     "id": "history",
     "first": "1996-09-11",
