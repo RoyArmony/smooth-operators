@@ -208,9 +208,10 @@ function renderFeed() {
     const day = new Date(it.date + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
     const g = G(it), km = v => (v < 10 ? Math.round(v * 10) / 10 : Math.round(v)).toLocaleString('en-GB');
     // % when the official map shows ≥ 5 km² of flood (else a % misleads: show the km² NISAR adds)
-    const gain = !g ? '' : g.pct != null ? (g.pct > 0 ? '↑' : '') + `${g.pct.toLocaleString('en-GB')}%`
+    const hc = headCheck(g);
+    const gain = !g ? '' : hc ? `<span class="fval">✓${Math.round(hc.agreement_pct)}%</span>` : g.pct != null ? (g.pct > 0 ? '↑' : '') + `${g.pct.toLocaleString('en-GB')}%`
       : g.nisar_adds_km2 > 0 ? `↑<small>+${km(g.nisar_adds_km2)} km²</small>` : '0%';
-    const tip = !g ? '' : `Official map ${km(g.gfm_flood_km2 || 0)} km² · NISAR adds ${km(g.nisar_adds_km2 || 0)} km²` + (g.pct == null ? ' (official map under 5 km²: no %)' : '');
+    const tip = !g ? '' : hc ? `Validated: NISAR's water agrees with ${VNAME[hc.k]} on ${hc.agreement_pct}% of pixels (IoU ${hc.iou}). NISAR adds ${km(g.nisar_adds_km2 || 0)} km² (${g.pct ?? 0}%).` : `Official map ${km(g.gfm_flood_km2 || 0)} km² · NISAR adds ${km(g.nisar_adds_km2 || 0)} km²` + (g.pct == null ? ' (official map under 5 km²: no %)' : '');
     const when = it.site && it.site.history ? `${it.site.first.slice(0, 4)}–${it.site.last.slice(0, 4)}` : day;
     c.innerHTML = `<div class="fbody"><div class="ftitle">${it.title}</div><div class="fdate">${when}${it.site ? sensorTags(it.site) : ''}</div></div>`
       + (gain ? `<div class="fgain" title="${tip}">${gain}</div>` : '');
@@ -283,17 +284,25 @@ const sensorTags = s => `<span class="fsens">${sensorsOf(s).map(x => `<i class="
 const BASE_NAME = { gfm: 'Official map (GFM)', dswx: 'NASA OPERA DSWx' };
 function gainHTML(m) {
   if (m.base == null || m.adds == null) return '';
+  const hc = headCheck({ pct: m.pct, val: m.val });
   const km = v => `${(v < 10 ? Math.round(v * 10) / 10 : Math.round(v)).toLocaleString('en-GB')}<small> km²</small>`;
   return `<div class="gcol"><b class="gbase">${km(m.base)}</b><span>${BASE_NAME[m.baseline] || 'Official map'}</span></div>`
     + `<div class="gcol"><b class="gadd">+${km(m.adds)}</b><span>NISAR addition</span></div>`
-    + (m.pct != null ? `<div class="gpct"><span class="garrow">↑</span><b>${m.pct.toLocaleString('en-GB')}%</b><span>more flood seen with NISAR</span></div>` : '')
-    + valHTML(m.val);
+    + (hc ? `<div class="gpct gvhead"><span class="garrow">✓</span><b>${Math.round(hc.agreement_pct)}%</b><span>validated: agrees with ${VNAME[hc.k]} · IoU ${hc.iou}</span></div>`
+       : m.pct != null ? `<div class="gpct"><span class="garrow">↑</span><b>${m.pct.toLocaleString('en-GB')}%</b><span>more flood seen with NISAR</span></div>` : '')
+    + valHTML(m.val, hc && hc.k);
+}
+// when NISAR adds < 5 % (clear sky, little hidden), headline the independent check instead: % agreement (RCM first)
+const VNAME = { rcm: 'Canada’s RCM radar (CSA)', dswx: 'NASA’s DSWx map' };
+function headCheck(g) {
+  const v = g && g.val; if (!v || (g.pct != null && g.pct >= 5)) return null;
+  const k = ['rcm', 'dswx'].find(x => v[x]); return k ? { k, ...v[k] } : null;
 }
 // independent checks of NISAR's water (docs/12 §11): % of pixels where the other sensor agrees, same days
-function valHTML(v) {
+function valHTML(v, skip) {
   if (!v) return '';
   const row = (k, name) => v[k] ? `<div class="gval"><b>${Math.round(v[k].agreement_pct)}%</b><span>agree with ${name} · IoU ${v[k].iou} · ${v[k].n_dates} pass${v[k].n_dates > 1 ? 'es' : ''}</span></div>` : '';
-  return row('rcm', 'Canada’s RCM radar (CSA)') + row('dswx', 'NASA’s DSWx map');
+  return ['rcm', 'dswx'].filter(k => k !== skip).map(k => row(k, VNAME[k])).join('');
 }
 let V2 = null;
 async function loadSummary(s) {

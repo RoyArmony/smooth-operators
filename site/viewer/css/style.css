@@ -280,3 +280,4 @@ body.focused #listhead, body.focused #feed, body.focused aside > details.more2 {
 #sp .legend .vagree { grid-column:1 / -1; display:block; margin-top:4px; }
 .vagree b { font-size:var(--fs-xl); font-weight:800; color:#2ecc71; } .vagree em { font-style:normal; color:var(--muted); font-size:var(--fs-xs); }
 #sp .spsteps { flex-wrap:wrap; row-gap:4px; }
+.gpct.gvhead b { color:#2ecc71; } .gpct.gvhead .garrow { color:#2ecc71 !important; } .fgain .fval { color:#2ecc71; }
