@@ -42,7 +42,7 @@ async function openSite(id) {
   S = { id, D, A, B, photos, nw, hid, t: D.hazard && ['WF', 'VO', 'EQ'].includes(D.hazard) ? D.frames.length - 1 : peak, b: 'nisar',
         base: L.imageOverlay(A(D.frames[0].nisar), B, { pane: 'analysis', interactive: false }).addTo(map),
         over: L.imageOverlay(A(D.frames[0].hidden), B, { pane: 'analysis', interactive: false }).addTo(map),
-        box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, interactive: false }).addTo(map) };
+        box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, opacity: 0, interactive: false }).addTo(map) };
   const N = D.frames.length, cal = D.calibration && D.calibration.used ? D.calibration : null;
   const f1 = cal ? cal.loo.map(x => x.f1) : (D.validation || []).map(x => x.f1);
   $('spT').textContent = D.title;
@@ -95,6 +95,7 @@ async function openSite(id) {
   $('spF').href = `site.html?id=${encodeURIComponent(id)}`; $('spF').style.display = D.history ? 'none' : '';
   panel.hidden = false;
   map.flyToBounds(B, { paddingTopLeft: [panel.offsetWidth + 70, 30], paddingBottomRight: [30, 30], duration: 1.2 });
+  const S0 = S; map.once('moveend', () => S === S0 && S.box.setStyle({ opacity: 1 }));   // draw the outline once the camera lands (SVG is stretched mid-flight)
   render();
   window.dispatchEvent(new CustomEvent('unseen:site', { detail: id }));   // sidebar shows only this event (globe.js)
 }
