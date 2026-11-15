@@ -23,7 +23,7 @@
   #txt h1 b { color: #ff9a2e; font-weight: 700; } #txt h1 b.bl { color: #4aa3ff; } #txt h1 b.rc { color: #ff6060; } #txt h1 b.wh { color: #fff; }
   #txt h1 b.gy { color: #d6d6e0; padding: 0 4px; position: relative; isolation: isolate; }
   #txt h1 b.gy::before { content: ''; position: absolute; inset: 0; z-index: -1; border-radius: 3px; opacity: 0;
-    background: repeating-linear-gradient(45deg,rgba(200,200,210,.35) 0 2px,transparent 2px 6px), rgba(60,60,70,.5);
+    background: repeating-linear-gradient(45deg,rgba(220,220,228,.55) 0 2px,transparent 2px 6px), rgba(105,105,115,.6);
     animation: gyin .9s ease forwards; animation-delay: var(--d, 0ms); }
   @keyframes gyin { to { opacity: 1; } }
   .ch { opacity: 0; animation: chIn .35s ease forwards; } @keyframes chIn { to { opacity: 1; } }
@@ -147,7 +147,7 @@ function flash(o) {                            // blink a newly shown layer so i
 let on_ = [];
 const EDGES = () => ({ gfm: EDGE_G, excl: EDGE, add: EDGE_A });                // outlines, in each layer's own colour, stay with the layer
 const show = on => { const E = EDGES(); for (const k in E) vis(E[k], on.includes(k) ? 1 : 0); for (const k in P) { const was = on_.includes(k), now = on.includes(k); vis(P[k], now ? 1 : 0); if (now && !was) flash(P[k]); } on_ = on.slice(); };
-const LG = { gfm: ['#2882ff', 'Flood seen by Sentinel-1 (GFM)'], excl: ['repeating-linear-gradient(45deg,#c8c8d2 0 2px,#3c3c46 2px 6px)', 'GFM: "cannot see here"'],
+const LG = { gfm: ['#2882ff', 'Flood seen by Sentinel-1 (GFM)'], excl: ['repeating-linear-gradient(45deg,#dcdce4 0 2px,#696973 2px 6px)', 'GFM: "cannot see here"'],
              add: ['#ff9a2e', 'NISAR addition: water in the blank'] };
 const legend = ks => { $('lg').innerHTML = ks.map(k => `<div><i style="background:${LG[k][0]}"></i>${LG[k][1]}</div>`).join(''); $('lg').classList.toggle('in', ks.length > 0); };
 let sayGen = 0;
@@ -211,7 +211,7 @@ const CA = { nw: L.imageOverlay('story/canada/nisar_water.png', PB, { opacity: 0
 const ca = on => { for (const k in CA) { vis(CA[k], on.includes(k) ? 1 : 0); if (on.includes(k)) flash(CA[k]); } };
 LG.nw = ['#2882ff', 'Water · NISAR (10 Oct)']; LG.rw = ['#ff5050', 'Water · Canada\'s RCM (13 Oct)'];
 LG.both = ['#f5f5f5', 'Both see water']; LG.on = ['#2882ff', 'Only NISAR']; LG.or = ['#ff5050', 'Only RCM'];
-const world = () => { document.body.classList.add('wv'); map.flyToBounds([[-50, -125], [62, 160]], { duration: 3 }); };
+const world = () => { document.body.classList.add('wv'); const W = [[-72, -125], [60, 160]]; fast ? map.fitBounds(W, { animate: false }) : map.flyToBounds(W, { duration: 3 }); };
 
 const T_ = { // tour sentences
   'Inner Niger Delta': 'In Mali\'s Inner Niger Delta (16 Sep), NISAR found <b>253 km²</b> of water where the official map was blank, on its wettest NISAR pass.',
@@ -250,14 +250,9 @@ const scenes = [
               say('Official flood map · 17 Oct 2026', H('Official flood maps use radar, which sees through clouds. On 17 October, the map showed <b class="bl">554 km²</b> of flooding around the lake.'), '', 'Copernicus EMS · GFM (Sentinel-1 radar)'); }],
   [7, () => { show(['gfm', 'excl']); legend(['gfm', 'excl']); say('', H('But a quarter of the area is marked <b class="gy">"cannot see"</b>. Under the trees, this radar can\'t see the water.'), '', 'GFM exclusion mask'); }],
   [7.5, () => { show(['gfm', 'excl', 'add']); legend(['gfm', 'excl', 'add']);
-              say('NISAR to the rescue', H('On 17 October, inside <b class="gy">that blank</b>, NISAR measured <b>542 km²</b> of water, 344 km² of it in forest. That is one lake, on one day.'), '', 'NISAR L-band'); }],
-  [8, () => { show([]); vis(box, 0); legend([]); $('tag').classList.remove('in'); world(); many(dots, 1, 60);
-      say('', H('We ran the same check on 17 flood sites we chose, from recent flood alerts and large seasonal wetlands, using NISAR\'s first months of data (June to October 2026). Each dot shows what NISAR added on that site\'s wettest pass.')); }],
-  [7, () => { many(thumbs, 1, 250); legend(['gfm', 'excl', 'add']);
-      say('', H('The biggest gaps are in flooded forests and wetlands: the Sudd, Tonle Sap, the Inner Niger Delta, the Congo basin and the Mekong. Elsewhere NISAR adds little.')); }],
-  [7.5, () => { many(thumbs, 0); legend([]); many(dots, 1); $('tag').classList.remove('in');
-      say('17 flood sites · June–October 2026', BIG('+74%', 'more flood water', 'o') + H('than the official maps showed, on each site\'s wettest NISAR pass.'), 'A sample, not a global total.'); }],
-  [7, () => { say('Unseen Earth', BIG('2,177 km²', '', 'o') + H('of flood water hidden in the official maps\' blanks, found by NISAR.')); }],
+              say('NISAR to the rescue', H('On 17 October, inside <b class="gy">that blank</b>, NISAR measured <b>542 km²</b> of water, 344 km² of it in forest.'), '', 'NISAR L-band'); }],
+  [10, () => { show([]); vis(box, 0); legend([]); $('tag').classList.remove('in'); world(); many(dots, 1, 60);
+      say('17 flood sites · June–October 2026', BIG('+74%', 'more flood water', 'o') + H('NISAR found <b>2,177 km²</b> of water in the official maps\' blanks, on each site\'s wettest pass.'), 'A sample of sites we chose, not a global total.'); }],
   [0, () => { if ($('lp').checked) { setTimeout(() => goTo(0), 0); return; } say(''); document.body.classList.add('out');  setTimeout(() => location.href = 'viewer/index.html#site=tonle-sap-flood-pulse-2026-83-8', 1200); }],
 ];
 let i = -1, tm = null, paused = false, t0 = 0, left = 0;
