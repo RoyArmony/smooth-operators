@@ -34,7 +34,8 @@ async function openSite(id) {
   S = { id, D, A, B, photos, nw, hid, t: D.hazard && ['WF', 'VO', 'EQ'].includes(D.hazard) ? D.frames.length - 1 : peak, b: 'nisar',
         base: L.imageOverlay(A(D.frames[0].nisar), B, { pane: 'analysis', interactive: false }).addTo(map),
         over: L.imageOverlay(A(D.frames[0].hidden), B, { pane: 'analysis', interactive: false }).addTo(map),
-        box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, opacity: 0, interactive: false }).addTo(map) };
+        box: L.rectangle(B, { pane: 'analysis', color: '#ff7828', weight: 1.5, fill: false, opacity: 0, interactive: false }).addTo(map),
+        tag: L.marker([B.getSouth(), B.getCenter().lng], { interactive: false, keyboard: false, icon: L.divIcon({ className: 'sptag', html: '<span></span>', iconSize: [0, 0] }) }).addTo(map) };   // which satellite, under the outline
   const N = D.frames.length, cal = D.calibration && D.calibration.used ? D.calibration : null;
   const f1 = cal ? cal.loo.map(x => x.f1) : (D.validation || []).map(x => x.f1);
   const R = D.report || {};
@@ -91,7 +92,7 @@ function setStep(i) {
   render();
 }
 function closeSite(keepHash) {
-  if (S) { ['base', 'over', 'box', 'mo', 'fr'].forEach(k => S[k] && map.removeLayer(S[k])); (S.layers || []).forEach(l => map.removeLayer(l.ov)); (S.ev || []).forEach(x => map.removeLayer(x.ov)); (S.extra || []).forEach(x => map.removeLayer(x)); }
+  if (S) { ['base', 'over', 'box', 'tag', 'mo', 'fr'].forEach(k => S[k] && map.removeLayer(S[k])); (S.layers || []).forEach(l => map.removeLayer(l.ov)); (S.ev || []).forEach(x => map.removeLayer(x.ov)); (S.extra || []).forEach(x => map.removeLayer(x)); }
   const was = !!S; S = null; panel.hidden = true;
   if (was && keepHash !== 'swap') window.dispatchEvent(new CustomEvent('unseen:site', { detail: null }));
   if (!keepHash && location.hash.startsWith('#site=')) history.replaceState(null, '', location.pathname + location.search);
@@ -105,13 +106,16 @@ function render() {
   if (S.b === 'photo') {
     const p = S.photos.length ? S.photos.reduce((a, b) => Math.abs(dn(b[0]) - dn(f.date)) < Math.abs(dn(a[0]) - dn(f.date)) ? b : a) : null;
     if (p && Math.abs(dn(p[0]) - dn(f.date)) > 60) { S.base.setUrl(A(f.nisar)); note = `No optical photo near ${f.date.slice(0, 4)}: showing the radar.`; }
-    else if (p) { S.base.setUrl(A(p[1])); const g = Math.round(dn(p[0]) - dn(f.date));
+    else if (p) { S.base.setUrl(A(p[1])); S.pd = p[0]; const g = Math.round(dn(p[0]) - dn(f.date));
              note = `Photo ${fmt(p[0])}${g ? ` (${g > 0 ? '+' : ''}${g} d from this pass)` : ' (same day)'}. Clouds look white: that's what NISAR sees through.`; }
     else note = 'No optical photo for this area.';
   } else if (S.b === 'nisar') { S.base.setUrl(A(f.nisar)); note = f.sensor === 'RADARSAT-1'
       ? `RADARSAT-1 (CSA), C-band HH, beam ${f.beam}. Dark = smooth water.`
       : 'Radar colours: R = HH, G = HV, B = HH/HV. Dark = smooth water.'; }
   S.base.setOpacity(S.b === 'none' ? 0 : 0.9);
+  const tg = S.tag.getElement()?.firstChild, fy = d => fmt(d, { day: 'numeric', month: 'short', year: 'numeric' });
+  if (tg) { const txt = S.b === 'photo' && S.pd && note.startsWith('Photo') ? `Optical · NASA HLS (Landsat / Sentinel-2) · ${fy(S.pd)}` : '';
+    tg.textContent = txt; tg.style.display = txt ? '' : 'none'; }
   const on = S.on || new Set();
   S.over.setUrl(A(f.hidden)); S.over.setOpacity(on.has('pass') ? 1 : 0);
   (S.layers || []).forEach((l, i) => l.ov.setOpacity(on.has(`L${i}`) ? 1 : 0));
