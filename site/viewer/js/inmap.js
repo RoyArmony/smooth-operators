@@ -49,7 +49,7 @@ async function openSite(id) {
   }
   S.ev = []; if (!D.history) try {          // history cases draw their own per-image overlay (site.json)
     const eid = id.replace(/-\d+-\d+$/, ''), E = await (await fetch(`../../events/${eid}/event.json`, { cache: 'no-cache' })).json();
-    const ORDER = ['gfm_flood', 'gfm_excluded', 'nisar_water', 'nisar_adds'];
+    const ORDER = ['gfm_flood', 'gfm_excluded', 'both_blind', 'nisar_water', 'nisar_adds'];
     S.ev = Object.entries(E.layers || {}).sort((a, b) => (ORDER.indexOf(a[0]) + 1 || 99) - (ORDER.indexOf(b[0]) + 1 || 99))
       .map(([k, l]) => ({ k, l, base: `../../events/${eid}/`, ov: L.imageOverlay('data:,', L.latLngBounds(l.bounds), { pane: 'analysis', interactive: false, opacity: 0, className: k === 'gfm_excluded' ? 'excl' : '' }).addTo(map) }));
   } catch (e) { S.ev = []; }
@@ -59,6 +59,8 @@ async function openSite(id) {
   if (photos.length) S.steps.push({ label: 'Optical', b: 'photo', on: [], cap: 'Optical satellites: clouds and forest canopy hide the water.' });
   if (has('gfm_flood')) S.steps.push({ label: 'Official', b: 'none', on: E_(['gfm_flood', 'gfm_excluded']),
     cap: 'The official flood map (GFM) uses radar: it sees through clouds, but not under trees. Hatched = "cannot see".' });
+  if (has('both_blind')) S.steps.push({ label: 'Both blind', b: 'none', t0: '2026-09-23', on: E_(['gfm_flood', 'both_blind']),
+    cap: 'NASA’s optical flood map (DSWx-HLS) is blind under cloud. <b style="color:#d946ef">Magenta</b> = both official maps blind: GFM’s blank and cloud. Only NISAR sees here.' });
   S.steps.push(has('nisar_adds')
     ? { label: 'NISAR', b: 'none', on: E_(['gfm_flood', 'gfm_excluded', 'nisar_adds']), cap: 'NISAR’s L-band radar sees under the canopy. <b class="o">Orange</b> = flood found in the blank.' }
     : { label: D.history ? 'Radar' : 'NISAR', b: 'nisar', on: ['pass'], cap: D.history ? 'Radar through the years: RADARSAT-1 (CSA), then NISAR. Blue = flood.' : 'NISAR’s L-band radar sees through clouds. Dark = water.' });

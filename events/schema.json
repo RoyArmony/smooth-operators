@@ -98,7 +98,7 @@
         "gfm_flood", "gfm_excluded", "dswx_s1", "gfm_refwater",
         "nisar_water", "nisar_floodveg", "nisar_adds", "combined",
         "rcm_water", "rs1_water", "agreement",
-        "landcover", "people"
+        "landcover", "people", "both_blind"
       ]
     }
   }

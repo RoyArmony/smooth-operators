@@ -160,3 +160,7 @@ the bundle's stored values (both blind: overlay km², except 23 Sep scaled to th
 | 5 Oct (5 Oct / 5 Oct) | 1,052 | 1,344: cropland 69% · forest 18% | 404 km² (38%) |
 | 17 Oct (17 Oct / 16 Oct) | 1,052 | 2,676: cropland 73% · forest 15% | 716 km² (68%) |
 
+Explorer layer `both_blind` (magenta, step "Both blind" on the Mekong site): the same GFM blank ∩ DSWx-HLS cloud per pass,
+written by `python scripts/blank_breakdown.py mekong-delta-vietnam/2026-09-flood --layer mekong-delta-vietnam`
+into `events/mekong-delta-vietnam/layers/both_blind_<date>.png` (4 passes). 15.11.26 (Noa).
+

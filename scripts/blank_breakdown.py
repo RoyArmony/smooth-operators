@@ -6,6 +6,8 @@ Each blank is split by ESA WorldCover 2021 land cover underneath, and we measure
 (only NISAR sees there). Inputs: the folder's gfm_classes / dswx_classes PNG layers (same grid, EPSG:4326).
 
     python scripts/blank_breakdown.py mekong-delta-vietnam/2026-09-flood    # -> <folder>/blanks.json
+    python scripts/blank_breakdown.py mekong-delta-vietnam/2026-09-flood --layer mekong-delta-vietnam
+        # also writes the both-blind area as an Explorer layer into events/<bundle>/ (layers/both_blind_<date>.png)
 """
 import json
 import pathlib
@@ -19,6 +21,7 @@ from gfm_blank_landcover import GROUP, ORDER, worldcover  # noqa: E402
 
 EV = pathlib.Path(__file__).resolve().parents[1] / "events"
 GREY, CLOUD = (140, 140, 150), (235, 235, 240)      # eventfolder.C["blank"], C["clouds"]
+BOTH = (217, 70, 239, 190)                           # magenta: not GFM blue, NISAR orange or the grey hatch
 MAIN = ["forest", "cropland", "built-up", "wetland", "shrub & grass", "water", "other"]
 
 
@@ -27,7 +30,7 @@ def mask(path, rgb):
     return (a[..., 3] > 0) & np.all(a[..., :3] == rgb, -1)
 
 
-def main(folder):
+def main(folder, bundle=None):
     F = EV / folder
     e = json.loads((F / "event.json").read_text())
     g, o = e["layers"]["gfm_classes"], e["layers"]["dswx_classes"]
@@ -39,6 +42,7 @@ def main(folder):
     print("land cover ...", file=sys.stderr)
     lc = np.vectorize(lambda c: GROUP.get(int(c), "other"))(worldcover(LAT, LON, (s, w, n, east), overview=2))
     lc = np.where(np.isin(lc, MAIN), lc, "other")
+    layers = {}
     out = dict(what="Each official map's 'cannot see' area split by cause and by land cover underneath (ESA WorldCover 2021)",
                script="scripts/blank_breakdown.py", box_km2=round(float(px.sum()), 1), passes=[])
     for p in e["passes"]:
@@ -54,12 +58,26 @@ def main(folder):
                  both_blind=dict(km2=km(G & O), landcover=split(G & O)),
                  stored=dict(gfm=p["baselines"]["gfm"]["cannot_see_km2"], dswx=p["baselines"]["dswx"]["cannot_see_km2"]))
         out["passes"].append(r)
+        if bundle:
+            img = np.zeros(G.shape + (4,), np.uint8); img[G & O] = BOTH
+            (EV / bundle / "layers").mkdir(exist_ok=True)
+            Image.fromarray(img, "RGBA").save(EV / bundle / "layers" / f"both_blind_{p['date']}.png", optimize=True)
+            layers.setdefault(p["date"], f"layers/both_blind_{p['date']}.png")
         print(f"{p['date']}  GFM {m['gfm']} blank {r['gfm_blank']['km2']:7.1f} (stored {r['stored']['gfm']})  "
               f"DSWx {m['dswx']} cloud {r['dswx_blank']['km2']:7.1f} (stored {r['stored']['dswx']})  both {r['both_blind']['km2']:7.1f}")
         for k in ("gfm_blank", "dswx_blank", "both_blind"):
             print(f"   {k:10}", "  ".join(f"{a} {v:,.0f}" for a, v in r[k]["landcover"].items()))
     (F / "blanks.json").write_text(json.dumps(out, indent=1, ensure_ascii=False))
+    if bundle and layers:
+        bj = EV / bundle / "event.json"; B = json.loads(bj.read_text())
+        B["layers"]["both_blind"] = dict(
+            group="official", sensor="Copernicus GFM (Sentinel-1) + NASA OPERA DSWx-HLS",
+            label="Both official maps blind: radar blank + cloud", legend="#d946ef", bounds=g["bounds"], files=layers,
+            note=f"GFM 'cannot see' ∩ DSWx-HLS cloud, matched dates from {folder}; scripts/blank_breakdown.py")
+        bj.write_text(json.dumps(B, indent=1, ensure_ascii=False))
+        print(f"layer both_blind -> {bj} ({len(layers)} dates)", file=sys.stderr)
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "mekong-delta-vietnam/2026-09-flood")
+    a = [x for x in sys.argv[1:] if not x.startswith("--")]
+    main(a[0] if a else "mekong-delta-vietnam/2026-09-flood", a[1] if "--layer" in sys.argv and len(a) > 1 else None)
