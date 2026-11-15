@@ -126,6 +126,15 @@ PLACES = {
         history_limits="C-band misses water under willow and sedge that L-band sees; one threshold per image vs a "
                        "calibrated detector: compare the pattern, not exact km². RADARSAT-1 May–Sep only (ice and freeze-up "
                        "from Oct). MODIS is 250 m. Audit: docs/10-Results.md."),
+    "dead-sea-israel": dict(
+        name="Dead Sea (validation)", country="Israel", bbox=(35.37, 30.97, 35.52, 31.30),
+        stack_key="dead-sea-israel",                  # NISAR stack: best one covering the box (track 151 descending)
+        open_hh=-17.0, open_hv=-24.0,                 # handbook / detect defaults: no optical calibration here
+        detector="doc33",                             # flood_nasa.final(): handbook §6.4 + confidence >= 0.8 + handbook mask
+        kind="validation",                            # not a flood story: a clear-sky check against the official maps
+        validation=["lance", "gfm"],                  # + DSWx (always when present): NISAR water vs each map where it can see
+        flood_limits="validation site, not a flood: desert valley floor (open water, salt ponds, bare shore), no "
+                     "vegetation, almost always cloud-free;"),
     "gerd-blue-nile-ethiopia": dict(
         name="GERD reservoir, Blue Nile", country="Ethiopia", bbox=(34.9, 10.2, 35.8, 11.35),
         stack_key="gerd-blue-nile-ethiopia-129-7",    # track 129 frame 7 ascending, 11 dual-pol passes Jun-Nov 2026
@@ -259,7 +268,8 @@ def compare(a, b, ok):
     tp, fp, fn = float((a & b).sum()), float((a & ~b).sum()), float((~a & b).sum())
     return dict(compared_pct=round(100 * float(ok.mean())), agreement_pct=round(100 * float((a == b)[ok].mean()), 1),
                 iou=round(tp / (tp + fp + fn), 2) if tp + fp + fn else None,
-                f1=round(2 * tp / (2 * tp + fp + fn), 2) if tp + fp + fn else None)
+                f1=round(2 * tp / (2 * tp + fp + fn), 2) if tp + fp + fn else None,
+                precision=round(tp / (tp + fp), 2) if tp + fp else None, recall=round(tp / (tp + fn), 2) if tp + fn else None)
 
 
 # ---------- independent check: RCM (Canada's C-band radar) ----------
@@ -296,6 +306,29 @@ def rcm_check(feats, date, grid, shape, perm, valid, nisar_open):
 
 
 # ---------- main ----------
+REF = dict(lance=("NASA LANCE (VIIRS / MODIS), 2-day composite", "NASA's LANCE flood map"),
+           gfm=("Sentinel-1 (Copernicus GFM)", "Copernicus GFM"))
+
+
+def viirs_photo(W, bbox, date):
+    """VIIRS true colour of the pass day (NASA GIBS, ~375 m) for places without an Explorer site. Returns its date."""
+    import shutil
+    import tempfile
+    from . import lance
+    tmp = tempfile.NamedTemporaryFile(suffix=".jpg", delete=False).name
+    try:
+        lay = lance.truecolor(bbox, date, tmp, width=512)
+    except Exception as e:  # noqa: BLE001
+        print(f"[warn] VIIRS photo {date}: {e!r}"[:110]); return None
+    name = f"photo_{date}.jpg"
+    shutil.move(tmp, W.dir / name)
+    lp = W.layers.setdefault("photo", dict(group="optical", sensor=f"{lay.split('_')[0]} true colour via NASA GIBS",
+                                           label="Optical photo (true colour, same day)", legend=None, default=False,
+                                           files={}, bounds=[[bbox[1], bbox[0]], [bbox[3], bbox[2]]]))
+    lp["files"][date] = f"layers/{name}"
+    return date
+
+
 def build(place, flood_date=None):
     case = PLACES[place]
     bbox = case["bbox"]
@@ -305,6 +338,27 @@ def build(place, flood_date=None):
     L = detect(stack, pixel_m=grid["dx"], open_hh=case["open_hh"], open_hv=case["open_hv"])
     perm, valid = L["permanent"], L["valid"]
     wet = [(L["water"][t] | L["canopy"][t]) & ~perm & valid for t in range(len(dates))]
+    vals = case.get("validation") or []
+    vals = [vals] if isinstance(vals, str) else list(vals)
+    nopen_all = None                                      # doc33: NISAR water incl. permanent, for the checks
+    if case.get("detector") == "doc33":                  # NISAR handbook §6.4 + confidence + handbook mask (flood_nasa.final)
+        from . import dem
+        from .detect import _db
+        from .flood_nasa import final
+        from .landcover import on_grid as lc_on_grid
+        try:
+            lc0 = lc_on_grid(grid, bbox, key=case["stack_key"])
+        except Exception as e:  # noqa: BLE001
+            print(f"[warn] land cover: {e!r}"[:120]); lc0 = None
+        try:
+            z0 = dem.on_grid(grid, bbox, key=case["stack_key"])
+        except Exception as e:  # noqa: BLE001
+            print(f"[warn] DEM: {e!r}"[:120]); z0 = None
+        F = final(stack, dates, lc0, z0, grid["dx"], case["open_hh"])
+        _, _, valid = _db(stack)
+        perm = F["permanent"]
+        nopen_all = [F["inundated"][t] & valid for t in range(len(dates))]
+        wet = [nopen_all[t] & ~perm for t in range(len(dates))]
     fd = flood_date or dates[int(np.argmax([w.sum() for w in wet]))]
     w0, w1 = D(fd) - dt.timedelta(days=WINDOW_DAYS), D(fd) + dt.timedelta(days=WINDOW_DAYS)
     idx = [t for t, d in enumerate(dates) if w0 <= D(d) <= w1]
@@ -331,7 +385,7 @@ def build(place, flood_date=None):
         print(f"[warn] coherence: {e!r}"[:120]); coh = [None] * len(idx)
 
     rfeats = []
-    if case.get("validation") == "rcm":
+    if "rcm" in vals:
         try:
             from . import rcm
             rfeats = rcm.search(bbox, (w0 - dt.timedelta(days=RCM_DAYS)).isoformat(), (w1 + dt.timedelta(days=RCM_DAYS)).isoformat())
@@ -365,6 +419,11 @@ def build(place, flood_date=None):
         P = dict(date=d, matched={}, baselines={}, layers=[])
         # optical photo
         pd_, ph, clear = photo_for(case, d)
+        if ph is None and case.get("kind") == "validation":    # no Explorer site: VIIRS true colour of the day
+            vt = viirs_photo(W, bbox, d)
+            if vt:
+                P["matched"]["photo"] = vt
+                P["layers"].append("photo")
         if ph is not None:
             W.picture("photo", pd_, ph, dict(group="optical", sensor="HLS (Landsat / Sentinel-2) via NASA GIBS",
                                              label="Optical photo (true colour)", legend=None, default=False))
@@ -391,7 +450,8 @@ def build(place, flood_date=None):
         if G:
             seen = G["seen"] & valid
             base["gfm"] = dict(date=G["date"], seen=seen, flood=G["flood"] & ~perm & seen,
-                               clouds=np.zeros(shape, bool), veg=G["excluded"] & ~perm & seen & ~G["flood"])
+                               clouds=np.zeros(shape, bool), veg=G["excluded"] & ~perm & seen & ~G["flood"],
+                               water=G["water"] if G.get("has_water") else None, clear=seen & ~G["excluded"])
         dd, cls = dswx_classes(dfiles, d, grid, shape) if dfiles else (None, None)
         if cls is not None:
             seen = (cls != 255) & valid
@@ -401,6 +461,8 @@ def build(place, flood_date=None):
                                 water=np.isin(cls, (1, 2)) & seen & ~ocean,                      # incl. permanent water
                                 clear=seen & ~ocean & ~np.isin(cls, (252, 253)))                 # DSWx sees: no cloud
         nopen = L["water"][t] & valid                      # NISAR open water incl. permanent (what C-band / optical also see)
+        if nopen_all is not None:
+            nopen = nopen_all[t]
         for k, B in base.items():
             lid = f"{k}_classes"
             blank = B["clouds"] | B["veg"]
@@ -452,7 +514,15 @@ def build(place, flood_date=None):
                       label="RCM radar (RL, −25…−5 dB; dark = water)", legend=None, default=False), half=True)
             P["layers"] += ["rcm_water", "agreement", "rcm_radar"]
         # NISAR open water (the mask every check uses) + NASA DSWx water, for the swipe and the agreement numbers
-        if R or "dswx" in base:
+        lw = None
+        if "lance" in vals:                                # NASA LANCE (VIIRS / MODIS) flood map, 2-day composite
+            try:
+                from . import lance
+                lw = lance.composite(bbox, d, grid, shape)
+            except Exception as e:  # noqa: BLE001
+                print(f"[warn] LANCE {d}: {e!r}"[:120])
+        gw = base["gfm"] if "gfm" in vals and "gfm" in base and base["gfm"].get("water") is not None else None
+        if R or "dswx" in base or lw is not None or gw is not None:
             W.rgba("nisar_open", d, classes_rgba([(nopen, "nisar_only")]), dict(group="validation", sensor="NISAR L-band",
                    label="NISAR open water (incl. permanent)", legend=[[HEX(C["nisar_only"]), "open water (NISAR)"]], default=False))
             P["layers"].append("nisar_open")
@@ -467,6 +537,17 @@ def build(place, flood_date=None):
                 P.setdefault("validation", {})["dswx"] = dict(compare(nopen, B["water"], ok), date=B["date"])
                 if R:
                     P["validation"]["rcm_vs_dswx"] = compare(R["water"], B["water"], ok & R["ok"])
+        for k, X in (("lance", lw), ("gfm", gw)):
+            if X is None:
+                continue
+            ok = (X["seen"] if k == "lance" else X["clear"]) & valid
+            W.rgba(f"{k}_water", X["date"], classes_rgba([(X["water"] & ok, "rcm")]), dict(group="validation",
+                   sensor=REF[k][0], label=f"Water in {REF[k][1]} (incl. permanent, where it can see)",
+                   legend=[[HEX(C["rcm"]), f"water ({REF[k][1]})"]], default=False))
+            P["layers"].append(f"{k}_water")
+            P["matched"][k] = X["date"]
+            if ok.mean() >= 0.3:
+                P.setdefault("validation", {})[k] = dict(compare(nopen, X["water"], ok), date=X["date"])
         main = "gfm" if "gfm" in base else next(iter(base), None)
         if main:
             B = base[main]
@@ -501,8 +582,9 @@ def build(place, flood_date=None):
                             f"(+{s['improvement_pct']}%) where {nice} cannot see.")
     validation = {}
     NAMES = dict(rcm="Canada's RCM radar (CSA, C-band)", dswx="NASA's flood map (OPERA DSWx-HLS, optical)",
-                 rcm_vs_dswx="RCM vs NASA DSWx (no NISAR: how well two other sensors agree)")
-    for k in ("rcm", "dswx", "rcm_vs_dswx"):
+                 rcm_vs_dswx="RCM vs NASA DSWx (no NISAR: how well two other sensors agree)",
+                 lance="NASA's LANCE flood map (VIIRS / MODIS, optical, 250 m)", gfm="Copernicus GFM (Sentinel-1, observed water)")
+    for k in ("rcm", "dswx", "rcm_vs_dswx", "lance", "gfm"):
         vp = [p for p in passes if k in p.get("validation", {})]
         if not vp:
             continue
@@ -510,32 +592,45 @@ def build(place, flood_date=None):
         mean = lambda q: round(sum(v[q] for v in V if v[q] is not None) / max(1, sum(v[q] is not None for v in V)), 2)
         ag = round(sum(v["agreement_pct"] for v in V) / len(V), 1)
         validation[k] = dict(source=NAMES[k], n_dates=len(vp), dates=[p["date"] for p in vp],
-                             agreement_pct=ag, iou=mean("iou"), f1=mean("f1"))
+                             agreement_pct=ag, iou=mean("iou"), f1=mean("f1"),
+                             **({q: mean(q) for q in ("precision", "recall") if any(v.get(q) is not None for v in V)}))
         if k == "rcm":
             validation[k].update(sensor="RCM C-band compact-pol (CSA), CEOS-ARD", match_days=RCM_DAYS,
                                  compared="open water incl. permanent (C-band can't see water under trees)",
                                  dates=[[p["date"], p["matched"]["rcm"]] for p in vp])
         if k == "dswx":
             validation[k].update(compared="open water incl. permanent, where DSWx has no cloud")
-        who = dict(rcm="Canada's RCM radar", dswx="NASA's DSWx map", rcm_vs_dswx="RCM and NASA's DSWx")[k]
+        if k in ("lance", "gfm"):
+            validation[k].update(compared="water incl. permanent, where the map can see (LANCE: no cloud / terrain mask; "
+                                          "GFM: outside its exclusion mask)", dates=[[p["date"], p["matched"][k]] for p in vp])
+        who = dict(rcm="Canada's RCM radar", dswx="NASA's DSWx map", rcm_vs_dswx="RCM and NASA's DSWx",
+                   lance="NASA's LANCE flood map", gfm="Copernicus GFM")[k]
         validation[k]["sentence"] = (f"{who} {'agree' if k == 'rcm_vs_dswx' else 'and NISAR agree'} on {ag:.0f}% of pixels "
                                      f"(open water IoU {mean('iou')}, {len(vp)} pass{'es' if len(vp) > 1 else ''}).")
     if validation:
-        summary["validation"] = dict(source=next(k for k in ("rcm", "dswx") if k in validation) if
-                                     any(k in validation for k in ("rcm", "dswx")) else None,
+        summary["validation"] = dict(source=next(k for k in ("rcm", "dswx", "lance", "gfm") if k in validation) if
+                                     any(k in validation for k in ("rcm", "dswx", "lance", "gfm")) else None,
                                      **{k: dict(agreement_pct=v["agreement_pct"], iou=v["iou"], n_dates=v["n_dates"])
                                         for k, v in validation.items()})
         summary["validation"]["agreement_pct"] = validation[summary["validation"]["source"]]["agreement_pct"]
         summary["validation"]["iou"] = validation[summary["validation"]["source"]]["iou"]
         summary["validation"]["n_dates"] = validation[summary["validation"]["source"]]["n_dates"]
+    if validation and case.get("kind") == "validation":      # a check, not a flood story: lead with the agreement
+        summary["sentence"] = "Clear sky, no vegetation: " + " ".join(
+            validation[k]["sentence"] for k in ("dswx", "lance", "gfm") if k in validation)
     validation = validation or None
     ev = dict(
         version=2, id=f"{place}/{fid}", place=f"{case['name']}, {case['country']}",
-        title=f"{case['name']} flood, {D(fd).strftime('%b %Y')}", flood_date=fd,
+        **(dict(kind=case["kind"]) if case.get("kind") else {}),
+        title=(f"{case['name']}, {D(fd).strftime('%b %Y')}" if case.get("kind") == "validation"
+               else f"{case['name']} flood, {D(fd).strftime('%b %Y')}"), flood_date=fd,
         window=dict(start=w0.isoformat(), end=w1.isoformat(), days_before=WINDOW_DAYS, days_after=WINDOW_DAYS),
         bbox=list(bbox), area_km2=round(float(valid.sum() * px)), baselines=sorted({k for p in passes for k in p["baselines"]}),
         summary=summary, passes=passes, layers=W.layers, **(dict(validation=validation) if validation else {}),
-        method=dict(detector="detect.py v2 (open water + water under vegetation, HH/HV), thresholds calibrated on clear "
+        method=dict(detector=("flood_nasa.final(): NISAR handbook §6.4 classes + transitions, confidence >= 0.8, handbook mask "
+                              f"(no cropland, city, bare land, slope > 5°); open-water HH threshold {case['open_hh']} dB")
+                             if case.get("detector") == "doc33" else
+                             "detect.py v2 (open water + water under vegetation, HH/HV), thresholds calibrated on clear "
                              f"optical days: HH {case['open_hh']} / HV {case['open_hv']} dB",
                     pixel_m=grid["dx"], permanent_water="dark on ≥ 90 % of NISAR passes",
                     matching=dict(photo_days=PHOTO_DAYS, gfm_days=GFM_DAYS, dswx_days=DSWX_DAYS),
@@ -550,6 +645,12 @@ def build(place, flood_date=None):
             dict(name="HLS true colour via NASA GIBS", url="https://earthdata.nasa.gov/gibs",
                  credit="NASA EOSDIS GIBS; HLS (NASA / USGS Landsat, ESA Copernicus Sentinel-2)"),
             dict(name="ESA WorldCover 2021", url="https://esa-worldcover.org", credit="© ESA WorldCover project 2021, CC BY 4.0")]
+        + ([dict(name="NASA LANCE NRT Global Flood Product (VIIRS VCDWD, MODIS MCDWD) + VIIRS true colour, via NASA GIBS",
+                 url="https://www.earthdata.nasa.gov/data/tools/flood", credit="NASA LANCE / ESDIS; NASA EOSDIS GIBS")]
+           if validation and "lance" in validation else [])
+        + ([dict(name="Copernicus DEM GLO-30 (slope for the handbook mask)", url="https://registry.opendata.aws/copernicus-dem/",
+                 credit="© DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018, provided under COPERNICUS by the "
+                        "European Union and ESA")] if case.get("detector") == "doc33" else [])
         + ([dict(name="RADARSAT Constellation Mission (RCM) CEOS-ARD", url="https://registry.opendata.aws/rcm-ceos-ard/",
                  credit="RCM data © Government of Canada (Canadian Space Agency); RCM Public User Licence")]
            if validation and "rcm" in validation else []),
@@ -559,7 +660,10 @@ def build(place, flood_date=None):
                                                       limits=case.get("flood_limits", "paddies are flooded on purpose in season;"))
                                        + (VALIDATION.format(**validation["rcm"]) if validation and "rcm" in validation else "")
                                        + (VALID_DSWX.format(d=validation["dswx"]["sentence"], r=validation.get("rcm_vs_dswx", {}).get("sentence", ""))
-                                          if validation and "dswx" in validation else ""), encoding="utf-8")
+                                          if validation and "dswx" in validation else "")
+                                       + (VALID_MAPS.format(lines="\n".join(f"- {validation[k]['sentence']}" for k in ("lance", "gfm")
+                                                                            if k in validation))
+                                          if validation and any(k in validation for k in ("lance", "gfm")) else ""), encoding="utf-8")
     pl = dict(version=2, id=place, name=case["name"], country=case["country"], bbox=list(bbox),
               floods=[dict(id=fid, flood_date=fd, title=ev["title"], baseline=mb,
                            improvement_pct=summary["improvement_pct"], nisar_adds_km2=summary["nisar_adds_km2"],
@@ -571,7 +675,7 @@ def build(place, flood_date=None):
         old = json.loads(pf.read_text(encoding="utf-8"))
         pl["floods"] = sorted([f for f in old.get("floods", []) if f["id"] != fid] + pl["floods"], key=lambda f: f["flood_date"])
         pl["history"] = old.get("history")
-    pl["validation"] = sorted({k for f in pl["floods"] for k in ("rcm", "dswx") if k in (f.get("validation") or {})})
+    pl["validation"] = sorted({k for f in pl["floods"] for k in ("rcm", "dswx", "lance", "gfm") if k in (f.get("validation") or {})})
     pf.write_text(json.dumps(pl, indent=1, ensure_ascii=False), encoding="utf-8")
     bundle.write_index()
     return ev
@@ -603,6 +707,15 @@ grid; compared with NISAR open water only, where both see. Layers `rcm_water`, `
 VALID_DSWX = """
 **Check against NASA's map (DSWx-HLS):** {d} {r} Same open-water masks, only where DSWx has no cloud.
 Layer `dswx_water`.
+"""
+
+
+VALID_MAPS = """
+**Check against the other official maps:** NISAR water (incl. permanent) vs each map's water (flood + normal water),
+only where that map can see (LANCE: no cloud or terrain mask; GFM: outside its exclusion mask) and NISAR is valid.
+Layers `lance_water`, `gfm_water`, `nisar_open`.
+
+{lines}
 """
 
 

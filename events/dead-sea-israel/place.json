@@ -1,0 +1,44 @@
+{
+ "version": 2,
+ "id": "dead-sea-israel",
+ "name": "Dead Sea (validation)",
+ "country": "Israel",
+ "bbox": [
+  35.37,
+  30.97,
+  35.52,
+  31.3
+ ],
+ "floods": [
+  {
+   "id": "2026-10-flood",
+   "flood_date": "2026-10-10",
+   "title": "Dead Sea (validation), Oct 2026",
+   "baseline": "dswx",
+   "improvement_pct": 50,
+   "nisar_adds_km2": 56.1,
+   "baseline_flood_km2": 112.0,
+   "validation": {
+    "source": "dswx",
+    "dswx": {
+     "agreement_pct": 74.4,
+     "iou": 0.46,
+     "n_dates": 5
+    },
+    "lance": {
+     "agreement_pct": 73.3,
+     "iou": 0.36,
+     "n_dates": 5
+    },
+    "agreement_pct": 74.4,
+    "iou": 0.46,
+    "n_dates": 5
+   }
+  }
+ ],
+ "history": null,
+ "validation": [
+  "dswx",
+  "lance"
+ ]
+}

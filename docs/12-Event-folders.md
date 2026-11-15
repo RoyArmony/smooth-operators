@@ -245,3 +245,12 @@ RADARSAT-1), compared with NISAR **open** water where both see (C-band can't see
 - Peace–Athabasca: NISAR–RCM **90 %** (IoU 0.60), NISAR–DSWx **81 %** (IoU 0.59), RCM–DSWx without NISAR **74 %** (IoU 0.43):
   NISAR agrees with each independent sensor better than they agree with each other.
 - Size budget raised to 50 MB (`scripts/check_bundle.py`).
+
+**Noa, 15.11.26 14:44:42 says:** validation place `events/dead-sea-israel/` (`kind: "validation"`): Dead Sea southern basin (evaporation
+ponds + bare valley floor), no vegetation, clear sky, NISAR track 151 descending, 5 passes 16 Sep → 3 Nov 2026. New place
+keys: `detector="doc33"` (`flood_nasa.final()`: handbook §6.4 + confidence ≥ 0.8 + handbook mask), `validation=["lance", "gfm"]`
+(+ DSWx as before), `kind="validation"` (VIIRS true-colour photo when there is no Explorer site; headline = agreement).
+New layers `lance_water`, `gfm_water`; `compare()` now also gives precision and recall. Result (water incl. permanent,
+where each map sees): **NASA DSWx agreement 74 %, precision 0.99, recall 0.46; NASA LANCE 73 %, precision 0.68, recall
+0.45**. NISAR almost never calls dry land water; it misses about half of the brine ponds when wind roughens them
+(28 Sep: recall 0.18). GFM server down (502) at build time: rebuild to add it.

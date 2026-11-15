@@ -59,10 +59,14 @@ def on_grid(bbox, date, grid, shape, days=3, min_cover=0.3):
     for d in sorted(by_day, key=lambda d: abs((dt.date.fromisoformat(d) - d0).days)):
         flood = np.full(shape, 255, np.uint8)
         excl = np.full(shape, 255, np.uint8)
+        water = np.full(shape, 255, np.uint8)
         for f in by_day[d]:
             _warp(_get(f["assets"]["ensemble_flood_extent"]["href"]), grid, flood)
             _warp(_get(f["assets"]["exclusion_mask"]["href"]), grid, excl)
+            if "ensemble_water_extent" in f["assets"]:     # observed water incl. reference (normal) water
+                _warp(_get(f["assets"]["ensemble_water_extent"]["href"]), grid, water)
         seen = (flood != 255) & (excl != 255)
         if seen.mean() >= min_cover:
-            return dict(date=d, flood=flood == 1, excluded=excl == 1, seen=seen, n=len(by_day[d]))
+            return dict(date=d, flood=flood == 1, excluded=excl == 1, seen=seen, n=len(by_day[d]),
+                        water=water == 1, has_water=bool((water != 255).any()))
     return None

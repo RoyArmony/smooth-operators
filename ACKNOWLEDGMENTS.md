@@ -13,6 +13,7 @@ Our maps and numbers are derived products, not official NASA products, and not e
 | **NISAR S-band** (ISRO, Bhoonidhi) | S-band backscatter | Per ISRO Bhoonidhi terms of use; credit "NISAR S-band data: ISRO" |
 | **OPERA** DSWx-HLS, DSWx-S1, RTC-S1, DIST, DISP (NASA JPL, PO.DAAC / ASF) | Optical and radar water maps, comparisons | NASA open data; cite product + DOI from its landing page |
 | **HLS** Landsat 8/9 + Sentinel-2 (LP DAAC / NASA GIBS) | Optical reference image | NASA open data; Sentinel-2 part: "Contains modified Copernicus Sentinel data [year]" |
+| **NASA LANCE NRT Global Flood Product** (VIIRS VCDWD, MODIS MCDWD) + VIIRS true colour, via NASA GIBS | Validation: NASA's flood map and the same-day photo (Dead Sea) | NASA open data; "We acknowledge the use of data and/or imagery from NASA's Land, Atmosphere Near real-time Capability for Earth observation (LANCE), part of the NASA Earth Science Data and Information System (ESDIS)." |
 | **MODIS** Terra / Aqua Corrected Reflectance (NASA LANCE / GIBS) | Optical photo for 2000–2013 dates (history) | NASA open data; "We acknowledge the use of imagery from NASA's Global Imagery Browse Services (GIBS), part of NASA's Earth Science Data and Information System (ESDIS)" |
 | **NASA GIBS** tiles, **Blue Marble** | Web-map layers, globe basemap | NASA open data; Blue Marble: NASA Earth Observatory, public domain |
 | **SWOT** LakeSP (NASA / CNES, with CSA and UK Space Agency; PO.DAAC / Hydrocron) | Lake water level | NASA open data; cite the SWOT product (PO.DAAC) |
